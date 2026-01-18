@@ -1,4 +1,5 @@
 import { api } from "../api.config";
+import { unauthenticatedApi } from "../api.unauthenticated.config";
 
 const AuthServices = {
     initiateAuth: async (json: {
@@ -7,7 +8,7 @@ const AuthServices = {
         session?: string;
     }) => {
         console.log(json);
-        const response = await api.post("auth/initiate-login", { json });
+        const response = await unauthenticatedApi.post("auth/initiate-login", { json });
         return response.json();
     },
     completeMFAAuth: async (json: {
@@ -17,11 +18,11 @@ const AuthServices = {
         session: string;
         challengeName: string;
     }) => {
-        const response = await api.post("auth/mfa", { json });
+        const response = await unauthenticatedApi.post("auth/mfa", { json });
         return response.json();
     },
     logout: async (accessToken: string) => {
-        const response = await api.get("auth/logout", {
+        const response = await unauthenticatedApi.get("auth/logout", {
             searchParams: { accessToken }
         });
         return response.json();
@@ -36,7 +37,7 @@ const AuthServices = {
         timezone: string;
         email: string;
     }) => {
-        const response = await api.post("auth/initiate-signup", { json });
+        const response = await unauthenticatedApi.post("auth/initiate-signup", { json });
         return response.json();
     },
     confirmSignup: async (json: {
@@ -44,7 +45,7 @@ const AuthServices = {
         code: string;
         session: string;
     }) => {
-        const response = await api.post("auth/confirm-signup", { json });
+        const response = await unauthenticatedApi.post("auth/confirm-signup", { json });
         return response.json();
     },
     generateAuthenticatorSecret: async (json: {
