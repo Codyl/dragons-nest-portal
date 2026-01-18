@@ -3,8 +3,10 @@ import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import useLoginMutation from "@/hooks/use-login-mutation";
+import { useRouter } from "@tanstack/react-router";
 
 const LoginForm = ({ session }: { session?: string }) => {
+    const router = useRouter();
     const { mutate: login, data, error, isPending } = useLoginMutation();
 
     const schema = z.object({
@@ -40,6 +42,13 @@ const LoginForm = ({ session }: { session?: string }) => {
                         );
                         sessionStorage.setItem("username", value.username);
                         sessionStorage.setItem("password", value.password);
+                    },
+                    onError: (error) => {
+                        console.dir(error.response.data);
+                        if (error.name === "UserNotConfirmedException") {
+                            sessionStorage.setItem("username", value.username);
+                            router.navigate({ to: "/confirm-signup" });
+                        }
                     }
                 }
             );

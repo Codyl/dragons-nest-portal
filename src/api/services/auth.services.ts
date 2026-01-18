@@ -8,7 +8,9 @@ const AuthServices = {
         session?: string;
     }) => {
         console.log(json);
-        const response = await unauthenticatedApi.post("auth/initiate-login", { json });
+        const response = await unauthenticatedApi.post("auth/initiate-login", {
+            json
+        });
         return response.json();
     },
     completeMFAAuth: async (json: {
@@ -37,7 +39,9 @@ const AuthServices = {
         timezone: string;
         email: string;
     }) => {
-        const response = await unauthenticatedApi.post("auth/initiate-signup", { json });
+        const response = await unauthenticatedApi.post("auth/initiate-signup", {
+            json
+        });
         return response.json();
     },
     confirmSignup: async (json: {
@@ -45,7 +49,16 @@ const AuthServices = {
         code: string;
         session: string;
     }) => {
-        const response = await unauthenticatedApi.post("auth/confirm-signup", { json });
+        const response = await unauthenticatedApi.post("auth/confirm-signup", {
+            json
+        });
+        return response.json();
+    },
+    resendSignupConfirmationCode: async (json: { username: string }) => {
+        const response = await unauthenticatedApi.post(
+            "auth/confirm-signup/resend-code",
+            { json }
+        );
         return response.json();
     },
     generateAuthenticatorSecret: async (json: {

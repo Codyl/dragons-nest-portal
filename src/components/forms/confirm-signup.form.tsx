@@ -4,29 +4,35 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
+import ResendSignupConfirmationCodeButton from "../buttons/resend-signup-confirmation-code.button";
 
 const ConfirmSignupForm = () => {
-    const { mutate: confirmSignup, data, error, isPending } = useMutation({
+    const {
+        mutate: confirmSignup,
+        data,
+        error,
+        isPending
+    } = useMutation({
         mutationFn: AuthServices.confirmSignup
     });
 
     const schema = z.object({
-        username: z.string().min(1, "Username is required"),
-        code: z.string().min(1, "Confirmation code is required"),
-        session: z.string().optional()
+        code: z.string().min(1, "Confirmation code is required")
     });
 
     const form = useForm({
         defaultValues: {
-            username: "",
-            code: "",
-            session: ""
+            code: ""
         },
         validators: {
             onSubmit: schema
         },
         onSubmit: async ({ value }) => {
-            confirmSignup(value);
+            confirmSignup({
+                username: sessionStorage.getItem("username") || "",
+                code: value.code,
+                session: sessionStorage.getItem("session") || ""
+            });
         }
     });
 
@@ -40,28 +46,17 @@ const ConfirmSignupForm = () => {
                 }}
                 className="flex flex-col tablet:w-md gap-4 mx-auto desktop:mx-0">
                 <form.Field
-                    name="username"
-                    children={(field) => (
-                        <InputField field={field} label="Username" />
-                    )}
-                />
-                <form.Field
                     name="code"
                     children={(field) => (
                         <InputField field={field} label="Confirmation Code" />
                     )}
                 />
-                <form.Field
-                    name="session"
-                    children={(field) => (
-                        <InputField field={field} label="Session (Optional)" />
-                    )}
-                />
+                <ResendSignupConfirmationCodeButton />
                 <Button type="submit" disabled={isPending}>
                     {isPending ? "Confirming..." : "Confirm Signup"}
                 </Button>
             </form>
-            {data && (
+            {data !== undefined && data !== null && (
                 <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-md">
                     <pre className="text-xs overflow-auto">
                         {JSON.stringify(data, null, 2)}
@@ -71,7 +66,10 @@ const ConfirmSignupForm = () => {
             {error && (
                 <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
                     <p className="text-red-600 dark:text-red-400">
-                        Error: {error instanceof Error ? error.message : "Unknown error"}
+                        Error:{" "}
+                        {error instanceof Error
+                            ? error.message
+                            : "Unknown error"}
                     </p>
                 </div>
             )}

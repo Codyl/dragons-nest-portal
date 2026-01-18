@@ -14,7 +14,15 @@ function Logout() {
         error,
         isPending
     } = useMutation({
-        mutationFn: AuthServices.logout
+        mutationFn: AuthServices.logout,
+        onSuccess: (data) => {
+            sessionStorage.removeItem("session");
+            sessionStorage.removeItem("username");
+            sessionStorage.removeItem("password");
+            localStorage.removeItem("AccessToken");
+            localStorage.removeItem("RefreshToken");
+            localStorage.removeItem("IdToken");
+        }
     });
 
     return (

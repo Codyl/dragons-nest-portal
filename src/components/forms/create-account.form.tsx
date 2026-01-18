@@ -6,15 +6,24 @@ import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
 
 const CreateAccountForm = () => {
-    const { mutate: signup, data, error, isPending } = useMutation({
-        mutationFn: AuthServices.initiateSignup
+    const {
+        mutate: signup,
+        data,
+        error,
+        isPending
+    } = useMutation({
+        mutationFn: AuthServices.initiateSignup,
+        onSuccess: (data) => {
+            sessionStorage.setItem("session", data.response.Session);
+            sessionStorage.setItem("username", data.response.Username);
+        }
     });
 
     const schema = z.object({
         username: z.string().min(1, "Username is required"),
         password: z
             .string()
-            .min(8, "Password must be at least 8 characters long"),
+            .min(6, "Password must be at least 6 characters long"),
         email: z.string().email("Invalid email address"),
         given_name: z.string().min(1, "First name is required"),
         family_name: z.string().min(1, "Last name is required"),
@@ -59,12 +68,18 @@ const CreateAccountForm = () => {
                 />
                 <form.Field
                     name="email"
-                    children={(field) => <InputField field={field} label="Email" />}
+                    children={(field) => (
+                        <InputField field={field} label="Email" />
+                    )}
                 />
                 <form.Field
                     name="password"
                     children={(field) => (
-                        <InputField field={field} label="Password" type="password" />
+                        <InputField
+                            field={field}
+                            label="Password"
+                            type="password"
+                        />
                     )}
                 />
                 <form.Field
@@ -82,7 +97,10 @@ const CreateAccountForm = () => {
                 <form.Field
                     name="middle_name"
                     children={(field) => (
-                        <InputField field={field} label="Middle Name (Optional)" />
+                        <InputField
+                            field={field}
+                            label="Middle Name (Optional)"
+                        />
                     )}
                 />
                 <form.Field
@@ -111,7 +129,10 @@ const CreateAccountForm = () => {
             {error && (
                 <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
                     <p className="text-red-600 dark:text-red-400">
-                        Error: {error instanceof Error ? error.message : "Unknown error"}
+                        Error:{" "}
+                        {error instanceof Error
+                            ? error.message
+                            : "Unknown error"}
                     </p>
                 </div>
             )}
