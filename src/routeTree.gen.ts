@@ -9,12 +9,46 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as MfaRouteImport } from './routes/mfa'
+import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ConfirmSignupRouteImport } from './routes/confirm-signup'
+import { Route as AuthenticatedRouteImport } from './routes/authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UsersMeRouteImport } from './routes/users/me'
+import { Route as MfaGenerateRouteImport } from './routes/mfa/generate'
+import { Route as MfaConnectRouteImport } from './routes/mfa/connect'
+import { Route as UsersMeSettingsRouteImport } from './routes/users/me/settings'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MfaRoute = MfaRouteImport.update({
+  id: '/mfa',
+  path: '/mfa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmSignupRoute = ConfirmSignupRouteImport.update({
+  id: '/confirm-signup',
+  path: '/confirm-signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/authenticated',
+  path: '/authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,40 +56,162 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsersMeRoute = UsersMeRouteImport.update({
+  id: '/users/me',
+  path: '/users/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MfaGenerateRoute = MfaGenerateRouteImport.update({
+  id: '/generate',
+  path: '/generate',
+  getParentRoute: () => MfaRoute,
+} as any)
+const MfaConnectRoute = MfaConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
+  getParentRoute: () => MfaRoute,
+} as any)
+const UsersMeSettingsRoute = UsersMeSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => UsersMeRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/authenticated': typeof AuthenticatedRoute
+  '/confirm-signup': typeof ConfirmSignupRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/mfa': typeof MfaRouteWithChildren
+  '/signup': typeof SignupRoute
+  '/mfa/connect': typeof MfaConnectRoute
+  '/mfa/generate': typeof MfaGenerateRoute
+  '/users/me': typeof UsersMeRouteWithChildren
+  '/users/me/settings': typeof UsersMeSettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/authenticated': typeof AuthenticatedRoute
+  '/confirm-signup': typeof ConfirmSignupRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/mfa': typeof MfaRouteWithChildren
+  '/signup': typeof SignupRoute
+  '/mfa/connect': typeof MfaConnectRoute
+  '/mfa/generate': typeof MfaGenerateRoute
+  '/users/me': typeof UsersMeRouteWithChildren
+  '/users/me/settings': typeof UsersMeSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/authenticated': typeof AuthenticatedRoute
+  '/confirm-signup': typeof ConfirmSignupRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/mfa': typeof MfaRouteWithChildren
+  '/signup': typeof SignupRoute
+  '/mfa/connect': typeof MfaConnectRoute
+  '/mfa/generate': typeof MfaGenerateRoute
+  '/users/me': typeof UsersMeRouteWithChildren
+  '/users/me/settings': typeof UsersMeSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
+  fullPaths:
+    | '/'
+    | '/authenticated'
+    | '/confirm-signup'
+    | '/login'
+    | '/logout'
+    | '/mfa'
+    | '/signup'
+    | '/mfa/connect'
+    | '/mfa/generate'
+    | '/users/me'
+    | '/users/me/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login'
-  id: '__root__' | '/' | '/login'
+  to:
+    | '/'
+    | '/authenticated'
+    | '/confirm-signup'
+    | '/login'
+    | '/logout'
+    | '/mfa'
+    | '/signup'
+    | '/mfa/connect'
+    | '/mfa/generate'
+    | '/users/me'
+    | '/users/me/settings'
+  id:
+    | '__root__'
+    | '/'
+    | '/authenticated'
+    | '/confirm-signup'
+    | '/login'
+    | '/logout'
+    | '/mfa'
+    | '/signup'
+    | '/mfa/connect'
+    | '/mfa/generate'
+    | '/users/me'
+    | '/users/me/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRoute
+  ConfirmSignupRoute: typeof ConfirmSignupRoute
   LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
+  MfaRoute: typeof MfaRouteWithChildren
+  SignupRoute: typeof SignupRoute
+  UsersMeRoute: typeof UsersMeRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mfa': {
+      id: '/mfa'
+      path: '/mfa'
+      fullPath: '/mfa'
+      preLoaderRoute: typeof MfaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirm-signup': {
+      id: '/confirm-signup'
+      path: '/confirm-signup'
+      fullPath: '/confirm-signup'
+      preLoaderRoute: typeof ConfirmSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/authenticated': {
+      id: '/authenticated'
+      path: '/authenticated'
+      fullPath: '/authenticated'
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -65,12 +221,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/users/me': {
+      id: '/users/me'
+      path: '/users/me'
+      fullPath: '/users/me'
+      preLoaderRoute: typeof UsersMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mfa/generate': {
+      id: '/mfa/generate'
+      path: '/generate'
+      fullPath: '/mfa/generate'
+      preLoaderRoute: typeof MfaGenerateRouteImport
+      parentRoute: typeof MfaRoute
+    }
+    '/mfa/connect': {
+      id: '/mfa/connect'
+      path: '/connect'
+      fullPath: '/mfa/connect'
+      preLoaderRoute: typeof MfaConnectRouteImport
+      parentRoute: typeof MfaRoute
+    }
+    '/users/me/settings': {
+      id: '/users/me/settings'
+      path: '/settings'
+      fullPath: '/users/me/settings'
+      preLoaderRoute: typeof UsersMeSettingsRouteImport
+      parentRoute: typeof UsersMeRoute
+    }
   }
 }
 
+interface MfaRouteChildren {
+  MfaConnectRoute: typeof MfaConnectRoute
+  MfaGenerateRoute: typeof MfaGenerateRoute
+}
+
+const MfaRouteChildren: MfaRouteChildren = {
+  MfaConnectRoute: MfaConnectRoute,
+  MfaGenerateRoute: MfaGenerateRoute,
+}
+
+const MfaRouteWithChildren = MfaRoute._addFileChildren(MfaRouteChildren)
+
+interface UsersMeRouteChildren {
+  UsersMeSettingsRoute: typeof UsersMeSettingsRoute
+}
+
+const UsersMeRouteChildren: UsersMeRouteChildren = {
+  UsersMeSettingsRoute: UsersMeSettingsRoute,
+}
+
+const UsersMeRouteWithChildren =
+  UsersMeRoute._addFileChildren(UsersMeRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRoute,
+  ConfirmSignupRoute: ConfirmSignupRoute,
   LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
+  MfaRoute: MfaRouteWithChildren,
+  SignupRoute: SignupRoute,
+  UsersMeRoute: UsersMeRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -28,3 +28,5 @@ storybook-static
 
 # stryker temp files
 .stryker-tmp
+.env
+.tanstack
