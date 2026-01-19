@@ -31,7 +31,7 @@ const ConfirmSignupForm = () => {
             confirmSignup({
                 username: sessionStorage.getItem("username") || "",
                 code: value.code,
-                session: sessionStorage.getItem("session") || ""
+                session: sessionStorage.getItem("session")
             });
         }
     });

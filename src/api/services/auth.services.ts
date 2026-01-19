@@ -47,7 +47,7 @@ const AuthServices = {
     confirmSignup: async (json: {
         username: string;
         code: string;
-        session: string;
+        session?: string;
     }) => {
         const response = await unauthenticatedApi.post("auth/confirm-signup", {
             json

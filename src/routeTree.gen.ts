@@ -10,12 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
-import { Route as MfaRouteImport } from './routes/mfa'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ConfirmSignupRouteImport } from './routes/confirm-signup'
 import { Route as AuthenticatedRouteImport } from './routes/authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MfaIndexRouteImport } from './routes/mfa/index'
 import { Route as UsersMeRouteImport } from './routes/users/me'
 import { Route as MfaGenerateRouteImport } from './routes/mfa/generate'
 import { Route as MfaConnectRouteImport } from './routes/mfa/connect'
@@ -24,11 +24,6 @@ import { Route as UsersMeSettingsRouteImport } from './routes/users/me/settings'
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MfaRoute = MfaRouteImport.update({
-  id: '/mfa',
-  path: '/mfa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LogoutRoute = LogoutRouteImport.update({
@@ -56,20 +51,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MfaIndexRoute = MfaIndexRouteImport.update({
+  id: '/mfa/',
+  path: '/mfa/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsersMeRoute = UsersMeRouteImport.update({
   id: '/users/me',
   path: '/users/me',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MfaGenerateRoute = MfaGenerateRouteImport.update({
-  id: '/generate',
-  path: '/generate',
-  getParentRoute: () => MfaRoute,
+  id: '/mfa/generate',
+  path: '/mfa/generate',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const MfaConnectRoute = MfaConnectRouteImport.update({
-  id: '/connect',
-  path: '/connect',
-  getParentRoute: () => MfaRoute,
+  id: '/mfa/connect',
+  path: '/mfa/connect',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const UsersMeSettingsRoute = UsersMeSettingsRouteImport.update({
   id: '/settings',
@@ -83,11 +83,11 @@ export interface FileRoutesByFullPath {
   '/confirm-signup': typeof ConfirmSignupRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
-  '/mfa': typeof MfaRouteWithChildren
   '/signup': typeof SignupRoute
   '/mfa/connect': typeof MfaConnectRoute
   '/mfa/generate': typeof MfaGenerateRoute
   '/users/me': typeof UsersMeRouteWithChildren
+  '/mfa': typeof MfaIndexRoute
   '/users/me/settings': typeof UsersMeSettingsRoute
 }
 export interface FileRoutesByTo {
@@ -96,11 +96,11 @@ export interface FileRoutesByTo {
   '/confirm-signup': typeof ConfirmSignupRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
-  '/mfa': typeof MfaRouteWithChildren
   '/signup': typeof SignupRoute
   '/mfa/connect': typeof MfaConnectRoute
   '/mfa/generate': typeof MfaGenerateRoute
   '/users/me': typeof UsersMeRouteWithChildren
+  '/mfa': typeof MfaIndexRoute
   '/users/me/settings': typeof UsersMeSettingsRoute
 }
 export interface FileRoutesById {
@@ -110,11 +110,11 @@ export interface FileRoutesById {
   '/confirm-signup': typeof ConfirmSignupRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
-  '/mfa': typeof MfaRouteWithChildren
   '/signup': typeof SignupRoute
   '/mfa/connect': typeof MfaConnectRoute
   '/mfa/generate': typeof MfaGenerateRoute
   '/users/me': typeof UsersMeRouteWithChildren
+  '/mfa/': typeof MfaIndexRoute
   '/users/me/settings': typeof UsersMeSettingsRoute
 }
 export interface FileRouteTypes {
@@ -125,11 +125,11 @@ export interface FileRouteTypes {
     | '/confirm-signup'
     | '/login'
     | '/logout'
-    | '/mfa'
     | '/signup'
     | '/mfa/connect'
     | '/mfa/generate'
     | '/users/me'
+    | '/mfa'
     | '/users/me/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -138,11 +138,11 @@ export interface FileRouteTypes {
     | '/confirm-signup'
     | '/login'
     | '/logout'
-    | '/mfa'
     | '/signup'
     | '/mfa/connect'
     | '/mfa/generate'
     | '/users/me'
+    | '/mfa'
     | '/users/me/settings'
   id:
     | '__root__'
@@ -151,11 +151,11 @@ export interface FileRouteTypes {
     | '/confirm-signup'
     | '/login'
     | '/logout'
-    | '/mfa'
     | '/signup'
     | '/mfa/connect'
     | '/mfa/generate'
     | '/users/me'
+    | '/mfa/'
     | '/users/me/settings'
   fileRoutesById: FileRoutesById
 }
@@ -165,9 +165,11 @@ export interface RootRouteChildren {
   ConfirmSignupRoute: typeof ConfirmSignupRoute
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
-  MfaRoute: typeof MfaRouteWithChildren
   SignupRoute: typeof SignupRoute
+  MfaConnectRoute: typeof MfaConnectRoute
+  MfaGenerateRoute: typeof MfaGenerateRoute
   UsersMeRoute: typeof UsersMeRouteWithChildren
+  MfaIndexRoute: typeof MfaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -177,13 +179,6 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mfa': {
-      id: '/mfa'
-      path: '/mfa'
-      fullPath: '/mfa'
-      preLoaderRoute: typeof MfaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/logout': {
@@ -221,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mfa/': {
+      id: '/mfa/'
+      path: '/mfa'
+      fullPath: '/mfa'
+      preLoaderRoute: typeof MfaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/users/me': {
       id: '/users/me'
       path: '/users/me'
@@ -230,17 +232,17 @@ declare module '@tanstack/react-router' {
     }
     '/mfa/generate': {
       id: '/mfa/generate'
-      path: '/generate'
+      path: '/mfa/generate'
       fullPath: '/mfa/generate'
       preLoaderRoute: typeof MfaGenerateRouteImport
-      parentRoute: typeof MfaRoute
+      parentRoute: typeof rootRouteImport
     }
     '/mfa/connect': {
       id: '/mfa/connect'
-      path: '/connect'
+      path: '/mfa/connect'
       fullPath: '/mfa/connect'
       preLoaderRoute: typeof MfaConnectRouteImport
-      parentRoute: typeof MfaRoute
+      parentRoute: typeof rootRouteImport
     }
     '/users/me/settings': {
       id: '/users/me/settings'
@@ -251,18 +253,6 @@ declare module '@tanstack/react-router' {
     }
   }
 }
-
-interface MfaRouteChildren {
-  MfaConnectRoute: typeof MfaConnectRoute
-  MfaGenerateRoute: typeof MfaGenerateRoute
-}
-
-const MfaRouteChildren: MfaRouteChildren = {
-  MfaConnectRoute: MfaConnectRoute,
-  MfaGenerateRoute: MfaGenerateRoute,
-}
-
-const MfaRouteWithChildren = MfaRoute._addFileChildren(MfaRouteChildren)
 
 interface UsersMeRouteChildren {
   UsersMeSettingsRoute: typeof UsersMeSettingsRoute
@@ -281,9 +271,11 @@ const rootRouteChildren: RootRouteChildren = {
   ConfirmSignupRoute: ConfirmSignupRoute,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
-  MfaRoute: MfaRouteWithChildren,
   SignupRoute: SignupRoute,
+  MfaConnectRoute: MfaConnectRoute,
+  MfaGenerateRoute: MfaGenerateRoute,
   UsersMeRoute: UsersMeRouteWithChildren,
+  MfaIndexRoute: MfaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

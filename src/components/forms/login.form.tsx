@@ -4,10 +4,12 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import useLoginMutation from "@/hooks/use-login-mutation";
 import { useRouter } from "@tanstack/react-router";
+import { useResendSignupConfirmationCode } from "@/hooks/use-resend-signup-confirmation-code";
 
 const LoginForm = ({ session }: { session?: string }) => {
     const router = useRouter();
     const { mutate: login, data, error, isPending } = useLoginMutation();
+    const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
 
     const schema = z.object({
         username: z.string().min(1, "Username is required"),
@@ -35,17 +37,39 @@ const LoginForm = ({ session }: { session?: string }) => {
                 },
                 {
                     onSuccess: (data) => {
-                        console.log(data.response);
                         sessionStorage.setItem(
                             "session",
                             data.response.Session
                         );
                         sessionStorage.setItem("username", value.username);
                         sessionStorage.setItem("password", value.password);
+                        console.log(data.response);
+                        if (
+                            data.response.ChallengeName === "SOFTWARE_TOKEN_MFA"
+                        ) {
+                            router.navigate({ to: "/mfa" });
+                        }
+                        // if (data.response.ChallengeName === "SMS_MFA") {
+                        //     router.navigate({ to: "/sms-mfa" });
+                        // }
+                        // if (data.response.ChallengeName === "EMAIL_MFA") {
+                        //     router.navigate({ to: "/email-mfa" });
+                        // }
+                        // if (
+                        //     data.response.ChallengeName ===
+                        //     "NEW_PASSWORD_REQUIRED"
+                        // ) {
+                        //     router.navigate({ to: "/new-password" });
+                        // }
+                        if (data.response.ChallengeName === "MFA_SETUP") {
+                            router.navigate({ to: "/mfa/generate" });
+                        }
                     },
-                    onError: (error) => {
-                        console.dir(error.response.data);
+                    onError: async (error) => {
+                        console.dir(error);
                         if (error.name === "UserNotConfirmedException") {
+                            await resendCode({ username: value.username });
+                            sessionStorage.removeItem("session");
                             sessionStorage.setItem("username", value.username);
                             router.navigate({ to: "/confirm-signup" });
                         }

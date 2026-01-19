@@ -11,6 +11,7 @@ const ResendSignupConfirmationCodeButton = () => {
     } = useMutation({
         mutationFn: AuthServices.resendSignupConfirmationCode
     });
+
     return (
         <>
             <Button

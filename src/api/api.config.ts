@@ -124,14 +124,18 @@ export const api = ky.create({
         ],
         beforeError: [
             async (error) => {
-                // Handle error if needed
+                if (error.response) {
+                    const errorBody = await error.response.json();
+                    throw { ...error, ...errorBody };
+                }
+
                 if (
                     error instanceof HTTPError &&
                     error.response.status === 500
                 ) {
-                    // Error message will be available in error.message
+                    throw new Error("Internal server error");
                 }
-                return error;
+                throw error;
             }
         ]
     },
