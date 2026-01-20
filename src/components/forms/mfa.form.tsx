@@ -4,11 +4,14 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
+import { useRouter } from "@tanstack/react-router";
+import { FieldGroup } from "../ui/field";
+import { AuthLayout } from "../auth-layout";
 
 const MFAForm = () => {
+    const router = useRouter();
     const {
         mutate: completeMFA,
-        data,
         error,
         isPending
     } = useMutation({
@@ -16,7 +19,11 @@ const MFAForm = () => {
     });
 
     const schema = z.object({
-        softwareTokenMfaCode: z.string().min(1, "MFA code is required")
+        softwareTokenMfaCode: z
+            .string()
+            .min(6, "MFA code must be 6 digits")
+            .max(6, "MFA code must be 6 digits")
+            .regex(/^\d+$/, "MFA code must contain only numbers")
     });
 
     const form = useForm({
@@ -37,21 +44,21 @@ const MFAForm = () => {
                 },
                 {
                     onSuccess: (data) => {
-                        console.log(
-                            data.response.AuthenticationResult?.AccessToken
-                        );
-                        localStorage.setItem(
-                            "AccessToken",
-                            data.response.AuthenticationResult?.AccessToken
-                        );
-                        localStorage.setItem(
-                            "RefreshToken",
-                            data.response.AuthenticationResult?.RefreshToken
-                        );
-                        localStorage.setItem(
-                            "IdToken",
-                            data.response.AuthenticationResult?.IdToken
-                        );
+                        if (data.response.AuthenticationResult?.AccessToken) {
+                            localStorage.setItem(
+                                "AccessToken",
+                                data.response.AuthenticationResult.AccessToken
+                            );
+                            localStorage.setItem(
+                                "RefreshToken",
+                                data.response.AuthenticationResult.RefreshToken || ""
+                            );
+                            localStorage.setItem(
+                                "IdToken",
+                                data.response.AuthenticationResult.IdToken || ""
+                            );
+                            router.navigate({ to: "/" });
+                        }
                     }
                 }
             );
@@ -59,43 +66,53 @@ const MFAForm = () => {
     });
 
     return (
-        <div className="flex flex-col gap-4">
+        <AuthLayout
+            title="Enter verification code"
+            description="Enter the code from your authenticator app"
+        >
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     form.handleSubmit();
                 }}
-                className="flex flex-col tablet:w-md gap-4 mx-auto desktop:mx-0">
-                <form.Field
-                    name="softwareTokenMfaCode"
-                    children={(field) => (
-                        <InputField field={field} label="MFA Code" />
-                    )}
-                />
-
-                <Button type="submit" disabled={isPending}>
-                    {isPending ? "Verifying..." : "Verify MFA"}
-                </Button>
-            </form>
-            {data !== undefined && data !== null && (
-                <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-md">
-                    <pre className="text-xs overflow-auto">
-                        {JSON.stringify(data, null, 2)}
-                    </pre>
-                </div>
-            )}
-            {error && (
-                <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
-                    <p className="text-red-600 dark:text-red-400">
-                        Error:{" "}
+                className="space-y-4"
+            >
+                {error && (
+                    <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
                         {error instanceof Error
                             ? error.message
-                            : "Unknown error"}
-                    </p>
+                            : "Invalid code. Please try again."}
+                    </div>
+                )}
+                <FieldGroup>
+                    <form.Field
+                        name="softwareTokenMfaCode"
+                        children={(field) => (
+                            <InputField
+                                field={field}
+                                label="Verification code"
+                                type="text"
+                            />
+                        )}
+                    />
+                </FieldGroup>
+                <Button type="submit" className="w-full" disabled={isPending}>
+                    {isPending ? "Verifying..." : "Verify"}
+                </Button>
+                <div className="text-center text-sm text-muted-foreground">
+                    <p>Don't have access to your authenticator app?</p>
+                    <Button
+                        variant="link"
+                        type="button"
+                        className="text-sm"
+                        disabled
+                    >
+                        Use a different verification method
+                    </Button>
                 </div>
-            )}
-        </div>
+            </form>
+        </AuthLayout>
     );
 };
 

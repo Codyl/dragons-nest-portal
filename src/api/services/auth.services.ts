@@ -29,16 +29,7 @@ const AuthServices = {
         });
         return response.json();
     },
-    initiateSignup: async (json: {
-        username: string;
-        password: string;
-        address: string;
-        family_name: string;
-        middle_name: string;
-        given_name: string;
-        timezone: string;
-        email: string;
-    }) => {
+    initiateSignup: async (json: { email: string; password: string }) => {
         const response = await unauthenticatedApi.post("auth/initiate-signup", {
             json
         });

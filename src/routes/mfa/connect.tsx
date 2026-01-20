@@ -6,10 +6,5 @@ export const Route = createFileRoute("/mfa/connect")({
 });
 
 function MFAConnect() {
-    return (
-        <div className="p-2">
-            <h2 className="text-2xl font-bold mb-4">Connect Authenticator App</h2>
-            <MFAConnectForm />
-        </div>
-    );
+    return <MFAConnectForm />;
 }

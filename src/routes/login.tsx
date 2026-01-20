@@ -6,9 +6,5 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
-    return (
-        <div className="p-2">
-            <LoginForm />
-        </div>
-    );
+    return <LoginForm />;
 }

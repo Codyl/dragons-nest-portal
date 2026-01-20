@@ -4,139 +4,125 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
+import { useRouter, Link } from "@tanstack/react-router";
+import { FieldGroup } from "../ui/field";
+import { AuthLayout } from "../auth-layout";
 
-const CreateAccountForm = () => {
-    const {
-        mutate: signup,
-        data,
-        error,
-        isPending
-    } = useMutation({
+const CreateAccountForm = ({
+    className,
+    ...props
+}: {
+    className?: string;
+    props?: React.ComponentProps<"div">;
+}) => {
+    const router = useRouter();
+    const { mutate: signup, error, isPending } = useMutation({
         mutationFn: AuthServices.initiateSignup,
-        onSuccess: (data) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onSuccess: (data: any) => {
             sessionStorage.setItem("session", data.response.Session);
             sessionStorage.setItem("username", data.response.Username);
+            router.navigate({ to: "/confirm-signup" });
         }
     });
 
     const schema = z.object({
-        username: z.string().min(1, "Username is required"),
+        email: z.string().email("Please enter a valid email address"),
         password: z
             .string()
-            .min(6, "Password must be at least 6 characters long"),
-        email: z.string().email("Invalid email address"),
-        given_name: z.string().min(1, "First name is required"),
-        family_name: z.string().min(1, "Last name is required"),
-        middle_name: z.string().optional(),
-        address: z.string().optional(),
-        timezone: z.string().optional()
+            .min(8, "Password must be at least 8 characters long")
+            .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+            .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+            .regex(/[0-9]/, "Password must contain at least one number"),
+        confirmPassword: z
+            .string()
+            .min(1, "Please confirm your password")
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords do not match",
+        path: ["confirmPassword"]
     });
 
     const form = useForm({
         defaultValues: {
-            username: "",
-            password: "",
             email: "",
-            given_name: "",
-            family_name: "",
-            middle_name: "",
-            address: "",
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            password: "",
+            confirmPassword: ""
         },
         validators: {
             onSubmit: schema
         },
         onSubmit: async ({ value }) => {
-            signup(value);
+            signup({
+                email: value.email,
+                password: value.password
+            });
         }
     });
 
     return (
-        <div className="flex flex-col gap-4">
+        <AuthLayout
+            title="Create your account"
+            description="Enter your information to get started"
+            className={className}
+            {...props}
+        >
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     form.handleSubmit();
                 }}
-                className="flex flex-col tablet:w-md gap-4 mx-auto desktop:mx-0">
-                <form.Field
-                    name="username"
-                    children={(field) => (
-                        <InputField field={field} label="Username" />
-                    )}
-                />
-                <form.Field
-                    name="email"
-                    children={(field) => (
-                        <InputField field={field} label="Email" />
-                    )}
-                />
-                <form.Field
-                    name="password"
-                    children={(field) => (
-                        <InputField
-                            field={field}
-                            label="Password"
-                            type="password"
-                        />
-                    )}
-                />
-                <form.Field
-                    name="given_name"
-                    children={(field) => (
-                        <InputField field={field} label="First Name" />
-                    )}
-                />
-                <form.Field
-                    name="family_name"
-                    children={(field) => (
-                        <InputField field={field} label="Last Name" />
-                    )}
-                />
-                <form.Field
-                    name="middle_name"
-                    children={(field) => (
-                        <InputField
-                            field={field}
-                            label="Middle Name (Optional)"
-                        />
-                    )}
-                />
-                <form.Field
-                    name="address"
-                    children={(field) => (
-                        <InputField field={field} label="Address (Optional)" />
-                    )}
-                />
-                <form.Field
-                    name="timezone"
-                    children={(field) => (
-                        <InputField field={field} label="Timezone" />
-                    )}
-                />
-                <Button type="submit" disabled={isPending}>
-                    {isPending ? "Signing up..." : "Sign Up"}
-                </Button>
-            </form>
-            {data && (
-                <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-md">
-                    <pre className="text-xs overflow-auto">
-                        {JSON.stringify(data, null, 2)}
-                    </pre>
-                </div>
-            )}
-            {error && (
-                <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
-                    <p className="text-red-600 dark:text-red-400">
-                        Error:{" "}
+                className="space-y-4"
+            >
+                {error && (
+                    <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
                         {error instanceof Error
                             ? error.message
-                            : "Unknown error"}
-                    </p>
+                            : "An error occurred. Please try again."}
+                    </div>
+                )}
+                <FieldGroup>
+                    <form.Field
+                        name="email"
+                        children={(field) => (
+                            <InputField field={field} label="Email" type="email" />
+                        )}
+                    />
+                    <form.Field
+                        name="password"
+                        children={(field) => (
+                            <InputField
+                                field={field}
+                                label="Password"
+                                type="password"
+                            />
+                        )}
+                    />
+                    <form.Field
+                        name="confirmPassword"
+                        children={(field) => (
+                            <InputField
+                                field={field}
+                                label="Confirm Password"
+                                type="password"
+                            />
+                        )}
+                    />
+                </FieldGroup>
+                <Button type="submit" className="w-full" disabled={isPending}>
+                    {isPending ? "Creating account..." : "Create account"}
+                </Button>
+                <div className="text-center text-sm text-muted-foreground">
+                    Already have an account?{" "}
+                    <Link
+                        to="/login"
+                        className="text-primary font-medium hover:underline"
+                    >
+                        Sign in
+                    </Link>
                 </div>
-            )}
-        </div>
+            </form>
+        </AuthLayout>
     );
 };
 

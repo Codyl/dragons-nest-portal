@@ -1,48 +1,96 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
+import { createRootRoute, Link, Outlet, useRouter } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { useAuth } from '@/hooks/use-auth';
+import { Button } from '@/components/ui/button';
+import AuthServices from '@/api/services/auth.services';
+import { useMutation } from '@tanstack/react-query';
 
-const RootLayout = () => (
-  <>
-    <div className='p-2 flex flex-wrap gap-2 fixed w-full shadow-lg bg-background z-50'>
-      <Link to='/' className='[&.active]:font-bold'>
-        Home
-      </Link>
-      <Link to='/login' className='[&.active]:font-bold'>
-        Login
-      </Link>
-      <Link to='/signup' className='[&.active]:font-bold'>
-        Signup
-      </Link>
-      <Link to='/confirm-signup' className='[&.active]:font-bold'>
-        Confirm Signup
-      </Link>
-      <Link to='/mfa' className='[&.active]:font-bold'>
-        MFA
-      </Link>
-      <Link to='/mfa/generate' className='[&.active]:font-bold'>
-        MFA Generate
-      </Link>
-      <Link to='/mfa/connect' className='[&.active]:font-bold'>
-        MFA Connect
-      </Link>
-      <Link to='/logout' className='[&.active]:font-bold'>
-        Logout
-      </Link>
-      <Link to='/users/me' className='[&.active]:font-bold'>
-        User Me
-      </Link>
-      <Link to='/users/me/settings' className='[&.active]:font-bold'>
-        User Settings
-      </Link>
-      <Link to='/authenticated' className='[&.active]:font-bold'>
-        Authenticated
-      </Link>
-    </div>
-    <div className='px-2 pt-20 pb-16 min-h-screen'>
-      <Outlet />
-    </div>
-    <TanStackRouterDevtools />
-  </>
-);
+const RootLayout = () => {
+    const { isAuthenticated } = useAuth();
+    const router = useRouter();
+
+    const { mutate: logout } = useMutation({
+        mutationFn: AuthServices.logout,
+        onSuccess: () => {
+            sessionStorage.removeItem("session");
+            sessionStorage.removeItem("username");
+            sessionStorage.removeItem("password");
+            localStorage.removeItem("AccessToken");
+            localStorage.removeItem("RefreshToken");
+            localStorage.removeItem("IdToken");
+            router.navigate({ to: "/login" });
+        }
+    });
+
+    const handleLogout = () => {
+        const token = localStorage.getItem("AccessToken");
+        if (token) {
+            logout(token);
+        }
+    };
+
+    return (
+        <>
+            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <div className="container flex h-14 items-center justify-between px-4">
+                    <div className="flex items-center gap-6">
+                        <Link to="/" className="font-semibold">
+                            Acme Inc
+                        </Link>
+                        {isAuthenticated && (
+                            <nav className="hidden md:flex items-center gap-4 text-sm">
+                                <Link
+                                    to="/users/me"
+                                    className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
+                                >
+                                    Profile
+                                </Link>
+                                <Link
+                                    to="/users/me/settings"
+                                    className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
+                                >
+                                    Settings
+                                </Link>
+                            </nav>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-4">
+                        {isAuthenticated ? (
+                            <>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={handleLogout}
+                                >
+                                    Sign out
+                                </Button>
+                            </>
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    asChild
+                                >
+                                    <Link to="/login">Sign in</Link>
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    asChild
+                                >
+                                    <Link to="/signup">Sign up</Link>
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </header>
+            <main>
+                <Outlet />
+            </main>
+            <TanStackRouterDevtools />
+        </>
+    );
+};
 
 export const Route = createRootRoute({ component: RootLayout });

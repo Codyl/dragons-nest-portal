@@ -4,20 +4,30 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
+import { useRouter } from "@tanstack/react-router";
 import ResendSignupConfirmationCodeButton from "../buttons/resend-signup-confirmation-code.button";
+import { FieldGroup } from "../ui/field";
+import { AuthLayout } from "../auth-layout";
 
 const ConfirmSignupForm = () => {
+    const router = useRouter();
     const {
         mutate: confirmSignup,
-        data,
         error,
         isPending
     } = useMutation({
-        mutationFn: AuthServices.confirmSignup
+        mutationFn: AuthServices.confirmSignup,
+        onSuccess: () => {
+            router.navigate({ to: "/login" });
+        }
     });
 
     const schema = z.object({
-        code: z.string().min(1, "Confirmation code is required")
+        code: z
+            .string()
+            .min(6, "Confirmation code must be 6 digits")
+            .max(6, "Confirmation code must be 6 digits")
+            .regex(/^\d+$/, "Confirmation code must contain only numbers")
     });
 
     const form = useForm({
@@ -36,44 +46,48 @@ const ConfirmSignupForm = () => {
         }
     });
 
+    const username = sessionStorage.getItem("username") || "";
+
     return (
-        <div className="flex flex-col gap-4">
+        <AuthLayout
+            title="Verify your email"
+            description={`We've sent a verification code to ${username}`}
+        >
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     form.handleSubmit();
                 }}
-                className="flex flex-col tablet:w-md gap-4 mx-auto desktop:mx-0">
-                <form.Field
-                    name="code"
-                    children={(field) => (
-                        <InputField field={field} label="Confirmation Code" />
-                    )}
-                />
-                <ResendSignupConfirmationCodeButton />
-                <Button type="submit" disabled={isPending}>
-                    {isPending ? "Confirming..." : "Confirm Signup"}
-                </Button>
-            </form>
-            {data !== undefined && data !== null && (
-                <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-md">
-                    <pre className="text-xs overflow-auto">
-                        {JSON.stringify(data, null, 2)}
-                    </pre>
-                </div>
-            )}
-            {error && (
-                <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
-                    <p className="text-red-600 dark:text-red-400">
-                        Error:{" "}
+                className="space-y-4"
+            >
+                {error && (
+                    <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
                         {error instanceof Error
                             ? error.message
-                            : "Unknown error"}
-                    </p>
+                            : "Invalid code. Please try again."}
+                    </div>
+                )}
+                <FieldGroup>
+                    <form.Field
+                        name="code"
+                        children={(field) => (
+                            <InputField
+                                field={field}
+                                label="Verification code"
+                                type="text"
+                            />
+                        )}
+                    />
+                </FieldGroup>
+                <Button type="submit" className="w-full" disabled={isPending}>
+                    {isPending ? "Verifying..." : "Verify email"}
+                </Button>
+                <div className="text-center">
+                    <ResendSignupConfirmationCodeButton />
                 </div>
-            )}
-        </div>
+            </form>
+        </AuthLayout>
     );
 };
 
