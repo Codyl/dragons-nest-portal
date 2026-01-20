@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
@@ -5,8 +6,10 @@ import { Button } from "../ui/button";
 import useLoginMutation from "@/hooks/use-login-mutation";
 import { useRouter, Link } from "@tanstack/react-router";
 import { useResendSignupConfirmationCode } from "@/hooks/use-resend-signup-confirmation-code";
-import { FieldGroup } from "../ui/field";
+import { FieldGroup, Field } from "../ui/field";
 import { AuthLayout } from "../auth-layout";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 const LoginForm = ({
     session,
@@ -20,26 +23,45 @@ const LoginForm = ({
     const router = useRouter();
     const { mutate: login, error, isPending } = useLoginMutation();
     const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
+    const [step, setStep] = useState<1 | 2>(1);
+    const [username, setUsername] = useState("");
 
-    const schema = z.object({
-        username: z.string().min(1, "Username is required"),
+    const usernameSchema = z.object({
+        username: z.string().min(1, "Email or username is required")
+    });
+
+    const passwordSchema = z.object({
         password: z
             .string()
             .min(6, "Password must be at least 6 characters long")
     });
 
-    const form = useForm({
+    const usernameForm = useForm({
         defaultValues: {
-            username: "",
+            username: ""
+        },
+        validators: {
+            onSubmit: usernameSchema
+        },
+        onSubmit: async ({ value }) => {
+            // TODO: Call endpoint to verify email/username exists
+            // For now, just move to step 2
+            setUsername(value.username);
+            setStep(2);
+        }
+    });
+
+    const passwordForm = useForm({
+        defaultValues: {
             password: ""
         },
         validators: {
-            onSubmit: schema
+            onSubmit: passwordSchema
         },
         onSubmit: async ({ value }) => {
             login(
                 {
-                    username: value.username,
+                    username: username,
                     password: value.password,
                     session
                 },
@@ -50,7 +72,7 @@ const LoginForm = ({
                             "session",
                             data.response.Session
                         );
-                        sessionStorage.setItem("username", value.username);
+                        sessionStorage.setItem("username", username);
                         sessionStorage.setItem("password", value.password);
                         
                         if (
@@ -94,9 +116,9 @@ const LoginForm = ({
                     },
                     onError: async (error) => {
                         if (error.name === "UserNotConfirmedException") {
-                            await resendCode({ username: value.username });
+                            await resendCode({ username: username });
                             sessionStorage.removeItem("session");
-                            sessionStorage.setItem("username", value.username);
+                            sessionStorage.setItem("username", username);
                             router.navigate({ to: "/confirm-signup" });
                         }
                     }
@@ -105,76 +127,123 @@ const LoginForm = ({
         }
     });
 
+    const handleBack = () => {
+        setStep(1);
+        passwordForm.reset();
+    };
+
     return (
         <AuthLayout
-            title="Sign in"
-            description="Use your account to sign in"
+            title={step === 1 ? "Sign in" : "Enter password"}
+            description={
+                step === 1
+                    ? "Use your account to sign in"
+                    : `Enter the password for ${username}`
+            }
             className={className}
             {...props}
         >
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    form.handleSubmit();
-                }}
-                className="space-y-4"
-            >
-                {error && (
-                    <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-                        {error instanceof Error
-                            ? error.message
-                            : "An error occurred. Please try again."}
+            {step === 1 ? (
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        usernameForm.handleSubmit();
+                    }}
+                    className="space-y-4"
+                >
+                    <FieldGroup>
+                        <usernameForm.Field
+                            name="username"
+                            children={(field) => (
+                                <InputField
+                                    field={field}
+                                    label="Email or username"
+                                />
+                            )}
+                        />
+                    </FieldGroup>
+                    <Button type="submit" className="w-full">
+                        Next
+                    </Button>
+                    <div className="text-center text-sm text-muted-foreground">
+                        Don't have an account?{" "}
+                        <Link
+                            to="/signup"
+                            className="text-primary font-medium hover:underline"
+                        >
+                            Sign up
+                        </Link>
                     </div>
-                )}
-                <FieldGroup>
-                    <form.Field
-                        name="username"
-                        children={(field) => (
-                            <InputField
-                                field={field}
-                                label="Email or username"
-                            />
-                        )}
-                    />
-                    <form.Field
-                        name="password"
-                        children={(field) => (
-                            <InputField
-                                field={field}
-                                label="Password"
-                                type="password"
-                            />
-                        )}
-                    />
-                </FieldGroup>
-                <div className="flex items-center justify-between text-sm">
-                    <Link
-                        to="/forgot-password"
-                        className="text-primary hover:underline"
-                    >
-                        Forgot password?
-                    </Link>
-                    <Link
-                        to="/forgot-username"
-                        className="text-muted-foreground hover:text-foreground"
-                    >
-                        Forgot username?
-                    </Link>
-                </div>
-                <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? "Signing in..." : "Sign in"}
-                </Button>
-                <div className="text-center text-sm text-muted-foreground">
-                    Don't have an account?{" "}
-                    <Link
-                        to="/signup"
-                        className="text-primary font-medium hover:underline"
-                    >
-                        Sign up
-                    </Link>
-                </div>
-            </form>
+                </form>
+            ) : (
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        passwordForm.handleSubmit();
+                    }}
+                    className="space-y-4"
+                >
+                    {error && (
+                        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+                            {error instanceof Error
+                                ? error.message
+                                : "An error occurred. Please try again."}
+                        </div>
+                    )}
+                    <FieldGroup>
+                        <Field>
+                            <Label htmlFor="username-display">Email or username</Label>
+                            <div className="flex items-center gap-2">
+                                <Input
+                                    id="username-display"
+                                    type="text"
+                                    value={username}
+                                    readOnly
+                                    className="bg-muted cursor-not-allowed"
+                                />
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={handleBack}
+                                    className="shrink-0"
+                                >
+                                    Change
+                                </Button>
+                            </div>
+                        </Field>
+                        <passwordForm.Field
+                            name="password"
+                            children={(field) => (
+                                <InputField
+                                    field={field}
+                                    label="Password"
+                                    type="password"
+                                />
+                            )}
+                        />
+                    </FieldGroup>
+                    <div className="flex items-center justify-between text-sm">
+                        <Link
+                            to="/forgot-password"
+                            className="text-primary hover:underline"
+                        >
+                            Forgot password?
+                        </Link>
+                        <Link
+                            to="/forgot-username"
+                            className="text-muted-foreground hover:text-foreground"
+                        >
+                            Forgot username?
+                        </Link>
+                    </div>
+                    <Button type="submit" className="w-full" disabled={isPending}>
+                        {isPending ? "Signing in..." : "Sign in"}
+                    </Button>
+                </form>
+            )}
         </AuthLayout>
     );
 };
