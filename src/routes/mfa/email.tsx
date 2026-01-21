@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import EmailMFAForm from "@/components/forms/email-mfa.form";
 
 export const Route = createFileRoute("/mfa/email")({
-    component: EmailMFA
+  component: EmailMFA,
 });
 
 function EmailMFA() {
-    return <EmailMFAForm />;
+  return <EmailMFAForm />;
 }

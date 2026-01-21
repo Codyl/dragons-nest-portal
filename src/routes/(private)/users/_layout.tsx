@@ -1,6 +1,6 @@
-import { createFileRoute, redirect, Outlet } from '@tanstack/react-router'
+import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/(private)/users/_layout')({
+export const Route = createFileRoute("/(private)/users/_layout")({
   beforeLoad: ({ location }) => {
     const token = localStorage.getItem("AccessToken");
     if (!token) {
@@ -13,8 +13,8 @@ export const Route = createFileRoute('/(private)/users/_layout')({
     }
   },
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <Outlet />
+  return <Outlet />;
 }
