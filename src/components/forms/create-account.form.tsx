@@ -23,16 +23,18 @@ const CreateAccountForm = ({
   } = useMutation({
     mutationFn: AuthServices.initiateSignup,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onSuccess: (data: any) => {
+    onSuccess: (data: any, variables: any) => {
+      console.log(data);
       sessionStorage.setItem("session", data.response.Session);
-      sessionStorage.setItem("username", data.response.Username);
+      sessionStorage.setItem("username", variables.email);
+      sessionStorage.setItem("password", variables.password);
       router.navigate({ to: "/confirm-signup" });
     },
   });
 
   const schema = z
     .object({
-      email: z.string().email("Please enter a valid email address"),
+      email: z.email("Please enter a valid email address"),
       password: z
         .string()
         .min(8, "Password must be at least 8 characters long")
@@ -48,9 +50,9 @@ const CreateAccountForm = ({
 
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
+      email: "codylillyw+2@gmail.com",
+      password: "Password123!",
+      confirmPassword: "Password123!",
     },
     validators: {
       onSubmit: schema,

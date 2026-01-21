@@ -2,11 +2,10 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
-import { useMutation } from "@tanstack/react-query";
-import AuthServices from "@/api/services/auth.services";
 import { useRouter } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
 import { AuthLayout } from "../auth-layout";
+import useCompleteMFAAuth from "@/hooks/use-complete-mfa-auth";
 
 const MFAForm = () => {
   const router = useRouter();
@@ -14,9 +13,7 @@ const MFAForm = () => {
     mutate: completeMFA,
     error,
     isPending,
-  } = useMutation({
-    mutationFn: AuthServices.completeMFAAuth,
-  });
+  } = useCompleteMFAAuth();
 
   const schema = z.object({
     softwareTokenMfaCode: z

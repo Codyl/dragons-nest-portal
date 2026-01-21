@@ -4,21 +4,23 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
-import { useRouter } from "@tanstack/react-router";
 import ResendSignupConfirmationCodeButton from "../buttons/resend-signup-confirmation-code.button";
 import { FieldGroup } from "../ui/field";
 import { AuthLayout } from "../auth-layout";
+import { useState } from "react";
+import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.modal";
 
 const ConfirmSignupForm = () => {
-  const router = useRouter();
+  const [showGenerateSecretForm, setShowGenerateSecretForm] = useState(false);
   const {
     mutate: confirmSignup,
     error,
     isPending,
   } = useMutation({
     mutationFn: AuthServices.confirmSignup,
-    onSuccess: () => {
-      router.navigate({ to: "/login" });
+    onSuccess: (data: any) => {
+      sessionStorage.setItem("session", data.authResponse.Session);
+      setShowGenerateSecretForm(true);
     },
   });
 
@@ -30,6 +32,9 @@ const ConfirmSignupForm = () => {
       .regex(/^\d+$/, "Confirmation code must contain only numbers"),
   });
 
+  const username = sessionStorage.getItem("username") || "";
+  const session = sessionStorage.getItem("session") || "";
+  const password = sessionStorage.getItem("password") || "";
   const form = useForm({
     defaultValues: {
       code: "",
@@ -39,16 +44,19 @@ const ConfirmSignupForm = () => {
     },
     onSubmit: async ({ value }) => {
       confirmSignup({
-        username: sessionStorage.getItem("username") || "",
+        username,
         code: value.code,
-        session: sessionStorage.getItem("session"),
+        session,
+        password,
       });
     },
   });
 
-  const username = sessionStorage.getItem("username") || "";
+  console.log('session', sessionStorage.getItem("session"));
 
   return (
+    <>
+       <MFAAuthenticatorQRCodeModal show={showGenerateSecretForm} setShow={setShowGenerateSecretForm} /> 
     <AuthLayout
       title="Verify your email"
       description={`We've sent a verification code to ${username}`}
@@ -84,6 +92,7 @@ const ConfirmSignupForm = () => {
         </div>
       </form>
     </AuthLayout>
+    </>
   );
 };
 

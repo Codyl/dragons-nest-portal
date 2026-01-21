@@ -57,6 +57,7 @@ const AuthServices = {
     username: string;
     code: string;
     session?: string;
+    password?: string;
   }) => {
     const response = await unauthenticatedApi.post("auth/confirm-signup", {
       json,
@@ -72,7 +73,8 @@ const AuthServices = {
   },
   generateAuthenticatorSecret: async (json: {
     session: string;
-    accessToken: string;
+    username: string;
+    accessToken?: string;
   }) => {
     const response = await api.post("auth/mfa/generate-authenticator-secret", {
       json,
@@ -80,7 +82,7 @@ const AuthServices = {
     return response.json();
   },
   connectAuthenticatorApp: async (json: {
-    accessToken: string;
+    accessToken?: string;
     friendlyDeviceName: string;
     session: string;
     userCode: string;
