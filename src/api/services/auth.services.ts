@@ -112,6 +112,8 @@ const AuthServices = {
     friendlyDeviceName: string;
     session: string;
     userCode: string;
+    username: string;
+    password: string;
   }) => {
     const response = await api.post("auth/mfa/connect-authenticator-app", {
       json,
@@ -120,6 +122,12 @@ const AuthServices = {
   },
   checkAuthenticated: async () => {
     const response = await api.get("authenticated");
+    return response.json();
+  },
+  deleteUser: async (json: {
+    password: string;
+  }) => {
+    const response = await api.delete("users/me", { json });
     return response.json();
   },
 };

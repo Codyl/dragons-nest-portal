@@ -23,7 +23,6 @@ const UserSettingsForm = () => {
   });
 
   const userData = data?.response;
-  console.log(userData, data);
 
   const form = useForm({
     defaultValues: {
@@ -93,7 +92,7 @@ const UserSettingsForm = () => {
         </div>
         <Button
           type="button"
-          variant="link"
+          variant="outline"
           onClick={() => {
             window.open("localhost:5173/privacy-policy", "_blank");
           }}
@@ -102,7 +101,7 @@ const UserSettingsForm = () => {
         </Button>
         <Button
           type="button"
-          variant="link"
+          variant="outline"
           onClick={() => {
             window.open("localhost:5173/terms-of-service", "_blank");
           }}

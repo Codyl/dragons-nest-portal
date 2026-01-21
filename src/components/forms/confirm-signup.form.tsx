@@ -52,8 +52,6 @@ const ConfirmSignupForm = () => {
     },
   });
 
-  console.log("session", sessionStorage.getItem("session"));
-
   return (
     <>
       <MFAAuthenticatorQRCodeModal

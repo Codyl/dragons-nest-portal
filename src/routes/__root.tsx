@@ -32,7 +32,6 @@ const RootLayout = () => {
       logout(token);
     }
   };
-  console.log("isAuthenticated", isAuthenticated);
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -43,12 +42,6 @@ const RootLayout = () => {
             </Link>
             {isAuthenticated && (
               <nav className="hidden md:flex items-center gap-4 text-sm">
-                <Link
-                  to="/users/me"
-                  className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
-                >
-                  Profile
-                </Link>
                 <Link
                   to="/users/me/settings"
                   className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"

@@ -13,6 +13,7 @@ const MFAGenerateSecretForm = () => {
   const accessToken = localStorage.getItem("AccessToken") || "";
   const session = sessionStorage.getItem("session") || "";
   const username = sessionStorage.getItem("username") || "";
+  const password = sessionStorage.getItem("password") || "";
 
   const { data, error } = useGenerateAuthenticatorSecret({
     session: session,
@@ -60,13 +61,13 @@ const MFAGenerateSecretForm = () => {
           friendlyDeviceName: "Authenticator App",
           session: sessionToUse,
           userCode: value.code,
+          username: username,
+          password: password,
         },
         {
           onSuccess: (data) => {
-            localStorage.setItem("AccessToken", data.authResponse.AuthenticationResult.AccessToken);
-            localStorage.setItem("RefreshToken", data.authResponse.AuthenticationResult.RefreshToken);
-            localStorage.setItem("IdToken", data.authResponse.AuthenticationResult.IdToken);
-            router.navigate({ to: "/users" });
+            sessionStorage.setItem("session", data.initiateAuthResponse.Session);
+            router.navigate({ to: "/mfa/verify-code" });
           },
         },
       );

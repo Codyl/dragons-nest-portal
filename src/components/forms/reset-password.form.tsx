@@ -75,7 +75,6 @@ const ResetPasswordForm = ({
       </Button>
       <form
         onSubmit={(e) => {
-          console.log("Reset password form submitted");
           e.preventDefault();
           e.stopPropagation();
           form.handleSubmit();

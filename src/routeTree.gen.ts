@@ -18,7 +18,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotUsernameRouteImport } from './routes/forgot-username'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as ConfirmSignupRouteImport } from './routes/confirm-signup'
-import { Route as AuthenticatedRouteImport } from './routes/authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MfaIndexRouteImport } from './routes/mfa/index'
 import { Route as MfaVerifyCodeRouteImport } from './routes/mfa/verify-code'
@@ -73,11 +72,6 @@ const ConfirmSignupRoute = ConfirmSignupRouteImport.update({
   path: '/confirm-signup',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/authenticated',
-  path: '/authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -121,7 +115,6 @@ const privateUsersMeSettingsRoute = privateUsersMeSettingsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/authenticated': typeof AuthenticatedRoute
   '/confirm-signup': typeof ConfirmSignupRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/forgot-username': typeof ForgotUsernameRoute
@@ -141,7 +134,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/authenticated': typeof AuthenticatedRoute
   '/confirm-signup': typeof ConfirmSignupRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/forgot-username': typeof ForgotUsernameRoute
@@ -162,7 +154,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/authenticated': typeof AuthenticatedRoute
   '/confirm-signup': typeof ConfirmSignupRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/forgot-username': typeof ForgotUsernameRoute
@@ -184,7 +175,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/authenticated'
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
@@ -204,7 +194,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/authenticated'
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
@@ -224,7 +213,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/authenticated'
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
@@ -245,7 +233,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRoute
   ConfirmSignupRoute: typeof ConfirmSignupRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   ForgotUsernameRoute: typeof ForgotUsernameRoute
@@ -329,13 +316,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfirmSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/authenticated': {
-      id: '/authenticated'
-      path: '/authenticated'
-      fullPath: '/authenticated'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -397,7 +377,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRoute: AuthenticatedRoute,
   ConfirmSignupRoute: ConfirmSignupRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   ForgotUsernameRoute: ForgotUsernameRoute,

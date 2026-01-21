@@ -24,7 +24,6 @@ const CreateAccountForm = ({
     mutationFn: AuthServices.initiateSignup,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (data: any, variables: any) => {
-      console.log(data);
       sessionStorage.setItem("session", data.response.Session);
       sessionStorage.setItem("username", variables.email);
       sessionStorage.setItem("password", variables.password);

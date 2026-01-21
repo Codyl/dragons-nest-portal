@@ -48,7 +48,6 @@ const LoginForm = ({
         {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onSuccess: (data: any) => {
-            console.log(data);
             sessionStorage.setItem("session", data.response.Session);
             sessionStorage.setItem("username", username);
             sessionStorage.setItem("password", value.password);
