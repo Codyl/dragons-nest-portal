@@ -19,12 +19,13 @@ import { Route as ConfirmSignupRouteImport } from './routes/confirm-signup'
 import { Route as AuthenticatedRouteImport } from './routes/authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MfaIndexRouteImport } from './routes/mfa/index'
-import { Route as UsersMeRouteImport } from './routes/users/me'
 import { Route as MfaSmsRouteImport } from './routes/mfa/sms'
 import { Route as MfaGenerateRouteImport } from './routes/mfa/generate'
 import { Route as MfaEmailRouteImport } from './routes/mfa/email'
 import { Route as MfaConnectRouteImport } from './routes/mfa/connect'
-import { Route as UsersMeSettingsRouteImport } from './routes/users/me/settings'
+import { Route as privateUsersMeRouteImport } from './routes/(private)/users/me'
+import { Route as privateUsersLayoutRouteImport } from './routes/(private)/users/_layout'
+import { Route as privateUsersMeSettingsRouteImport } from './routes/(private)/users/me/settings'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -76,11 +77,6 @@ const MfaIndexRoute = MfaIndexRouteImport.update({
   path: '/mfa/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UsersMeRoute = UsersMeRouteImport.update({
-  id: '/users/me',
-  path: '/users/me',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MfaSmsRoute = MfaSmsRouteImport.update({
   id: '/mfa/sms',
   path: '/mfa/sms',
@@ -101,10 +97,20 @@ const MfaConnectRoute = MfaConnectRouteImport.update({
   path: '/mfa/connect',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UsersMeSettingsRoute = UsersMeSettingsRouteImport.update({
+const privateUsersMeRoute = privateUsersMeRouteImport.update({
+  id: '/(private)/users/me',
+  path: '/users/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const privateUsersLayoutRoute = privateUsersLayoutRouteImport.update({
+  id: '/(private)/users/_layout',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const privateUsersMeSettingsRoute = privateUsersMeSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => UsersMeRoute,
+  getParentRoute: () => privateUsersMeRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -121,9 +127,10 @@ export interface FileRoutesByFullPath {
   '/mfa/email': typeof MfaEmailRoute
   '/mfa/generate': typeof MfaGenerateRoute
   '/mfa/sms': typeof MfaSmsRoute
-  '/users/me': typeof UsersMeRouteWithChildren
   '/mfa': typeof MfaIndexRoute
-  '/users/me/settings': typeof UsersMeSettingsRoute
+  '/users': typeof privateUsersLayoutRoute
+  '/users/me': typeof privateUsersMeRouteWithChildren
+  '/users/me/settings': typeof privateUsersMeSettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -139,9 +146,10 @@ export interface FileRoutesByTo {
   '/mfa/email': typeof MfaEmailRoute
   '/mfa/generate': typeof MfaGenerateRoute
   '/mfa/sms': typeof MfaSmsRoute
-  '/users/me': typeof UsersMeRouteWithChildren
   '/mfa': typeof MfaIndexRoute
-  '/users/me/settings': typeof UsersMeSettingsRoute
+  '/users': typeof privateUsersLayoutRoute
+  '/users/me': typeof privateUsersMeRouteWithChildren
+  '/users/me/settings': typeof privateUsersMeSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -158,9 +166,10 @@ export interface FileRoutesById {
   '/mfa/email': typeof MfaEmailRoute
   '/mfa/generate': typeof MfaGenerateRoute
   '/mfa/sms': typeof MfaSmsRoute
-  '/users/me': typeof UsersMeRouteWithChildren
   '/mfa/': typeof MfaIndexRoute
-  '/users/me/settings': typeof UsersMeSettingsRoute
+  '/(private)/users/_layout': typeof privateUsersLayoutRoute
+  '/(private)/users/me': typeof privateUsersMeRouteWithChildren
+  '/(private)/users/me/settings': typeof privateUsersMeSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -178,8 +187,9 @@ export interface FileRouteTypes {
     | '/mfa/email'
     | '/mfa/generate'
     | '/mfa/sms'
-    | '/users/me'
     | '/mfa'
+    | '/users'
+    | '/users/me'
     | '/users/me/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -196,8 +206,9 @@ export interface FileRouteTypes {
     | '/mfa/email'
     | '/mfa/generate'
     | '/mfa/sms'
-    | '/users/me'
     | '/mfa'
+    | '/users'
+    | '/users/me'
     | '/users/me/settings'
   id:
     | '__root__'
@@ -214,9 +225,10 @@ export interface FileRouteTypes {
     | '/mfa/email'
     | '/mfa/generate'
     | '/mfa/sms'
-    | '/users/me'
     | '/mfa/'
-    | '/users/me/settings'
+    | '/(private)/users/_layout'
+    | '/(private)/users/me'
+    | '/(private)/users/me/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -233,8 +245,9 @@ export interface RootRouteChildren {
   MfaEmailRoute: typeof MfaEmailRoute
   MfaGenerateRoute: typeof MfaGenerateRoute
   MfaSmsRoute: typeof MfaSmsRoute
-  UsersMeRoute: typeof UsersMeRouteWithChildren
   MfaIndexRoute: typeof MfaIndexRoute
+  privateUsersLayoutRoute: typeof privateUsersLayoutRoute
+  privateUsersMeRoute: typeof privateUsersMeRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -309,13 +322,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MfaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/users/me': {
-      id: '/users/me'
-      path: '/users/me'
-      fullPath: '/users/me'
-      preLoaderRoute: typeof UsersMeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/mfa/sms': {
       id: '/mfa/sms'
       path: '/mfa/sms'
@@ -344,26 +350,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MfaConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/users/me/settings': {
-      id: '/users/me/settings'
+    '/(private)/users/me': {
+      id: '/(private)/users/me'
+      path: '/users/me'
+      fullPath: '/users/me'
+      preLoaderRoute: typeof privateUsersMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(private)/users/_layout': {
+      id: '/(private)/users/_layout'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof privateUsersLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(private)/users/me/settings': {
+      id: '/(private)/users/me/settings'
       path: '/settings'
       fullPath: '/users/me/settings'
-      preLoaderRoute: typeof UsersMeSettingsRouteImport
-      parentRoute: typeof UsersMeRoute
+      preLoaderRoute: typeof privateUsersMeSettingsRouteImport
+      parentRoute: typeof privateUsersMeRoute
     }
   }
 }
 
-interface UsersMeRouteChildren {
-  UsersMeSettingsRoute: typeof UsersMeSettingsRoute
+interface privateUsersMeRouteChildren {
+  privateUsersMeSettingsRoute: typeof privateUsersMeSettingsRoute
 }
 
-const UsersMeRouteChildren: UsersMeRouteChildren = {
-  UsersMeSettingsRoute: UsersMeSettingsRoute,
+const privateUsersMeRouteChildren: privateUsersMeRouteChildren = {
+  privateUsersMeSettingsRoute: privateUsersMeSettingsRoute,
 }
 
-const UsersMeRouteWithChildren =
-  UsersMeRoute._addFileChildren(UsersMeRouteChildren)
+const privateUsersMeRouteWithChildren = privateUsersMeRoute._addFileChildren(
+  privateUsersMeRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -379,8 +400,9 @@ const rootRouteChildren: RootRouteChildren = {
   MfaEmailRoute: MfaEmailRoute,
   MfaGenerateRoute: MfaGenerateRoute,
   MfaSmsRoute: MfaSmsRoute,
-  UsersMeRoute: UsersMeRouteWithChildren,
   MfaIndexRoute: MfaIndexRoute,
+  privateUsersLayoutRoute: privateUsersLayoutRoute,
+  privateUsersMeRoute: privateUsersMeRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

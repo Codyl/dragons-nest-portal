@@ -1,14 +1,14 @@
 import { createRootRoute, Link, Outlet, useRouter } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
-import AuthServices from '@/api/services/auth.services';
+import { useAuth } from '@/hooks/use-auth';
 import { useMutation } from '@tanstack/react-query';
+import AuthServices from '@/api/services/auth.services';
 
 const RootLayout = () => {
-    const { isAuthenticated } = useAuth();
     const router = useRouter();
-
+    
+    const { isAuthenticated } = useAuth();
     const { mutate: logout } = useMutation({
         mutationFn: AuthServices.logout,
         onSuccess: () => {
@@ -21,17 +21,17 @@ const RootLayout = () => {
             router.navigate({ to: "/login" });
         }
     });
-
-    const handleLogout = () => {
+        const handleLogout = () => {
         const token = localStorage.getItem("AccessToken");
         if (token) {
             logout(token);
         }
     };
 
+
     return (
         <>
-            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
                 <div className="container flex h-14 items-center justify-between px-4">
                     <div className="flex items-center gap-6">
                         <Link to="/" className="font-semibold">

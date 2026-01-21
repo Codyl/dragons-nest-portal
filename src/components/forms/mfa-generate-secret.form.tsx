@@ -13,21 +13,13 @@ const MFAGenerateSecretForm = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            {data && data.qrString && <QRCodeSVG value={data.qrString} />}
-            {data !== null && data !== undefined && (
-                <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-md">
-                    <pre className="text-xs overflow-auto">
-                        {JSON.stringify(data, null, 2)}
-                    </pre>
-                </div>
-            )}
+            {data && data.qrString && !error && <QRCodeSVG value={data.qrString} />}
+            
             {error && (
                 <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
                     <p className="text-red-600 dark:text-red-400">
                         Error:{" "}
-                        {error instanceof Error
-                            ? error.message
-                            : "Unknown error"}
+                        {error.message}
                     </p>
                 </div>
             )}

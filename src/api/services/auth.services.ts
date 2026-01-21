@@ -2,12 +2,23 @@ import { api } from "../api.config";
 import { unauthenticatedApi } from "../api.unauthenticated.config";
 
 const AuthServices = {
+    verifyUsername: async (json: { email: string; session?: string }) => {
+        const response = await unauthenticatedApi.post("auth/verify-username", {
+            json
+        });
+        return response.json();
+    },
+    selectAuthChallenge: async (json: { challengeName: string; username: string; session?: string }) => {
+        const response = await unauthenticatedApi.post("auth/select-auth-challenge", {
+            json
+        });
+        return response.json();
+    },
     initiateAuth: async (json: {
         username: string;
         password: string;
         session?: string;
     }) => {
-        console.log(json);
         const response = await unauthenticatedApi.post("auth/initiate-login", {
             json
         });

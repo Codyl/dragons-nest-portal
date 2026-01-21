@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import UserSettingsForm from "@/components/forms/user-settings.form";
 
-export const Route = createFileRoute("/users/me/settings")({
+export const Route = createFileRoute("/(private)/users/me/settings")({
     component: UserSettings
 });
 

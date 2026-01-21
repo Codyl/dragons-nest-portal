@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import UserServices from "@/api/services/user.services";
 
-export const Route = createFileRoute("/users/me")({
+export const Route = createFileRoute("/(private)/users/me")({
     component: UserMe
 });
 

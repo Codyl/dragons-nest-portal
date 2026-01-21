@@ -1,56 +1,38 @@
-import { useState } from "react";
+
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import useLoginMutation from "@/hooks/use-login-mutation";
 import { useRouter, Link } from "@tanstack/react-router";
-import { useResendSignupConfirmationCode } from "@/hooks/use-resend-signup-confirmation-code";
 import { FieldGroup, Field } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { cn } from "@/lib/utils";
+import { useResendSignupConfirmationCode } from "@/hooks/use-resend-signup-confirmation-code";
+import { useState } from "react";
+import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.modal";
 
 const LoginForm = ({
-    session,
     className,
-    ...props
+    setStep, username
 }: {
-    session?: string;
-    className?: string;
-    props?: React.ComponentProps<"div">;
-}) => {
+   className?: string;
+   setStep: (step: 1 | 2) => void;
+   username: string;
+    }) => {
     const router = useRouter();
-    const { mutate: login, error, isPending } = useLoginMutation();
-    const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
-    const [step, setStep] = useState<1 | 2>(1);
-    const [username, setUsername] = useState("");
-
-    const usernameSchema = z.object({
-        username: z.string().min(1, "Email or username is required")
-    });
-
+    const session = sessionStorage.getItem("session") || "";
+    const [showMFAAuthenticatorQRCodeModal, setShowMFAAuthenticatorQRCodeModal] = useState(false);
     const passwordSchema = z.object({
         password: z
             .string()
             .min(6, "Password must be at least 6 characters long")
     });
 
-    const usernameForm = useForm({
-        defaultValues: {
-            username: ""
-        },
-        validators: {
-            onSubmit: usernameSchema
-        },
-        onSubmit: async ({ value }) => {
-            // TODO: Call endpoint to verify email/username exists
-            // For now, just move to step 2
-            setUsername(value.username);
-            setStep(2);
-        }
-    });
 
+    const { mutate: login, error, isPending } = useLoginMutation();
+    const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
     const passwordForm = useForm({
         defaultValues: {
             password: ""
@@ -68,6 +50,7 @@ const LoginForm = ({
                 {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onSuccess: (data: any) => {
+                        console.log(data);
                         sessionStorage.setItem(
                             "session",
                             data.response.Session
@@ -78,7 +61,7 @@ const LoginForm = ({
                         if (
                             data.response.ChallengeName === "SOFTWARE_TOKEN_MFA"
                         ) {
-                            router.navigate({ to: "/mfa" });
+                            setShowMFAAuthenticatorQRCodeModal(true);
                         }
                         if (data.response.ChallengeName === "SMS_MFA") {
                             router.navigate({ to: "/mfa/sms" });
@@ -133,65 +116,17 @@ const LoginForm = ({
     };
 
     return (
-        <AuthLayout
-            title={step === 1 ? "Sign in" : "Enter password"}
-            description={
-                step === 1
-                    ? "Use your account to sign in"
-                    : `Enter the password for ${username}`
-            }
-            className={className}
-            {...props}
-        >
-            {step === 1 ? (
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        usernameForm.handleSubmit();
-                    }}
-                    className="space-y-4"
-                >
-                    <FieldGroup>
-                        <usernameForm.Field
-                            name="username"
-                            children={(field) => (
-                                <InputField
-                                    field={field}
-                                    label="Email or username"
-                                />
-                            )}
-                        />
-                    </FieldGroup>
-                    <Button type="submit" className="w-full">
-                        Next
-                    </Button>
-                    <div className="text-center text-sm text-muted-foreground">
-                        Don't have an account?{" "}
-                        <Link
-                            to="/signup"
-                            className="text-primary font-medium hover:underline"
-                        >
-                            Sign up
-                        </Link>
-                    </div>
-                </form>
-            ) : (
-                <form
+        <>
+        <MFAAuthenticatorQRCodeModal show={showMFAAuthenticatorQRCodeModal} setShow={setShowMFAAuthenticatorQRCodeModal} />
+        <form
                     onSubmit={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         passwordForm.handleSubmit();
                     }}
-                    className="space-y-4"
+                    className={cn("space-y-4", className)}
                 >
-                    {error && (
-                        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-                            {error instanceof Error
-                                ? error.message
-                                : "An error occurred. Please try again."}
-                        </div>
-                    )}
+                   
                     <FieldGroup>
                         <Field>
                             <Label htmlFor="username-display">Email or username</Label>
@@ -241,10 +176,10 @@ const LoginForm = ({
                     </div>
                     <Button type="submit" className="w-full" disabled={isPending}>
                         {isPending ? "Signing in..." : "Sign in"}
-                    </Button>
+            </Button>
+             {error && <p className="text-red-500">{error.message}</p>}
                 </form>
-            )}
-        </AuthLayout>
+                </>
     );
 };
 
