@@ -16,7 +16,7 @@ const ForgotPasswordForm = () => {
 
   const form = useForm({
     defaultValues: {
-      username: "",
+      username: sessionStorage.getItem("username") || "",
     },
     validators: {
       onSubmit: schema,
@@ -26,6 +26,7 @@ const ForgotPasswordForm = () => {
         { username: value.username },
         {
           onSuccess: () => {
+            sessionStorage.setItem("username", value.username);
             router.navigate({ to: "/reset-password" });
           },
         },

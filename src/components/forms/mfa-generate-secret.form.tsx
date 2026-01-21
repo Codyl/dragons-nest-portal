@@ -62,7 +62,10 @@ const MFAGenerateSecretForm = () => {
           userCode: value.code,
         },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
+            localStorage.setItem("AccessToken", data.authResponse.AuthenticationResult.AccessToken);
+            localStorage.setItem("RefreshToken", data.authResponse.AuthenticationResult.RefreshToken);
+            localStorage.setItem("IdToken", data.authResponse.AuthenticationResult.IdToken);
             router.navigate({ to: "/users" });
           },
         },
@@ -94,7 +97,7 @@ const MFAGenerateSecretForm = () => {
       {error && (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
           <p className="text-red-600 dark:text-red-400">
-            Error: {error.message}
+            {error.message}
           </p>
         </div>
       )}

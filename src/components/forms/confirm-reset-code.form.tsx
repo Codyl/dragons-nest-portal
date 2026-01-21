@@ -3,6 +3,8 @@ import { AuthLayout } from "../auth-layout";
 import InputField from "../fields/input-field";
 import { FieldGroup } from "../ui/field";
 import { useForm } from "@tanstack/react-form";
+import { Button } from "../ui/button";
+
 const ConfirmResetCodeForm = ({
   setStep,
 }: {
@@ -19,6 +21,7 @@ const ConfirmResetCodeForm = ({
     },
     onSubmit: async ({ value }) => {
       setStep(2);
+      sessionStorage.setItem("code", value.code);
     },
   });
   return (
@@ -26,7 +29,11 @@ const ConfirmResetCodeForm = ({
       title="Confirm your reset code"
       description="Enter the code sent to your email"
     >
-      <form>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}>
         <FieldGroup>
           <form.Field
             name="code"
@@ -35,6 +42,9 @@ const ConfirmResetCodeForm = ({
             )}
           />
         </FieldGroup>
+        <Button type="submit" className="w-full">
+          Submit
+        </Button>
       </form>
     </AuthLayout>
   );

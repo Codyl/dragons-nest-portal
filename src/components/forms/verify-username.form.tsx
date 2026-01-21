@@ -35,6 +35,7 @@ const VerifyUsernameForm = ({
         {
           onSuccess: (result) => {
             sessionStorage.setItem("session", result.response.Session);
+            sessionStorage.setItem("username", value.username);
             setUsername(value.username);
             setAvailableChallenges(result.response.AvailableChallenges);
             setStep(2);

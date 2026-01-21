@@ -2,7 +2,7 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
 import { AuthLayout } from "../auth-layout";
 import useConfirmForgotPassword from "@/hooks/use-confirm-forgot-password";
@@ -12,6 +12,7 @@ const ResetPasswordForm = ({
 }: {
   setStep: (step: number) => void;
 }) => {
+  const router = useRouter();
   const {
     mutate: resetPassword,
     isPending,
@@ -49,8 +50,12 @@ const ResetPasswordForm = ({
           password: value.newPassword,
         },
         {
-          onSuccess: () => {
-            setStep(2);
+          onSuccess: (data) => {
+            sessionStorage.clear();
+            localStorage.setItem("AccessToken", data.authResponse.AuthenticationResult.AccessToken);
+            localStorage.setItem("RefreshToken", data.authResponse.AuthenticationResult.RefreshToken);
+            localStorage.setItem("IdToken", data.authResponse.AuthenticationResult.IdToken);
+            router.navigate({ to: "/users" });
           },
         },
       );
@@ -62,6 +67,12 @@ const ResetPasswordForm = ({
       title="Create new password"
       description="Enter your new password below"
     >
+      <Button type="button" variant="link" className="text-sm" onClick={() => {
+        setStep(1);
+        form.reset();
+      }}>
+        Back
+      </Button>
       <form
         onSubmit={(e) => {
           console.log("Reset password form submitted");
