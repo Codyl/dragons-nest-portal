@@ -28,6 +28,7 @@ export function useAuth() {
 
   useEffect(() => {
     const token = localStorage.getItem("AccessToken");
+    console.log("checkin", token);
     setIsAuthenticated(!!token);
   }, []);
 

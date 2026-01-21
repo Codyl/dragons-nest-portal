@@ -9,8 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotUsernameRouteImport } from './routes/forgot-username'
@@ -23,10 +25,14 @@ import { Route as MfaVerifyCodeRouteImport } from './routes/mfa/verify-code'
 import { Route as MfaSmsRouteImport } from './routes/mfa/sms'
 import { Route as MfaEmailRouteImport } from './routes/mfa/email'
 import { Route as MfaConnectRouteImport } from './routes/mfa/connect'
-import { Route as privateUsersMeRouteImport } from './routes/(private)/users/me'
 import { Route as privateUsersLayoutRouteImport } from './routes/(private)/users/_layout'
 import { Route as privateUsersMeSettingsRouteImport } from './routes/(private)/users/me/settings'
 
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -35,6 +41,11 @@ const SignupRoute = SignupRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LogoutRoute = LogoutRouteImport.update({
@@ -97,20 +108,15 @@ const MfaConnectRoute = MfaConnectRouteImport.update({
   path: '/mfa/connect',
   getParentRoute: () => rootRouteImport,
 } as any)
-const privateUsersMeRoute = privateUsersMeRouteImport.update({
-  id: '/(private)/users/me',
-  path: '/users/me',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const privateUsersLayoutRoute = privateUsersLayoutRouteImport.update({
   id: '/(private)/users/_layout',
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
 const privateUsersMeSettingsRoute = privateUsersMeSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => privateUsersMeRoute,
+  id: '/(private)/users/me/settings',
+  path: '/users/me/settings',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -121,15 +127,16 @@ export interface FileRoutesByFullPath {
   '/forgot-username': typeof ForgotUsernameRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/mfa/connect': typeof MfaConnectRoute
   '/mfa/email': typeof MfaEmailRoute
   '/mfa/sms': typeof MfaSmsRoute
   '/mfa/verify-code': typeof MfaVerifyCodeRoute
   '/mfa': typeof MfaIndexRoute
   '/users': typeof privateUsersLayoutRoute
-  '/users/me': typeof privateUsersMeRouteWithChildren
   '/users/me/settings': typeof privateUsersMeSettingsRoute
 }
 export interface FileRoutesByTo {
@@ -140,15 +147,16 @@ export interface FileRoutesByTo {
   '/forgot-username': typeof ForgotUsernameRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/mfa/connect': typeof MfaConnectRoute
   '/mfa/email': typeof MfaEmailRoute
   '/mfa/sms': typeof MfaSmsRoute
   '/mfa/verify-code': typeof MfaVerifyCodeRoute
   '/mfa': typeof MfaIndexRoute
   '/users': typeof privateUsersLayoutRoute
-  '/users/me': typeof privateUsersMeRouteWithChildren
   '/users/me/settings': typeof privateUsersMeSettingsRoute
 }
 export interface FileRoutesById {
@@ -160,15 +168,16 @@ export interface FileRoutesById {
   '/forgot-username': typeof ForgotUsernameRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/mfa/connect': typeof MfaConnectRoute
   '/mfa/email': typeof MfaEmailRoute
   '/mfa/sms': typeof MfaSmsRoute
   '/mfa/verify-code': typeof MfaVerifyCodeRoute
   '/mfa/': typeof MfaIndexRoute
   '/(private)/users/_layout': typeof privateUsersLayoutRoute
-  '/(private)/users/me': typeof privateUsersMeRouteWithChildren
   '/(private)/users/me/settings': typeof privateUsersMeSettingsRoute
 }
 export interface FileRouteTypes {
@@ -181,15 +190,16 @@ export interface FileRouteTypes {
     | '/forgot-username'
     | '/login'
     | '/logout'
+    | '/privacy-policy'
     | '/reset-password'
     | '/signup'
+    | '/terms-of-service'
     | '/mfa/connect'
     | '/mfa/email'
     | '/mfa/sms'
     | '/mfa/verify-code'
     | '/mfa'
     | '/users'
-    | '/users/me'
     | '/users/me/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -200,15 +210,16 @@ export interface FileRouteTypes {
     | '/forgot-username'
     | '/login'
     | '/logout'
+    | '/privacy-policy'
     | '/reset-password'
     | '/signup'
+    | '/terms-of-service'
     | '/mfa/connect'
     | '/mfa/email'
     | '/mfa/sms'
     | '/mfa/verify-code'
     | '/mfa'
     | '/users'
-    | '/users/me'
     | '/users/me/settings'
   id:
     | '__root__'
@@ -219,15 +230,16 @@ export interface FileRouteTypes {
     | '/forgot-username'
     | '/login'
     | '/logout'
+    | '/privacy-policy'
     | '/reset-password'
     | '/signup'
+    | '/terms-of-service'
     | '/mfa/connect'
     | '/mfa/email'
     | '/mfa/sms'
     | '/mfa/verify-code'
     | '/mfa/'
     | '/(private)/users/_layout'
-    | '/(private)/users/me'
     | '/(private)/users/me/settings'
   fileRoutesById: FileRoutesById
 }
@@ -239,19 +251,28 @@ export interface RootRouteChildren {
   ForgotUsernameRoute: typeof ForgotUsernameRoute
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
   MfaConnectRoute: typeof MfaConnectRoute
   MfaEmailRoute: typeof MfaEmailRoute
   MfaSmsRoute: typeof MfaSmsRoute
   MfaVerifyCodeRoute: typeof MfaVerifyCodeRoute
   MfaIndexRoute: typeof MfaIndexRoute
   privateUsersLayoutRoute: typeof privateUsersLayoutRoute
-  privateUsersMeRoute: typeof privateUsersMeRouteWithChildren
+  privateUsersMeSettingsRoute: typeof privateUsersMeSettingsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -264,6 +285,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/logout': {
@@ -350,13 +378,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MfaConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(private)/users/me': {
-      id: '/(private)/users/me'
-      path: '/users/me'
-      fullPath: '/users/me'
-      preLoaderRoute: typeof privateUsersMeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(private)/users/_layout': {
       id: '/(private)/users/_layout'
       path: '/users'
@@ -366,25 +387,13 @@ declare module '@tanstack/react-router' {
     }
     '/(private)/users/me/settings': {
       id: '/(private)/users/me/settings'
-      path: '/settings'
+      path: '/users/me/settings'
       fullPath: '/users/me/settings'
       preLoaderRoute: typeof privateUsersMeSettingsRouteImport
-      parentRoute: typeof privateUsersMeRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface privateUsersMeRouteChildren {
-  privateUsersMeSettingsRoute: typeof privateUsersMeSettingsRoute
-}
-
-const privateUsersMeRouteChildren: privateUsersMeRouteChildren = {
-  privateUsersMeSettingsRoute: privateUsersMeSettingsRoute,
-}
-
-const privateUsersMeRouteWithChildren = privateUsersMeRoute._addFileChildren(
-  privateUsersMeRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -394,15 +403,17 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotUsernameRoute: ForgotUsernameRoute,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
   MfaConnectRoute: MfaConnectRoute,
   MfaEmailRoute: MfaEmailRoute,
   MfaSmsRoute: MfaSmsRoute,
   MfaVerifyCodeRoute: MfaVerifyCodeRoute,
   MfaIndexRoute: MfaIndexRoute,
   privateUsersLayoutRoute: privateUsersLayoutRoute,
-  privateUsersMeRoute: privateUsersMeRouteWithChildren,
+  privateUsersMeSettingsRoute: privateUsersMeSettingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

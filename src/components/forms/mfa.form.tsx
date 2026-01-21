@@ -54,6 +54,7 @@ const MFAForm = () => {
                 "IdToken",
                 data.response.AuthenticationResult.IdToken || "",
               );
+              sessionStorage.clear();
               router.navigate({ to: "/" });
             }
           },

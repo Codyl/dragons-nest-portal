@@ -6,15 +6,13 @@ const UserServices = {
     return response.json();
   },
   updateUserSettings: async (json: {
-    accessToken: string;
     email?: string;
-    password?: string;
-    address?: string;
     family_name?: string;
     middle_name?: string;
     given_name?: string;
+    phone_number?: string;
   }) => {
-    const response = await api.post("users/me/settings", { json });
+    const response = await api.put("users/me/account", { json });
     return response.json();
   },
 };
