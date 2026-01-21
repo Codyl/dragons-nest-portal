@@ -54,7 +54,7 @@ const LoginForm = ({
             sessionStorage.setItem("password", value.password);
 
             if (data.response.ChallengeName === "SOFTWARE_TOKEN_MFA") {
-              setShowMFAAuthenticatorQRCodeModal(true);
+              router.navigate({ to: "/mfa/verify-code" });
             }
             if (data.response.ChallengeName === "SMS_MFA") {
               router.navigate({ to: "/mfa/sms" });
@@ -65,8 +65,9 @@ const LoginForm = ({
             if (data.response.ChallengeName === "NEW_PASSWORD_REQUIRED") {
               router.navigate({ to: "/reset-password" });
             }
-            if (data.response.ChallengeName === "MFA_SETUP") {
-              router.navigate({ to: "/mfa/generate" });
+                if (data.response.ChallengeName === "MFA_SETUP") {
+                setShowMFAAuthenticatorQRCodeModal(true);
+              
             }
             // If no challenge, user is authenticated
             if (!data.response.ChallengeName) {
