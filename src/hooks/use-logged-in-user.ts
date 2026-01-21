@@ -6,6 +6,6 @@ const useLoggedInUser = () => {
     queryKey: ["user", "me"],
     queryFn: UserServices.getUser,
   });
-}
+};
 
 export default useLoggedInUser;

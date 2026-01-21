@@ -8,390 +8,390 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as LogoutRouteImport } from './routes/logout'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ForgotUsernameRouteImport } from './routes/forgot-username'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as ConfirmSignupRouteImport } from './routes/confirm-signup'
-import { Route as AuthenticatedRouteImport } from './routes/authenticated'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as MfaIndexRouteImport } from './routes/mfa/index'
-import { Route as MfaVerifyCodeRouteImport } from './routes/mfa/verify-code'
-import { Route as MfaSmsRouteImport } from './routes/mfa/sms'
-import { Route as MfaEmailRouteImport } from './routes/mfa/email'
-import { Route as MfaConnectRouteImport } from './routes/mfa/connect'
-import { Route as privateUsersLayoutRouteImport } from './routes/(private)/users/_layout'
-import { Route as privateUsersMeSettingsRouteImport } from './routes/(private)/users/me/settings'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as TermsOfServiceRouteImport } from "./routes/terms-of-service";
+import { Route as SignupRouteImport } from "./routes/signup";
+import { Route as ResetPasswordRouteImport } from "./routes/reset-password";
+import { Route as PrivacyPolicyRouteImport } from "./routes/privacy-policy";
+import { Route as LogoutRouteImport } from "./routes/logout";
+import { Route as LoginRouteImport } from "./routes/login";
+import { Route as ForgotUsernameRouteImport } from "./routes/forgot-username";
+import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
+import { Route as ConfirmSignupRouteImport } from "./routes/confirm-signup";
+import { Route as AuthenticatedRouteImport } from "./routes/authenticated";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as MfaIndexRouteImport } from "./routes/mfa/index";
+import { Route as MfaVerifyCodeRouteImport } from "./routes/mfa/verify-code";
+import { Route as MfaSmsRouteImport } from "./routes/mfa/sms";
+import { Route as MfaEmailRouteImport } from "./routes/mfa/email";
+import { Route as MfaConnectRouteImport } from "./routes/mfa/connect";
+import { Route as privateUsersLayoutRouteImport } from "./routes/(private)/users/_layout";
+import { Route as privateUsersMeSettingsRouteImport } from "./routes/(private)/users/me/settings";
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
-  id: '/terms-of-service',
-  path: '/terms-of-service',
+  id: "/terms-of-service",
+  path: "/terms-of-service",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
+  id: "/signup",
+  path: "/signup",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+  id: "/reset-password",
+  path: "/reset-password",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
+  id: "/privacy-policy",
+  path: "/privacy-policy",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LogoutRoute = LogoutRouteImport.update({
-  id: '/logout',
-  path: '/logout',
+  id: "/logout",
+  path: "/logout",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ForgotUsernameRoute = ForgotUsernameRouteImport.update({
-  id: '/forgot-username',
-  path: '/forgot-username',
+  id: "/forgot-username",
+  path: "/forgot-username",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
+  id: "/forgot-password",
+  path: "/forgot-password",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ConfirmSignupRoute = ConfirmSignupRouteImport.update({
-  id: '/confirm-signup',
-  path: '/confirm-signup',
+  id: "/confirm-signup",
+  path: "/confirm-signup",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/authenticated',
-  path: '/authenticated',
+  id: "/authenticated",
+  path: "/authenticated",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MfaIndexRoute = MfaIndexRouteImport.update({
-  id: '/mfa/',
-  path: '/mfa/',
+  id: "/mfa/",
+  path: "/mfa/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MfaVerifyCodeRoute = MfaVerifyCodeRouteImport.update({
-  id: '/mfa/verify-code',
-  path: '/mfa/verify-code',
+  id: "/mfa/verify-code",
+  path: "/mfa/verify-code",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MfaSmsRoute = MfaSmsRouteImport.update({
-  id: '/mfa/sms',
-  path: '/mfa/sms',
+  id: "/mfa/sms",
+  path: "/mfa/sms",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MfaEmailRoute = MfaEmailRouteImport.update({
-  id: '/mfa/email',
-  path: '/mfa/email',
+  id: "/mfa/email",
+  path: "/mfa/email",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MfaConnectRoute = MfaConnectRouteImport.update({
-  id: '/mfa/connect',
-  path: '/mfa/connect',
+  id: "/mfa/connect",
+  path: "/mfa/connect",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const privateUsersLayoutRoute = privateUsersLayoutRouteImport.update({
-  id: '/(private)/users/_layout',
-  path: '/users',
+  id: "/(private)/users/_layout",
+  path: "/users",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const privateUsersMeSettingsRoute = privateUsersMeSettingsRouteImport.update({
-  id: '/(private)/users/me/settings',
-  path: '/users/me/settings',
+  id: "/(private)/users/me/settings",
+  path: "/users/me/settings",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/authenticated': typeof AuthenticatedRoute
-  '/confirm-signup': typeof ConfirmSignupRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/forgot-username': typeof ForgotUsernameRoute
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/signup': typeof SignupRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/mfa/connect': typeof MfaConnectRoute
-  '/mfa/email': typeof MfaEmailRoute
-  '/mfa/sms': typeof MfaSmsRoute
-  '/mfa/verify-code': typeof MfaVerifyCodeRoute
-  '/mfa': typeof MfaIndexRoute
-  '/users': typeof privateUsersLayoutRoute
-  '/users/me/settings': typeof privateUsersMeSettingsRoute
+  "/": typeof IndexRoute;
+  "/authenticated": typeof AuthenticatedRoute;
+  "/confirm-signup": typeof ConfirmSignupRoute;
+  "/forgot-password": typeof ForgotPasswordRoute;
+  "/forgot-username": typeof ForgotUsernameRoute;
+  "/login": typeof LoginRoute;
+  "/logout": typeof LogoutRoute;
+  "/privacy-policy": typeof PrivacyPolicyRoute;
+  "/reset-password": typeof ResetPasswordRoute;
+  "/signup": typeof SignupRoute;
+  "/terms-of-service": typeof TermsOfServiceRoute;
+  "/mfa/connect": typeof MfaConnectRoute;
+  "/mfa/email": typeof MfaEmailRoute;
+  "/mfa/sms": typeof MfaSmsRoute;
+  "/mfa/verify-code": typeof MfaVerifyCodeRoute;
+  "/mfa": typeof MfaIndexRoute;
+  "/users": typeof privateUsersLayoutRoute;
+  "/users/me/settings": typeof privateUsersMeSettingsRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/authenticated': typeof AuthenticatedRoute
-  '/confirm-signup': typeof ConfirmSignupRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/forgot-username': typeof ForgotUsernameRoute
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/signup': typeof SignupRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/mfa/connect': typeof MfaConnectRoute
-  '/mfa/email': typeof MfaEmailRoute
-  '/mfa/sms': typeof MfaSmsRoute
-  '/mfa/verify-code': typeof MfaVerifyCodeRoute
-  '/mfa': typeof MfaIndexRoute
-  '/users': typeof privateUsersLayoutRoute
-  '/users/me/settings': typeof privateUsersMeSettingsRoute
+  "/": typeof IndexRoute;
+  "/authenticated": typeof AuthenticatedRoute;
+  "/confirm-signup": typeof ConfirmSignupRoute;
+  "/forgot-password": typeof ForgotPasswordRoute;
+  "/forgot-username": typeof ForgotUsernameRoute;
+  "/login": typeof LoginRoute;
+  "/logout": typeof LogoutRoute;
+  "/privacy-policy": typeof PrivacyPolicyRoute;
+  "/reset-password": typeof ResetPasswordRoute;
+  "/signup": typeof SignupRoute;
+  "/terms-of-service": typeof TermsOfServiceRoute;
+  "/mfa/connect": typeof MfaConnectRoute;
+  "/mfa/email": typeof MfaEmailRoute;
+  "/mfa/sms": typeof MfaSmsRoute;
+  "/mfa/verify-code": typeof MfaVerifyCodeRoute;
+  "/mfa": typeof MfaIndexRoute;
+  "/users": typeof privateUsersLayoutRoute;
+  "/users/me/settings": typeof privateUsersMeSettingsRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/authenticated': typeof AuthenticatedRoute
-  '/confirm-signup': typeof ConfirmSignupRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/forgot-username': typeof ForgotUsernameRoute
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/signup': typeof SignupRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/mfa/connect': typeof MfaConnectRoute
-  '/mfa/email': typeof MfaEmailRoute
-  '/mfa/sms': typeof MfaSmsRoute
-  '/mfa/verify-code': typeof MfaVerifyCodeRoute
-  '/mfa/': typeof MfaIndexRoute
-  '/(private)/users/_layout': typeof privateUsersLayoutRoute
-  '/(private)/users/me/settings': typeof privateUsersMeSettingsRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/authenticated": typeof AuthenticatedRoute;
+  "/confirm-signup": typeof ConfirmSignupRoute;
+  "/forgot-password": typeof ForgotPasswordRoute;
+  "/forgot-username": typeof ForgotUsernameRoute;
+  "/login": typeof LoginRoute;
+  "/logout": typeof LogoutRoute;
+  "/privacy-policy": typeof PrivacyPolicyRoute;
+  "/reset-password": typeof ResetPasswordRoute;
+  "/signup": typeof SignupRoute;
+  "/terms-of-service": typeof TermsOfServiceRoute;
+  "/mfa/connect": typeof MfaConnectRoute;
+  "/mfa/email": typeof MfaEmailRoute;
+  "/mfa/sms": typeof MfaSmsRoute;
+  "/mfa/verify-code": typeof MfaVerifyCodeRoute;
+  "/mfa/": typeof MfaIndexRoute;
+  "/(private)/users/_layout": typeof privateUsersLayoutRoute;
+  "/(private)/users/me/settings": typeof privateUsersMeSettingsRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/authenticated'
-    | '/confirm-signup'
-    | '/forgot-password'
-    | '/forgot-username'
-    | '/login'
-    | '/logout'
-    | '/privacy-policy'
-    | '/reset-password'
-    | '/signup'
-    | '/terms-of-service'
-    | '/mfa/connect'
-    | '/mfa/email'
-    | '/mfa/sms'
-    | '/mfa/verify-code'
-    | '/mfa'
-    | '/users'
-    | '/users/me/settings'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | "/authenticated"
+    | "/confirm-signup"
+    | "/forgot-password"
+    | "/forgot-username"
+    | "/login"
+    | "/logout"
+    | "/privacy-policy"
+    | "/reset-password"
+    | "/signup"
+    | "/terms-of-service"
+    | "/mfa/connect"
+    | "/mfa/email"
+    | "/mfa/sms"
+    | "/mfa/verify-code"
+    | "/mfa"
+    | "/users"
+    | "/users/me/settings";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/authenticated'
-    | '/confirm-signup'
-    | '/forgot-password'
-    | '/forgot-username'
-    | '/login'
-    | '/logout'
-    | '/privacy-policy'
-    | '/reset-password'
-    | '/signup'
-    | '/terms-of-service'
-    | '/mfa/connect'
-    | '/mfa/email'
-    | '/mfa/sms'
-    | '/mfa/verify-code'
-    | '/mfa'
-    | '/users'
-    | '/users/me/settings'
+    | "/"
+    | "/authenticated"
+    | "/confirm-signup"
+    | "/forgot-password"
+    | "/forgot-username"
+    | "/login"
+    | "/logout"
+    | "/privacy-policy"
+    | "/reset-password"
+    | "/signup"
+    | "/terms-of-service"
+    | "/mfa/connect"
+    | "/mfa/email"
+    | "/mfa/sms"
+    | "/mfa/verify-code"
+    | "/mfa"
+    | "/users"
+    | "/users/me/settings";
   id:
-    | '__root__'
-    | '/'
-    | '/authenticated'
-    | '/confirm-signup'
-    | '/forgot-password'
-    | '/forgot-username'
-    | '/login'
-    | '/logout'
-    | '/privacy-policy'
-    | '/reset-password'
-    | '/signup'
-    | '/terms-of-service'
-    | '/mfa/connect'
-    | '/mfa/email'
-    | '/mfa/sms'
-    | '/mfa/verify-code'
-    | '/mfa/'
-    | '/(private)/users/_layout'
-    | '/(private)/users/me/settings'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/authenticated"
+    | "/confirm-signup"
+    | "/forgot-password"
+    | "/forgot-username"
+    | "/login"
+    | "/logout"
+    | "/privacy-policy"
+    | "/reset-password"
+    | "/signup"
+    | "/terms-of-service"
+    | "/mfa/connect"
+    | "/mfa/email"
+    | "/mfa/sms"
+    | "/mfa/verify-code"
+    | "/mfa/"
+    | "/(private)/users/_layout"
+    | "/(private)/users/me/settings";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRoute
-  ConfirmSignupRoute: typeof ConfirmSignupRoute
-  ForgotPasswordRoute: typeof ForgotPasswordRoute
-  ForgotUsernameRoute: typeof ForgotUsernameRoute
-  LoginRoute: typeof LoginRoute
-  LogoutRoute: typeof LogoutRoute
-  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
-  ResetPasswordRoute: typeof ResetPasswordRoute
-  SignupRoute: typeof SignupRoute
-  TermsOfServiceRoute: typeof TermsOfServiceRoute
-  MfaConnectRoute: typeof MfaConnectRoute
-  MfaEmailRoute: typeof MfaEmailRoute
-  MfaSmsRoute: typeof MfaSmsRoute
-  MfaVerifyCodeRoute: typeof MfaVerifyCodeRoute
-  MfaIndexRoute: typeof MfaIndexRoute
-  privateUsersLayoutRoute: typeof privateUsersLayoutRoute
-  privateUsersMeSettingsRoute: typeof privateUsersMeSettingsRoute
+  IndexRoute: typeof IndexRoute;
+  AuthenticatedRoute: typeof AuthenticatedRoute;
+  ConfirmSignupRoute: typeof ConfirmSignupRoute;
+  ForgotPasswordRoute: typeof ForgotPasswordRoute;
+  ForgotUsernameRoute: typeof ForgotUsernameRoute;
+  LoginRoute: typeof LoginRoute;
+  LogoutRoute: typeof LogoutRoute;
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute;
+  ResetPasswordRoute: typeof ResetPasswordRoute;
+  SignupRoute: typeof SignupRoute;
+  TermsOfServiceRoute: typeof TermsOfServiceRoute;
+  MfaConnectRoute: typeof MfaConnectRoute;
+  MfaEmailRoute: typeof MfaEmailRoute;
+  MfaSmsRoute: typeof MfaSmsRoute;
+  MfaVerifyCodeRoute: typeof MfaVerifyCodeRoute;
+  MfaIndexRoute: typeof MfaIndexRoute;
+  privateUsersLayoutRoute: typeof privateUsersLayoutRoute;
+  privateUsersMeSettingsRoute: typeof privateUsersMeSettingsRoute;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/terms-of-service': {
-      id: '/terms-of-service'
-      path: '/terms-of-service'
-      fullPath: '/terms-of-service'
-      preLoaderRoute: typeof TermsOfServiceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/logout': {
-      id: '/logout'
-      path: '/logout'
-      fullPath: '/logout'
-      preLoaderRoute: typeof LogoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-username': {
-      id: '/forgot-username'
-      path: '/forgot-username'
-      fullPath: '/forgot-username'
-      preLoaderRoute: typeof ForgotUsernameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirm-signup': {
-      id: '/confirm-signup'
-      path: '/confirm-signup'
-      fullPath: '/confirm-signup'
-      preLoaderRoute: typeof ConfirmSignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/authenticated': {
-      id: '/authenticated'
-      path: '/authenticated'
-      fullPath: '/authenticated'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mfa/': {
-      id: '/mfa/'
-      path: '/mfa'
-      fullPath: '/mfa'
-      preLoaderRoute: typeof MfaIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mfa/verify-code': {
-      id: '/mfa/verify-code'
-      path: '/mfa/verify-code'
-      fullPath: '/mfa/verify-code'
-      preLoaderRoute: typeof MfaVerifyCodeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mfa/sms': {
-      id: '/mfa/sms'
-      path: '/mfa/sms'
-      fullPath: '/mfa/sms'
-      preLoaderRoute: typeof MfaSmsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mfa/email': {
-      id: '/mfa/email'
-      path: '/mfa/email'
-      fullPath: '/mfa/email'
-      preLoaderRoute: typeof MfaEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mfa/connect': {
-      id: '/mfa/connect'
-      path: '/mfa/connect'
-      fullPath: '/mfa/connect'
-      preLoaderRoute: typeof MfaConnectRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(private)/users/_layout': {
-      id: '/(private)/users/_layout'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof privateUsersLayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(private)/users/me/settings': {
-      id: '/(private)/users/me/settings'
-      path: '/users/me/settings'
-      fullPath: '/users/me/settings'
-      preLoaderRoute: typeof privateUsersMeSettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+    "/terms-of-service": {
+      id: "/terms-of-service";
+      path: "/terms-of-service";
+      fullPath: "/terms-of-service";
+      preLoaderRoute: typeof TermsOfServiceRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/signup": {
+      id: "/signup";
+      path: "/signup";
+      fullPath: "/signup";
+      preLoaderRoute: typeof SignupRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/reset-password": {
+      id: "/reset-password";
+      path: "/reset-password";
+      fullPath: "/reset-password";
+      preLoaderRoute: typeof ResetPasswordRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/privacy-policy": {
+      id: "/privacy-policy";
+      path: "/privacy-policy";
+      fullPath: "/privacy-policy";
+      preLoaderRoute: typeof PrivacyPolicyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/logout": {
+      id: "/logout";
+      path: "/logout";
+      fullPath: "/logout";
+      preLoaderRoute: typeof LogoutRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/login": {
+      id: "/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/forgot-username": {
+      id: "/forgot-username";
+      path: "/forgot-username";
+      fullPath: "/forgot-username";
+      preLoaderRoute: typeof ForgotUsernameRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/forgot-password": {
+      id: "/forgot-password";
+      path: "/forgot-password";
+      fullPath: "/forgot-password";
+      preLoaderRoute: typeof ForgotPasswordRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/confirm-signup": {
+      id: "/confirm-signup";
+      path: "/confirm-signup";
+      fullPath: "/confirm-signup";
+      preLoaderRoute: typeof ConfirmSignupRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/authenticated": {
+      id: "/authenticated";
+      path: "/authenticated";
+      fullPath: "/authenticated";
+      preLoaderRoute: typeof AuthenticatedRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/mfa/": {
+      id: "/mfa/";
+      path: "/mfa";
+      fullPath: "/mfa";
+      preLoaderRoute: typeof MfaIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/mfa/verify-code": {
+      id: "/mfa/verify-code";
+      path: "/mfa/verify-code";
+      fullPath: "/mfa/verify-code";
+      preLoaderRoute: typeof MfaVerifyCodeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/mfa/sms": {
+      id: "/mfa/sms";
+      path: "/mfa/sms";
+      fullPath: "/mfa/sms";
+      preLoaderRoute: typeof MfaSmsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/mfa/email": {
+      id: "/mfa/email";
+      path: "/mfa/email";
+      fullPath: "/mfa/email";
+      preLoaderRoute: typeof MfaEmailRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/mfa/connect": {
+      id: "/mfa/connect";
+      path: "/mfa/connect";
+      fullPath: "/mfa/connect";
+      preLoaderRoute: typeof MfaConnectRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/(private)/users/_layout": {
+      id: "/(private)/users/_layout";
+      path: "/users";
+      fullPath: "/users";
+      preLoaderRoute: typeof privateUsersLayoutRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/(private)/users/me/settings": {
+      id: "/(private)/users/me/settings";
+      path: "/users/me/settings";
+      fullPath: "/users/me/settings";
+      preLoaderRoute: typeof privateUsersMeSettingsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
@@ -414,7 +414,7 @@ const rootRouteChildren: RootRouteChildren = {
   MfaIndexRoute: MfaIndexRoute,
   privateUsersLayoutRoute: privateUsersLayoutRoute,
   privateUsersMeSettingsRoute: privateUsersMeSettingsRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

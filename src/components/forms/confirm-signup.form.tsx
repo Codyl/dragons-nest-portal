@@ -52,46 +52,53 @@ const ConfirmSignupForm = () => {
     },
   });
 
-  console.log('session', sessionStorage.getItem("session"));
+  console.log("session", sessionStorage.getItem("session"));
 
   return (
     <>
-       <MFAAuthenticatorQRCodeModal show={showGenerateSecretForm} setShow={setShowGenerateSecretForm} /> 
-    <AuthLayout
-      title="Verify your email"
-      description={`We've sent a verification code to ${username}`}
-    >
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-        className="space-y-4"
+      <MFAAuthenticatorQRCodeModal
+        show={showGenerateSecretForm}
+        setShow={setShowGenerateSecretForm}
+      />
+      <AuthLayout
+        title="Verify your email"
+        description={`We've sent a verification code to ${username}`}
       >
-        {error && (
-          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            {error instanceof Error
-              ? error.message
-              : "Invalid code. Please try again."}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+          className="space-y-4"
+        >
+          {error && (
+            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              {error instanceof Error
+                ? error.message
+                : "Invalid code. Please try again."}
+            </div>
+          )}
+          <FieldGroup>
+            <form.Field
+              name="code"
+              children={(field) => (
+                <InputField
+                  field={field}
+                  label="Verification code"
+                  type="text"
+                />
+              )}
+            />
+          </FieldGroup>
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? "Verifying..." : "Verify email"}
+          </Button>
+          <div className="text-center">
+            <ResendSignupConfirmationCodeButton />
           </div>
-        )}
-        <FieldGroup>
-          <form.Field
-            name="code"
-            children={(field) => (
-              <InputField field={field} label="Verification code" type="text" />
-            )}
-          />
-        </FieldGroup>
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Verifying..." : "Verify email"}
-        </Button>
-        <div className="text-center">
-          <ResendSignupConfirmationCodeButton />
-        </div>
-      </form>
-    </AuthLayout>
+        </form>
+      </AuthLayout>
     </>
   );
 };

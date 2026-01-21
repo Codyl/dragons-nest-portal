@@ -2,28 +2,36 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
-import { useRouter, Link } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
 import { AuthLayout } from "../auth-layout";
+import useConfirmForgotPassword from "@/hooks/use-confirm-forgot-password";
 
-const ResetPasswordForm = () => {
-  const router = useRouter();
+const ResetPasswordForm = ({
+  setStep,
+}: {
+  setStep: (step: number) => void;
+}) => {
+  const {
+    mutate: resetPassword,
+    isPending,
+    error,
+  } = useConfirmForgotPassword();
 
-  const schema = z.object({
-    newPassword: z
-      .string()
-      .min(8, "Password must be at least 8 characters long")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-      .regex(/[0-9]/, "Password must contain at least one number"),
-    confirmPassword: z
-      .string()
-      .min(1, "Please confirm your password")
-      .refine((data, ctx) => data === ctx.parent.newPassword, {
-        message: "Passwords do not match",
-        path: ["confirmPassword"],
-      }),
-  });
+  const schema = z
+    .object({
+      newPassword: z
+        .string()
+        .min(8, "Password must be at least 8 characters long")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number"),
+      confirmPassword: z.string().min(1, "Please confirm your password"),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    });
 
   const form = useForm({
     defaultValues: {
@@ -34,10 +42,18 @@ const ResetPasswordForm = () => {
       onSubmit: schema,
     },
     onSubmit: async ({ value }) => {
-      // TODO: Implement reset password endpoint
-      console.log("Reset password:", value.newPassword);
-      // For now, redirect to login
-      router.navigate({ to: "/login" });
+      resetPassword(
+        {
+          username: sessionStorage.getItem("username") || "",
+          code: sessionStorage.getItem("code") || "",
+          password: value.newPassword,
+        },
+        {
+          onSuccess: () => {
+            setStep(2);
+          },
+        },
+      );
     },
   });
 
@@ -48,6 +64,7 @@ const ResetPasswordForm = () => {
     >
       <form
         onSubmit={(e) => {
+          console.log("Reset password form submitted");
           e.preventDefault();
           e.stopPropagation();
           form.handleSubmit();
@@ -72,7 +89,13 @@ const ResetPasswordForm = () => {
             )}
           />
         </FieldGroup>
-        <Button type="submit" className="w-full">
+        {error && <p className="text-red-500">{error.message}</p>}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isPending}
+          isPending={isPending}
+        >
           Reset password
         </Button>
         <div className="text-center text-sm">

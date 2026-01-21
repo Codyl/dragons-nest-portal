@@ -1,10 +1,10 @@
 import AuthServices from "@/api/services/auth.services";
 import { useMutation } from "@tanstack/react-query";
 
-const useCompleteMFAAuth = () => {
+const useForgotPassword = () => {
   return useMutation({
-    mutationFn: AuthServices.completeMFAAuth,
+    mutationFn: AuthServices.forgotPassword,
   });
 };
 
-export default useCompleteMFAAuth;
+export default useForgotPassword;

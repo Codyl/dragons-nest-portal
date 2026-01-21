@@ -1,4 +1,3 @@
-
 import { QRCodeSVG } from "qrcode.react";
 import InputField from "../fields/input-field";
 import { useForm } from "@tanstack/react-form";
@@ -38,7 +37,8 @@ const MFAGenerateSecretForm = () => {
     return null;
   }, [data]);
 
-  const { mutate: connectAuthenticatorApp, isPending } = useConnectAuthenticator();
+  const { mutate: connectAuthenticatorApp, isPending } =
+    useConnectAuthenticator();
 
   const schema = z.object({
     code: z.string().min(1, "Code is required"),
@@ -54,16 +54,19 @@ const MFAGenerateSecretForm = () => {
     onSubmit: async ({ value }) => {
       // Use the session from AssociateSoftwareTokenCommand response, not the old session
       const sessionToUse = associateSession || session;
-      connectAuthenticatorApp({
-        ...(accessToken && { accessToken: accessToken }),
-        friendlyDeviceName: "Authenticator App",
-        session: sessionToUse,
-        userCode: value.code,
-      }, {
-        onSuccess: () => {
-          router.navigate({ to: "/users" });
+      connectAuthenticatorApp(
+        {
+          ...(accessToken && { accessToken: accessToken }),
+          friendlyDeviceName: "Authenticator App",
+          session: sessionToUse,
+          userCode: value.code,
         },
-      });
+        {
+          onSuccess: () => {
+            router.navigate({ to: "/users" });
+          },
+        },
+      );
     },
   });
   return (
@@ -80,7 +83,10 @@ const MFAGenerateSecretForm = () => {
         }}
         className="flex flex-col tablet:w-md gap-4 mx-auto desktop:mx-0"
       >
-        <form.Field name="code" children={(field) => <InputField field={field} label="Code" />} />
+        <form.Field
+          name="code"
+          children={(field) => <InputField field={field} label="Code" />}
+        />
         <Button type="submit" disabled={isPending} isPending={isPending}>
           Continue
         </Button>

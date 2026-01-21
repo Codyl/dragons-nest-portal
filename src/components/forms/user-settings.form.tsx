@@ -9,20 +9,21 @@ import useUpdateUserSettings from "@/hooks/use-update-user-account";
 
 const UserSettingsForm = () => {
   const { data, error, isPending } = useLoggedInUser();
-  const {
-    mutate: updateSettings,
-  } = useUpdateUserSettings();
+  const { mutate: updateSettings } = useUpdateUserSettings();
 
   const schema = z.object({
     email: z.email("Invalid email address"),
     given_name: z.string().optional(),
     family_name: z.string().optional(),
     middle_name: z.string().optional(),
-    phone_number: z.string().regex(/^\d{10}$/, "Invalid phone number").optional(),
+    phone_number: z
+      .string()
+      .regex(/^\d{10}$/, "Invalid phone number")
+      .optional(),
   });
 
   const userData = data?.response;
-  console.log(userData,data);
+  console.log(userData, data);
 
   const form = useForm({
     defaultValues: {
@@ -38,7 +39,9 @@ const UserSettingsForm = () => {
     onSubmit: async ({ value }) => {
       updateSettings({
         ...value,
-        phone_number: value.phone_number ? `+1${value.phone_number}` : undefined,
+        phone_number: value.phone_number
+          ? `+1${value.phone_number}`
+          : undefined,
       });
     },
   });
@@ -53,12 +56,11 @@ const UserSettingsForm = () => {
         }}
         className="flex flex-col tablet:w-md gap-4 mx-auto desktop:mx-0"
       >
-       
         <form.Field
           name="email"
           children={(field) => <InputField field={field} label="Email" />}
         />
-       
+
         <form.Field
           name="given_name"
           children={(field) => (
@@ -77,30 +79,44 @@ const UserSettingsForm = () => {
             <InputField field={field} label="Middle Name (Optional)" />
           )}
         />
-        
+
         <form.Field
           name="phone_number"
           children={(field) => (
             <InputField field={field} label="Phone Number (Optional)" />
           )}
         />
-        <div>By providing your phone number, you agree to receive a one-time passcode for identity verification. Message and data rates may apply. Message frequency varies. Text HELP for help or STOP to cancel.</div>
-        <Button type="button" variant="link" onClick={() => {
-          window.open("localhost:5173/privacy-policy", "_blank");
-        }}>Privacy Policy</Button>
-        <Button type="button" variant="link" onClick={() => {
-          window.open("localhost:5173/terms-of-service", "_blank");
-        }}>Terms of Service</Button>
+        <div>
+          By providing your phone number, you agree to receive a one-time
+          passcode for identity verification. Message and data rates may apply.
+          Message frequency varies. Text HELP for help or STOP to cancel.
+        </div>
+        <Button
+          type="button"
+          variant="link"
+          onClick={() => {
+            window.open("localhost:5173/privacy-policy", "_blank");
+          }}
+        >
+          Privacy Policy
+        </Button>
+        <Button
+          type="button"
+          variant="link"
+          onClick={() => {
+            window.open("localhost:5173/terms-of-service", "_blank");
+          }}
+        >
+          Terms of Service
+        </Button>
         <Button type="submit" disabled={isPending}>
           {isPending ? "Updating..." : "Update Settings"}
         </Button>
       </form>
-      
+
       {error && (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
-          <p className="text-red-600 dark:text-red-400">
-            {error?.message}
-          </p>
+          <p className="text-red-600 dark:text-red-400">{error?.message}</p>
         </div>
       )}
     </div>

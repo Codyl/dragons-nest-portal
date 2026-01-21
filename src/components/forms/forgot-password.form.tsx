@@ -2,11 +2,14 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { FieldGroup, FieldSeparator } from "../ui/field";
 import { AuthLayout } from "../auth-layout";
+import useForgotPassword from "@/hooks/use-forgot-password";
 
 const ForgotPasswordForm = () => {
+  const router = useRouter();
+  const { mutate: forgotPassword, isPending, error } = useForgotPassword();
   const schema = z.object({
     username: z.string().min(1, "Username or email is required"),
   });
@@ -19,10 +22,14 @@ const ForgotPasswordForm = () => {
       onSubmit: schema,
     },
     onSubmit: async ({ value }) => {
-      // TODO: Implement forgot password endpoint
-      console.log("Forgot password for:", value.username);
-      // For now, just show a message
-      alert("Password reset functionality will be available soon");
+      forgotPassword(
+        { username: value.username },
+        {
+          onSuccess: () => {
+            router.navigate({ to: "/reset-password" });
+          },
+        },
+      );
     },
   });
 
@@ -48,7 +55,13 @@ const ForgotPasswordForm = () => {
           />
         </FieldGroup>
         <div className="space-y-3">
-          <Button type="submit" className="w-full">
+          {error && <p className="text-red-500">{error.message}</p>}
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending}
+            isPending={isPending}
+          >
             Send reset code
           </Button>
           <FieldSeparator>Or</FieldSeparator>

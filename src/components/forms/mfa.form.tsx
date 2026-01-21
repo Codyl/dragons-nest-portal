@@ -9,11 +9,7 @@ import useCompleteMFAAuth from "@/hooks/use-complete-mfa-auth";
 
 const MFAForm = () => {
   const router = useRouter();
-  const {
-    mutate: completeMFA,
-    error,
-    isPending,
-  } = useCompleteMFAAuth();
+  const { mutate: completeMFA, error, isPending } = useCompleteMFAAuth();
 
   const schema = z.object({
     softwareTokenMfaCode: z

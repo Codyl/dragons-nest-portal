@@ -65,9 +65,8 @@ const LoginForm = ({
             if (data.response.ChallengeName === "NEW_PASSWORD_REQUIRED") {
               router.navigate({ to: "/reset-password" });
             }
-                if (data.response.ChallengeName === "MFA_SETUP") {
-                setShowMFAAuthenticatorQRCodeModal(true);
-              
+            if (data.response.ChallengeName === "MFA_SETUP") {
+              setShowMFAAuthenticatorQRCodeModal(true);
             }
             // If no challenge, user is authenticated
             if (!data.response.ChallengeName) {

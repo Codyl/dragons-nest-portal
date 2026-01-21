@@ -41,9 +41,35 @@ const AuthServices = {
     const response = await unauthenticatedApi.post("auth/mfa", { json });
     return response.json();
   },
+  forgotPassword: async (json: { username: string }) => {
+    const response = await unauthenticatedApi.post("auth/forgot-password", {
+      json,
+    });
+    return response.json();
+  },
+  confirmForgotPassword: async (json: {
+    username: string;
+    code: string;
+    password: string;
+  }) => {
+    const response = await unauthenticatedApi.post(
+      "auth/confirm-forgot-password",
+      { json },
+    );
+    return response.json();
+  },
   logout: async (accessToken: string) => {
     const response = await unauthenticatedApi.get("auth/logout", {
       searchParams: { accessToken },
+    });
+    return response.json();
+  },
+  changePassword: async (json: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    const response = await unauthenticatedApi.post("user/me/change-password", {
+      json,
     });
     return response.json();
   },
