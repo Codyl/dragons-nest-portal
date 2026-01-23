@@ -1,14 +1,21 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { useAuth } from "./hooks/use-auth";
-import { useMemo } from "react";
-
 
 export interface RouterContext {
   checkAuth: () => Promise<boolean>;
   isLoading: boolean;
 }
 
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+  interface RouterContext {
+    checkAuth: () => Promise<boolean>;
+    isLoading: boolean;
+  }
+}
 
 const router = createRouter({ routeTree });
 

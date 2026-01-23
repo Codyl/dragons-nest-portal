@@ -7,6 +7,7 @@ export const Route = createFileRoute("/")({
   beforeLoad: async ({ context, location }) => {
     const authContext = context as RouterContext;
     const isAuthenticated = await authContext.checkAuth();
+    console.log('isAuthenticated', isAuthenticated);
 
     if (!isAuthenticated) {
       throw redirect({

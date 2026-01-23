@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useCallback } from "react";
 import UserServices from "@/api/services/user.services";
 
 export function useAuth() {
@@ -8,22 +8,32 @@ export function useAuth() {
     queryFn: async () => {
       const token = localStorage.getItem("AccessToken");
       if (!token) {
-        return { authenticated: false };
+        return { isAuthenticated: false };
       }
       try {
         await UserServices.getUser();
-        return { authenticated: true };
+        return { isAuthenticated: true };
       } catch {
-        return { authenticated: false };
+        return { isAuthenticated: false };
       }
     },
     retry: false,
     refetchOnWindowFocus: false,
   });
 
+  const ensureAuth = useCallback(async () => {
+    try {
+      // Use refetch directly instead of ensureQueryData to avoid circular dependency
+      const session = await refetch();
+      return session.data?.isAuthenticated ?? false;
+    } catch (error: any) {
+      return false;
+    }
+  }, [refetch]);
+
   return {
     isLoading: isLoading,
-    checkAuth: refetch,
-    isAuthenticated: data?.authenticated ?? false,
+    checkAuth: ensureAuth,
+    isAuthenticated: data?.isAuthenticated ?? false,
   };
 }
