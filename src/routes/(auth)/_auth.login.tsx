@@ -27,10 +27,10 @@ function Login() {
         </CommonCard>
       )}
       {availablePasswordlessChallenges.length > 0 &&
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mt-3.5">
           {availablePasswordlessChallenges.map((challenge) => (
-            <Button onClick={() => router.navigate({ to: `/mfa/${challenge.toLowerCase()}` })} variant="outline" key={challenge}>
-              {challenge.toLocaleLowerCase().replace("_OTP", " Single Sign On")}
+            <Button className="capitalize" onClick={() => router.navigate({ to: `/sso/${challenge.replace("_OTP", "").toLowerCase()}` })} variant="outline" key={challenge}>
+              {challenge.replace("_OTP", " Single Sign On").toLowerCase()}
             </Button>
           ))}
         </div>
