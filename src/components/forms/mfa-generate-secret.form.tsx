@@ -23,17 +23,17 @@ const MFAGenerateSecretForm = () => {
 
   // Extract the new session from AssociateSoftwareTokenCommand response
   const associateSession = useMemo(() => {
-    if (data && typeof data === "object" && "response" in data) {
-      const response = (data as { response?: { Session?: string } }).response;
-      return response?.Session || "";
+    if (data && typeof data === "object" && "data" in data) {
+      const responseData = (data as { data?: { Session?: string } }).data;
+      return responseData?.Session || "";
     }
     return "";
   }, [data]);
 
   // Extract qrString from the response
   const qrString = useMemo(() => {
-    if (data && typeof data === "object" && "qrString" in data) {
-      return (data as { qrString: string }).qrString;
+    if (data && typeof data === "object" && "data" in data) {
+      return (data as { data?: { qrString?: string } }).data?.qrString || null;
     }
     return null;
   }, [data]);
@@ -66,7 +66,9 @@ const MFAGenerateSecretForm = () => {
         },
         {
           onSuccess: (data) => {
-            sessionStorage.setItem("session", data.initiateAuthResponse.Session);
+            if (data.data.Session) {
+              sessionStorage.setItem("session", data.data.Session);
+            }
             router.navigate({ to: "/mfa/verify-code" });
           },
         },

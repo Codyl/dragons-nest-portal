@@ -22,7 +22,7 @@ const UserSettingsForm = () => {
       .optional(),
   });
 
-  const userData = data?.response;
+  const userData = data?.data;
 
   const form = useForm({
     defaultValues: {

@@ -71,7 +71,7 @@ const RootLayout = () => {
           </div>
         </div>
       </header>
-      <main>
+      <main className="container mx-auto w-full min-h-screen p-4">
         <Outlet />
       </main>
       <TanStackRouterDevtools />

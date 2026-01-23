@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import MFAForm from "@/components/forms/mfa.form";
 
-export const Route = createFileRoute("/mfa/")({
+export const Route = createFileRoute("/(auth)/mfa/")({
   component: MFA,
 });
 

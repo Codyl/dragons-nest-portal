@@ -3,7 +3,7 @@ import ResetPasswordForm from "@/components/forms/reset-password.form";
 import ConfirmResetCodeForm from "@/components/forms/confirm-reset-code.form";
 import { useState } from "react";
 
-export const Route = createFileRoute("/reset-password")({
+export const Route = createFileRoute("/(auth)/reset-password")({
   component: ResetPassword,
 });
 

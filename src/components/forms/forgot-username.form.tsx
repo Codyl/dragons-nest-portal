@@ -4,7 +4,7 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useRouter, Link } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 
 const ForgotUsernameForm = () => {
   const router = useRouter();

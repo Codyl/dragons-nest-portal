@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
 import ResendSignupConfirmationCodeButton from "../buttons/resend-signup-confirmation-code.button";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 import { useState } from "react";
 import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.modal";
 
@@ -19,7 +19,9 @@ const ConfirmSignupForm = () => {
   } = useMutation({
     mutationFn: AuthServices.confirmSignup,
     onSuccess: (data: any) => {
-      sessionStorage.setItem("session", data.authResponse.Session);
+      if (data.data.Session) {
+        sessionStorage.setItem("session", data.data.Session);
+      }
       setShowGenerateSecretForm(true);
     },
   });

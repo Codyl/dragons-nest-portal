@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 import InputField from "../fields/input-field";
 import { FieldGroup } from "../ui/field";
 import { useForm } from "@tanstack/react-form";

@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
 import { useRouter, Link } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 
 const CreateAccountForm = ({
   className,
@@ -24,7 +24,9 @@ const CreateAccountForm = ({
     mutationFn: AuthServices.initiateSignup,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (data: any, variables: any) => {
-      sessionStorage.setItem("session", data.response.Session);
+      if (data.data.Session) {
+        sessionStorage.setItem("session", data.data.Session);
+      }
       sessionStorage.setItem("username", variables.email);
       sessionStorage.setItem("password", variables.password);
       router.navigate({ to: "/confirm-signup" });

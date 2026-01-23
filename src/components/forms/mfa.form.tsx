@@ -4,7 +4,7 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useRouter } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 import useCompleteMFAAuth from "@/hooks/use-complete-mfa-auth";
 
 const MFAForm = () => {
@@ -37,18 +37,18 @@ const MFAForm = () => {
         },
         {
           onSuccess: (data) => {
-            if (data.response.AuthenticationResult?.AccessToken) {
+            if (data.data.AuthenticationResult?.AccessToken) {
               localStorage.setItem(
                 "AccessToken",
-                data.response.AuthenticationResult.AccessToken,
+                data.data.AuthenticationResult.AccessToken,
               );
               localStorage.setItem(
                 "RefreshToken",
-                data.response.AuthenticationResult.RefreshToken || "",
+                data.data.AuthenticationResult.RefreshToken || "",
               );
               localStorage.setItem(
                 "IdToken",
-                data.response.AuthenticationResult.IdToken || "",
+                data.data.AuthenticationResult.IdToken || "",
               );
               sessionStorage.clear();
               router.navigate({ to: "/" });

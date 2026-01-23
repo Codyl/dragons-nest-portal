@@ -3,7 +3,7 @@ import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 
 const EmailMFAForm = () => {
   const schema = z.object({

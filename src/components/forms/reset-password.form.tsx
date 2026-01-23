@@ -4,7 +4,7 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { Link, useRouter } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 import useConfirmForgotPassword from "@/hooks/use-confirm-forgot-password";
 
 const ResetPasswordForm = ({
@@ -52,9 +52,11 @@ const ResetPasswordForm = ({
         {
           onSuccess: (data) => {
             sessionStorage.clear();
-            localStorage.setItem("AccessToken", data.authResponse.AuthenticationResult.AccessToken);
-            localStorage.setItem("RefreshToken", data.authResponse.AuthenticationResult.RefreshToken);
-            localStorage.setItem("IdToken", data.authResponse.AuthenticationResult.IdToken);
+            if (data.data.AuthenticationResult) {
+              localStorage.setItem("AccessToken", data.data.AuthenticationResult.AccessToken);
+              localStorage.setItem("RefreshToken", data.data.AuthenticationResult.RefreshToken || "");
+              localStorage.setItem("IdToken", data.data.AuthenticationResult.IdToken || "");
+            }
             router.navigate({ to: "/users" });
           },
         },

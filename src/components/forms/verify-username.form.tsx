@@ -8,11 +8,9 @@ import useVerifyUsername from "@/hooks/use-verify-username";
 
 const VerifyUsernameForm = ({
   setUsername,
-  setStep,
   setAvailableChallenges,
 }: {
   setUsername: (username: string) => void;
-  setStep: (step: 1 | 2 | 3) => void;
   setAvailableChallenges: (challenges: string[]) => void;
 }) => {
   const { mutate: verifyUsername, error, isPending } = useVerifyUsername();
@@ -22,7 +20,7 @@ const VerifyUsernameForm = ({
 
   const usernameForm = useForm({
     defaultValues: {
-      username: "",
+      username: "codylillyw@gmail.com",
     },
     validators: {
       onSubmit: usernameSchema,
@@ -34,11 +32,9 @@ const VerifyUsernameForm = ({
         },
         {
           onSuccess: (result) => {
-            sessionStorage.setItem("session", result.response.Session);
-            sessionStorage.setItem("username", value.username);
+            sessionStorage.setItem("session", result.data.Session);
             setUsername(value.username);
-            setAvailableChallenges(result.response.AvailableChallenges);
-            setStep(2);
+            setAvailableChallenges(result.data.AvailableChallenges);
           },
         },
       );

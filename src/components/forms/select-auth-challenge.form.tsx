@@ -1,23 +1,24 @@
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import z from "zod";
 import { useForm } from "@tanstack/react-form";
 import useSelectAuthChallenge from "@/hooks/use-select-auth-challenege";
-import { FieldContent, FieldGroup, FieldLabel } from "../ui/field";
-import { Label } from "../ui/label";
+import { useRouter } from "@tanstack/react-router";
 
 const SelectAuthChallengeForm = ({
-  availableChallenges,
-  setStep,
+  // availableChallenges,
+  username,
 }: {
   availableChallenges: string[];
-  setStep: (step: 1 | 2 | 3) => void;
+  username: string;
 }) => {
+  const router = useRouter();
+
   const {
     mutate: selectAuthChallenge,
     error,
     isPending,
   } = useSelectAuthChallenge();
+
   const selectAuthChallengeForm = useForm({
     defaultValues: {
       method: "",
@@ -28,15 +29,16 @@ const SelectAuthChallengeForm = ({
       }),
     },
     onSubmit: ({ value }) => {
+      // TODO: Navigate to the appropriate page based on the method
       selectAuthChallenge(
         {
           challengeName: value.method,
-          username: sessionStorage.getItem("username") || "",
+          username: username,
           session: sessionStorage.getItem("session") || "",
         },
         {
           onSuccess: () => {
-            setStep(3);
+            router.navigate({ to: "/mfa/verify-code" });
           },
         },
       );
@@ -50,40 +52,10 @@ const SelectAuthChallengeForm = ({
         selectAuthChallengeForm.handleSubmit();
       }}
     >
-      <selectAuthChallengeForm.Field
-        name="method"
-        children={(field) => (
-          <FieldGroup>
-            <FieldLabel>Choose a verification method</FieldLabel>
-            <FieldContent>
-              <RadioGroup
-                className="flex flex-col space-y-1"
-                value={field.state.value}
-                onValueChange={(value) => {
-                  field.handleChange(value);
-                }}
-              >
-                {availableChallenges.map((challenge) => (
-                  <div key={challenge} className="flex items-center space-x-2">
-                    <RadioGroupItem value={challenge} id={challenge} />
-                    <Label htmlFor={challenge} className="cursor-pointer">
-                      {challenge}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </FieldContent>
-          </FieldGroup>
-        )}
-      />
-      <Button type="submit" disabled={isPending} className="w-full">
-        {isPending ? "Loading..." : "Continue"}
+      {error && <div className="text-red-500">{error.message}</div>}
+      <Button type="submit" disabled={isPending} isPending={isPending}>
+        Continue
       </Button>
-      {error && (
-        <p className="text-red-500 text-sm mt-2">
-          {error instanceof Error ? error.message : "An error occurred"}
-        </p>
-      )}
     </form>
   );
 };

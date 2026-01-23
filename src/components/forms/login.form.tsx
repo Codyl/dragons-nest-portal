@@ -14,11 +14,9 @@ import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.moda
 
 const LoginForm = ({
   className,
-  setStep,
   username,
 }: {
   className?: string;
-  setStep: (step: 1 | 2 | 3) => void;
   username: string;
 }) => {
   const router = useRouter();
@@ -48,39 +46,41 @@ const LoginForm = ({
         {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onSuccess: (data: any) => {
-            sessionStorage.setItem("session", data.response.Session);
+            if (data.data.Session) {
+              sessionStorage.setItem("session", data.data.Session);
+            }
             sessionStorage.setItem("username", username);
             sessionStorage.setItem("password", value.password);
 
-            if (data.response.ChallengeName === "SOFTWARE_TOKEN_MFA") {
+            if (data.data.ChallengeName === "SOFTWARE_TOKEN_MFA") {
               router.navigate({ to: "/mfa/verify-code" });
             }
-            if (data.response.ChallengeName === "SMS_MFA") {
+            if (data.data.ChallengeName === "SMS_MFA") {
               router.navigate({ to: "/mfa/sms" });
             }
-            if (data.response.ChallengeName === "EMAIL_MFA") {
+            if (data.data.ChallengeName === "EMAIL_MFA") {
               router.navigate({ to: "/mfa/email" });
             }
-            if (data.response.ChallengeName === "NEW_PASSWORD_REQUIRED") {
+            if (data.data.ChallengeName === "NEW_PASSWORD_REQUIRED") {
               router.navigate({ to: "/reset-password" });
             }
-            if (data.response.ChallengeName === "MFA_SETUP") {
+            if (data.data.ChallengeName === "MFA_SETUP") {
               setShowMFAAuthenticatorQRCodeModal(true);
             }
             // If no challenge, user is authenticated
-            if (!data.response.ChallengeName) {
-              if (data.response.AuthenticationResult?.AccessToken) {
+            if (!data.data.ChallengeName) {
+              if (data.data.AuthenticationResult?.AccessToken) {
                 localStorage.setItem(
                   "AccessToken",
-                  data.response.AuthenticationResult.AccessToken,
+                  data.data.AuthenticationResult.AccessToken,
                 );
                 localStorage.setItem(
                   "RefreshToken",
-                  data.response.AuthenticationResult.RefreshToken || "",
+                  data.data.AuthenticationResult.RefreshToken || "",
                 );
                 localStorage.setItem(
                   "IdToken",
-                  data.response.AuthenticationResult.IdToken || "",
+                  data.data.AuthenticationResult.IdToken || "",
                 );
                 router.navigate({ to: "/" });
               }
@@ -100,7 +100,7 @@ const LoginForm = ({
   });
 
   const handleBack = () => {
-    setStep(1);
+    router.navigate({ to: "/login" });
     passwordForm.reset();
   };
 

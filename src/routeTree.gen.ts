@@ -14,13 +14,13 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as LogoutRouteImport } from './routes/logout'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotUsernameRouteImport } from './routes/forgot-username'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as ConfirmSignupRouteImport } from './routes/confirm-signup'
 import { Route as privateIndexRouteImport } from './routes/(private)/index'
 import { Route as privateSettingsRouteImport } from './routes/(private)/settings'
 import { Route as privateLayoutRouteImport } from './routes/(private)/_layout'
+import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authMfaIndexRouteImport } from './routes/(auth)/mfa/index'
 import { Route as authMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/verify-code'
 import { Route as authMfaSmsRouteImport } from './routes/(auth)/mfa/sms'
@@ -52,11 +52,6 @@ const LogoutRoute = LogoutRouteImport.update({
   path: '/logout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ForgotUsernameRoute = ForgotUsernameRouteImport.update({
   id: '/forgot-username',
   path: '/forgot-username',
@@ -84,6 +79,11 @@ const privateSettingsRoute = privateSettingsRouteImport.update({
 } as any)
 const privateLayoutRoute = privateLayoutRouteImport.update({
   id: '/(private)/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authLoginRoute = authLoginRouteImport.update({
+  id: '/(auth)/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authMfaIndexRoute = authMfaIndexRouteImport.update({
@@ -116,12 +116,12 @@ export interface FileRoutesByFullPath {
   '/confirm-signup': typeof ConfirmSignupRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/forgot-username': typeof ForgotUsernameRoute
-  '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/login': typeof authLoginRoute
   '/settings': typeof privateSettingsRoute
   '/': typeof privateIndexRoute
   '/mfa/connect': typeof authMfaConnectRoute
@@ -134,12 +134,12 @@ export interface FileRoutesByTo {
   '/confirm-signup': typeof ConfirmSignupRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/forgot-username': typeof ForgotUsernameRoute
-  '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/login': typeof authLoginRoute
   '/settings': typeof privateSettingsRoute
   '/': typeof privateIndexRoute
   '/mfa/connect': typeof authMfaConnectRoute
@@ -153,12 +153,12 @@ export interface FileRoutesById {
   '/confirm-signup': typeof ConfirmSignupRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/forgot-username': typeof ForgotUsernameRoute
-  '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/(auth)/login': typeof authLoginRoute
   '/(private)/_layout': typeof privateLayoutRoute
   '/(private)/settings': typeof privateSettingsRoute
   '/(private)/': typeof privateIndexRoute
@@ -174,12 +174,12 @@ export interface FileRouteTypes {
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
-    | '/login'
     | '/logout'
     | '/privacy-policy'
     | '/reset-password'
     | '/signup'
     | '/terms-of-service'
+    | '/login'
     | '/settings'
     | '/'
     | '/mfa/connect'
@@ -192,12 +192,12 @@ export interface FileRouteTypes {
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
-    | '/login'
     | '/logout'
     | '/privacy-policy'
     | '/reset-password'
     | '/signup'
     | '/terms-of-service'
+    | '/login'
     | '/settings'
     | '/'
     | '/mfa/connect'
@@ -210,12 +210,12 @@ export interface FileRouteTypes {
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
-    | '/login'
     | '/logout'
     | '/privacy-policy'
     | '/reset-password'
     | '/signup'
     | '/terms-of-service'
+    | '/(auth)/login'
     | '/(private)/_layout'
     | '/(private)/settings'
     | '/(private)/'
@@ -230,12 +230,12 @@ export interface RootRouteChildren {
   ConfirmSignupRoute: typeof ConfirmSignupRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   ForgotUsernameRoute: typeof ForgotUsernameRoute
-  LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
+  authLoginRoute: typeof authLoginRoute
   privateLayoutRoute: typeof privateLayoutRoute
   privateSettingsRoute: typeof privateSettingsRoute
   privateIndexRoute: typeof privateIndexRoute
@@ -283,13 +283,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LogoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/forgot-username': {
       id: '/forgot-username'
       path: '/forgot-username'
@@ -330,6 +323,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof privateLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/login': {
+      id: '/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/mfa/': {
@@ -374,12 +374,12 @@ const rootRouteChildren: RootRouteChildren = {
   ConfirmSignupRoute: ConfirmSignupRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   ForgotUsernameRoute: ForgotUsernameRoute,
-  LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
+  authLoginRoute: authLoginRoute,
   privateLayoutRoute: privateLayoutRoute,
   privateSettingsRoute: privateSettingsRoute,
   privateIndexRoute: privateIndexRoute,

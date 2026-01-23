@@ -4,7 +4,7 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { Link, useRouter } from "@tanstack/react-router";
 import { FieldGroup, FieldSeparator } from "../ui/field";
-import { AuthLayout } from "../auth-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 import useForgotPassword from "@/hooks/use-forgot-password";
 
 const ForgotPasswordForm = () => {
