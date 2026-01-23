@@ -23,10 +23,16 @@ const RootLayout = () => {
             {isAuthenticated && (
               <nav className="hidden md:flex items-center gap-4 text-sm">
                 <Link
-                  to="/settings"
+                  to="/account-settings"
                   className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
                 >
-                  Settings
+                  Account Settings
+                </Link>
+                <Link
+                  to="/security-settings"
+                  className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
+                >
+                  Security Settings
                 </Link>
               </nav>
             )}
