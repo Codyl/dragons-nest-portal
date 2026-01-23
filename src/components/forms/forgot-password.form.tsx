@@ -81,7 +81,7 @@ const ForgotPasswordForm = () => {
         </div>
       </div>
       <div className="text-center text-sm">
-        <Link to="/verify-username" className="text-primary hover:underline">
+        <Link to="/login" className="text-primary hover:underline">
           Back to sign in
         </Link>
       </div>
