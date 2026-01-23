@@ -9,9 +9,10 @@ const AuthServices = {
     return response.json();
   },
   selectAuthChallenge: async (json: {
-    challengeName: string;
+    answer: string;
     username: string;
     session?: string;
+    emailCode?: string;
   }) => {
     const response = await unauthenticatedApi.post(
       "auth/select-auth-challenge",
