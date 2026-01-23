@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import z from "zod";
 import { useForm } from "@tanstack/react-form";
-import useSelectAuthChallenge from "@/hooks/use-select-auth-challenege";
+import useSelectAuthChallenge from "@/hooks/use-select-auth-challenge";
 import { useRouter } from "@tanstack/react-router";
 
 const SelectAuthChallengeForm = ({
