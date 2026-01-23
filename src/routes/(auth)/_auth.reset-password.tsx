@@ -3,17 +3,17 @@ import ResetPasswordForm from "@/components/forms/reset-password.form";
 import ConfirmResetCodeForm from "@/components/forms/confirm-reset-code.form";
 import { useState } from "react";
 
-export const Route = createFileRoute("/(auth)/reset-password")({
+export const Route = createFileRoute("/(auth)/_auth/reset-password")({
   component: ResetPassword,
 });
 
 function ResetPassword() {
   const [step, setStep] = useState(1);
 
-  if(!sessionStorage.getItem("username")) {
+  if (!sessionStorage.getItem("username")) {
     return <Navigate to="/forgot-password" />;
   }
-  
+
   return (
     <>
       {step === 1 && <ConfirmResetCodeForm setStep={setStep} />}

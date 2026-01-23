@@ -12,14 +12,9 @@ import { useResendSignupConfirmationCode } from "@/hooks/use-resend-signup-confi
 import { useState } from "react";
 import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.modal";
 
-const LoginForm = ({
-  className,
-  username,
-}: {
-  className?: string;
-  username: string;
-}) => {
+const LoginForm = ({ className }: { className?: string }) => {
   const router = useRouter();
+  const username = sessionStorage.getItem("username") || "";
   const session = sessionStorage.getItem("session") || "";
   const [showMFAAuthenticatorQRCodeModal, setShowMFAAuthenticatorQRCodeModal] =
     useState(false);
@@ -31,7 +26,7 @@ const LoginForm = ({
   const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
   const passwordForm = useForm({
     defaultValues: {
-      password: "",
+      password: "Password123!",
     },
     validators: {
       onSubmit: passwordSchema,
@@ -100,7 +95,7 @@ const LoginForm = ({
   });
 
   const handleBack = () => {
-    router.navigate({ to: "/login" });
+    router.navigate({ to: "/verify-username" });
     passwordForm.reset();
   };
 

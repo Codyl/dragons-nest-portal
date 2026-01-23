@@ -58,9 +58,15 @@ const AuthServices = {
     );
     return response.json();
   },
-  logout: async (accessToken: string) => {
+  logout: async () => {
+    const token = localStorage.getItem("AccessToken");
+
+    if (!token) {
+      throw new Error("No access token found");
+    }
+    
     const response = await unauthenticatedApi.get("auth/logout", {
-      searchParams: { accessToken },
+      searchParams: { accessToken: token },
     });
     return response.json();
   },

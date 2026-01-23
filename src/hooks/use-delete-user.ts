@@ -8,7 +8,7 @@ const useDeleteUser = () => {
     onSuccess: () => {
       sessionStorage.clear();
       localStorage.clear();
-      router.navigate({ to: "/login" });
+      router.navigate({ to: "/verify-username" });
     },
   });
 };

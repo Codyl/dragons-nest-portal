@@ -1,7 +1,9 @@
 import UserServices from "@/api/services/user.services";
 import { useQuery } from "@tanstack/react-query";
+import type { UseQueryResult } from "@tanstack/react-query";
 
-const useLoggedInUser = () => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const useLoggedInUser = (): UseQueryResult<any> => {
   return useQuery({
     queryKey: ["user", "me"],
     queryFn: UserServices.getUser,

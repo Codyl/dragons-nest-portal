@@ -118,7 +118,7 @@ const CreateAccountForm = ({
         <div className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link
-            to="/login"
+            to="/verify-username"
             className="text-primary font-medium hover:underline"
           >
             Sign in

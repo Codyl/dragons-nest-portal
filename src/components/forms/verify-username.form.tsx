@@ -3,16 +3,11 @@ import { Button } from "../ui/button";
 import { useForm } from "@tanstack/react-form";
 import { FieldGroup } from "../ui/field";
 import InputField from "../fields/input-field";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import useVerifyUsername from "@/hooks/use-verify-username";
 
-const VerifyUsernameForm = ({
-  setUsername,
-  setAvailableChallenges,
-}: {
-  setUsername: (username: string) => void;
-  setAvailableChallenges: (challenges: string[]) => void;
-}) => {
+const VerifyUsernameForm = () => {
+  const router = useRouter();
   const { mutate: verifyUsername, error, isPending } = useVerifyUsername();
   const usernameSchema = z.object({
     username: z.string().min(1, "Email or username is required"),
@@ -33,8 +28,9 @@ const VerifyUsernameForm = ({
         {
           onSuccess: (result) => {
             sessionStorage.setItem("session", result.data.Session);
-            setUsername(value.username);
-            setAvailableChallenges(result.data.AvailableChallenges);
+            sessionStorage.setItem("availableChallenges", result.data.AvailableChallenges.join(","));
+            sessionStorage.setItem("username", value.username);
+            router.navigate({ to: "/login" });
           },
         },
       );

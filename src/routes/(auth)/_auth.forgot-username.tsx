@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import ForgotUsernameForm from "@/components/forms/forgot-username.form";
 
-export const Route = createFileRoute("/(auth)/forgot-username")({
+export const Route = createFileRoute("/(auth)/_auth/forgot-username")({
   component: RouteComponent,
 });
 

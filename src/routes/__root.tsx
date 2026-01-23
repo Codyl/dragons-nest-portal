@@ -2,36 +2,18 @@ import {
   createRootRoute,
   Link,
   Outlet,
-  useRouter,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
-import { useMutation } from "@tanstack/react-query";
-import AuthServices from "@/api/services/auth.services";
+import useLogout from "@/hooks/use-logout";
 
 const RootLayout = () => {
-  const router = useRouter();
-
   const { isAuthenticated } = useAuth();
-  const { mutate: logout } = useMutation({
-    mutationFn: AuthServices.logout,
-    onSuccess: () => {
-      sessionStorage.removeItem("session");
-      sessionStorage.removeItem("username");
-      sessionStorage.removeItem("password");
-      localStorage.removeItem("AccessToken");
-      localStorage.removeItem("RefreshToken");
-      localStorage.removeItem("IdToken");
-      router.navigate({ to: "/login" });
-    },
-  });
-  const handleLogout = () => {
-    const token = localStorage.getItem("AccessToken");
-    if (token) {
-      logout(token);
-    }
-  };
+  const { mutate: logout } = useLogout();
+
+  console.log(isAuthenticated);
+
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -43,7 +25,7 @@ const RootLayout = () => {
             {isAuthenticated && (
               <nav className="hidden md:flex items-center gap-4 text-sm">
                 <Link
-                  to="/users/me/settings"
+                  to="/settings"
                   className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
                 >
                   Settings
@@ -54,14 +36,14 @@ const RootLayout = () => {
           <div className="flex items-center gap-4">
             {isAuthenticated ? (
               <>
-                <Button variant="ghost" size="sm" onClick={handleLogout}>
+                <Button variant="ghost" size="sm" onClick={() => logout()}>
                   Sign out
                 </Button>
               </>
             ) : (
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" asChild>
-                  <Link to="/login">Sign in</Link>
+                  <Link to="/verify-username">Sign in</Link>
                 </Button>
                 <Button size="sm" asChild>
                   <Link to="/signup">Sign up</Link>

@@ -2,8 +2,6 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
-// import { useMutation } from "@tanstack/react-query";
-// import UserServices from "@/api/services/user.services";
 import useLoggedInUser from "@/hooks/use-logged-in-user";
 import useUpdateUserSettings from "@/hooks/use-update-user-account";
 

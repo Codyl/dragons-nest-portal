@@ -10,36 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as LogoutRouteImport } from './routes/logout'
-import { Route as ForgotUsernameRouteImport } from './routes/forgot-username'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as ConfirmSignupRouteImport } from './routes/confirm-signup'
-import { Route as privateIndexRouteImport } from './routes/(private)/index'
-import { Route as privateSettingsRouteImport } from './routes/(private)/settings'
-import { Route as privateLayoutRouteImport } from './routes/(private)/_layout'
-import { Route as authLoginRouteImport } from './routes/(auth)/login'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
+import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
 import { Route as authMfaIndexRouteImport } from './routes/(auth)/mfa/index'
+import { Route as privatePrivateSettingsRouteImport } from './routes/(private)/_private.settings'
 import { Route as authMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/verify-code'
 import { Route as authMfaSmsRouteImport } from './routes/(auth)/mfa/sms'
 import { Route as authMfaEmailRouteImport } from './routes/(auth)/mfa/email'
 import { Route as authMfaConnectRouteImport } from './routes/(auth)/mfa/connect'
+import { Route as authAuthVerifyUsernameRouteImport } from './routes/(auth)/_auth.verify-username'
+import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup'
+import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth.reset-password'
+import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
+import { Route as authAuthForgotUsernameRouteImport } from './routes/(auth)/_auth.forgot-username'
+import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
+import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -47,49 +38,28 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LogoutRoute = LogoutRouteImport.update({
-  id: '/logout',
-  path: '/logout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotUsernameRoute = ForgotUsernameRouteImport.update({
-  id: '/forgot-username',
-  path: '/forgot-username',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfirmSignupRoute = ConfirmSignupRouteImport.update({
-  id: '/confirm-signup',
-  path: '/confirm-signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const privateIndexRoute = privateIndexRouteImport.update({
-  id: '/(private)/',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const privateSettingsRoute = privateSettingsRouteImport.update({
-  id: '/(private)/settings',
-  path: '/settings',
+const privatePrivateRoute = privatePrivateRouteImport.update({
+  id: '/(private)/_private',
   getParentRoute: () => rootRouteImport,
 } as any)
-const privateLayoutRoute = privateLayoutRouteImport.update({
-  id: '/(private)/_layout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const authLoginRoute = authLoginRouteImport.update({
-  id: '/(auth)/login',
-  path: '/login',
+const authAuthRoute = authAuthRouteImport.update({
+  id: '/(auth)/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authMfaIndexRoute = authMfaIndexRouteImport.update({
   id: '/(auth)/mfa/',
   path: '/mfa/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const privatePrivateSettingsRoute = privatePrivateSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => privatePrivateRoute,
 } as any)
 const authMfaVerifyCodeRoute = authMfaVerifyCodeRouteImport.update({
   id: '/(auth)/mfa/verify-code',
@@ -111,134 +81,164 @@ const authMfaConnectRoute = authMfaConnectRouteImport.update({
   path: '/mfa/connect',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authAuthVerifyUsernameRoute = authAuthVerifyUsernameRouteImport.update({
+  id: '/verify-username',
+  path: '/verify-username',
+  getParentRoute: () => authAuthRoute,
+} as any)
+const authAuthSignupRoute = authAuthSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => authAuthRoute,
+} as any)
+const authAuthResetPasswordRoute = authAuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => authAuthRoute,
+} as any)
+const authAuthLoginRoute = authAuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => authAuthRoute,
+} as any)
+const authAuthForgotUsernameRoute = authAuthForgotUsernameRouteImport.update({
+  id: '/forgot-username',
+  path: '/forgot-username',
+  getParentRoute: () => authAuthRoute,
+} as any)
+const authAuthForgotPasswordRoute = authAuthForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => authAuthRoute,
+} as any)
+const authAuthConfirmSignupRoute = authAuthConfirmSignupRouteImport.update({
+  id: '/confirm-signup',
+  path: '/confirm-signup',
+  getParentRoute: () => authAuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/confirm-signup': typeof ConfirmSignupRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/forgot-username': typeof ForgotUsernameRoute
-  '/logout': typeof LogoutRoute
+  '/': typeof IndexRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/signup': typeof SignupRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/login': typeof authLoginRoute
-  '/settings': typeof privateSettingsRoute
-  '/': typeof privateIndexRoute
+  '/confirm-signup': typeof authAuthConfirmSignupRoute
+  '/forgot-password': typeof authAuthForgotPasswordRoute
+  '/forgot-username': typeof authAuthForgotUsernameRoute
+  '/login': typeof authAuthLoginRoute
+  '/reset-password': typeof authAuthResetPasswordRoute
+  '/signup': typeof authAuthSignupRoute
+  '/verify-username': typeof authAuthVerifyUsernameRoute
   '/mfa/connect': typeof authMfaConnectRoute
   '/mfa/email': typeof authMfaEmailRoute
   '/mfa/sms': typeof authMfaSmsRoute
   '/mfa/verify-code': typeof authMfaVerifyCodeRoute
+  '/settings': typeof privatePrivateSettingsRoute
   '/mfa': typeof authMfaIndexRoute
 }
 export interface FileRoutesByTo {
-  '/confirm-signup': typeof ConfirmSignupRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/forgot-username': typeof ForgotUsernameRoute
-  '/logout': typeof LogoutRoute
+  '/': typeof IndexRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/signup': typeof SignupRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/login': typeof authLoginRoute
-  '/settings': typeof privateSettingsRoute
-  '/': typeof privateIndexRoute
+  '/confirm-signup': typeof authAuthConfirmSignupRoute
+  '/forgot-password': typeof authAuthForgotPasswordRoute
+  '/forgot-username': typeof authAuthForgotUsernameRoute
+  '/login': typeof authAuthLoginRoute
+  '/reset-password': typeof authAuthResetPasswordRoute
+  '/signup': typeof authAuthSignupRoute
+  '/verify-username': typeof authAuthVerifyUsernameRoute
   '/mfa/connect': typeof authMfaConnectRoute
   '/mfa/email': typeof authMfaEmailRoute
   '/mfa/sms': typeof authMfaSmsRoute
   '/mfa/verify-code': typeof authMfaVerifyCodeRoute
+  '/settings': typeof privatePrivateSettingsRoute
   '/mfa': typeof authMfaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/confirm-signup': typeof ConfirmSignupRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/forgot-username': typeof ForgotUsernameRoute
-  '/logout': typeof LogoutRoute
+  '/': typeof IndexRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/signup': typeof SignupRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/(auth)/login': typeof authLoginRoute
-  '/(private)/_layout': typeof privateLayoutRoute
-  '/(private)/settings': typeof privateSettingsRoute
-  '/(private)/': typeof privateIndexRoute
+  '/(auth)/_auth': typeof authAuthRouteWithChildren
+  '/(private)/_private': typeof privatePrivateRouteWithChildren
+  '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute
+  '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute
+  '/(auth)/_auth/forgot-username': typeof authAuthForgotUsernameRoute
+  '/(auth)/_auth/login': typeof authAuthLoginRoute
+  '/(auth)/_auth/reset-password': typeof authAuthResetPasswordRoute
+  '/(auth)/_auth/signup': typeof authAuthSignupRoute
+  '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute
   '/(auth)/mfa/connect': typeof authMfaConnectRoute
   '/(auth)/mfa/email': typeof authMfaEmailRoute
   '/(auth)/mfa/sms': typeof authMfaSmsRoute
   '/(auth)/mfa/verify-code': typeof authMfaVerifyCodeRoute
+  '/(private)/_private/settings': typeof privatePrivateSettingsRoute
   '/(auth)/mfa/': typeof authMfaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
-    | '/logout'
-    | '/privacy-policy'
+    | '/login'
     | '/reset-password'
     | '/signup'
-    | '/terms-of-service'
-    | '/login'
-    | '/settings'
-    | '/'
+    | '/verify-username'
     | '/mfa/connect'
     | '/mfa/email'
     | '/mfa/sms'
     | '/mfa/verify-code'
+    | '/settings'
     | '/mfa'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/confirm-signup'
     | '/forgot-password'
     | '/forgot-username'
-    | '/logout'
-    | '/privacy-policy'
+    | '/login'
     | '/reset-password'
     | '/signup'
-    | '/terms-of-service'
-    | '/login'
-    | '/settings'
-    | '/'
+    | '/verify-username'
     | '/mfa/connect'
     | '/mfa/email'
     | '/mfa/sms'
     | '/mfa/verify-code'
+    | '/settings'
     | '/mfa'
   id:
     | '__root__'
-    | '/confirm-signup'
-    | '/forgot-password'
-    | '/forgot-username'
-    | '/logout'
+    | '/'
     | '/privacy-policy'
-    | '/reset-password'
-    | '/signup'
     | '/terms-of-service'
-    | '/(auth)/login'
-    | '/(private)/_layout'
-    | '/(private)/settings'
-    | '/(private)/'
+    | '/(auth)/_auth'
+    | '/(private)/_private'
+    | '/(auth)/_auth/confirm-signup'
+    | '/(auth)/_auth/forgot-password'
+    | '/(auth)/_auth/forgot-username'
+    | '/(auth)/_auth/login'
+    | '/(auth)/_auth/reset-password'
+    | '/(auth)/_auth/signup'
+    | '/(auth)/_auth/verify-username'
     | '/(auth)/mfa/connect'
     | '/(auth)/mfa/email'
     | '/(auth)/mfa/sms'
     | '/(auth)/mfa/verify-code'
+    | '/(private)/_private/settings'
     | '/(auth)/mfa/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  ConfirmSignupRoute: typeof ConfirmSignupRoute
-  ForgotPasswordRoute: typeof ForgotPasswordRoute
-  ForgotUsernameRoute: typeof ForgotUsernameRoute
-  LogoutRoute: typeof LogoutRoute
+  IndexRoute: typeof IndexRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
-  ResetPasswordRoute: typeof ResetPasswordRoute
-  SignupRoute: typeof SignupRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
-  authLoginRoute: typeof authLoginRoute
-  privateLayoutRoute: typeof privateLayoutRoute
-  privateSettingsRoute: typeof privateSettingsRoute
-  privateIndexRoute: typeof privateIndexRoute
+  authAuthRoute: typeof authAuthRouteWithChildren
+  privatePrivateRoute: typeof privatePrivateRouteWithChildren
   authMfaConnectRoute: typeof authMfaConnectRoute
   authMfaEmailRoute: typeof authMfaEmailRoute
   authMfaSmsRoute: typeof authMfaSmsRoute
@@ -255,20 +255,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsOfServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/privacy-policy': {
       id: '/privacy-policy'
       path: '/privacy-policy'
@@ -276,60 +262,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/logout': {
-      id: '/logout'
-      path: '/logout'
-      fullPath: '/logout'
-      preLoaderRoute: typeof LogoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-username': {
-      id: '/forgot-username'
-      path: '/forgot-username'
-      fullPath: '/forgot-username'
-      preLoaderRoute: typeof ForgotUsernameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/confirm-signup': {
-      id: '/confirm-signup'
-      path: '/confirm-signup'
-      fullPath: '/confirm-signup'
-      preLoaderRoute: typeof ConfirmSignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(private)/': {
-      id: '/(private)/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof privateIndexRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(private)/settings': {
-      id: '/(private)/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof privateSettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(private)/_layout': {
-      id: '/(private)/_layout'
+    '/(private)/_private': {
+      id: '/(private)/_private'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof privateLayoutRouteImport
+      preLoaderRoute: typeof privatePrivateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(auth)/login': {
-      id: '/(auth)/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authLoginRouteImport
+    '/(auth)/_auth': {
+      id: '/(auth)/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/mfa/': {
@@ -338,6 +289,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/mfa'
       preLoaderRoute: typeof authMfaIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(private)/_private/settings': {
+      id: '/(private)/_private/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof privatePrivateSettingsRouteImport
+      parentRoute: typeof privatePrivateRoute
     }
     '/(auth)/mfa/verify-code': {
       id: '/(auth)/mfa/verify-code'
@@ -367,22 +325,100 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authMfaConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(auth)/_auth/verify-username': {
+      id: '/(auth)/_auth/verify-username'
+      path: '/verify-username'
+      fullPath: '/verify-username'
+      preLoaderRoute: typeof authAuthVerifyUsernameRouteImport
+      parentRoute: typeof authAuthRoute
+    }
+    '/(auth)/_auth/signup': {
+      id: '/(auth)/_auth/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof authAuthSignupRouteImport
+      parentRoute: typeof authAuthRoute
+    }
+    '/(auth)/_auth/reset-password': {
+      id: '/(auth)/_auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authAuthResetPasswordRouteImport
+      parentRoute: typeof authAuthRoute
+    }
+    '/(auth)/_auth/login': {
+      id: '/(auth)/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authAuthLoginRouteImport
+      parentRoute: typeof authAuthRoute
+    }
+    '/(auth)/_auth/forgot-username': {
+      id: '/(auth)/_auth/forgot-username'
+      path: '/forgot-username'
+      fullPath: '/forgot-username'
+      preLoaderRoute: typeof authAuthForgotUsernameRouteImport
+      parentRoute: typeof authAuthRoute
+    }
+    '/(auth)/_auth/forgot-password': {
+      id: '/(auth)/_auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof authAuthForgotPasswordRouteImport
+      parentRoute: typeof authAuthRoute
+    }
+    '/(auth)/_auth/confirm-signup': {
+      id: '/(auth)/_auth/confirm-signup'
+      path: '/confirm-signup'
+      fullPath: '/confirm-signup'
+      preLoaderRoute: typeof authAuthConfirmSignupRouteImport
+      parentRoute: typeof authAuthRoute
+    }
   }
 }
 
+interface authAuthRouteChildren {
+  authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute
+  authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute
+  authAuthForgotUsernameRoute: typeof authAuthForgotUsernameRoute
+  authAuthLoginRoute: typeof authAuthLoginRoute
+  authAuthResetPasswordRoute: typeof authAuthResetPasswordRoute
+  authAuthSignupRoute: typeof authAuthSignupRoute
+  authAuthVerifyUsernameRoute: typeof authAuthVerifyUsernameRoute
+}
+
+const authAuthRouteChildren: authAuthRouteChildren = {
+  authAuthConfirmSignupRoute: authAuthConfirmSignupRoute,
+  authAuthForgotPasswordRoute: authAuthForgotPasswordRoute,
+  authAuthForgotUsernameRoute: authAuthForgotUsernameRoute,
+  authAuthLoginRoute: authAuthLoginRoute,
+  authAuthResetPasswordRoute: authAuthResetPasswordRoute,
+  authAuthSignupRoute: authAuthSignupRoute,
+  authAuthVerifyUsernameRoute: authAuthVerifyUsernameRoute,
+}
+
+const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
+  authAuthRouteChildren,
+)
+
+interface privatePrivateRouteChildren {
+  privatePrivateSettingsRoute: typeof privatePrivateSettingsRoute
+}
+
+const privatePrivateRouteChildren: privatePrivateRouteChildren = {
+  privatePrivateSettingsRoute: privatePrivateSettingsRoute,
+}
+
+const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
+  privatePrivateRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  ConfirmSignupRoute: ConfirmSignupRoute,
-  ForgotPasswordRoute: ForgotPasswordRoute,
-  ForgotUsernameRoute: ForgotUsernameRoute,
-  LogoutRoute: LogoutRoute,
+  IndexRoute: IndexRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
-  ResetPasswordRoute: ResetPasswordRoute,
-  SignupRoute: SignupRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
-  authLoginRoute: authLoginRoute,
-  privateLayoutRoute: privateLayoutRoute,
-  privateSettingsRoute: privateSettingsRoute,
-  privateIndexRoute: privateIndexRoute,
+  authAuthRoute: authAuthRouteWithChildren,
+  privatePrivateRoute: privatePrivateRouteWithChildren,
   authMfaConnectRoute: authMfaConnectRoute,
   authMfaEmailRoute: authMfaEmailRoute,
   authMfaSmsRoute: authMfaSmsRoute,

@@ -3,13 +3,8 @@ import UserSettingsForm from "@/components/forms/user-settings.form";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import DeleteAccountModal from "@/components/modals/delete-account-modal";
-import { requireAuth } from "@/lib/route-auth";
 
-export const Route = createFileRoute("/(private)/settings")({
-  beforeLoad: ({ location }) => {
-    console.log("beforeLoad in (private)/settings is running", location);
-    requireAuth({ location });
-  },
+export const Route = createFileRoute("/(private)/_private/settings")({
   component: UserSettings,
 });
 
@@ -22,8 +17,8 @@ function UserSettings() {
         <UserSettingsForm />
         <Button variant="link" className="mt-2 w-min" onClick={() => setShowAdvanced(!showAdvanced)}>Advanced</Button>
         {showAdvanced && (
-         <DeleteAccountModal />
-          
+          <DeleteAccountModal />
+
         )}
       </div>
     </div>
