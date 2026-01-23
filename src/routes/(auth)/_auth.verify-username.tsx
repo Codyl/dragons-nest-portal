@@ -1,5 +1,5 @@
 import VerifyUsernameForm from '@/components/forms/verify-username.form'
-import { Card, CardContent } from '@/components/ui/card'
+import CommonCard from '@/components/cards/common-card'
 import { useAuth } from '@/hooks/use-auth'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -11,11 +11,9 @@ function RouteComponent() {
   useAuth();
 
   return (
-    < Card className="w-full max-w-md" >
-      <CardContent>
-        <VerifyUsernameForm />
-      </CardContent>
-    </Card >
+    <CommonCard title="Verify Username" description="Enter your username to verify your account">
+      <VerifyUsernameForm />
+    </CommonCard>
   )
 
 

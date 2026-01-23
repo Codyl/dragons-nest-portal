@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import LoginForm from "@/components/forms/login.form";
-import { Card, CardContent } from "@/components/ui/card";
+import CommonCard from "@/components/cards/common-card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@tanstack/react-router";
 
@@ -22,11 +22,9 @@ function Login() {
   return (
     <>
       {availablePasswordChallenges.length > 0 && (
-        <Card className="w-full max-w-md">
-          <CardContent>
-            <LoginForm />
-          </CardContent>
-        </Card>
+        <CommonCard title="Login" description="Enter your email and password to login">
+          <LoginForm />
+        </CommonCard>
       )}
       {availablePasswordlessChallenges.length > 0 &&
         <div className="flex flex-col gap-2">

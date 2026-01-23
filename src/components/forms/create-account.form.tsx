@@ -6,7 +6,6 @@ import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
 import { useRouter, Link } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../layouts/auth-layout";
 
 const CreateAccountForm = ({
   className,
@@ -67,65 +66,58 @@ const CreateAccountForm = ({
   });
 
   return (
-    <AuthLayout
-      title="Create your account"
-      description="Enter your information to get started"
-      className={className}
-      {...props}
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className="space-y-4"
     >
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-        className="space-y-4"
-      >
-        {error && (
-          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            {error instanceof Error
-              ? error.message
-              : "An error occurred. Please try again."}
-          </div>
-        )}
-        <FieldGroup>
-          <form.Field
-            name="email"
-            children={(field) => (
-              <InputField field={field} label="Email" type="email" />
-            )}
-          />
-          <form.Field
-            name="password"
-            children={(field) => (
-              <InputField field={field} label="Password" type="password" />
-            )}
-          />
-          <form.Field
-            name="confirmPassword"
-            children={(field) => (
-              <InputField
-                field={field}
-                label="Confirm Password"
-                type="password"
-              />
-            )}
-          />
-        </FieldGroup>
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Creating account..." : "Create account"}
-        </Button>
-        <div className="text-center text-sm text-muted-foreground">
-          Already have an account?{" "}
-          <Link
-            to="/verify-username"
-            className="text-primary font-medium hover:underline"
-          >
-            Sign in
-          </Link>
+      {error && (
+        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+          {error instanceof Error
+            ? error.message
+            : "An error occurred. Please try again."}
         </div>
-      </form>
-    </AuthLayout>
+      )}
+      <FieldGroup>
+        <form.Field
+          name="email"
+          children={(field) => (
+            <InputField field={field} label="Email" type="email" />
+          )}
+        />
+        <form.Field
+          name="password"
+          children={(field) => (
+            <InputField field={field} label="Password" type="password" />
+          )}
+        />
+        <form.Field
+          name="confirmPassword"
+          children={(field) => (
+            <InputField
+              field={field}
+              label="Confirm Password"
+              type="password"
+            />
+          )}
+        />
+      </FieldGroup>
+      <Button type="submit" className="w-full" disabled={isPending}>
+        {isPending ? "Creating account..." : "Create account"}
+      </Button>
+      <div className="text-center text-sm text-muted-foreground">
+        Already have an account?{" "}
+        <Link
+          to="/verify-username"
+          className="text-primary font-medium hover:underline"
+        >
+          Sign in
+        </Link>
+      </div>
+    </form>
   );
 };
 

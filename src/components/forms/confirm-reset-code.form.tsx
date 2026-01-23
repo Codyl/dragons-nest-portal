@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { AuthLayout } from "../layouts/auth-layout";
 import InputField from "../fields/input-field";
 import { FieldGroup } from "../ui/field";
 import { useForm } from "@tanstack/react-form";
@@ -25,28 +24,23 @@ const ConfirmResetCodeForm = ({
     },
   });
   return (
-    <AuthLayout
-      title="Confirm your reset code"
-      description="Enter the code sent to your email"
-    >
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}>
-        <FieldGroup>
-          <form.Field
-            name="code"
-            children={(field) => (
-              <InputField field={field} label="Code" type="text" />
-            )}
-          />
-        </FieldGroup>
-        <Button type="submit" className="w-full">
-          Submit
-        </Button>
-      </form>
-    </AuthLayout>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      form.handleSubmit();
+    }}>
+      <FieldGroup>
+        <form.Field
+          name="code"
+          children={(field) => (
+            <InputField field={field} label="Code" type="text" />
+          )}
+        />
+      </FieldGroup>
+      <Button type="submit" className="w-full">
+        Submit
+      </Button>
+    </form>
   );
 };
 

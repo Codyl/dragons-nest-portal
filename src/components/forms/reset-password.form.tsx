@@ -4,14 +4,9 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { Link, useRouter } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
-import { AuthLayout } from "../layouts/auth-layout";
 import useConfirmForgotPassword from "@/hooks/use-confirm-forgot-password";
 
-const ResetPasswordForm = ({
-  setStep,
-}: {
-  setStep: (step: number) => void;
-}) => {
+const ResetPasswordForm = () => {
   const router = useRouter();
   const {
     mutate: resetPassword,
@@ -65,58 +60,48 @@ const ResetPasswordForm = ({
   });
 
   return (
-    <AuthLayout
-      title="Create new password"
-      description="Enter your new password below"
+
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className="space-y-4"
     >
-      <Button type="button" variant="link" className="text-sm" onClick={() => {
-        setStep(1);
-        form.reset();
-      }}>
-        Back
-      </Button>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-        className="space-y-4"
+      <FieldGroup>
+        <form.Field
+          name="newPassword"
+          children={(field) => (
+            <InputField field={field} label="New password" type="password" />
+          )}
+        />
+        <form.Field
+          name="confirmPassword"
+          children={(field) => (
+            <InputField
+              field={field}
+              label="Confirm new password"
+              type="password"
+            />
+          )}
+        />
+      </FieldGroup>
+      {error && <p className="text-red-500">{error.message}</p>}
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={isPending}
+        isPending={isPending}
       >
-        <FieldGroup>
-          <form.Field
-            name="newPassword"
-            children={(field) => (
-              <InputField field={field} label="New password" type="password" />
-            )}
-          />
-          <form.Field
-            name="confirmPassword"
-            children={(field) => (
-              <InputField
-                field={field}
-                label="Confirm new password"
-                type="password"
-              />
-            )}
-          />
-        </FieldGroup>
-        {error && <p className="text-red-500">{error.message}</p>}
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isPending}
-          isPending={isPending}
-        >
-          Reset password
-        </Button>
-        <div className="text-center text-sm">
-          <Link to="/verify-username" className="text-primary hover:underline">
-            Back to sign in
-          </Link>
-        </div>
-      </form>
-    </AuthLayout>
+        Reset password
+      </Button>
+      <div className="text-center text-sm">
+        <Link to="/verify-username" className="text-primary hover:underline">
+          Back to sign in
+        </Link>
+      </div>
+    </form>
   );
 };
 
