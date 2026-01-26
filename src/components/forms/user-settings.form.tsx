@@ -4,6 +4,8 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import useLoggedInUser from "@/hooks/use-logged-in-user";
 import useUpdateUserSettings from "@/hooks/use-update-user-account";
+import { normalizePhoneNumber } from "@/utils/helpers/input-normalization.helpers";
+import { formatPhoneNumber } from "@/utils/helpers/formatting.helpers";
 
 const UserSettingsForm = () => {
   const { data, error, isPending } = useLoggedInUser();
@@ -61,26 +63,26 @@ const UserSettingsForm = () => {
         <form.Field
           name="given_name"
           children={(field) => (
-            <InputField field={field} label="First Name (Optional)" />
+            <InputField field={field} label="First" />
           )}
         />
         <form.Field
           name="family_name"
           children={(field) => (
-            <InputField field={field} label="Last Name (Optional)" />
+            <InputField field={field} label="Last" />
           )}
         />
         <form.Field
           name="middle_name"
           children={(field) => (
-            <InputField field={field} label="Middle Name (Optional)" />
+            <InputField field={field} label="Middle" />
           )}
         />
 
         <form.Field
           name="phone_number"
           children={(field) => (
-            <InputField field={field} label="Phone Number (Optional)" />
+            <InputField placeholder="(202) 555-0123" normalize={normalizePhoneNumber} format={formatPhoneNumber} field={field} label="Phone Number (Optional)" />
           )}
         />
         <div>
@@ -106,8 +108,8 @@ const UserSettingsForm = () => {
         >
           Terms of Service
         </Button>
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Updating..." : "Update Settings"}
+        <Button type="submit" disabled={isPending} isPending={isPending}>
+          Update
         </Button>
       </form>
 

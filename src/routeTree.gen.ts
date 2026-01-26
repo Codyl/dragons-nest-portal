@@ -15,7 +15,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
 import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
 import { Route as authMfaIndexRouteImport } from './routes/(auth)/mfa/index'
-import { Route as privatePrivateSettingsRouteImport } from './routes/(private)/_private.settings'
+import { Route as privatePrivateSecuritySettingsRouteImport } from './routes/(private)/_private.security-settings'
+import { Route as privatePrivateAccountSettingsRouteImport } from './routes/(private)/_private.account-settings'
+import { Route as authOtpWebAuthRouteImport } from './routes/(auth)/otp/web-auth'
+import { Route as authOtpSmsRouteImport } from './routes/(auth)/otp/sms'
+import { Route as authOtpEmailRouteImport } from './routes/(auth)/otp/email'
 import { Route as authMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/verify-code'
 import { Route as authMfaSmsRouteImport } from './routes/(auth)/mfa/sms'
 import { Route as authMfaEmailRouteImport } from './routes/(auth)/mfa/email'
@@ -56,10 +60,32 @@ const authMfaIndexRoute = authMfaIndexRouteImport.update({
   path: '/mfa/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const privatePrivateSettingsRoute = privatePrivateSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => privatePrivateRoute,
+const privatePrivateSecuritySettingsRoute =
+  privatePrivateSecuritySettingsRouteImport.update({
+    id: '/security-settings',
+    path: '/security-settings',
+    getParentRoute: () => privatePrivateRoute,
+  } as any)
+const privatePrivateAccountSettingsRoute =
+  privatePrivateAccountSettingsRouteImport.update({
+    id: '/account-settings',
+    path: '/account-settings',
+    getParentRoute: () => privatePrivateRoute,
+  } as any)
+const authOtpWebAuthRoute = authOtpWebAuthRouteImport.update({
+  id: '/(auth)/otp/web-auth',
+  path: '/otp/web-auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authOtpSmsRoute = authOtpSmsRouteImport.update({
+  id: '/(auth)/otp/sms',
+  path: '/otp/sms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authOtpEmailRoute = authOtpEmailRouteImport.update({
+  id: '/(auth)/otp/email',
+  path: '/otp/email',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const authMfaVerifyCodeRoute = authMfaVerifyCodeRouteImport.update({
   id: '/(auth)/mfa/verify-code',
@@ -132,7 +158,11 @@ export interface FileRoutesByFullPath {
   '/mfa/email': typeof authMfaEmailRoute
   '/mfa/sms': typeof authMfaSmsRoute
   '/mfa/verify-code': typeof authMfaVerifyCodeRoute
-  '/settings': typeof privatePrivateSettingsRoute
+  '/otp/email': typeof authOtpEmailRoute
+  '/otp/sms': typeof authOtpSmsRoute
+  '/otp/web-auth': typeof authOtpWebAuthRoute
+  '/account-settings': typeof privatePrivateAccountSettingsRoute
+  '/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/mfa': typeof authMfaIndexRoute
 }
 export interface FileRoutesByTo {
@@ -150,7 +180,11 @@ export interface FileRoutesByTo {
   '/mfa/email': typeof authMfaEmailRoute
   '/mfa/sms': typeof authMfaSmsRoute
   '/mfa/verify-code': typeof authMfaVerifyCodeRoute
-  '/settings': typeof privatePrivateSettingsRoute
+  '/otp/email': typeof authOtpEmailRoute
+  '/otp/sms': typeof authOtpSmsRoute
+  '/otp/web-auth': typeof authOtpWebAuthRoute
+  '/account-settings': typeof privatePrivateAccountSettingsRoute
+  '/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/mfa': typeof authMfaIndexRoute
 }
 export interface FileRoutesById {
@@ -171,7 +205,11 @@ export interface FileRoutesById {
   '/(auth)/mfa/email': typeof authMfaEmailRoute
   '/(auth)/mfa/sms': typeof authMfaSmsRoute
   '/(auth)/mfa/verify-code': typeof authMfaVerifyCodeRoute
-  '/(private)/_private/settings': typeof privatePrivateSettingsRoute
+  '/(auth)/otp/email': typeof authOtpEmailRoute
+  '/(auth)/otp/sms': typeof authOtpSmsRoute
+  '/(auth)/otp/web-auth': typeof authOtpWebAuthRoute
+  '/(private)/_private/account-settings': typeof privatePrivateAccountSettingsRoute
+  '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/(auth)/mfa/': typeof authMfaIndexRoute
 }
 export interface FileRouteTypes {
@@ -191,7 +229,11 @@ export interface FileRouteTypes {
     | '/mfa/email'
     | '/mfa/sms'
     | '/mfa/verify-code'
-    | '/settings'
+    | '/otp/email'
+    | '/otp/sms'
+    | '/otp/web-auth'
+    | '/account-settings'
+    | '/security-settings'
     | '/mfa'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -209,7 +251,11 @@ export interface FileRouteTypes {
     | '/mfa/email'
     | '/mfa/sms'
     | '/mfa/verify-code'
-    | '/settings'
+    | '/otp/email'
+    | '/otp/sms'
+    | '/otp/web-auth'
+    | '/account-settings'
+    | '/security-settings'
     | '/mfa'
   id:
     | '__root__'
@@ -229,7 +275,11 @@ export interface FileRouteTypes {
     | '/(auth)/mfa/email'
     | '/(auth)/mfa/sms'
     | '/(auth)/mfa/verify-code'
-    | '/(private)/_private/settings'
+    | '/(auth)/otp/email'
+    | '/(auth)/otp/sms'
+    | '/(auth)/otp/web-auth'
+    | '/(private)/_private/account-settings'
+    | '/(private)/_private/security-settings'
     | '/(auth)/mfa/'
   fileRoutesById: FileRoutesById
 }
@@ -243,6 +293,9 @@ export interface RootRouteChildren {
   authMfaEmailRoute: typeof authMfaEmailRoute
   authMfaSmsRoute: typeof authMfaSmsRoute
   authMfaVerifyCodeRoute: typeof authMfaVerifyCodeRoute
+  authOtpEmailRoute: typeof authOtpEmailRoute
+  authOtpSmsRoute: typeof authOtpSmsRoute
+  authOtpWebAuthRoute: typeof authOtpWebAuthRoute
   authMfaIndexRoute: typeof authMfaIndexRoute
 }
 
@@ -290,12 +343,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authMfaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(private)/_private/settings': {
-      id: '/(private)/_private/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof privatePrivateSettingsRouteImport
+    '/(private)/_private/security-settings': {
+      id: '/(private)/_private/security-settings'
+      path: '/security-settings'
+      fullPath: '/security-settings'
+      preLoaderRoute: typeof privatePrivateSecuritySettingsRouteImport
       parentRoute: typeof privatePrivateRoute
+    }
+    '/(private)/_private/account-settings': {
+      id: '/(private)/_private/account-settings'
+      path: '/account-settings'
+      fullPath: '/account-settings'
+      preLoaderRoute: typeof privatePrivateAccountSettingsRouteImport
+      parentRoute: typeof privatePrivateRoute
+    }
+    '/(auth)/otp/web-auth': {
+      id: '/(auth)/otp/web-auth'
+      path: '/otp/web-auth'
+      fullPath: '/otp/web-auth'
+      preLoaderRoute: typeof authOtpWebAuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/otp/sms': {
+      id: '/(auth)/otp/sms'
+      path: '/otp/sms'
+      fullPath: '/otp/sms'
+      preLoaderRoute: typeof authOtpSmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/otp/email': {
+      id: '/(auth)/otp/email'
+      path: '/otp/email'
+      fullPath: '/otp/email'
+      preLoaderRoute: typeof authOtpEmailRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/mfa/verify-code': {
       id: '/(auth)/mfa/verify-code'
@@ -402,11 +483,13 @@ const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
 )
 
 interface privatePrivateRouteChildren {
-  privatePrivateSettingsRoute: typeof privatePrivateSettingsRoute
+  privatePrivateAccountSettingsRoute: typeof privatePrivateAccountSettingsRoute
+  privatePrivateSecuritySettingsRoute: typeof privatePrivateSecuritySettingsRoute
 }
 
 const privatePrivateRouteChildren: privatePrivateRouteChildren = {
-  privatePrivateSettingsRoute: privatePrivateSettingsRoute,
+  privatePrivateAccountSettingsRoute: privatePrivateAccountSettingsRoute,
+  privatePrivateSecuritySettingsRoute: privatePrivateSecuritySettingsRoute,
 }
 
 const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
@@ -423,6 +506,9 @@ const rootRouteChildren: RootRouteChildren = {
   authMfaEmailRoute: authMfaEmailRoute,
   authMfaSmsRoute: authMfaSmsRoute,
   authMfaVerifyCodeRoute: authMfaVerifyCodeRoute,
+  authOtpEmailRoute: authOtpEmailRoute,
+  authOtpSmsRoute: authOtpSmsRoute,
+  authOtpWebAuthRoute: authOtpWebAuthRoute,
   authMfaIndexRoute: authMfaIndexRoute,
 }
 export const routeTree = rootRouteImport

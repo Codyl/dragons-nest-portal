@@ -7,6 +7,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import useLogout from "@/hooks/use-logout";
+import { Toaster } from "@/components/ui/sonner";
 
 const RootLayout = () => {
   const { isAuthenticated } = useAuth();
@@ -59,6 +60,7 @@ const RootLayout = () => {
       </header>
       <main className="container mx-auto w-full min-h-screen p-4">
         <Outlet />
+        <Toaster />
       </main>
       <TanStackRouterDevtools />
     </>

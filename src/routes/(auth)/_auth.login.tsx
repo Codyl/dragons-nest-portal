@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import LoginForm from "@/components/forms/login.form";
 import CommonCard from "@/components/cards/common-card";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "@tanstack/react-router";
+import SelectOTPButton from "@/components/buttons/select-otp.button";
+import CHALLENGE_NAMES from "@/utils/constants/challenge-names";
 
 export const Route = createFileRoute("/(auth)/_auth/login")({
   component: Login,
@@ -29,9 +30,7 @@ function Login() {
       {availablePasswordlessChallenges.length > 0 &&
         <div className="flex flex-col gap-2 mt-3.5">
           {availablePasswordlessChallenges.map((challenge) => (
-            <Button className="capitalize" onClick={() => router.navigate({ to: `/sso/${challenge.replace("_OTP", "").toLowerCase()}` })} variant="outline" key={challenge}>
-              {challenge.replace("_OTP", " Single Sign On").toLowerCase()}
-            </Button>
+            <SelectOTPButton otpType={challenge as keyof typeof CHALLENGE_NAMES} key={challenge} />
           ))}
         </div>
       }

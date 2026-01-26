@@ -15,6 +15,21 @@ const UserServices = {
     const response = await api.put("users/me/account", { json });
     return response.json();
   },
+    changePassword: async (json: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    const response = await api.post("users/me/change-password", {
+      json,
+    });
+    return response.json();
+  },
+    deleteUser: async (json: {
+    password: string;
+  }) => {
+    const response = await api.delete("users/me", { json });
+    return response.json();
+  },
 };
 
 export default UserServices;

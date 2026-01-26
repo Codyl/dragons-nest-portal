@@ -1,4 +1,6 @@
 import ky from "ky";
+import { toast } from "sonner";
+import { redirect } from "@tanstack/react-router";
 
 /**
  * API client for unauthenticated requests (login, signup, etc.)
@@ -24,5 +26,23 @@ export const unauthenticatedApi = ky.create({
         throw error;
       },
     ],
+    afterResponse: [
+      async (request, options, response) => {
+        if (!response.ok) {
+          // Ky doesn't automatically parse JSON on error responses
+          // so we do it manually here
+          try {
+            const data = await response.json();
+            
+            if (data.data.redirect) {
+              toast(data.data.message || "Session expired");
+              throw redirect({ to: "/login" });
+            }
+          } catch (e) {
+            // Response wasn't JSON, handle accordingly
+          }
+        }
+      }
+    ]
   },
 });

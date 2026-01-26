@@ -22,6 +22,16 @@ const AuthServices = {
     );
     return response.json();
   },
+  answerOTP: async (json: {
+    otpType: string;
+    answer: string;
+    username: string;
+    session?: string;
+    emailCode?: string;
+  }) => {
+    const response = await unauthenticatedApi.post("auth/answer-otp", { json });
+    return response.json();
+  },
   initiateAuth: async (json: {
     username: string;
     password: string;
@@ -68,15 +78,6 @@ const AuthServices = {
     
     const response = await unauthenticatedApi.get("auth/logout", {
       searchParams: { accessToken: token },
-    });
-    return response.json();
-  },
-  changePassword: async (json: {
-    currentPassword: string;
-    newPassword: string;
-  }) => {
-    const response = await unauthenticatedApi.post("user/me/change-password", {
-      json,
     });
     return response.json();
   },
@@ -131,12 +132,7 @@ const AuthServices = {
     const response = await api.get("authenticated");
     return response.json();
   },
-  deleteUser: async (json: {
-    password: string;
-  }) => {
-    const response = await api.delete("users/me", { json });
-    return response.json();
-  },
+  
 };
 
 export default AuthServices;

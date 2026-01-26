@@ -1,9 +1,9 @@
-import AuthServices from "@/api/services/auth.services";
+import UserServices from "@/api/services/user.services";
 import { useMutation } from "@tanstack/react-query";
 
 const useChangePassword = () => {
   return useMutation({
-    mutationFn: AuthServices.changePassword,
+    mutationFn: UserServices.changePassword,
   });
 };
 
