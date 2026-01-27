@@ -29,9 +29,6 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
           {/* allow user to remove sso login methods and change password */}
           <LoginMethod className="py-2" method="Email & Password" buttonText="Change Password" onClick={() => setShowChangePasswordModal(true)} />
           <LoginMethod className="py-2" method="Google" buttonText={user?.loginMethods?.includes("GOOGLE") ? "Remove" : "Connect"} onClick={() => { }} />
-          <LoginMethod className="py-2" method="Email Single Sign On" buttonText={user?.loginMethods?.includes("EMAIL") ? "Remove" : "Connect"} onClick={() => { }} />
-          <LoginMethod className="py-2" method="SMS Single Sign On" buttonText={user?.loginMethods?.includes("SMS") ? "Remove" : "Connect"} onClick={() => { }} />
-          <LoginMethod className="py-2" method="WebAuthn Single Sign On" buttonText={user?.loginMethods?.includes("WEB_AUTHN") ? "Remove" : "Connect"} onClick={() => { }} />
         </div>
       </div>
     </>

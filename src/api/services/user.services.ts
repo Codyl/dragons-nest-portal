@@ -30,6 +30,23 @@ const UserServices = {
     const response = await api.delete("users/me", { json });
     return response.json();
   },
+  getKnownDevices: async () => {
+    const response = await api.get("users/me/known-devices");
+    return response.json();
+  },
+  rememberDevice: async (json: {
+    deviceKey: string;
+    deviceGroupKey: string;
+  }) => {
+    const response = await api.post("users/me/remember-device", { json });
+    return response.json();
+  },
+  forgetDevice: async (json: {
+    deviceKey: string;
+  }) => {
+    const response = await api.post("users/me/forget-device", { json });
+    return response.json();
+  },
 };
 
 export default UserServices;

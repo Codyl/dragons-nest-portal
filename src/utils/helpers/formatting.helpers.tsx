@@ -20,4 +20,9 @@ const formatPhoneNumber = (value: string) => {
 
 };
 
-export { formatPhoneNumber };
+
+const formatDate = (value: string) => {
+  return new Date(value).toLocaleDateString();
+};
+
+export { formatPhoneNumber, formatDate };

@@ -11,13 +11,23 @@ import { cn } from "@/lib/utils";
 import { useResendSignupConfirmationCode } from "@/hooks/use-resend-signup-confirmation-code";
 import { useState } from "react";
 import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.modal";
+import { UAParser } from "ua-parser-js";
 
 const LoginForm = ({ className }: { className?: string }) => {
   const router = useRouter();
   const username = sessionStorage.getItem("username") || "";
   const session = sessionStorage.getItem("session") || "";
+  const addedDeviceKey = localStorage.getItem("AddedDeviceKey") || "";
+
+
+  const parser = new UAParser();
+  const result = parser.getResult();
+
+  const friendlyName = `${result.browser.name} on ${result.os.name} ${result.device.model}`;
+
   const [showMFAAuthenticatorQRCodeModal, setShowMFAAuthenticatorQRCodeModal] =
     useState(false);
+
   const passwordSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters long"),
   });
@@ -37,6 +47,8 @@ const LoginForm = ({ className }: { className?: string }) => {
           username: username,
           password: value.password,
           session,
+          ...(addedDeviceKey ? { deviceKey: addedDeviceKey } : {}),
+          deviceName: friendlyName,
         },
         {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,23 +74,42 @@ const LoginForm = ({ className }: { className?: string }) => {
             if (data.data.ChallengeName === "MFA_SETUP") {
               setShowMFAAuthenticatorQRCodeModal(true);
             }
+
             // If no challenge, user is authenticated
-            if (!data.data.ChallengeName) {
-              if (data.data.AuthenticationResult?.AccessToken) {
+            if (!data.data.ChallengeName && data.data.AuthenticationResult?.AccessToken) {
+
+              localStorage.setItem(
+                "AccessToken",
+                data.data.AuthenticationResult.AccessToken,
+              );
+              localStorage.setItem(
+                "RefreshToken",
+                data.data.AuthenticationResult.RefreshToken || "",
+              );
+              localStorage.setItem(
+                "IdToken",
+                data.data.AuthenticationResult.IdToken || "",
+              );
+
+              if (data.data.AuthenticationResult.NewDeviceMetadata) {
                 localStorage.setItem(
-                  "AccessToken",
-                  data.data.AuthenticationResult.AccessToken,
+                  "DeviceKey",
+                  data.data.AuthenticationResult.NewDeviceMetadata.DeviceKey || "",
                 );
                 localStorage.setItem(
-                  "RefreshToken",
-                  data.data.AuthenticationResult.RefreshToken || "",
+                  "DeviceGroupKey",
+                  data.data.AuthenticationResult.NewDeviceMetadata.DeviceGroupKey || "",
                 );
-                localStorage.setItem(
-                  "IdToken",
-                  data.data.AuthenticationResult.IdToken || "",
-                );
-                router.navigate({ to: "/" });
               }
+
+              if (data.data.AuthenticationResult.DeviceRandomPassword) {
+                localStorage.setItem(
+                  "DeviceRandomPassword",
+                  data.data.AuthenticationResult.DeviceRandomPassword || "",
+                );
+              }
+
+              router.navigate({ to: "/" });
             }
           },
           onError: async (error) => {

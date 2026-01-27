@@ -14,6 +14,8 @@ declare module "@tanstack/react-router" {
   interface RouterContext {
     checkAuth: () => Promise<boolean>;
     isLoading: boolean;
+    user: any;
+    device: any;
   }
 }
 

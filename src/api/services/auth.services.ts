@@ -36,6 +36,8 @@ const AuthServices = {
     username: string;
     password: string;
     session?: string;
+    deviceKey?: string;
+    deviceName?: string;
   }) => {
     const response = await unauthenticatedApi.post("auth/initiate-login", {
       json,

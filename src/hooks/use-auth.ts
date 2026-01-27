@@ -11,7 +11,7 @@ export function useAuth() {
         return { isAuthenticated: false };
       }
       try {
-        await UserServices.getUser();
+        const user = await UserServices.getUser();
         return { isAuthenticated: true };
       } catch {
         return { isAuthenticated: false };
