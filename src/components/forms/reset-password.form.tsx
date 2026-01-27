@@ -52,7 +52,8 @@ const ResetPasswordForm = () => {
               localStorage.setItem("RefreshToken", data.data.AuthenticationResult.RefreshToken || "");
               localStorage.setItem("IdToken", data.data.AuthenticationResult.IdToken || "");
             }
-            router.navigate({ to: "/users" });
+            // Navigate to home page after successful password reset
+            router.navigate({ to: "/" });
           },
         },
       );

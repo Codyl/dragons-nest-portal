@@ -6,7 +6,11 @@ import { Link, useRouter } from "@tanstack/react-router";
 import { FieldGroup, FieldSeparator } from "../ui/field";
 import useForgotPassword from "@/hooks/use-forgot-password";
 
-const ForgotPasswordForm = () => {
+interface ForgotPasswordFormProps {
+  preFilledEmail?: string;
+}
+
+const ForgotPasswordForm = ({ preFilledEmail }: ForgotPasswordFormProps = {}) => {
   const router = useRouter();
   const { mutate: forgotPassword, isPending, error } = useForgotPassword();
   const schema = z.object({
@@ -15,7 +19,7 @@ const ForgotPasswordForm = () => {
 
   const form = useForm({
     defaultValues: {
-      username: sessionStorage.getItem("username") || "",
+      username: preFilledEmail || sessionStorage.getItem("username") || "",
     },
     validators: {
       onSubmit: schema,
@@ -26,7 +30,8 @@ const ForgotPasswordForm = () => {
         {
           onSuccess: () => {
             sessionStorage.setItem("username", value.username);
-            router.navigate({ to: "/reset-password" });
+            // Navigate to private reset-password route if user is logged in, otherwise auth route
+            router.navigate({ to: preFilledEmail ? "/reset-password" : "/reset-password" });
           },
         },
       );
@@ -81,9 +86,15 @@ const ForgotPasswordForm = () => {
         </div>
       </div>
       <div className="text-center text-sm">
-        <Link to="/login" className="text-primary hover:underline">
-          Back to sign in
-        </Link>
+        {preFilledEmail ? (
+          <Link to="/security-settings" className="text-primary hover:underline">
+            Back to security settings
+          </Link>
+        ) : (
+          <Link to="/login" className="text-primary hover:underline">
+            Back to sign in
+          </Link>
+        )}
       </div>
     </form>
   );
