@@ -23,7 +23,7 @@ const LoginForm = ({ className }: { className?: string }) => {
   const parser = new UAParser();
   const result = parser.getResult();
 
-  const friendlyName = `${result.browser.name} on ${result.os.name} ${result.device.model}`;
+  const friendlyName = `${result.browser.name} on ${result.os.name}`;
 
   const [showMFAAuthenticatorQRCodeModal, setShowMFAAuthenticatorQRCodeModal] =
     useState(false);
