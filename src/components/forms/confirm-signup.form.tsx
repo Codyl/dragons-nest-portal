@@ -6,11 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
 import ResendSignupConfirmationCodeButton from "../buttons/resend-signup-confirmation-code.button";
 import { FieldGroup } from "../ui/field";
-import { useState } from "react";
-import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.modal";
+import { useRouter } from "@tanstack/react-router";
 
 const ConfirmSignupForm = () => {
-  const [showGenerateSecretForm, setShowGenerateSecretForm] = useState(false);
+  const router = useRouter();
+
   const {
     mutate: confirmSignup,
     error,
@@ -21,7 +21,12 @@ const ConfirmSignupForm = () => {
       if (data.data.Session) {
         sessionStorage.setItem("session", data.data.Session);
       }
-      setShowGenerateSecretForm(true);
+      if (data.data.AuthenticationResult.AccessToken) {
+        localStorage.setItem("AccessToken", data.data.AuthenticationResult.AccessToken);
+        localStorage.setItem("RefreshToken", data.data.AuthenticationResult.RefreshToken);
+        localStorage.setItem("IdToken", data.data.AuthenticationResult.IdToken);
+        router.navigate({ to: "/" });
+      }
     },
   });
 
@@ -55,10 +60,6 @@ const ConfirmSignupForm = () => {
 
   return (
     <>
-      <MFAAuthenticatorQRCodeModal
-        show={showGenerateSecretForm}
-        setShow={setShowGenerateSecretForm}
-      />
       <form
         onSubmit={(e) => {
           e.preventDefault();
