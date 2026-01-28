@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
 import { useRouter, Link } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
+import GoogleSSOSignupButton from "../buttons/google-sso-signup.button";
 
 const CreateAccountForm = ({
   className,
@@ -116,6 +117,10 @@ const CreateAccountForm = ({
         >
           Sign in
         </Link>
+      </div>
+      <hr className="my-4" />
+      <div className="flex flex-col items-center gap-2">
+        <GoogleSSOSignupButton />
       </div>
     </form>
   );

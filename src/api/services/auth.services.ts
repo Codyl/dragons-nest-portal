@@ -100,6 +100,12 @@ const AuthServices = {
     });
     return response.json();
   },
+  googleSSOSignup: async (json: { credential: string }) => {
+    const response = await unauthenticatedApi.post("auth/google-sso-signup", {
+      json,
+    });
+    return response.json();
+  },
   resendSignupConfirmationCode: async (json: { username: string }) => {
     const response = await unauthenticatedApi.post(
       "auth/confirm-signup/resend-code",

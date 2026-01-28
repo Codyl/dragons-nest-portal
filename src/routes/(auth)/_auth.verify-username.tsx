@@ -2,6 +2,7 @@ import VerifyUsernameForm from '@/components/forms/verify-username.form'
 import CommonCard from '@/components/cards/common-card'
 import { useAuth } from '@/hooks/use-auth'
 import { createFileRoute } from '@tanstack/react-router'
+import { GoogleLogin } from '@react-oauth/google';
 
 export const Route = createFileRoute('/(auth)/_auth/verify-username')({
   component: RouteComponent,
@@ -13,6 +14,12 @@ function RouteComponent() {
   return (
     <CommonCard title="Verify Username" description="Enter your username to verify your account">
       <VerifyUsernameForm />
+      <hr className="my-4" />
+      <GoogleLogin onSuccess={(credentialResponse) => {
+        console.log(credentialResponse);
+      }} onError={() => {
+        console.log('Login Failed');
+      }} />
     </CommonCard>
   )
 
