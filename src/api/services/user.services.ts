@@ -24,6 +24,15 @@ const UserServices = {
     });
     return response.json();
   },
+  setUserMFAPreference: async (json: {
+    emailMfaEnabled?: boolean;
+    smsMfaEnabled?: boolean;
+    softwareTokenMfaEnabled?: boolean;
+    preferredMfa?: string;
+  }) => {
+    const response = await api.post("users/me/mfa-preference", { json });
+    return response.json();
+  },
     deleteUser: async (json: {
     password: string;
   }) => {
