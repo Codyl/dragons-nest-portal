@@ -15,6 +15,7 @@ const ResendSignupConfirmationCodeButton = () => {
   return (
     <>
       <Button
+        variant="link"
         type="button"
         disabled={isPending}
         onClick={() =>
