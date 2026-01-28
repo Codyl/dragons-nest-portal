@@ -11,16 +11,14 @@ export const Route = createFileRoute("/(private)/_private/account-settings")({
 function AccountSettings() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   return (
-    <div className="p-2">
-      <div className="flex flex-col mx-auto max-w-md">
-        <h2 className="text-2xl font-bold mb-4">Account Settings</h2>
-        <UserSettingsForm />
-        <Button variant="link" className="mt-2 w-min" onClick={() => setShowAdvanced(!showAdvanced)}>Advanced</Button>
-        {showAdvanced && (
-          <DeleteAccountModal />
+    <div className="flex flex-col mx-auto max-w-md">
+      <h2 className="text-2xl font-bold mb-4">Account Settings</h2>
+      <UserSettingsForm />
+      <Button variant="link" className="mt-2 w-min" onClick={() => setShowAdvanced(!showAdvanced)}>Advanced</Button>
+      {showAdvanced && (
+        <DeleteAccountModal />
 
-        )}
-      </div>
+      )}
     </div>
   );
 }

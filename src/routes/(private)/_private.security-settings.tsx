@@ -9,10 +9,8 @@ export const Route = createFileRoute('/(private)/_private/security-settings')({
 
 function SecuritySettings() {
   return (
-    <div className="p-2">
-      <div className="flex flex-col mx-auto max-w-md">
-        <h2 className="text-2xl font-bold mb-4">Security Settings</h2>
-      </div>
+    <div className="flex flex-col mx-auto max-w-md">
+      <h2 className="text-2xl font-bold mb-4">Security Settings</h2>
       <LoginMethodSettingsSection />
       <UserDeviceSettingsSection className="mt-4" />
       <UserMFAOptionsSettingsSection className="mt-4" />
