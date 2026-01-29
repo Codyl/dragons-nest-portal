@@ -36,7 +36,7 @@ const LoginForm = ({ className }: { className?: string }) => {
   const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
   const passwordForm = useForm({
     defaultValues: {
-      password: "Password123!",
+      password: "",
     },
     validators: {
       onSubmit: passwordSchema,

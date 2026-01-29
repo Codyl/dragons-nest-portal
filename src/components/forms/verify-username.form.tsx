@@ -15,7 +15,7 @@ const VerifyUsernameForm = () => {
 
   const usernameForm = useForm({
     defaultValues: {
-      username: "codylillyw@gmail.com",
+      username: "",
     },
     validators: {
       onSubmit: usernameSchema,

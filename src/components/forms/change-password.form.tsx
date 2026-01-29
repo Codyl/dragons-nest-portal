@@ -30,9 +30,9 @@ const ChangePasswordForm = ({ onPasswordChangeSuccess }: { onPasswordChangeSucce
 
   const form = useForm({
     defaultValues: {
-      currentPassword: "Password123!",
-      newPassword: "Sassword123!",
-      confirmPassword: "Sassword123!",
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
     validators: {
       onSubmit: schema,
@@ -84,7 +84,7 @@ const ChangePasswordForm = ({ onPasswordChangeSuccess }: { onPasswordChangeSucce
           )}
         />
       </FieldGroup>
-      {error && <p className="text-red-500">{error.message}</p>}
+      {error && <p className="text-destructive" data-testid="error-message">{error.message}</p>}
       <Button
         type="submit"
         className="w-full"

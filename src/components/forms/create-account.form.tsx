@@ -51,9 +51,9 @@ const CreateAccountForm = ({
 
   const form = useForm({
     defaultValues: {
-      email: "codylillyw+2@gmail.com",
-      password: "Password123!",
-      confirmPassword: "Password123!",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
     validators: {
       onSubmit: schema,

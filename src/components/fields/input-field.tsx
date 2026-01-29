@@ -26,9 +26,10 @@ const InputField = ({
 
   return (
     <Field data-invalid={isInvalid} className={className}>
-      <FieldLabel htmlFor={field.name}>{label}{required && <span className="text-destructive">*</span>}</FieldLabel>
+      <FieldLabel htmlFor={field.name} data-testid={`label-${field.name}`}>{label}{required && <span className="text-destructive">*</span>}</FieldLabel>
       <Input
         id={field.name}
+        data-testid={`input-${field.name}`}
         name={field.name}
         type={type}
         value={field.state.value}
@@ -41,7 +42,7 @@ const InputField = ({
         autoComplete="off"
         {...props}
       />
-      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+      {isInvalid && <FieldError data-testid={`error-message-${field.name}`} errors={field.state.meta.errors} />}
     </Field>
   );
 };

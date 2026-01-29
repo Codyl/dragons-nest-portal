@@ -23,6 +23,7 @@ const ConfirmResetCodeForm = ({
       sessionStorage.setItem("code", value.code);
     },
   });
+
   return (
     <form onSubmit={(e) => {
       e.preventDefault();
