@@ -65,11 +65,15 @@
     "@vitest/browser-playwright": "^4.0.16",
     "@vitest/coverage-v8": "^4.0.16",
     "cypress": "^15.9.0",
+    "cypress-vite": "^1.8.0",
     "eslint": "^9.39.1",
+    "eslint-plugin-cypress": "^5.2.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "eslint-plugin-storybook": "^10.2.1",
     "globals": "^16.5.0",
+    "msw": "^2.12.7",
+    "msw-storybook-addon": "^2.0.6",
     "playwright": "^1.57.0",
     "prettier": "3.8.0",
     "storybook": "^10.2.1",
@@ -78,5 +82,10 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
     "vitest": "^4.0.16"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

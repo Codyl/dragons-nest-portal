@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import UserSettingsForm from "@/components/forms/user-settings.form";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import DeleteAccountModal from "@/components/modals/delete-account-modal";
+import DeleteAccountModal from "@/components/modals/delete-account.modal";
 
 export const Route = createFileRoute("/(private)/_private/account-settings")({
   component: AccountSettings,
