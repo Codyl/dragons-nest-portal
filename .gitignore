@@ -26,6 +26,8 @@ dist-ssr
 *storybook.log
 storybook-static
 
+debug.log
+
 # stryker temp files
 .stryker-tmp
 .env
