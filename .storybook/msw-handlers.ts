@@ -1,21 +1,24 @@
 import { http, HttpResponse, delay } from 'msw';
 
-// API path patterns - ky uses prefixUrl, MSW matches with * for origin
-const matchChangePassword = '*/users/me/change-password';
-const matchDeleteUser = '*/users/me';
-const matchUsersMe = '*/users/me';
-const matchUsersMeAccount = '*/users/me/account';
-const matchAuthVerifyUsername = '*/auth/verify-username';
-const matchAuthInitiateLogin = '*/auth/initiate-login';
-const matchAuthForgotPassword = '*/auth/forgot-password';
-const matchAuthConfirmForgotPassword = '*/auth/confirm-forgot-password';
-const matchAuthInitiateSignup = '*/auth/initiate-signup';
-const matchAuthConfirmSignup = '*/auth/confirm-signup';
-const matchAuthResendCode = '*/auth/confirm-signup/resend-code';
-const matchAuthMfa = '*/auth/mfa';
-const matchAuthAnswerOtp = '*/auth/answer-otp';
-const matchAuthMfaGenerateSecret = '*/auth/mfa/generate-authenticator-secret';
-const matchAuthMfaConnect = '*/auth/mfa/connect-authenticator-app';
+/** Match by pathname so we intercept regardless of base URL (VITE_API_URL / origin) */
+const pathMatch = (pathname: string) => ({ request }: { request: Request }) =>
+  new URL(request.url).pathname === pathname;
+
+const matchChangePassword = pathMatch('/users/me/change-password');
+const matchDeleteUser = pathMatch('/users/me');
+const matchUsersMe = pathMatch('/users/me');
+const matchUsersMeAccount = pathMatch('/users/me/account');
+const matchAuthVerifyUsername = pathMatch('/auth/verify-username');
+const matchAuthInitiateLogin = pathMatch('/auth/initiate-login');
+const matchAuthForgotPassword = pathMatch('/auth/forgot-password');
+const matchAuthConfirmForgotPassword = pathMatch('/auth/confirm-forgot-password');
+const matchAuthInitiateSignup = pathMatch('/auth/initiate-signup');
+const matchAuthConfirmSignup = pathMatch('/auth/confirm-signup');
+const matchAuthResendCode = pathMatch('/auth/confirm-signup/resend-code');
+const matchAuthMfa = pathMatch('/auth/mfa');
+const matchAuthAnswerOtp = pathMatch('/auth/answer-otp');
+const matchAuthMfaGenerateSecret = pathMatch('/auth/mfa/generate-authenticator-secret');
+const matchAuthMfaConnect = pathMatch('/auth/mfa/connect-authenticator-app');
 
 // Default auth success response
 const authSuccess = {

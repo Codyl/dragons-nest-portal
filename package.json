@@ -15,7 +15,9 @@
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --component"
+    "cypress:run": "cypress run --component",
+    "cypress:run:e2e": "cypress run --e2e",
+    "cypress:open:e2e": "cypress open --e2e"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",
