@@ -187,7 +187,7 @@ const LoginForm = ({ className }: { className?: string }) => {
         <Button type="submit" className="w-full" disabled={isPending}>
           {isPending ? "Signing in..." : "Sign in"}
         </Button>
-        {error && <p className="text-red-500">{error.message}</p>}
+        {error && <p className="text-destructive mt-2" data-testid="error-message">{error.message}</p>}
       </form>
     </>
   );

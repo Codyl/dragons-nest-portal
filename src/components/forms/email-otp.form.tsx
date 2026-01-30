@@ -74,7 +74,7 @@ const EmailOTPForm = () => {
           )}
         />
       </FieldGroup>
-      {error && <p className="text-red-500">{error.message}</p>}
+      {error && <p className="text-destructive mt-2" data-testid="error-message">{error.message}</p>}
       <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
         Verify
       </Button>

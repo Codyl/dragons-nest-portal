@@ -56,7 +56,7 @@ const ForgotPasswordForm = ({ preFilledEmail }: ForgotPasswordFormProps = {}) =>
         />
       </FieldGroup>
       <div className="space-y-3">
-        {error && <p className="text-red-500">{error.message}</p>}
+        {error && <p className="text-destructive mt-2" data-testid="error-message">{error.message}</p>}
         <Button
           type="submit"
           className="w-full"

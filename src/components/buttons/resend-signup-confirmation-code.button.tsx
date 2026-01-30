@@ -27,7 +27,7 @@ const ResendSignupConfirmationCodeButton = () => {
         Resend Code
       </Button>
       {isPending && <p>Resending code...</p>}
-      {error && <p>Error: {error.message}</p>}
+      {error && <p className="text-destructive">Error: {error.message}</p>}
       {data && <p>Code resent</p>}
     </>
   );

@@ -100,7 +100,7 @@ const MFAGenerateSecretForm = () => {
       </form>
       {error && (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
-          <p className="text-red-600 dark:text-red-400">
+          <p className="text-destructive mt-2" data-testid="error-message">
             {error.message}
           </p>
         </div>

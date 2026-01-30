@@ -13,13 +13,12 @@ const UserSettingsForm = () => {
 
   const schema = z.object({
     email: z.email("Invalid email address"),
-    given_name: z.string().optional(),
-    family_name: z.string().optional(),
-    middle_name: z.string().optional(),
+    given_name: z.string(),
+    family_name: z.string(),
+    middle_name: z.string(),
     phone_number: z
       .string()
-      .regex(/^\d{10}$/, "Invalid phone number")
-      .optional(),
+      .refine((val) => val === "" || /^\d{10}$/.test(val), "Invalid phone number"),
   });
 
   const userData = data?.data;
@@ -114,7 +113,7 @@ const UserSettingsForm = () => {
       </form>
 
       {error && (
-        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
+        <div className="p-4 bg-destructive/10 rounded-md" data-testid="error-message">
           <p className="text-red-600 dark:text-red-400">{error?.message}</p>
         </div>
       )}
