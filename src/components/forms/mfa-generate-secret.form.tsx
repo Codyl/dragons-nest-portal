@@ -38,7 +38,7 @@ const MFAGenerateSecretForm = () => {
     return null;
   }, [data]);
 
-  const { mutate: connectAuthenticatorApp, isPending } =
+  const { mutate: connectAuthenticatorApp, isPending, error: connectAuthenticatorError } =
     useConnectAuthenticator();
 
   const schema = z.object({
@@ -98,10 +98,17 @@ const MFAGenerateSecretForm = () => {
           Continue
         </Button>
       </form>
-      {error && (
+      {error?.message && (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
           <p className="text-destructive mt-2" data-testid="error-message">
             {error.message}
+          </p>
+        </div>
+      )}
+      {connectAuthenticatorError?.message && (
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
+          <p className="text-destructive mt-2" data-testid="error-message">
+            {connectAuthenticatorError.message}
           </p>
         </div>
       )}

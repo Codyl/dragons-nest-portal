@@ -8,7 +8,7 @@ describe('MFAConnectForm', () => {
   });
 
   it('should connect authenticator successfully', () => {
-    cy.intercept('POST', '**/auth/connect-authenticator-app', {
+    cy.intercept('POST', '**/auth/mfa/connect-authenticator-app', {
       statusCode: 200,
       body: {
         qrString: 'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
@@ -21,7 +21,7 @@ describe('MFAConnectForm', () => {
   });
 
   it('should show error when connection fails', () => {
-    cy.intercept('POST', '**/auth/connect-authenticator-app', {
+    cy.intercept('POST', '**/auth/mfa/connect-authenticator-app', {
       statusCode: 400,
       body: {
         message: 'Connection failed',
@@ -40,7 +40,7 @@ describe('MFAConnectForm', () => {
   });
 
   it('should show loading state when submitting', () => {
-    cy.intercept('POST', '**/auth/connect-authenticator-app', {
+    cy.intercept('POST', '**/auth/mfa/connect-authenticator-app', {
       delay: 1000,
       statusCode: 200,
       body: {

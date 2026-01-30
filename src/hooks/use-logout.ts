@@ -7,7 +7,8 @@ const useLogout = (): UseMutationResult<
     message: string;
     data: {};
   },
-  Error
+  Error,
+  void
 > => {
   const router = useRouter();
   return useMutation({

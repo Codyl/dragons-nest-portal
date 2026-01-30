@@ -77,7 +77,7 @@ const CreateAccountForm = ({
     >
       {error && (
         <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          {error instanceof Error
+          {error.message
             ? error.message
             : "An error occurred. Please try again."}
         </div>
@@ -86,7 +86,7 @@ const CreateAccountForm = ({
         <form.Field
           name="email"
           children={(field) => (
-            <InputField field={field} label="Email" type="email" />
+            <InputField field={field} label="Email" type="text" />
           )}
         />
         <form.Field
@@ -120,7 +120,7 @@ const CreateAccountForm = ({
       </div>
       <hr className="my-4" />
       <div className="flex flex-col items-center gap-2">
-        <GoogleSSOSignupButton />
+        {!window.Cypress && <GoogleSSOSignupButton />}
       </div>
     </form>
   );

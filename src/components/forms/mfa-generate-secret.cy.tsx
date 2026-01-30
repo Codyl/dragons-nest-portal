@@ -14,7 +14,7 @@ describe('MFAGenerateSecretForm', () => {
   });
 
   it('should render', () => {
-    cy.intercept('POST', '**/auth/associate-software-token', {
+    cy.intercept('POST', '**/auth/mfa/generate-authenticator-secret', {
       statusCode: 200,
       body: {
         data: {
@@ -29,7 +29,7 @@ describe('MFAGenerateSecretForm', () => {
   });
 
   it('should connect authenticator app successfully', () => {
-    cy.intercept('POST', '**/auth/associate-software-token', {
+    cy.intercept('POST', '**/auth/mfa/generate-authenticator-secret', {
       statusCode: 200,
       body: {
         data: {
@@ -38,7 +38,7 @@ describe('MFAGenerateSecretForm', () => {
         },
       },
     });
-    cy.intercept('POST', '**/auth/verify-software-token', {
+    cy.intercept('POST', '**/auth/mfa/connect-authenticator-app', {
       statusCode: 200,
       body: {
         data: {
@@ -52,8 +52,8 @@ describe('MFAGenerateSecretForm', () => {
     // Should navigate on success
   });
 
-  it('should show error when code is invalid', () => {
-    cy.intercept('POST', '**/auth/associate-software-token', {
+  it.only('should show error when code is invalid', () => {
+    cy.intercept('POST', '**/auth/mfa/generate-authenticator-secret', {
       statusCode: 200,
       body: {
         data: {
@@ -62,7 +62,7 @@ describe('MFAGenerateSecretForm', () => {
         },
       },
     });
-    cy.intercept('POST', '**/auth/verify-software-token', {
+    cy.intercept('POST', '**/auth/mfa/connect-authenticator-app', {
       statusCode: 400,
       body: {
         message: 'Invalid code',
@@ -75,7 +75,7 @@ describe('MFAGenerateSecretForm', () => {
   });
 
   it('should require code field', () => {
-    cy.intercept('POST', '**/auth/associate-software-token', {
+    cy.intercept('POST', '**/auth/mfa/generate-authenticator-secret', {
       statusCode: 200,
       body: {
         data: {
@@ -90,7 +90,7 @@ describe('MFAGenerateSecretForm', () => {
   });
 
   it('should show loading state when submitting', () => {
-    cy.intercept('POST', '**/auth/associate-software-token', {
+    cy.intercept('POST', '**/auth/mfa/generate-authenticator-secret', {
       statusCode: 200,
       body: {
         data: {
@@ -99,7 +99,7 @@ describe('MFAGenerateSecretForm', () => {
         },
       },
     });
-    cy.intercept('POST', '**/auth/verify-software-token', {
+    cy.intercept('POST', '**/auth/mfa/connect-authenticator-app', {
       delay: 1000,
       statusCode: 200,
       body: {

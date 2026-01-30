@@ -2,6 +2,9 @@ import type { Preview } from '@storybook/react-vite';
 import { setupWorker } from 'msw/browser';
 import { handlers } from './msw-handlers';
 import '../src/index.css';
+import { initialize, mswLoader } from 'msw-storybook-addon';
+
+initialize();
 
 // Set up MSW worker - will be started per story with different handlers
 let worker: ReturnType<typeof setupWorker> | null = null;
@@ -23,6 +26,7 @@ const preview: Preview = {
       test: 'todo',
     },
   },
+  loaders: [mswLoader],
   decorators: [
     (Story, context) => {
       // Initialize worker if not already done

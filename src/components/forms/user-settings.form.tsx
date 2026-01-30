@@ -8,8 +8,8 @@ import { normalizePhoneNumber } from "@/utils/helpers/input-normalization.helper
 import { formatPhoneNumber } from "@/utils/helpers/formatting.helpers";
 
 const UserSettingsForm = () => {
-  const { data, error, isPending } = useLoggedInUser();
-  const { mutate: updateSettings } = useUpdateUserSettings();
+  const { data, isPending } = useLoggedInUser();
+  const { mutate: updateSettings, error: updateSettingsError, isPending: isUpdating } = useUpdateUserSettings();
 
   const schema = z.object({
     email: z.email("Invalid email address"),
@@ -107,14 +107,14 @@ const UserSettingsForm = () => {
         >
           Terms of Service
         </Button>
-        <Button type="submit" disabled={isPending} isPending={isPending}>
+        <Button type="submit" disabled={isPending || isUpdating} isPending={isPending || isUpdating}>
           Update
         </Button>
       </form>
 
-      {error && (
+      {updateSettingsError?.message && (
         <div className="p-4 bg-destructive/10 rounded-md" data-testid="error-message">
-          <p className="text-red-600 dark:text-red-400">{error?.message}</p>
+          <p className="text-red-600 dark:text-red-400">{updateSettingsError.message}</p>
         </div>
       )}
     </div>

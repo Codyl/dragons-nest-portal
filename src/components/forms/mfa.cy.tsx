@@ -19,7 +19,7 @@ describe('MFAForm', () => {
   });
 
   it('should verify MFA code successfully', () => {
-    cy.intercept('POST', '**/auth/complete-mfa-auth', {
+    cy.intercept('POST', '**/auth/mfa', {
       statusCode: 200,
       body: {
         data: {
@@ -38,7 +38,7 @@ describe('MFAForm', () => {
   });
 
   it('should show error when code is invalid', () => {
-    cy.intercept('POST', '**/auth/complete-mfa-auth', {
+    cy.intercept('POST', '**/auth/mfa', {
       statusCode: 400,
       body: {
         message: 'Invalid code',
@@ -65,7 +65,7 @@ describe('MFAForm', () => {
   });
 
   it('should show loading state when submitting', () => {
-    cy.intercept('POST', '**/auth/complete-mfa-auth', {
+    cy.intercept('POST', '**/auth/mfa', {
       delay: 1000,
       statusCode: 200,
       body: {

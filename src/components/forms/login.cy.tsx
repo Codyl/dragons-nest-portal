@@ -19,7 +19,7 @@ describe('LoginForm', () => {
   });
 
   it('should login successfully', () => {
-    cy.intercept('POST', '**/auth/login', {
+    cy.intercept('POST', '**/auth/initiate-login', {
       statusCode: 200,
       body: {
         data: {
@@ -38,7 +38,7 @@ describe('LoginForm', () => {
   });
 
   it('should show error when password is incorrect', () => {
-    cy.intercept('POST', '**/auth/login', {
+    cy.intercept('POST', '**/auth/initiate-login', {
       statusCode: 401,
       body: {
         message: 'Incorrect username or password',
@@ -58,7 +58,7 @@ describe('LoginForm', () => {
   });
 
   it('should show loading state when submitting', () => {
-    cy.intercept('POST', '**/auth/login', {
+    cy.intercept('POST', '**/auth/initiate-login', {
       delay: 1000,
       statusCode: 200,
       body: {
@@ -85,7 +85,7 @@ describe('LoginForm', () => {
   });
 
   it('should navigate to MFA when challenge is SOFTWARE_TOKEN_MFA', () => {
-    cy.intercept('POST', '**/auth/login', {
+    cy.intercept('POST', '**/auth/initiate-login', {
       statusCode: 200,
       body: {
         data: {

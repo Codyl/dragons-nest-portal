@@ -32,3 +32,4 @@ debug.log
 .stryker-tmp
 .env
 .tanstack
+cypress/screenshots

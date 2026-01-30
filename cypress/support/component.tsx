@@ -13,10 +13,9 @@ import type { ReactNode } from 'react';
 import React from 'react';
 import './commands';
 import '../../src/index.css';
-
+import * as GoogleOAuth from '@react-oauth/google';
 
 Cypress.Commands.add('mount', (component: ReactNode, options: MountOptions = {}) => {
-
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { retry: false },
@@ -37,12 +36,14 @@ Cypress.Commands.add('mount', (component: ReactNode, options: MountOptions = {})
     defaultPendingMinMs: 0,
   });
 
-  cy.intercept('GET', '/users/me', {
+  cy.intercept('GET', '**/users/me', {
     statusCode: 200,
     body: {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
+      data: {
+        email: 'john.doe@example.com',
+        given_name: 'John',
+        family_name: 'Doe',
+      },
     },
   });
 
@@ -52,4 +53,39 @@ Cypress.Commands.add('mount', (component: ReactNode, options: MountOptions = {})
     </QueryClientProvider>,
     options
   );
+});
+
+/**
+ * Mount a Storybook story via composeStories for reuse in Cypress tests.
+ * Use: cy.mountStory(ComposedDefault) after importing { Default } from composeStories(stories)
+ */
+Cypress.Commands.add('mountStory', (StoryComponent: React.ComponentType, options: MountOptions = {}) => {
+  return cy.mount(React.createElement(StoryComponent), options);
+});
+
+beforeEach(() => {
+  cy.intercept('POST', '*', {
+    statusCode: 200,
+    body: {
+      message: 'Success'
+    },
+  });
+  cy.intercept('GET', '*', {
+    statusCode: 200,
+    body: {
+      message: 'Success'
+    },
+  });
+  cy.intercept('DELETE', '*', {
+    statusCode: 200,
+    body: {
+      message: 'Success'
+    },
+  });
+  cy.intercept('PUT', '*', {
+    statusCode: 200,
+    body: {
+      message: 'Success'
+    },
+  });
 });

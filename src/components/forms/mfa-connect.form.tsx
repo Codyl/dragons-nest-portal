@@ -61,7 +61,7 @@ const MFAConnectForm = () => {
       {error && (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
           <p className="text-destructive mt-2" data-testid="error-message">
-            Error: {error instanceof Error ? error.message : "Unknown error"}
+            Error: {error.message ?? "Unknown error"}
           </p>
         </div>
       )}

@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
+import useAuth from "@/hooks/use-auth";
 import useLogout from "@/hooks/use-logout";
 import { Toaster } from "@/components/ui/sonner";
 

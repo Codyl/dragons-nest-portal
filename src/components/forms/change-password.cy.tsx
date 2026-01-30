@@ -1,8 +1,24 @@
+import { composeStories } from "@storybook/react-vite";
+import * as stories from "./change-password.form.stories";
 import ChangePasswordForm from "./change-password.form";
+
+const { Default } = composeStories(stories);
 
 describe('ChangePasswordForm', () => {
   it('should render', () => {
     cy.mount(<ChangePasswordForm onPasswordChangeSuccess={() => { }} />);
+  });
+
+  it('should render via Storybook story (reuses story setup)', () => {
+    cy.intercept('POST', '**/users/me/change-password', {
+      statusCode: 200,
+      body: { message: 'Password changed successfully' },
+    });
+    cy.mountStory(Default);
+    cy.get('input[name="currentPassword"]').should('exist');
+    cy.get('input[name="newPassword"]').should('exist');
+    cy.get('input[name="confirmPassword"]').should('exist');
+    cy.get('button[type="submit"]').should('exist');
   });
 
   it('should call onPasswordChangeSuccess when password is changed', () => {

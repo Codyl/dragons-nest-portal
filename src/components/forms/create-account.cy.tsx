@@ -85,7 +85,7 @@ describe('CreateAccountForm', () => {
   });
 
   it('should show loading state when submitting', () => {
-    cy.intercept('POST', '**/auth/signup', {
+    cy.intercept('POST', '**/auth/initiate-signup', {
       delay: 1000,
       statusCode: 200,
       body: {
@@ -104,7 +104,7 @@ describe('CreateAccountForm', () => {
   });
 
   it('should show error when signup fails', () => {
-    cy.intercept('POST', '**/auth/signup', {
+    cy.intercept('POST', '**/auth/initiate-signup', {
       statusCode: 400,
       body: {
         message: 'User already exists',
