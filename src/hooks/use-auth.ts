@@ -1,17 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
-import UserServices from "@/api/services/user.services";
+import { useQuery } from '@tanstack/react-query';
+import { useCallback } from 'react';
+import UserServices from '@/api/services/user.services';
 
-export function useAuth() {
+const useAuth = (): {
+  isLoading: boolean;
+  checkAuth: () => Promise<boolean>;
+  isAuthenticated: boolean;
+} => {
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["auth-status"],
+    queryKey: ['auth-status'],
     queryFn: async () => {
-      const token = localStorage.getItem("AccessToken");
+      const token = localStorage.getItem('AccessToken');
       if (!token) {
         return { isAuthenticated: false };
       }
       try {
-        const user = await UserServices.getUser();
+        await UserServices.getUser();
         return { isAuthenticated: true };
       } catch {
         return { isAuthenticated: false };
@@ -36,4 +40,6 @@ export function useAuth() {
     checkAuth: ensureAuth,
     isAuthenticated: data?.isAuthenticated ?? false,
   };
-}
+};
+
+export default useAuth;

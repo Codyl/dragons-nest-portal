@@ -1,8 +1,21 @@
-import { api } from "../api.config";
+import { api } from '../api.config';
 
 const UserServices = {
-  getUser: async () => {
-    const response = await api.get("users/me");
+  getUser: async (): Promise<{
+    message: string;
+    data: {
+      email?: string;
+      family_name?: string;
+      middle_name?: string;
+      given_name?: string;
+      phone_number?: string;
+      emailMfaEnabled?: boolean;
+      smsMfaEnabled?: boolean;
+      softwareTokenMfaEnabled?: boolean;
+      preferredMfa?: string;
+    };
+  }> => {
+    const response = await api.get('users/me');
     return response.json();
   },
   updateUserSettings: async (json: {
@@ -11,15 +24,15 @@ const UserServices = {
     middle_name?: string;
     given_name?: string;
     phone_number?: string;
-  }) => {
-    const response = await api.put("users/me/account", { json });
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.put('users/me/account', { json });
     return response.json();
   },
-    changePassword: async (json: {
+  changePassword: async (json: {
     currentPassword: string;
     newPassword: string;
-  }) => {
-    const response = await api.post("users/me/change-password", {
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.post('users/me/change-password', {
       json,
     });
     return response.json();
@@ -29,31 +42,44 @@ const UserServices = {
     smsMfaEnabled?: boolean;
     softwareTokenMfaEnabled?: boolean;
     preferredMfa?: string;
-  }) => {
-    const response = await api.post("users/me/mfa-preference", { json });
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.post('users/me/mfa-preference', { json });
     return response.json();
   },
-    deleteUser: async (json: {
+  deleteUser: async (json: {
     password: string;
-  }) => {
-    const response = await api.delete("users/me", { json });
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.delete('users/me', { json });
     return response.json();
   },
-  getKnownDevices: async () => {
-    const response = await api.get("users/me/known-devices");
+  getKnownDevices: async (): Promise<{
+    message: string;
+    data: {
+      DeviceKey: string;
+      DeviceName: string;
+      DeviceLastIPUsed: string;
+      DeviceCreateDate: string;
+      DeviceLastAuthenticatedDate: string;
+      DeviceLastModifiedDate: string;
+      City: string;
+      Region: string;
+      Country: string;
+    }[];
+  }> => {
+    const response = await api.get('users/me/known-devices');
     return response.json();
   },
   rememberDevice: async (json: {
     deviceKey: string;
-    deviceGroupKey: string;
-  }) => {
-    const response = await api.post("users/me/remember-device", { json });
+    shouldRememberDevice: boolean;
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.post('users/me/remember-device', { json });
     return response.json();
   },
   forgetDevice: async (json: {
     deviceKey: string;
-  }) => {
-    const response = await api.post("users/me/forget-device", { json });
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.post('users/me/forget-device', { json });
     return response.json();
   },
 };

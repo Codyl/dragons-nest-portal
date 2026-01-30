@@ -1,21 +1,47 @@
-import { api } from "../api.config";
-import { unauthenticatedApi } from "../api.unauthenticated.config";
+import { api } from '../api.config';
+import { unauthenticatedApi } from '../api.unauthenticated.config';
 
 const AuthServices = {
-  verifyUsername: async (json: { email: string; session?: string }) => {
-    const response = await unauthenticatedApi.post("auth/verify-username", {
+  verifyUsername: async (json: {
+    email: string;
+    session?: string;
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      AvailableChallenges: string[];
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/verify-username', {
       json,
     });
-    return response.json();
+    return response.json() as Promise<{
+      message: string;
+      data: {
+        Session: string;
+        AvailableChallenges: string[];
+      };
+    }>;
   },
   selectAuthChallenge: async (json: {
     answer: string;
     username: string;
     session?: string;
     emailCode?: string;
-  }) => {
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      ChallengeName: string;
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
     const response = await unauthenticatedApi.post(
-      "auth/select-auth-challenge",
+      'auth/select-auth-challenge',
       {
         json,
       },
@@ -28,8 +54,19 @@ const AuthServices = {
     username: string;
     session?: string;
     emailCode?: string;
-  }) => {
-    const response = await unauthenticatedApi.post("auth/answer-otp", { json });
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      ChallengeName: string;
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/answer-otp', { json });
     return response.json();
   },
   initiateAuth: async (json: {
@@ -38,8 +75,24 @@ const AuthServices = {
     session?: string;
     deviceKey?: string;
     deviceName?: string;
-  }) => {
-    const response = await unauthenticatedApi.post("auth/initiate-login", {
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      ChallengeName: string;
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+        NewDeviceMetadata?: {
+          DeviceKey?: string;
+          DeviceName?: string;
+        };
+        DeviceRandomPassword?: string;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/initiate-login', {
       json,
     });
     return response.json();
@@ -50,12 +103,25 @@ const AuthServices = {
     softwareTokenMfaCode: string;
     session: string;
     challengeName: string;
-  }) => {
-    const response = await unauthenticatedApi.post("auth/mfa", { json });
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      ChallengeName: string;
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/mfa', { json });
     return response.json();
   },
-  forgotPassword: async (json: { username: string }) => {
-    const response = await unauthenticatedApi.post("auth/forgot-password", {
+  forgotPassword: async (json: {
+    username: string;
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await unauthenticatedApi.post('auth/forgot-password', {
       json,
     });
     return response.json();
@@ -64,27 +130,44 @@ const AuthServices = {
     username: string;
     code: string;
     password: string;
-  }) => {
+  }): Promise<{
+    message: string;
+    data: {
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
     const response = await unauthenticatedApi.post(
-      "auth/confirm-forgot-password",
+      'auth/confirm-forgot-password',
       { json },
     );
     return response.json();
   },
-  logout: async () => {
-    const token = localStorage.getItem("AccessToken");
+  logout: async (): Promise<{ message: string; data: {} }> => {
+    const token = localStorage.getItem('AccessToken');
 
     if (!token) {
-      throw new Error("No access token found");
+      throw new Error('No access token found');
     }
-    
-    const response = await unauthenticatedApi.get("auth/logout", {
+
+    const response = await unauthenticatedApi.get('auth/logout', {
       searchParams: { accessToken: token },
     });
     return response.json();
   },
-  initiateSignup: async (json: { email: string; password: string }) => {
-    const response = await unauthenticatedApi.post("auth/initiate-signup", {
+  initiateSignup: async (json: {
+    email: string;
+    password: string;
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/initiate-signup', {
       json,
     });
     return response.json();
@@ -94,21 +177,45 @@ const AuthServices = {
     code: string;
     session?: string;
     password?: string;
-  }) => {
-    const response = await unauthenticatedApi.post("auth/confirm-signup", {
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      ChallengeName: string;
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/confirm-signup', {
       json,
     });
     return response.json();
   },
-  googleSSOSignup: async (json: { credential: string }) => {
-    const response = await unauthenticatedApi.post("auth/google-sso-signup", {
+  googleSSOSignup: async (json: {
+    credential: string;
+  }): Promise<{
+    message: string;
+    data: {
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/google-sso-signup', {
       json,
     });
     return response.json();
   },
-  resendSignupConfirmationCode: async (json: { username: string }) => {
+  resendSignupConfirmationCode: async (json: {
+    username: string;
+  }): Promise<{ message: string; data: {} }> => {
     const response = await unauthenticatedApi.post(
-      "auth/confirm-signup/resend-code",
+      'auth/confirm-signup/resend-code',
       { json },
     );
     return response.json();
@@ -117,8 +224,14 @@ const AuthServices = {
     session: string;
     username: string;
     accessToken?: string;
-  }) => {
-    const response = await api.post("auth/mfa/generate-authenticator-secret", {
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      qrString: string;
+    };
+  }> => {
+    const response = await api.post('auth/mfa/generate-authenticator-secret', {
       json,
     });
     return response.json();
@@ -130,17 +243,23 @@ const AuthServices = {
     userCode: string;
     username: string;
     password: string;
-  }) => {
-    const response = await api.post("auth/mfa/connect-authenticator-app", {
+  }): Promise<{
+    message: string;
+    data: {
+      Session: string;
+      ChallengeName: string;
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
+    const response = await api.post('auth/mfa/connect-authenticator-app', {
       json,
     });
     return response.json();
   },
-  checkAuthenticated: async () => {
-    const response = await api.get("authenticated");
-    return response.json();
-  },
-  
 };
 
 export default AuthServices;

@@ -1,30 +1,28 @@
-import AuthServices from "@/api/services/auth.services";
-import { useRouter } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
+import AuthServices from '@/api/services/auth.services';
+import { useRouter } from '@tanstack/react-router';
+import { useMutation } from '@tanstack/react-query';
 
-type GoogleSignupResponse = {
-  data?: {
-    AuthenticationResult?: {
-      AccessToken?: string;
-      RefreshToken?: string;
-      IdToken?: string;
-    };
-  };
-};
-
-const useGoogleSignup = () => {
+const useGoogleSignup = (): {
+  signUpWithGoogle: (credential: string) => void;
+  isPending: boolean;
+  error: Error | null;
+} => {
   const router = useRouter();
 
-  const { mutate: googleSignup, isPending, error } = useMutation({
+  const {
+    mutate: googleSignup,
+    isPending,
+    error,
+  } = useMutation({
     mutationFn: (json: { credential: string }) =>
-      AuthServices.googleSSOSignup(json) as Promise<GoogleSignupResponse>,
+      AuthServices.googleSSOSignup(json),
     onSuccess: (data) => {
       const result = data?.data?.AuthenticationResult;
       if (result?.AccessToken) {
-        localStorage.setItem("AccessToken", result.AccessToken);
-        localStorage.setItem("RefreshToken", result.RefreshToken ?? "");
-        localStorage.setItem("IdToken", result.IdToken ?? "");
-        router.navigate({ to: "/" });
+        localStorage.setItem('AccessToken', result.AccessToken);
+        localStorage.setItem('RefreshToken', result.RefreshToken ?? '');
+        localStorage.setItem('IdToken', result.IdToken ?? '');
+        router.navigate({ to: '/' });
       }
     },
   });
