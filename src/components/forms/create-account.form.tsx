@@ -106,8 +106,8 @@ const CreateAccountForm = ({
           )}
         />
       </FieldGroup>
-      <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Creating account..." : "Create account"}
+      <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
+        Create Account
       </Button>
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
@@ -120,7 +120,7 @@ const CreateAccountForm = ({
       </div>
       <hr className="my-4" />
       <div className="flex flex-col items-center gap-2">
-        {!window.Cypress && <GoogleSSOSignupButton />}
+        {!window.Cypress && !import.meta.env.STORYBOOK === true && <GoogleSSOSignupButton />}
       </div>
     </form>
   );

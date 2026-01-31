@@ -87,8 +87,8 @@ const ConfirmSignupForm = () => {
             )}
           />
         </FieldGroup>
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Verifying..." : "Verify email"}
+        <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
+          Verify Email
         </Button>
         <div className="text-center">
           <ResendSignupConfirmationCodeButton />

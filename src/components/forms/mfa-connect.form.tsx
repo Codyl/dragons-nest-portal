@@ -46,8 +46,8 @@ const MFAConnectForm = () => {
           name="userCode"
           children={(field) => <InputField field={field} label="User Code" />}
         />
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Connecting..." : "Connect Authenticator"}
+        <Button type="submit" disabled={isPending} isPending={isPending}>
+          Connect Authenticator
         </Button>
       </form>
       {data !== null && data !== undefined && (

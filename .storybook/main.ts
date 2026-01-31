@@ -11,5 +11,14 @@ const config: StorybookConfig = {
   ],
   framework: '@storybook/react-vite',
   staticDirs: ['../public'],
+  async viteFinal(config) {
+    const { mergeConfig } = await import('vite');
+    return mergeConfig(config, {
+      // Send API requests to same origin so MSW service worker can intercept them
+      define: {
+        'import.meta.env.VITE_API_URL': JSON.stringify(''),
+      },
+    });
+  },
 };
 export default config;

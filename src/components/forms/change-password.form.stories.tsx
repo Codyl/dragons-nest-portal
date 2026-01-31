@@ -7,7 +7,7 @@ import {
   RouterProvider,
   createMemoryHistory,
 } from "@tanstack/react-router";
-import { fn } from "storybook/test";
+import { fn, userEvent, within } from "storybook/test";
 import ChangePasswordForm from "./change-password.form";
 import {
   successHandlers,
@@ -15,6 +15,20 @@ import {
   loadingHandlers,
   networkErrorHandlers,
 } from "../../../.storybook/msw-handlers";
+
+const fillForm = async (canvas: ReturnType<typeof within>, currentPassword: string, newPassword: string, confirmPassword: string) => {
+  const currentPasswordInput = canvas.getByLabelText('Current password');
+  const newPasswordInput = canvas.getByLabelText('New password');
+  const confirmPasswordInput = canvas.getByLabelText('Confirm new password');
+  await userEvent.type(currentPasswordInput, currentPassword);
+  await userEvent.type(newPasswordInput, newPassword);
+  await userEvent.type(confirmPasswordInput, confirmPassword);
+};
+
+const submitForm = async (canvas: ReturnType<typeof within>) => {
+  const submitButton = canvas.getByRole('button', { name: 'Change password' });
+  await userEvent.click(submitButton);
+};
 
 const meta = {
   title: "Forms/ChangePasswordForm",
@@ -92,6 +106,11 @@ export const Success: Story = {
       },
     },
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await submitForm(canvas);
+  },
 };
 
 // Error state - demonstrates API error
@@ -106,6 +125,11 @@ export const Error: Story = {
         story: "This story demonstrates an error state when the password change fails. Submit the form to see the error message displayed below the form fields.",
       },
     },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await submitForm(canvas);
   },
 };
 
@@ -122,6 +146,11 @@ export const Loading: Story = {
       },
     },
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await submitForm(canvas);
+  },
 };
 
 // Network error state
@@ -136,6 +165,11 @@ export const NetworkError: Story = {
         story: "This story demonstrates a network error state. Submit the form to see how the component handles network failures.",
       },
     },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await submitForm(canvas);
   },
 };
 
@@ -152,6 +186,11 @@ export const PasswordsDoNotMatch: Story = {
       },
     },
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'NewPassword113!', 'NewPassword123!');
+    await submitForm(canvas);
+  },
 };
 
 // Validation error - password too short
@@ -166,6 +205,11 @@ export const PasswordTooShort: Story = {
         story: "This story demonstrates form validation when the password is too short (less than 8 characters). Try changing the 'New password' field to something like 'Short1!' (7 characters) and submit the form. You'll see a validation error message: 'Password must be at least 8 characters long'.",
       },
     },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', '12312312', '12312312');
+    await submitForm(canvas);
   },
 };
 
@@ -182,6 +226,11 @@ export const PasswordMissingUppercase: Story = {
       },
     },
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'password123!', 'password123!');
+    await submitForm(canvas);
+  },
 };
 
 // Validation error - password missing lowercase letter
@@ -196,6 +245,11 @@ export const PasswordMissingLowercase: Story = {
         story: "This story demonstrates form validation when the password doesn't contain a lowercase letter. Try changing the 'New password' field to something like 'PASSWORD123!' (all uppercase) and submit the form. You'll see a validation error message.",
       },
     },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'PASSWORD123!', 'PASSWORD123!');
+    await submitForm(canvas);
   },
 };
 
@@ -212,6 +266,11 @@ export const PasswordMissingNumber: Story = {
       },
     },
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', 'Password123!', 'Password123!');
+    await submitForm(canvas);
+  },
 };
 
 // Incomplete form - empty fields
@@ -226,5 +285,10 @@ export const IncompleteForm: Story = {
         story: "This story demonstrates form validation when fields are empty. Clear all the fields and submit the form. You'll see validation error messages for each required field: 'Current password is required', 'Password must be at least 8 characters long', and 'Please confirm your password'.",
       },
     },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', '', '');
+    await submitForm(canvas);
   },
 };

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import InputField from "./input-field";
 const meta = {
-  title: "Example/InputField",
+  title: "Fields/InputField",
   component: InputField,
   argTypes: {
     field: {
@@ -22,8 +22,8 @@ export const Default: Story = {
     field: {
       name: "email",
       value: "",
-      onChange: () => {},
-      onBlur: () => {},
+      onChange: () => { },
+      onBlur: () => { },
       state: {
         meta: {
           isValid: true,
@@ -41,8 +41,8 @@ export const Invalid: Story = {
     field: {
       name: "email",
       value: "",
-      onChange: () => {},
-      onBlur: () => {},
+      onChange: () => { },
+      onBlur: () => { },
       state: {
         meta: {
           placeholder: "Enter your email",

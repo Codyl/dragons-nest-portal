@@ -173,19 +173,11 @@ const LoginForm = ({ className }: { className?: string }) => {
             )}
           />
         </FieldGroup>
-        <div className="flex items-center justify-between text-sm">
-          <Link to="/forgot-password" className="text-primary hover:underline">
-            Forgot password?
-          </Link>
-          <Link
-            to="/forgot-username"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Forgot username?
-          </Link>
-        </div>
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Signing in..." : "Sign in"}
+        <Link to="/forgot-password" className="text-primary hover:underline ml-auto block text-end">
+          Forgot password?
+        </Link>
+        <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
+          Sign In
         </Button>
         {error && <p className="text-destructive mt-2" data-testid="error-message">{error.message}</p>}
       </form>

@@ -51,7 +51,6 @@ const ChangePasswordForm = ({ onPasswordChangeSuccess }: { onPasswordChangeSucce
   });
 
   return (
-
     <form
       onSubmit={(e) => {
         e.preventDefault();

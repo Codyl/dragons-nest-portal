@@ -82,8 +82,8 @@ const MFAForm = () => {
           )}
         />
       </FieldGroup>
-      <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Verifying..." : "Verify"}
+      <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
+        Verify Code
       </Button>
       <div className="text-center text-sm text-muted-foreground">
         <p>Don't have access to your authenticator app?</p>

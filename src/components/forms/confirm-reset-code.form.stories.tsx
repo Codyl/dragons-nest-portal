@@ -7,16 +7,26 @@ import {
   RouterProvider,
   createMemoryHistory,
 } from "@tanstack/react-router";
-import { fn } from "storybook/test";
+import { fn, userEvent, within } from "storybook/test";
 import ConfirmResetCodeForm from "./confirm-reset-code.form";
 import { handlers } from "../../../.storybook/msw-handlers";
+
+const fillForm = async (canvas: ReturnType<typeof within>, code: string) => {
+  const codeInput = canvas.getByLabelText('Code');
+  await userEvent.type(codeInput, code);
+};
+
+const submitForm = async (canvas: ReturnType<typeof within>) => {
+  const submitButton = canvas.getByRole('button', { name: 'Confirm' });
+  await userEvent.click(submitButton);
+};
 
 const meta = {
   title: "Forms/ConfirmResetCodeForm",
   component: ConfirmResetCodeForm,
   parameters: {
     layout: "centered",
-    msw: { handlers },
+    msw: { handlers }, // Form does not call API; handlers for consistency
   },
   tags: ["autodocs"],
   decorators: [
@@ -60,5 +70,89 @@ export const Default: Story = {
         story: "Enter the reset code received via email. Calls setStep(2) on successful submit.",
       },
     },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, '123456');
+    await submitForm(canvas);
+  },
+};
+
+export const InvalidCode: Story = {
+  parameters: {
+    msw: { handlers },
+    docs: {
+      description: {
+        story: "This story demonstrates an error state when the code is invalid. Submit the form to see the error message displayed below the form fields.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, '12345');
+    await submitForm(canvas);
+  },
+};
+
+export const EmptyCode: Story = {
+  parameters: {
+    msw: { handlers },
+    docs: {
+      description: {
+        story: "This story demonstrates an error state when the code is empty. Submit the form to see the error message displayed below the form fields.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await submitForm(canvas);
+  },
+};
+
+export const Success: Story = {
+  parameters: {
+    msw: { handlers },
+    docs: {
+      description: {
+        story: "This story demonstrates a successful state when the code is valid. Submit the form to see the success callback triggered. The form will call `setStep(2)` when the mutation succeeds.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, '123456');
+    await submitForm(canvas);
+  },
+};
+
+export const Loading: Story = {
+  parameters: {
+    msw: { handlers },
+    docs: {
+      description: {
+        story: "Form does not call an API; submit triggers setStep(2). Play fills and submits.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, "123456");
+    await submitForm(canvas);
+  },
+};
+
+export const NetworkError: Story = {
+  parameters: {
+    msw: { handlers },
+    docs: {
+      description: {
+        story: "Form does not call an API; submit triggers setStep(2). Play fills and submits.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, "123456");
+    await submitForm(canvas);
   },
 };

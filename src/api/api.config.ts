@@ -114,8 +114,16 @@ export const api = ky.create({
     beforeError: [
       async (error) => {
         if (error.response) {
-          const errorBody = await error.response.json();
-          throw { ...error, ...errorBody };
+          try {
+            const errorBody = (await error.response.json()) as { message?: string };
+            // Prefer server message (e.g. "Password change failed") over ky's status text
+            const message = errorBody?.message ?? error.message;
+            throw Object.assign(error, errorBody, { message });
+          } catch (e) {
+            // If response wasn't JSON, rethrow original error
+            if (e === error) throw e;
+            throw error;
+          }
         }
 
         if (error instanceof HTTPError && error.response.status === 500) {

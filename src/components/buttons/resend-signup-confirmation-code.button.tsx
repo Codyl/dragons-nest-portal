@@ -23,10 +23,10 @@ const ResendSignupConfirmationCodeButton = () => {
             username: sessionStorage.getItem("username") || "",
           })
         }
+        isPending={isPending}
       >
         Resend Code
       </Button>
-      {isPending && <p>Resending code...</p>}
       {error && <p className="text-destructive">Error: {error.message}</p>}
       {data && <p>Code resent</p>}
     </>
