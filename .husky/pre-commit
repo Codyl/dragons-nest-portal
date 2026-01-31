@@ -1,0 +1,5 @@
+set -e
+
+PATH="./node_modules/.bin:$PATH"
+
+npm run pre-commit

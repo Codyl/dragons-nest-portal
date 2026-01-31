@@ -1,0 +1,4 @@
+set -e
+
+echo "Running test suite before push..."
+npm run cypress:run

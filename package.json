@@ -17,7 +17,9 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --component",
     "cypress:run:e2e": "cypress run --e2e",
-    "cypress:open:e2e": "cypress open --e2e"
+    "cypress:run:e2e:app": "cypress run --e2e --config-file cypress.app.config.mjs",
+    "cypress:open:e2e": "cypress open --e2e",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -89,6 +91,12 @@
   "msw": {
     "workerDirectory": [
       "public"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
     ]
   }
 }

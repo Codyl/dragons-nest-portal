@@ -8,7 +8,8 @@ export default defineConfig({
       bundler: 'vite',
     },
   },
-  // E2E tests against running Storybook (start with: pnpm storybook, then: pnpm cypress:run --e2e)
+  // E2E against Storybook: pnpm storybook then pnpm cypress:run:e2e
+  // App e2e (.e2e.ts): pnpm dev then pnpm cypress:run:e2e:app (uses cypress.app.config.mjs)
   e2e: {
     supportFile: './cypress/support/e2e.ts',
     baseUrl: 'http://localhost:6006',
