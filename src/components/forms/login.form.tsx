@@ -75,22 +75,8 @@ const LoginForm = ({ className }: { className?: string }) => {
               setShowMFAAuthenticatorQRCodeModal(true);
             }
 
-            // If no challenge, user is authenticated
-            if (!data.data.ChallengeName && data.data.AuthenticationResult?.AccessToken) {
-
-              localStorage.setItem(
-                "AccessToken",
-                data.data.AuthenticationResult.AccessToken,
-              );
-              localStorage.setItem(
-                "RefreshToken",
-                data.data.AuthenticationResult.RefreshToken || "",
-              );
-              localStorage.setItem(
-                "IdToken",
-                data.data.AuthenticationResult.IdToken || "",
-              );
-
+            // If no challenge, user is authenticated (tokens set as HttpOnly cookies by backend)
+            if (!data.data.ChallengeName && data.data.AuthenticationResult) {
               if (data.data.AuthenticationResult.NewDeviceMetadata) {
                 localStorage.setItem(
                   "DeviceKey",

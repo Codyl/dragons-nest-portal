@@ -15,9 +15,6 @@ const useLogout = (): UseMutationResult<
     mutationFn: AuthServices.logout,
     onSuccess: () => {
       sessionStorage.clear();
-      localStorage.removeItem('AccessToken');
-      localStorage.removeItem('RefreshToken');
-      localStorage.removeItem('IdToken');
       router.navigate({ to: '/verify-username' });
     },
   });

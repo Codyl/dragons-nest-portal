@@ -11,14 +11,21 @@ describe('Home page', () => {
   });
 
   it('shows welcome and logout when authenticated', () => {
-    cy.visit('/', {
-      onBeforeLoad(win) {
-        win.localStorage.setItem('AccessToken', 'test-token');
-        win.localStorage.setItem('RefreshToken', 'test-refresh');
+    cy.intercept('GET', '**/users/me*', {
+      statusCode: 200,
+      body: {
+        message: 'OK',
+        data: {
+          email: 'test@example.com',
+          given_name: 'Test',
+          family_name: 'User',
+        },
       },
+    }).as('me');
+    cy.intercept('POST', '**/auth/refresh-token*', {
+      statusCode: 200,
+      body: { message: 'OK', data: {} },
     });
-    cy.intercept('GET', '**/auth/refresh-token');
-    cy.intercept('GET', '**/users/me*').as('me');
     cy.visit('/');
     cy.contains('Welcome Home').should('be.visible');
     cy.contains('Logout').should('be.visible');

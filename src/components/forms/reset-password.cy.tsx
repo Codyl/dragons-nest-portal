@@ -23,11 +23,7 @@ describe('ResetPasswordForm', () => {
       statusCode: 200,
       body: {
         data: {
-          AuthenticationResult: {
-            AccessToken: 'accessToken',
-            RefreshToken: 'refreshToken',
-            IdToken: 'idToken',
-          },
+          AuthenticationResult: {},
         },
       },
     });
@@ -98,11 +94,7 @@ describe('ResetPasswordForm', () => {
       statusCode: 200,
       body: {
         data: {
-          AuthenticationResult: {
-            AccessToken: 'accessToken',
-            RefreshToken: 'refreshToken',
-            IdToken: 'idToken',
-          },
+          AuthenticationResult: {},
         },
       },
     });

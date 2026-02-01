@@ -147,15 +147,7 @@ const AuthServices = {
     return response.json();
   },
   logout: async (): Promise<{ message: string; data: {} }> => {
-    const token = localStorage.getItem('AccessToken');
-
-    if (!token) {
-      throw new Error('No access token found');
-    }
-
-    const response = await unauthenticatedApi.get('auth/logout', {
-      searchParams: { accessToken: token },
-    });
+    const response = await unauthenticatedApi.get('auth/logout');
     return response.json();
   },
   initiateSignup: async (json: {

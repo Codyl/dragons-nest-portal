@@ -5,7 +5,6 @@ describe('MFAGenerateSecretForm', () => {
     sessionStorage.setItem("username", "test@example.com");
     sessionStorage.setItem("password", "Password123!");
     sessionStorage.setItem("session", "test-session");
-    localStorage.setItem("AccessToken", "test-token");
   });
 
   afterEach(() => {
@@ -52,7 +51,7 @@ describe('MFAGenerateSecretForm', () => {
     // Should navigate on success
   });
 
-  it.only('should show error when code is invalid', () => {
+  it('should show error when code is invalid', () => {
     cy.intercept('POST', '**/auth/mfa/generate-authenticator-secret', {
       statusCode: 200,
       body: {

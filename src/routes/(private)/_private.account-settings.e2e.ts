@@ -11,13 +11,17 @@ describe('Account Settings page', () => {
   });
 
   it('renders account settings when authenticated', () => {
-    cy.visit('/account-settings', {
-      onBeforeLoad(win) {
-        win.localStorage.setItem('AccessToken', 'test-token');
-        win.localStorage.setItem('RefreshToken', 'test-refresh');
+    cy.intercept('GET', '**/users/me*', {
+      statusCode: 200,
+      body: {
+        message: 'OK',
+        data: {
+          email: 'test@example.com',
+          given_name: 'Test',
+          family_name: 'User',
+        },
       },
-    });
-    cy.intercept('GET', '**/users/me*').as('me');
+    }).as('me');
     cy.visit('/account-settings');
     cy.contains('Account Settings').should('be.visible');
   });

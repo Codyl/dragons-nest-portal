@@ -10,10 +10,6 @@ const useAuth = (): {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['auth-status'],
     queryFn: async () => {
-      const token = localStorage.getItem('AccessToken');
-      if (!token) {
-        return { isAuthenticated: false };
-      }
       try {
         await UserServices.getUser();
         return { isAuthenticated: true };

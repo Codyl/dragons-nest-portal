@@ -18,10 +18,7 @@ const useGoogleSignup = (): {
       AuthServices.googleSSOSignup(json),
     onSuccess: (data) => {
       const result = data?.data?.AuthenticationResult;
-      if (result?.AccessToken) {
-        localStorage.setItem('AccessToken', result.AccessToken);
-        localStorage.setItem('RefreshToken', result.RefreshToken ?? '');
-        localStorage.setItem('IdToken', result.IdToken ?? '');
+      if (result) {
         router.navigate({ to: '/' });
       }
     },

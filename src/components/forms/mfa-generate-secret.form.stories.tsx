@@ -69,9 +69,6 @@ const meta = {
         sessionStorage.setItem("username", "test@example.com");
         sessionStorage.setItem("password", "Password123!");
       }
-      if (typeof localStorage !== "undefined") {
-        localStorage.setItem("AccessToken", "test-token");
-      }
       return <Story />;
     },
   ],

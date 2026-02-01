@@ -8,13 +8,7 @@ const refreshAccessToken = async (): Promise<boolean> => {
   // If already refreshing, wait for the existing refresh to complete
   if (isRefreshing && refreshPromise) {
     await refreshPromise;
-    // Check if we still have a token after waiting
-    return !!localStorage.getItem("AccessToken");
-  }
-
-  const refreshToken = localStorage.getItem("RefreshToken");
-  if (!refreshToken) {
-    return false;
+    return true;
   }
 
   isRefreshing = true;
@@ -22,33 +16,19 @@ const refreshAccessToken = async (): Promise<boolean> => {
 
   refreshPromise = (async () => {
     try {
-      // Use unauthenticated API to refresh token
       const { unauthenticatedApi } =
         await import("./api.unauthenticated.config");
       const response = await unauthenticatedApi.post("auth/refresh-token", {
-        json: {
-          refreshToken: refreshToken,
-        },
+        json: {},
         throwHttpErrors: false,
+        credentials: "include",
       });
 
-      if (response.status === 200) {
-        const data = (await response.json()) as {
-          refreshToken: string;
-          accessToken: string;
-        };
-        localStorage.setItem("RefreshToken", data.refreshToken);
-        localStorage.setItem("AccessToken", data.accessToken);
+      if (response.ok) {
         refreshSuccess = true;
-      } else {
-        // Refresh failed, clear tokens
-        localStorage.removeItem("AccessToken");
-        localStorage.removeItem("RefreshToken");
       }
     } catch {
-      // Refresh failed, clear tokens
-      localStorage.removeItem("AccessToken");
-      localStorage.removeItem("RefreshToken");
+      refreshSuccess = false;
     } finally {
       isRefreshing = false;
       refreshPromise = null;
@@ -61,27 +41,15 @@ const refreshAccessToken = async (): Promise<boolean> => {
 
 /**
  * API client for authenticated requests
- * Includes auth headers and automatic token refresh on 401
+ * Uses HttpOnly cookies for auth; includes automatic token refresh on 401
  */
 export const api = ky.create({
   prefixUrl: import.meta.env.VITE_API_URL,
+  credentials: "include",
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("AccessToken") || ""}`,
   },
   hooks: {
-    beforeRequest: [
-      (request) => {
-        const accessToken = localStorage.getItem("AccessToken");
-        if (accessToken) {
-          request.headers.set("Authorization", `Bearer ${accessToken}`);
-        }
-        const refreshToken = localStorage.getItem("RefreshToken");
-        if (refreshToken) {
-          request.headers.set("X-Refresh-Token", refreshToken);
-        }
-      },
-    ],
     beforeRetry: [
       async ({ request, error, retryCount }) => {
         // Only retry on 401 and limit retries to prevent infinite loops
@@ -90,22 +58,13 @@ export const api = ky.create({
           error.response.status === 401 &&
           retryCount < 2
         ) {
-          // Don't try to refresh if this is the refresh token request itself
           if (request.url.includes("auth/refresh-token")) {
             return;
           }
 
-          // Try to refresh the token
           const refreshSuccess = await refreshAccessToken();
 
-          // Only update headers if refresh succeeded
-          if (refreshSuccess) {
-            const newAccessToken = localStorage.getItem("AccessToken");
-            if (newAccessToken) {
-              request.headers.set("Authorization", `Bearer ${newAccessToken}`);
-            }
-          } else {
-            // If refresh failed, throw error to prevent retry
+          if (!refreshSuccess) {
             throw new Error("Token refresh failed");
           }
         }
@@ -116,11 +75,9 @@ export const api = ky.create({
         if (error.response) {
           try {
             const errorBody = (await error.response.json()) as { message?: string };
-            // Prefer server message (e.g. "Password change failed") over ky's status text
             const message = errorBody?.message ?? error.message;
             throw Object.assign(error, errorBody, { message });
           } catch (e) {
-            // If response wasn't JSON, rethrow original error
             if (e === error) throw e;
             throw error;
           }

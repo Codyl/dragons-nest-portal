@@ -8,6 +8,7 @@ import { redirect } from "@tanstack/react-router";
  */
 export const unauthenticatedApi = ky.create({
   prefixUrl: import.meta.env.VITE_API_URL,
+  credentials: "include",
   headers: {
     "Content-Type": "application/json",
   },

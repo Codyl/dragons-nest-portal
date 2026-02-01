@@ -21,10 +21,7 @@ const ConfirmSignupForm = () => {
       if (data.data.Session) {
         sessionStorage.setItem("session", data.data.Session);
       }
-      if (data.data.AuthenticationResult.AccessToken) {
-        localStorage.setItem("AccessToken", data.data.AuthenticationResult.AccessToken);
-        localStorage.setItem("RefreshToken", data.data.AuthenticationResult.RefreshToken);
-        localStorage.setItem("IdToken", data.data.AuthenticationResult.IdToken);
+      if (data.data.AuthenticationResult) {
         router.navigate({ to: "/" });
       }
     },

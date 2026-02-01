@@ -48,12 +48,8 @@ const ResetPasswordForm = () => {
           onSuccess: (data) => {
             sessionStorage.clear();
             if (data.data.AuthenticationResult) {
-              localStorage.setItem("AccessToken", data.data.AuthenticationResult.AccessToken);
-              localStorage.setItem("RefreshToken", data.data.AuthenticationResult.RefreshToken || "");
-              localStorage.setItem("IdToken", data.data.AuthenticationResult.IdToken || "");
+              router.navigate({ to: "/" });
             }
-            // Navigate to home page after successful password reset
-            router.navigate({ to: "/" });
           },
         },
       );

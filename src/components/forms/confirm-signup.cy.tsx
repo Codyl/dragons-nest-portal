@@ -23,11 +23,7 @@ describe('ConfirmSignupForm', () => {
       body: {
         data: {
           Session: 'session',
-          AuthenticationResult: {
-            AccessToken: 'accessToken',
-            RefreshToken: 'refreshToken',
-            IdToken: 'idToken',
-          },
+          AuthenticationResult: {},
         },
       },
     });
@@ -71,11 +67,7 @@ describe('ConfirmSignupForm', () => {
       body: {
         data: {
           Session: 'session',
-          AuthenticationResult: {
-            AccessToken: 'accessToken',
-            RefreshToken: 'refreshToken',
-            IdToken: 'idToken',
-          },
+          AuthenticationResult: {},
         },
       },
     });

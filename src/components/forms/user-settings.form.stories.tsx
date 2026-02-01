@@ -77,12 +77,6 @@ const meta = {
         </QueryClientProvider>
       );
     },
-    (Story) => {
-      if (typeof localStorage !== "undefined") {
-        localStorage.setItem("AccessToken", "test-token");
-      }
-      return <Story />;
-    },
   ],
 } satisfies Meta<typeof UserSettingsForm>;
 

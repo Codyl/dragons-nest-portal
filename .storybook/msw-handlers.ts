@@ -19,17 +19,14 @@ const matchAuthMfa = pathMatch('/auth/mfa');
 const matchAuthAnswerOtp = pathMatch('/auth/answer-otp');
 const matchAuthMfaGenerateSecret = pathMatch('/auth/mfa/generate-authenticator-secret');
 const matchAuthMfaConnect = pathMatch('/auth/mfa/connect-authenticator-app');
+const matchAuthRefreshToken = pathMatch('/auth/refresh-token');
 
-// Default auth success response
+// Default auth success response (tokens sent as HttpOnly cookies by backend; frontend receives minimal success payload)
 const authSuccess = {
   data: {
     Session: 'test-session',
     ChallengeName: null,
-    AuthenticationResult: {
-      AccessToken: 'test-access-token',
-      RefreshToken: 'test-refresh-token',
-      IdToken: 'test-id-token',
-    },
+    AuthenticationResult: {},
   },
 };
 
@@ -111,6 +108,10 @@ export const handlers = [
   // Auth: connect authenticator app
   http.post(matchAuthMfaConnect, async () => {
     return HttpResponse.json(authSuccess, { status: 200 });
+  }),
+  // Auth: refresh token (tokens sent as HttpOnly cookies; mock returns success)
+  http.post(matchAuthRefreshToken, async () => {
+    return HttpResponse.json({ message: 'Token refreshed successfully', data: {} }, { status: 200 });
   }),
 ];
 

@@ -23,11 +23,7 @@ describe('MFAForm', () => {
       statusCode: 200,
       body: {
         data: {
-          AuthenticationResult: {
-            AccessToken: 'accessToken',
-            RefreshToken: 'refreshToken',
-            IdToken: 'idToken',
-          },
+          AuthenticationResult: {},
         },
       },
     });
@@ -70,11 +66,7 @@ describe('MFAForm', () => {
       statusCode: 200,
       body: {
         data: {
-          AuthenticationResult: {
-            AccessToken: 'accessToken',
-            RefreshToken: 'refreshToken',
-            IdToken: 'idToken',
-          },
+          AuthenticationResult: {},
         },
       },
     });

@@ -10,7 +10,6 @@ import { useRouter } from "@tanstack/react-router";
 
 const MFAGenerateSecretForm = () => {
   const router = useRouter();
-  const accessToken = localStorage.getItem("AccessToken") || "";
   const session = sessionStorage.getItem("session") || "";
   const username = sessionStorage.getItem("username") || "";
   const password = sessionStorage.getItem("password") || "";
@@ -18,7 +17,6 @@ const MFAGenerateSecretForm = () => {
   const { data, error } = useGenerateAuthenticatorSecret({
     session: session,
     username: username,
-    ...(accessToken && { accessToken: accessToken }),
   });
 
   // Extract the new session from AssociateSoftwareTokenCommand response
@@ -57,7 +55,6 @@ const MFAGenerateSecretForm = () => {
       const sessionToUse = associateSession || session;
       connectAuthenticatorApp(
         {
-          ...(accessToken && { accessToken: accessToken }),
           friendlyDeviceName: "Authenticator App",
           session: sessionToUse,
           userCode: value.code,
