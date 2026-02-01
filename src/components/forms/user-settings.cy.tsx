@@ -74,6 +74,14 @@ describe('UserSettingsForm', () => {
         message: 'Update failed',
       },
     });
+    cy.intercept('GET', '**/users/me', {
+      statusCode: 200,
+      body: {
+        data: {
+          email: 'test@example.com',
+        },
+      },
+    });
     cy.mount(<UserSettingsForm />);
     cy.get('input[name="given_name"]').clear().type('Jane');
     cy.get('button[type="submit"]').click();
