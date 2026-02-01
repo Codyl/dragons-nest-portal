@@ -31,5 +31,6 @@ debug.log
 # stryker temp files
 .stryker-tmp
 .env
+.env.cypress-e2e
 .tanstack
 cypress/screenshots

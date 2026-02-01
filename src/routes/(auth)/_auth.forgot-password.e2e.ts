@@ -5,10 +5,7 @@
  */
 describe('Forgot Password page', () => {
   beforeEach(() => {
-    cy.intercept('POST', '**/auth/forgot-password', {
-      statusCode: 200,
-      body: { message: 'ok', data: {} },
-    }).as('forgotPassword');
+    cy.intercept('POST', '**/auth/forgot-password').as('forgotPassword');
   });
 
   it('renders forgot password form', () => {

@@ -17,17 +17,7 @@ describe('Account Settings page', () => {
         win.localStorage.setItem('RefreshToken', 'test-refresh');
       },
     });
-    cy.intercept('GET', '**/users/me*', {
-      statusCode: 200,
-      body: {
-        message: 'ok',
-        data: {
-          email: 'user@example.com',
-          given_name: 'Test',
-          family_name: 'User',
-        },
-      },
-    }).as('me');
+    cy.intercept('GET', '**/users/me*').as('me');
     cy.visit('/account-settings');
     cy.contains('Account Settings').should('be.visible');
   });

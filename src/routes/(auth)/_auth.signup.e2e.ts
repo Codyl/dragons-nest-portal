@@ -5,13 +5,7 @@
  */
 describe('Signup page', () => {
   beforeEach(() => {
-    cy.intercept('POST', '**/auth/initiate-signup', {
-      statusCode: 200,
-      body: {
-        message: 'ok',
-        data: { Session: 'signup-session' },
-      },
-    }).as('signup');
+    cy.intercept('POST', '**/auth/initiate-signup').as('signup');
   });
 
   it('renders create account form', () => {

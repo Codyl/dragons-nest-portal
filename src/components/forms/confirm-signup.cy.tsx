@@ -83,7 +83,7 @@ describe('ConfirmSignupForm', () => {
     cy.get('input[name="code"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
-    cy.contains('Verifying...').should('exist');
+    cy.get('[data-testid="button-loading-indicator"]').should('exist');
   });
 
   it('should require code field', () => {

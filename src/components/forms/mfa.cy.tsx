@@ -82,6 +82,6 @@ describe('MFAForm', () => {
     cy.get('input[name="softwareTokenMfaCode"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
-    cy.contains('Verifying...').should('exist');
+    cy.get('[data-testid="button-loading-indicator"]').should('exist');
   });
 });

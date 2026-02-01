@@ -100,7 +100,7 @@ describe('CreateAccountForm', () => {
     cy.get('input[name="confirmPassword"]').type('Password123!');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
-    cy.contains('Creating account...').should('exist');
+    cy.get('[data-testid="button-loading-indicator"]').should('exist');
   });
 
   it('should show error when signup fails', () => {

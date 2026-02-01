@@ -5,16 +5,7 @@
  */
 describe('Verify Username page', () => {
   beforeEach(() => {
-    cy.intercept('POST', '**/auth/verify-username', {
-      statusCode: 200,
-      body: {
-        message: 'ok',
-        data: {
-          Session: 'test-session',
-          AvailableChallenges: ['PASSWORD'],
-        },
-      },
-    }).as('verifyUsername');
+    cy.intercept('POST', '**/auth/verify-username').as('verifyUsername');
   });
 
   it('renders verify username form', () => {

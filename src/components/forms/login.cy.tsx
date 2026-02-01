@@ -75,7 +75,7 @@ describe('LoginForm', () => {
     cy.get('input[name="password"]').type('Password123!');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
-    cy.contains('Signing in...').should('exist');
+    cy.get('[data-testid="button-loading-indicator"]').should('exist');
   });
 
   it('should require password field', () => {

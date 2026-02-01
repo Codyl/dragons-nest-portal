@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
 import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
@@ -35,11 +34,6 @@ import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -145,7 +139,6 @@ const authAuthConfirmSignupRoute = authAuthConfirmSignupRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -167,7 +160,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -190,7 +182,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
@@ -216,7 +207,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/privacy-policy'
     | '/terms-of-service'
     | '/confirm-signup'
     | '/forgot-password'
@@ -238,7 +228,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/privacy-policy'
     | '/terms-of-service'
     | '/confirm-signup'
     | '/forgot-password'
@@ -260,7 +249,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/privacy-policy'
     | '/terms-of-service'
     | '/(auth)/_auth'
     | '/(private)/_private'
@@ -285,7 +273,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   authAuthRoute: typeof authAuthRouteWithChildren
   privatePrivateRoute: typeof privatePrivateRouteWithChildren
@@ -306,13 +293,6 @@ declare module '@tanstack/react-router' {
       path: '/terms-of-service'
       fullPath: '/terms-of-service'
       preLoaderRoute: typeof TermsOfServiceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -498,7 +478,6 @@ const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PrivacyPolicyRoute: PrivacyPolicyRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,

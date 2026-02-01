@@ -17,11 +17,8 @@ describe('Home page', () => {
         win.localStorage.setItem('RefreshToken', 'test-refresh');
       },
     });
-    cy.intercept('GET', '**/auth/refresh-token', { statusCode: 200, body: {} });
-    cy.intercept('GET', '**/users/me*', {
-      statusCode: 200,
-      body: { message: 'ok', data: { email: 'user@example.com' } },
-    }).as('me');
+    cy.intercept('GET', '**/auth/refresh-token');
+    cy.intercept('GET', '**/users/me*').as('me');
     cy.visit('/');
     cy.contains('Welcome Home').should('be.visible');
     cy.contains('Logout').should('be.visible');

@@ -28,5 +28,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "cypress/**/*.{ts,tsx}", "cypress.d.ts"]
+  "include": ["src", "cypress/**/*.{ts,tsx}", "cypress.d.ts", ".env.d.ts"]
 }

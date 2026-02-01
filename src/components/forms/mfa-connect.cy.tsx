@@ -51,6 +51,6 @@ describe('MFAConnectForm', () => {
     cy.get('input[name="userCode"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
-    cy.contains('Connecting...').should('exist');
+    cy.get('[data-testid="button-loading-indicator"]').should('exist');
   });
 });

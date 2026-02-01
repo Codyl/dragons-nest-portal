@@ -62,7 +62,7 @@ function Button({
       {...props}
     >
       {isPending ? (
-        <Loader2 className="w-4 h-4 animate-spin" />
+        <Loader2 className="w-4 h-4 animate-spin" data-testid='button-loading-indicator' />
       ) : (
         props.children
       )}
