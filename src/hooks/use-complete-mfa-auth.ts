@@ -1,30 +1,61 @@
 import AuthServices from '@/api/services/auth.services';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
+import {
+  clearAmplifyAuthFlow,
+  confirmSignInAndGetTokens,
+  isAmplifyAuthFlow,
+} from '@/lib/cognito-auth';
+
+export type CompleteMFAMutationData = {
+  message: string;
+  data: {
+    Session: string;
+    ChallengeName: string;
+    AuthenticationResult?: {
+      AccessToken?: string;
+      RefreshToken?: string;
+      IdToken?: string;
+    };
+  };
+};
+
+export type CompleteMFAMutationVariables = {
+  username: string;
+  password: string;
+  softwareTokenMfaCode: string;
+  session: string;
+  challengeName: string;
+};
+
+async function completeMFAMutationFn(
+  variables: CompleteMFAMutationVariables
+): Promise<CompleteMFAMutationData> {
+  const { softwareTokenMfaCode } = variables;
+
+  if (isAmplifyAuthFlow()) {
+    const tokens = await confirmSignInAndGetTokens(softwareTokenMfaCode);
+    await AuthServices.setSession(tokens);
+    clearAmplifyAuthFlow();
+    return {
+      message: 'MFA verified successfully',
+      data: {
+        Session: '',
+        ChallengeName: '',
+        AuthenticationResult: {},
+      },
+    };
+  }
+
+  return AuthServices.completeMFAAuth(variables);
+}
 
 const useCompleteMFAAuth = (): UseMutationResult<
-  {
-    message: string;
-    data: {
-      Session: string;
-      ChallengeName: string;
-      AuthenticationResult?: {
-        AccessToken?: string;
-        RefreshToken?: string;
-        IdToken?: string;
-      };
-    };
-  },
+  CompleteMFAMutationData,
   Error,
-  {
-    username: string;
-    password: string;
-    softwareTokenMfaCode: string;
-    session: string;
-    challengeName: string;
-  }
+  CompleteMFAMutationVariables
 > => {
   return useMutation({
-    mutationFn: AuthServices.completeMFAAuth,
+    mutationFn: completeMFAMutationFn,
   });
 };
 

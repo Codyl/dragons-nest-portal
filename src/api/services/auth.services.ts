@@ -69,6 +69,16 @@ const AuthServices = {
     const response = await unauthenticatedApi.post('auth/answer-otp', { json });
     return response.json();
   },
+  setSession: async (tokens: {
+    AccessToken?: string;
+    IdToken?: string;
+    RefreshToken?: string;
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await unauthenticatedApi.post('auth/set-session', {
+      json: tokens,
+    });
+    return response.json();
+  },
   initiateAuth: async (json: {
     username: string;
     password: string;

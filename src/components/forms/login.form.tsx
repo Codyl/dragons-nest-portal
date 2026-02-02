@@ -2,7 +2,7 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
-import useLoginMutation from "@/hooks/use-login-mutation";
+import useLoginMutation, { type LoginMutationVariables } from "@/hooks/use-login-mutation";
 import { useRouter, Link } from "@tanstack/react-router";
 import { FieldGroup, Field } from "../ui/field";
 import { Input } from "../ui/input";
@@ -42,22 +42,20 @@ const LoginForm = ({ className }: { className?: string }) => {
       onSubmit: passwordSchema,
     },
     onSubmit: async ({ value }) => {
-      login(
-        {
-          username: username,
-          password: value.password,
-          session,
-          ...(addedDeviceKey ? { deviceKey: addedDeviceKey } : {}),
-          deviceName: friendlyName,
-        },
-        {
+      const variables: LoginMutationVariables = {
+        username,
+        password: value.password,
+        session,
+        ...(addedDeviceKey ? { deviceKey: addedDeviceKey } : {}),
+        deviceName: friendlyName,
+      };
+      login(variables, {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onSuccess: (data: any) => {
             if (data.data.Session) {
               sessionStorage.setItem("session", data.data.Session);
             }
             sessionStorage.setItem("username", username);
-            sessionStorage.setItem("password", value.password);
 
             if (data.data.ChallengeName === "SOFTWARE_TOKEN_MFA") {
               router.navigate({ to: "/mfa/verify-code" });
@@ -106,8 +104,7 @@ const LoginForm = ({ className }: { className?: string }) => {
               router.navigate({ to: "/confirm-signup" });
             }
           },
-        },
-      );
+        });
     },
   });
 

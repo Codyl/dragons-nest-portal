@@ -152,9 +152,7 @@ export const NetworkError: Story = {
     await fillForm(canvas, "Password123!");
     await submitForm(canvas);
   },
-};
-
-export const ValidationErrorPasswordTooShort: Story = {
+};export const ValidationErrorPasswordTooShort: Story = {
   parameters: {
     msw: { handlers: loginSuccessHandlers },
     docs: {

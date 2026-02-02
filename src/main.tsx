@@ -2,7 +2,10 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { configureCognitoAuth } from "@/lib/cognito-auth";
 import App from "./App";
+
+configureCognitoAuth();
 
 const queryClient = new QueryClient();
 
