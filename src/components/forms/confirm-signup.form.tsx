@@ -80,6 +80,7 @@ const ConfirmSignupForm = () => {
                 field={field}
                 label="Verification code"
                 type="text"
+                autoFocus
               />
             )}
           />

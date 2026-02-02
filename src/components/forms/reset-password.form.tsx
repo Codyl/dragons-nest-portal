@@ -70,7 +70,7 @@ const ResetPasswordForm = () => {
         <form.Field
           name="newPassword"
           children={(field) => (
-            <InputField field={field} label="New password" type="password" />
+            <InputField field={field} label="New password" type="password" autoFocus />
           )}
         />
         <form.Field

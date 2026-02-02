@@ -66,7 +66,7 @@ const MFAForm = () => {
         <form.Field
           name="softwareTokenMfaCode"
           children={(field) => (
-            <InputField field={field} label="Verification code" type="text" />
+            <InputField field={field} label="Verification code" type="text" autoFocus />
           )}
         />
       </FieldGroup>

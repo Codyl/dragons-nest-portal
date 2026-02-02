@@ -86,7 +86,7 @@ const CreateAccountForm = ({
         <form.Field
           name="email"
           children={(field) => (
-            <InputField field={field} label="Email" type="text" />
+            <InputField field={field} label="Email" type="text" autoFocus />
           )}
         />
         <form.Field

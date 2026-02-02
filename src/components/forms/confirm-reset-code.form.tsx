@@ -34,7 +34,7 @@ const ConfirmResetCodeForm = ({
         <form.Field
           name="code"
           children={(field) => (
-            <InputField field={field} label="Code" type="text" />
+            <InputField field={field} label="Code" type="text" autoFocus />
           )}
         />
       </FieldGroup>

@@ -44,7 +44,7 @@ const MFAConnectForm = () => {
       >
         <form.Field
           name="userCode"
-          children={(field) => <InputField field={field} label="User Code" />}
+          children={(field) => <InputField field={field} label="User Code" autoFocus />}
         />
         <Button type="submit" disabled={isPending} isPending={isPending}>
           Connect Authenticator

@@ -89,7 +89,7 @@ const MFAGenerateSecretForm = () => {
       >
         <form.Field
           name="code"
-          children={(field) => <InputField field={field} label="Code" />}
+          children={(field) => <InputField field={field} label="Code" autoFocus />}
         />
         <Button type="submit" disabled={isPending} isPending={isPending}>
           Continue

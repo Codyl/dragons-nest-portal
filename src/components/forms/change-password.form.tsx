@@ -63,7 +63,7 @@ const ChangePasswordForm = ({ onPasswordChangeSuccess }: { onPasswordChangeSucce
         <form.Field
           name="currentPassword"
           children={(field) => (
-            <InputField field={field} label="Current password" type="password" />
+            <InputField field={field} label="Current password" type="password" autoFocus />
           )}
         />
         <form.Field

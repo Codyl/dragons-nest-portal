@@ -50,61 +50,61 @@ const LoginForm = ({ className }: { className?: string }) => {
         deviceName: friendlyName,
       };
       login(variables, {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onSuccess: (data: any) => {
-            if (data.data.Session) {
-              sessionStorage.setItem("session", data.data.Session);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onSuccess: (data: any) => {
+          if (data.data.Session) {
+            sessionStorage.setItem("session", data.data.Session);
+          }
+          sessionStorage.setItem("username", username);
+
+          if (data.data.ChallengeName === "SOFTWARE_TOKEN_MFA") {
+            router.navigate({ to: "/mfa/verify-code" });
+          }
+          if (data.data.ChallengeName === "SMS_MFA") {
+            router.navigate({ to: "/mfa/sms" });
+          }
+          if (data.data.ChallengeName === "EMAIL_MFA") {
+            router.navigate({ to: "/mfa/email" });
+          }
+          if (data.data.ChallengeName === "NEW_PASSWORD_REQUIRED") {
+            router.navigate({ to: "/reset-password" });
+          }
+          if (data.data.ChallengeName === "MFA_SETUP") {
+            setShowMFAAuthenticatorQRCodeModal(true);
+          }
+
+          // If no challenge, user is authenticated (tokens set as HttpOnly cookies by backend)
+          if (!data.data.ChallengeName && data.data.AuthenticationResult) {
+            if (data.data.AuthenticationResult.NewDeviceMetadata) {
+              localStorage.setItem(
+                "DeviceKey",
+                data.data.AuthenticationResult.NewDeviceMetadata.DeviceKey || "",
+              );
+              localStorage.setItem(
+                "DeviceGroupKey",
+                data.data.AuthenticationResult.NewDeviceMetadata.DeviceGroupKey || "",
+              );
             }
+
+            if (data.data.AuthenticationResult.DeviceRandomPassword) {
+              localStorage.setItem(
+                "DeviceRandomPassword",
+                data.data.AuthenticationResult.DeviceRandomPassword || "",
+              );
+            }
+
+            router.navigate({ to: "/" });
+          }
+        },
+        onError: async (error) => {
+          if (error.name === "UserNotConfirmedException") {
+            await resendCode({ username: username });
+            sessionStorage.removeItem("session");
             sessionStorage.setItem("username", username);
-
-            if (data.data.ChallengeName === "SOFTWARE_TOKEN_MFA") {
-              router.navigate({ to: "/mfa/verify-code" });
-            }
-            if (data.data.ChallengeName === "SMS_MFA") {
-              router.navigate({ to: "/mfa/sms" });
-            }
-            if (data.data.ChallengeName === "EMAIL_MFA") {
-              router.navigate({ to: "/mfa/email" });
-            }
-            if (data.data.ChallengeName === "NEW_PASSWORD_REQUIRED") {
-              router.navigate({ to: "/reset-password" });
-            }
-            if (data.data.ChallengeName === "MFA_SETUP") {
-              setShowMFAAuthenticatorQRCodeModal(true);
-            }
-
-            // If no challenge, user is authenticated (tokens set as HttpOnly cookies by backend)
-            if (!data.data.ChallengeName && data.data.AuthenticationResult) {
-              if (data.data.AuthenticationResult.NewDeviceMetadata) {
-                localStorage.setItem(
-                  "DeviceKey",
-                  data.data.AuthenticationResult.NewDeviceMetadata.DeviceKey || "",
-                );
-                localStorage.setItem(
-                  "DeviceGroupKey",
-                  data.data.AuthenticationResult.NewDeviceMetadata.DeviceGroupKey || "",
-                );
-              }
-
-              if (data.data.AuthenticationResult.DeviceRandomPassword) {
-                localStorage.setItem(
-                  "DeviceRandomPassword",
-                  data.data.AuthenticationResult.DeviceRandomPassword || "",
-                );
-              }
-
-              router.navigate({ to: "/" });
-            }
-          },
-          onError: async (error) => {
-            if (error.name === "UserNotConfirmedException") {
-              await resendCode({ username: username });
-              sessionStorage.removeItem("session");
-              sessionStorage.setItem("username", username);
-              router.navigate({ to: "/confirm-signup" });
-            }
-          },
-        });
+            router.navigate({ to: "/confirm-signup" });
+          }
+        },
+      });
     },
   });
 
@@ -152,7 +152,7 @@ const LoginForm = ({ className }: { className?: string }) => {
           <passwordForm.Field
             name="password"
             children={(field) => (
-              <InputField field={field} label="Password" type="password" />
+              <InputField field={field} label="Password" type="password" autoFocus />
             )}
           />
         </FieldGroup>

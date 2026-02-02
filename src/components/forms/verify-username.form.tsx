@@ -50,7 +50,7 @@ const VerifyUsernameForm = () => {
         <usernameForm.Field
           name="username"
           children={(field) => (
-            <InputField field={field} label="Email or username" />
+            <InputField field={field} label="Email or username" autoFocus />
           )}
         />
       </FieldGroup>

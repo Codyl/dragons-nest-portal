@@ -51,7 +51,7 @@ const ForgotPasswordForm = ({ preFilledEmail }: ForgotPasswordFormProps = {}) =>
         <form.Field
           name="username"
           children={(field) => (
-            <InputField field={field} label="Username or email" />
+            <InputField field={field} label="Username or email" autoFocus />
           )}
         />
       </FieldGroup>
