@@ -82,6 +82,26 @@ const UserServices = {
     const response = await api.post('users/me/forget-device', { json });
     return response.json();
   },
+  getPasskeyRegisterOptions: async (): Promise<{
+    message: string;
+    data: Record<string, unknown>;
+  }> => {
+    const response = await api.post('users/me/passkey/register/options', {
+      json: {},
+    });
+    return response.json();
+  },
+  verifyPasskeyRegistration: async (
+    response: Record<string, unknown>,
+  ): Promise<{
+    message: string;
+    data: { verified: boolean };
+  }> => {
+    const res = await api.post('users/me/passkey/register/verify', {
+      json: response,
+    });
+    return res.json();
+  },
 };
 
 export default UserServices;
