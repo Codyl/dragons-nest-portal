@@ -2,6 +2,23 @@ import { api } from '../api.config';
 import { unauthenticatedApi } from '../api.unauthenticated.config';
 
 const AuthServices = {
+  googleSSOSignin: async (json: {
+    credential: string;
+  }): Promise<{
+    message: string;
+    data: {
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/google-sso-signin', {
+      json,
+    });
+    return response.json();
+  },
   verifyUsername: async (json: {
     email: string;
     session?: string;
