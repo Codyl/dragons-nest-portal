@@ -6,10 +6,18 @@ import useLoggedInUser from "@/hooks/use-logged-in-user";
 import useUpdateUserSettings from "@/hooks/use-update-user-account";
 import { normalizePhoneNumber } from "@/utils/helpers/input-normalization.helpers";
 import { formatPhoneNumber } from "@/utils/helpers/formatting.helpers";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UserSettingsForm = () => {
+  const queryClient = useQueryClient();
   const { data, isPending } = useLoggedInUser();
-  const { mutate: updateSettings, error: updateSettingsError, isPending: isUpdating } = useUpdateUserSettings();
+  const { mutate: updateSettings, error: updateSettingsError, isPending: isUpdating } = useUpdateUserSettings({
+    options: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
+      }
+    }
+  });
 
   const schema = z.object({
     email: z.email("Invalid email address"),
@@ -29,7 +37,7 @@ const UserSettingsForm = () => {
       given_name: userData?.given_name || "",
       family_name: userData?.family_name || "",
       middle_name: userData?.middle_name || "",
-      phone_number: userData?.phone_number || "",
+      phone_number: userData?.phone_number?.replace("+1", "") || "",
     },
     validators: {
       onSubmit: schema,
