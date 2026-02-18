@@ -1,6 +1,6 @@
 import AuthServices from '@/api/services/auth.services';
 import { useRouter } from '@tanstack/react-router';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useGoogleSignin = (): {
   signInWithGoogle: (credential: string) => void;
@@ -8,6 +8,7 @@ const useGoogleSignin = (): {
   error: Error | null;
 } => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     mutate: googleSignin,
@@ -16,11 +17,10 @@ const useGoogleSignin = (): {
   } = useMutation({
     mutationFn: (json: { credential: string }) =>
       AuthServices.googleSSOSignin(json),
-    onSuccess: (data) => {
-      const result = data?.data?.AuthenticationResult;
-      if (result) {
-        router.navigate({ to: '/' });
-      }
+    onSuccess: () => {
+      // Backend sets auth cookies; invalidate so next checkAuth() refetches /users/me
+      queryClient.invalidateQueries({ queryKey: ['auth-status'] });
+      router.navigate({ to: '/' });
     },
   });
 
