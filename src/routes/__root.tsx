@@ -72,12 +72,12 @@ const RootLayout = () => {
 
 export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
-    if (location.pathname === "/maintainance") return;
+    if (location.pathname === "/maintenance") return;
     try {
       await runHealthCheck();
     } catch (error) {
       if (isRedirect(error)) throw error;
-      throw redirect({ to: "/maintainance", replace: true });
+      throw redirect({ to: "/maintenance", replace: true });
     }
   },
   component: RootLayout,

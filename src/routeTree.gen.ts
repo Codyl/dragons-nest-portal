@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as MaintainanceRouteImport } from './routes/maintainance'
+import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
 import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
@@ -37,9 +37,9 @@ const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   path: '/terms-of-service',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MaintainanceRoute = MaintainanceRouteImport.update({
-  id: '/maintainance',
-  path: '/maintainance',
+const MaintenanceRoute = MaintenanceRouteImport.update({
+  id: '/maintenance',
+  path: '/maintenance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -145,7 +145,7 @@ const authAuthConfirmSignupRoute = authAuthConfirmSignupRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/maintainance': typeof MaintainanceRoute
+  '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -167,7 +167,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/maintainance': typeof MaintainanceRoute
+  '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -190,7 +190,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/maintainance': typeof MaintainanceRoute
+  '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
@@ -216,7 +216,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/maintainance'
+    | '/maintenance'
     | '/terms-of-service'
     | '/confirm-signup'
     | '/forgot-password'
@@ -238,7 +238,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/maintainance'
+    | '/maintenance'
     | '/terms-of-service'
     | '/confirm-signup'
     | '/forgot-password'
@@ -260,7 +260,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/maintainance'
+    | '/maintenance'
     | '/terms-of-service'
     | '/(auth)/_auth'
     | '/(private)/_private'
@@ -285,7 +285,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  MaintainanceRoute: typeof MaintainanceRoute
+  MaintenanceRoute: typeof MaintenanceRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   authAuthRoute: typeof authAuthRouteWithChildren
   privatePrivateRoute: typeof privatePrivateRouteWithChildren
@@ -308,11 +308,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsOfServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/maintainance': {
-      id: '/maintainance'
-      path: '/maintainance'
-      fullPath: '/maintainance'
-      preLoaderRoute: typeof MaintainanceRouteImport
+    '/maintenance': {
+      id: '/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof MaintenanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -498,7 +498,7 @@ const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  MaintainanceRoute: MaintainanceRoute,
+  MaintenanceRoute: MaintenanceRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,
