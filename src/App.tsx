@@ -2,7 +2,6 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import useAuth from "./hooks/use-auth";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export interface RouterContext {
   checkAuth: () => Promise<boolean>;
@@ -25,7 +24,6 @@ const router = createRouter({ routeTree });
 
 const App = () => {
   const { checkAuth, isLoading } = useAuth();
-  const queryClient = new QueryClient();
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

@@ -2,11 +2,14 @@ import {
   createRootRoute,
   Link,
   Outlet,
+  redirect,
+  isRedirect,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
 import useLogout from "@/hooks/use-logout";
+import { runHealthCheck } from "@/hooks/use-health-check";
 import { Toaster } from "@/components/ui/sonner";
 
 const RootLayout = () => {
@@ -67,4 +70,15 @@ const RootLayout = () => {
   );
 };
 
-export const Route = createRootRoute({ component: RootLayout });
+export const Route = createRootRoute({
+  beforeLoad: async ({ location }) => {
+    if (location.pathname === "/maintainance") return;
+    try {
+      await runHealthCheck();
+    } catch (error) {
+      if (isRedirect(error)) throw error;
+      throw redirect({ to: "/maintainance", replace: true });
+    }
+  },
+  component: RootLayout,
+});

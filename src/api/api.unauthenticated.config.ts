@@ -1,6 +1,6 @@
-import ky from "ky";
-import { toast } from "sonner";
-import { redirect } from "@tanstack/react-router";
+import ky from 'ky';
+import { toast } from 'sonner';
+import { redirect } from '@tanstack/react-router';
 
 /**
  * API client for unauthenticated requests (login, signup, etc.)
@@ -8,23 +8,22 @@ import { redirect } from "@tanstack/react-router";
  */
 export const unauthenticatedApi = ky.create({
   prefixUrl: import.meta.env.VITE_API_URL,
-  credentials: "include",
+  credentials: 'include',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   hooks: {
     beforeError: [
       async (error) => {
+        if (!error.response) {
+          throw error;
+        }
+
         if (error.response.status === 500) {
-          throw new Error("Internal server error");
+          throw new Error('Internal server error');
         }
-
-        if (error.response) {
-          const errorBody = await error.response.clone().json();
-          throw { ...error, ...errorBody };
-        }
-
-        throw error;
+        const errorBody = await error.response.clone().json();
+        throw { ...error, ...errorBody };
       },
     ],
     afterResponse: [
@@ -34,16 +33,16 @@ export const unauthenticatedApi = ky.create({
           // so we do it manually here
           try {
             const data = await response.json();
-            
+
             if (data.data.redirect) {
-              toast(data.data.message || "Session expired");
-              throw redirect({ to: "/login" });
+              toast(data.data.message || 'Session expired');
+              throw redirect({ to: '/login' });
             }
           } catch (e) {
             // Response wasn't JSON, handle accordingly
           }
         }
-      }
-    ]
+      },
+    ],
   },
 });
