@@ -82,6 +82,10 @@ const UserServices = {
     const response = await api.post('users/me/forget-device', { json });
     return response.json();
   },
+  linkGoogle: async (json: { credential: string }): Promise<{ message: string; data: {} }> => {
+    const response = await api.post('users/me/link-google', { json });
+    return response.json();
+  },
   getPasskeyRegisterOptions: async (): Promise<{
     message: string;
     data: Record<string, unknown>;

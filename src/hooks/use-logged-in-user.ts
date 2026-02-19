@@ -16,6 +16,7 @@ const useLoggedInUser = (): UseQueryResult<
       smsMfaEnabled?: boolean;
       softwareTokenMfaEnabled?: boolean;
       preferredMfa?: string;
+      loginMethods?: string[];
     };
   },
   Error

@@ -64,4 +64,40 @@ describe("LoginMethodSettingsSection", () => {
     cy.contains("button", "Register Passkey").click();
     cy.contains("Completing passkey registration…").should("exist");
   });
+
+  it("should show Connect button for Google when not linked and call link-google on click", () => {
+    cy.intercept("GET", "**/users/me", {
+      statusCode: 200,
+      body: {
+        message: "User retrieved successfully",
+        data: { email: "user@example.com", loginMethods: [] },
+      },
+    }).as("getUser");
+    cy.intercept("POST", "**/users/me/link-google", {
+      statusCode: 200,
+      body: { message: "Google account linked successfully", data: {} },
+    }).as("linkGoogle");
+    cy.mount(<LoginMethodSettingsSection />);
+    cy.get("@getUser").should("have.been.called");
+    cy.contains("button", "Connect").click();
+    cy.get("@linkGoogle").should("have.been.calledOnce");
+    cy.get("@linkGoogle").its("request.body").should("deep.include", { credential: "mock-google-credential" });
+  });
+
+  it("should show link-google success message after successful link", () => {
+    cy.intercept("GET", "**/users/me", {
+      statusCode: 200,
+      body: {
+        message: "User retrieved successfully",
+        data: { email: "user@example.com", loginMethods: [] },
+      },
+    });
+    cy.intercept("POST", "**/users/me/link-google", {
+      statusCode: 200,
+      body: { message: "Google account linked successfully", data: {} },
+    });
+    cy.mount(<LoginMethodSettingsSection />);
+    cy.contains("button", "Connect").click();
+    cy.get("[data-testid=link-google-success]").should("contain", "Google account linked successfully");
+  });
 });
