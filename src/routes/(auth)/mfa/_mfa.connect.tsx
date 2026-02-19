@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import MFAConnectForm from "@/components/forms/mfa-connect.form";
 import CommonCard from "@/components/cards/common-card";
 
-export const Route = createFileRoute("/(auth)/mfa/connect")({
+export const Route = createFileRoute("/(auth)/mfa/_mfa/connect")({
   head: () => ({
     meta: [
       { title: "Connect MFA | Cody Lillywhite" },

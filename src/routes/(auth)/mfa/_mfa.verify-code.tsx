@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import MFAForm from "@/components/forms/mfa.form";
 import CommonCard from "@/components/cards/common-card";
 
-export const Route = createFileRoute("/(auth)/mfa/verify-code")({
+export const Route = createFileRoute("/(auth)/mfa/_mfa/verify-code")({
   head: () => ({
     meta: [
       { title: "Verify MFA Code | Cody Lillywhite" },
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/(auth)/mfa/verify-code")({
 });
 
 function MFAVerifyCode() {
-  return <CommonCard title="Verify Code" description="Enter the code sent to your email">
+  return <CommonCard title="Verify Code" description="Enter the code sent to your authenticator app.">
     <MFAForm />
   </CommonCard>;
 }
