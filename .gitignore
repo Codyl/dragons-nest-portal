@@ -32,5 +32,8 @@ debug.log
 .stryker-tmp
 .env
 .env.cypress-e2e
+.env.local
+.env.production
+.env.test
 .tanstack
 cypress/screenshots
