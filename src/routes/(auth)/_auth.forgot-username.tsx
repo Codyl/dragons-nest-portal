@@ -3,6 +3,12 @@ import ForgotUsernameForm from "@/components/forms/forgot-username.form";
 import CommonCard from "@/components/cards/common-card";
 
 export const Route = createFileRoute("/(auth)/_auth/forgot-username")({
+  head: () => ({
+    meta: [
+      { title: "Forgot Username | Cody Lillywhite" },
+      { name: "description", content: "Recover your username. Enter your email to receive a recovery code." },
+    ],
+  }),
   component: RouteComponent,
 });
 

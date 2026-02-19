@@ -5,6 +5,12 @@ import { useState } from "react";
 import DeleteAccountModal from "@/components/modals/delete-account.modal";
 
 export const Route = createFileRoute("/(private)/_private/account-settings")({
+  head: () => ({
+    meta: [
+      { title: "Account Settings | Cody Lillywhite" },
+      { name: "description", content: "Manage your profile and account preferences." },
+    ],
+  }),
   component: AccountSettings,
 });
 

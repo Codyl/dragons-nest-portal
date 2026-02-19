@@ -3,6 +3,12 @@ import MFAConnectForm from "@/components/forms/mfa-connect.form";
 import CommonCard from "@/components/cards/common-card";
 
 export const Route = createFileRoute("/(auth)/mfa/connect")({
+  head: () => ({
+    meta: [
+      { title: "Connect MFA | Cody Lillywhite" },
+      { name: "description", content: "Connect your multi-factor authentication device." },
+    ],
+  }),
   component: MFAConnect,
 });
 

@@ -5,6 +5,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import GoogleSSOSigninButton from '@/components/buttons/google-sso-signin.button';
 
 export const Route = createFileRoute('/(auth)/_auth/verify-username')({
+  head: () => ({
+    meta: [
+      { title: "Sign In | Cody Lillywhite" },
+      { name: "description", content: "Enter your username to sign in to your account." },
+    ],
+  }),
   component: RouteComponent,
 })
 

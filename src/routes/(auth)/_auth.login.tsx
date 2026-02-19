@@ -6,6 +6,12 @@ import SelectOTPButton from "@/components/buttons/select-otp.button";
 import CHALLENGE_NAMES from "@/utils/constants/challenge-names";
 
 export const Route = createFileRoute("/(auth)/_auth/login")({
+  head: () => ({
+    meta: [
+      { title: "Login | Cody Lillywhite" },
+      { name: "description", content: "Sign in with your password or passwordless option." },
+    ],
+  }),
   component: Login,
 });
 

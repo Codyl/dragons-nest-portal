@@ -1,5 +1,6 @@
 import {
   createRootRoute,
+  HeadContent,
   Link,
   Outlet,
   redirect,
@@ -18,6 +19,7 @@ const RootLayout = () => {
 
   return (
     <>
+      <HeadContent />
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="container flex h-14 items-center justify-between px-4">
           <div className="flex items-center gap-6">
@@ -81,4 +83,25 @@ export const Route = createRootRoute({
     }
   },
   component: RootLayout,
+  head: () => ({
+    meta: [
+      { title: "Cody Lillywhite" },
+      {
+        name: "keywords",
+        content: "Cody Lillywhite",
+      },
+      {
+        name: "author",
+        content: "Cody Lillywhite",
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1.0",
+      },
+      {
+        name: "charset",
+        content: "UTF-8",
+      }
+    ],
+  }),
 });

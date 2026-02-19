@@ -1,6 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/terms-of-service")({
+  head: () => ({
+    meta: [
+      { title: "Terms of Service | Cody Lillywhite" },
+      { name: "description", content: "Terms of service and usage for this application." },
+    ],
+  }),
   component: RouteComponent,
 });
 

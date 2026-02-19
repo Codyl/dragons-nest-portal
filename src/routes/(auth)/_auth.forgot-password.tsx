@@ -4,6 +4,12 @@ import CommonCard from "@/components/cards/common-card";
 import useLoggedInUser from "@/hooks/use-logged-in-user";
 
 export const Route = createFileRoute("/(auth)/_auth/forgot-password")({
+  head: () => ({
+    meta: [
+      { title: "Forgot Password | Cody Lillywhite" },
+      { name: "description", content: "Recover your password. Enter your email to receive a recovery code." },
+    ],
+  }),
   component: ForgotPassword,
 });
 

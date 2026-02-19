@@ -5,6 +5,12 @@ import { useState } from "react";
 import CommonCard from "@/components/cards/common-card";
 
 export const Route = createFileRoute("/(auth)/_auth/reset-password")({
+  head: () => ({
+    meta: [
+      { title: "Reset Password | Cody Lillywhite" },
+      { name: "description", content: "Set a new password for your account." },
+    ],
+  }),
   component: ResetPassword,
 });
 

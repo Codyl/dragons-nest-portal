@@ -3,6 +3,12 @@ import CreateAccountForm from "@/components/forms/create-account.form";
 import CommonCard from "@/components/cards/common-card";
 
 export const Route = createFileRoute("/(auth)/_auth/signup")({
+  head: () => ({
+    meta: [
+      { title: "Create Account | Cody Lillywhite" },
+      { name: "description", content: "Sign up for a new account." },
+    ],
+  }),
   component: Signup,
 });
 

@@ -3,6 +3,12 @@ import EmailMFAForm from "@/components/forms/email-mfa.form";
 import CommonCard from "@/components/cards/common-card";
 
 export const Route = createFileRoute("/(auth)/mfa/email")({
+  head: () => ({
+    meta: [
+      { title: "Email MFA | Cody Lillywhite" },
+      { name: "description", content: "Verify your identity with the code sent to your email." },
+    ],
+  }),
   component: EmailMFA,
 });
 
