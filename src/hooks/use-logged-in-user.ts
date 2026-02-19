@@ -17,6 +17,7 @@ const useLoggedInUser = (): UseQueryResult<
       softwareTokenMfaEnabled?: boolean;
       preferredMfa?: string;
       loginMethods?: string[];
+      hasPassword?: boolean;
     };
   },
   Error

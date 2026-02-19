@@ -1,11 +1,16 @@
 import useLoggedInUser from "@/hooks/use-logged-in-user";
 import useLinkGoogle from "@/hooks/use-link-google";
+import useUnlinkGoogle from "@/hooks/use-unlink-google";
 import useRegisterPasskey from "@/hooks/use-register-passkey";
 import { Button } from "../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ChangePasswordModal from "../modals/change-password.modal";
 import { GoogleLogin } from "@react-oauth/google";
+
+export const UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE =
+  "You must create a password before you can disconnect your Google account.";
 
 const LoginMethod = ({ method, onClick, buttonText, className, disabled }: { method: string, onClick: () => void, buttonText: string, className?: string, disabled?: boolean }) => {
   return (
@@ -21,12 +26,31 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
   const user = userData.data?.data;
   const registerPasskey = useRegisterPasskey();
   const linkGoogle = useLinkGoogle();
+  const unlinkGoogle = useUnlinkGoogle();
   const hasGoogle = user?.loginMethods?.includes("GOOGLE");
+  const hasPassword = user?.hasPassword ?? true;
 
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
   const handleConnectGoogle = (credential: string) => {
     linkGoogle.mutate({ credential });
+  };
+
+  const unlinkErrorIsPasswordRequired =
+    unlinkGoogle.isError &&
+    unlinkGoogle.error?.message === UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE;
+  const disableRemoveGoogle = hasGoogle && !hasPassword;
+  const [unlinkPopoverOpen, setUnlinkPopoverOpen] = useState(false);
+  const unlinkPopoverCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scheduleUnlinkPopoverClose = () => {
+    unlinkPopoverCloseTimerRef.current = setTimeout(() => setUnlinkPopoverOpen(false), 150);
+  };
+  const cancelUnlinkPopoverClose = () => {
+    if (unlinkPopoverCloseTimerRef.current) {
+      clearTimeout(unlinkPopoverCloseTimerRef.current);
+      unlinkPopoverCloseTimerRef.current = null;
+    }
   };
 
   return (
@@ -41,9 +65,62 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
           <div className={cn("flex flex-col w-full gap-2 tablet:flex-row justify-between items-center py-2")}>
             <div>Google</div>
             {hasGoogle ? (
-              <Button type="button" variant="outline" disabled>
-                Remove (coming soon)
-              </Button>
+              <div className="flex flex-col items-end w-full tablet:w-auto">
+                {disableRemoveGoogle ? (
+                  <Popover open={unlinkPopoverOpen} onOpenChange={setUnlinkPopoverOpen}>
+                    <PopoverTrigger asChild>
+                      <span
+                        className="inline-flex"
+                        data-testid="unlink-google-trigger"
+                        onMouseEnter={() => {
+                          cancelUnlinkPopoverClose();
+                          setUnlinkPopoverOpen(true);
+                        }}
+                        onMouseLeave={scheduleUnlinkPopoverClose}
+                      >
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled
+                          data-testid="unlink-google-disabled"
+                        >
+                          Remove
+                        </Button>
+                      </span>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      side="top"
+                      align="end"
+                      onMouseEnter={cancelUnlinkPopoverClose}
+                      onMouseLeave={scheduleUnlinkPopoverClose}
+                      data-testid="unlink-google-password-required"
+                    >
+                      <p className="text-sm text-destructive">
+                        {UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE}
+                      </p>
+                      <button
+                        type="button"
+                        className="mt-2 text-sm underline font-medium hover:no-underline text-primary"
+                        onClick={() => {
+                          setUnlinkPopoverOpen(false);
+                          setShowChangePasswordModal(true);
+                        }}
+                      >
+                        Set a password
+                      </button>
+                    </PopoverContent>
+                  </Popover>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => unlinkGoogle.mutate()}
+                    disabled={unlinkGoogle.isPending}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </div>
             ) : (
               <>
                 {!window.Cypress && (
@@ -53,7 +130,7 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
                         handleConnectGoogle(credentialResponse.credential);
                       }
                     }}
-                    onError={() => {}}
+                    onError={() => { }}
                   />
                 )}
                 {window.Cypress && (
@@ -77,32 +154,6 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
             disabled={registerPasskey.isPending}
           />
         </div>
-        {linkGoogle.isPending && (
-          <p className="text-muted-foreground text-sm mt-2">Linking Google account…</p>
-        )}
-        {linkGoogle.isError && (
-          <p className="text-destructive text-sm mt-2" data-testid="link-google-error">
-            {linkGoogle.error?.message ?? "Failed to link Google account."}
-          </p>
-        )}
-        {linkGoogle.isSuccess && (
-          <p className="text-green-600 dark:text-green-400 text-sm mt-2" data-testid="link-google-success">
-            Google account linked successfully.
-          </p>
-        )}
-        {registerPasskey.isPending && (
-          <p className="text-muted-foreground text-sm mt-2">Completing passkey registration…</p>
-        )}
-        {registerPasskey.isError && (
-          <p className="text-destructive text-sm mt-2" data-testid="passkey-error">
-            {registerPasskey.error?.message ?? "Passkey registration failed."}
-          </p>
-        )}
-        {registerPasskey.isSuccess && (
-          <p className="text-green-600 dark:text-green-400 text-sm mt-2" data-testid="passkey-success">
-            Passkey registered successfully.
-          </p>
-        )}
       </div>
     </>
   );

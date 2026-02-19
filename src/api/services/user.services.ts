@@ -86,6 +86,10 @@ const UserServices = {
     const response = await api.post('users/me/link-google', { json });
     return response.json();
   },
+  unlinkGoogle: async (): Promise<{ message: string; data: { code?: string } }> => {
+    const response = await api.post('users/me/unlink-google', { json: {} });
+    return response.json();
+  },
   getPasskeyRegisterOptions: async (): Promise<{
     message: string;
     data: Record<string, unknown>;

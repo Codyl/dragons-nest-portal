@@ -1,6 +1,6 @@
 import { composeStories } from "@storybook/react-vite";
 import * as stories from "./login-method-settings.section.stories";
-import LoginMethodSettingsSection from "./login-method-settings.section";
+import LoginMethodSettingsSection, { UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE } from "./login-method-settings.section";
 
 const { Default } = composeStories(stories);
 
@@ -99,5 +99,57 @@ describe("LoginMethodSettingsSection", () => {
     cy.mount(<LoginMethodSettingsSection />);
     cy.contains("button", "Connect").click();
     cy.get("[data-testid=link-google-success]").should("contain", "Google account linked successfully");
+  });
+
+  it("should show password-required message in popover when Google linked but user has no password", () => {
+    cy.intercept("GET", "**/users/me", {
+      statusCode: 200,
+      body: {
+        message: "User retrieved successfully",
+        data: { email: "user@example.com", loginMethods: ["GOOGLE"], hasPassword: false },
+      },
+    });
+    cy.mount(<LoginMethodSettingsSection />);
+    cy.get("[data-testid=unlink-google-disabled]").should("exist");
+    cy.get("[data-testid=unlink-google-trigger]").trigger("mouseenter");
+    cy.get("[data-testid=unlink-google-password-required]")
+      .should("be.visible")
+      .and("contain", UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE);
+  });
+
+  it("should call unlink-google on Remove and show success when user has password", () => {
+    cy.intercept("GET", "**/users/me", {
+      statusCode: 200,
+      body: {
+        message: "User retrieved successfully",
+        data: { email: "user@example.com", loginMethods: ["GOOGLE"], hasPassword: true },
+      },
+    }).as("getUser");
+    cy.intercept("POST", "**/users/me/unlink-google", {
+      statusCode: 200,
+      body: { message: "Google account disconnected successfully", data: {} },
+    }).as("unlinkGoogle");
+    cy.mount(<LoginMethodSettingsSection />);
+    cy.contains("button", "Remove").click();
+    cy.get("@unlinkGoogle").should("have.been.calledOnce");
+    cy.get("[data-testid=unlink-google-success]").should("contain", "Google account disconnected successfully");
+  });
+
+  it("should show password-required error when Remove returns 400 without password", () => {
+    cy.intercept("GET", "**/users/me", {
+      statusCode: 200,
+      body: {
+        message: "User retrieved successfully",
+        data: { email: "user@example.com", loginMethods: ["GOOGLE"], hasPassword: true },
+      },
+    });
+    cy.intercept("POST", "**/users/me/unlink-google", {
+      statusCode: 400,
+      body: { message: UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE, data: { code: "PASSWORD_REQUIRED" } },
+    }).as("unlinkGoogle");
+    cy.mount(<LoginMethodSettingsSection />);
+    cy.contains("button", "Remove").click();
+    cy.get("@unlinkGoogle").should("have.been.calledOnce");
+    cy.get("[data-testid=unlink-google-password-required-error]").should("contain", UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE);
   });
 });

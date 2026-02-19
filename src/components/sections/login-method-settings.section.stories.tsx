@@ -60,7 +60,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "Login methods section with Email & Password, Google (Connect to link account), and Passkey. Connect Google links your email/password account to Google; Register Passkey triggers WebAuthn registration when clicked (requires a supported browser and authenticator).",
+          "Login methods section with Email & Password, Google (Connect/Remove), and Passkey. Connect Google links your email/password account; Remove disconnects Google (requires a password to be set first). Register Passkey triggers WebAuthn when clicked.",
       },
     },
   },
