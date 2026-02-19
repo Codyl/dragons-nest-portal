@@ -12,10 +12,8 @@ const UserSettingsForm = () => {
   const queryClient = useQueryClient();
   const { data, isPending } = useLoggedInUser();
   const { mutate: updateSettings, error: updateSettingsError, isPending: isUpdating } = useUpdateUserSettings({
-    options: {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
-      }
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     }
   });
 
@@ -64,7 +62,7 @@ const UserSettingsForm = () => {
       >
         <form.Field
           name="email"
-          children={(field) => <InputField field={field} label="Email" />}
+          children={(field) => <InputField field={field} label="Email" required />}
         />
 
         <form.Field
@@ -89,7 +87,7 @@ const UserSettingsForm = () => {
         <form.Field
           name="phone_number"
           children={(field) => (
-            <InputField placeholder="(202) 555-0123" normalize={normalizePhoneNumber} format={formatPhoneNumber} field={field} label="Phone Number (Optional)" />
+            <InputField placeholder="(202) 555-0123" normalize={normalizePhoneNumber} format={formatPhoneNumber} field={field} label="Phone Number" />
           )}
         />
         <div>
