@@ -19,6 +19,24 @@ const AuthServices = {
     });
     return response.json();
   },
+  googleTokenExchange: async (json: {
+    credential: string;
+  }): Promise<{
+    message: string;
+    data: {
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+        ExpiresIn?: number;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post('auth/google-token-exchange', {
+      json,
+    });
+    return response.json();
+  },
   verifyUsername: async (json: {
     email: string;
     session?: string;

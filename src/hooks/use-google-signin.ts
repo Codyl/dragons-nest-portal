@@ -16,7 +16,7 @@ const useGoogleSignin = (): {
     error,
   } = useMutation({
     mutationFn: (json: { credential: string }) =>
-      AuthServices.googleSSOSignin(json),
+      AuthServices.googleTokenExchange(json),
     onSuccess: () => {
       // Backend sets auth cookies; invalidate so next checkAuth() refetches /users/me
       queryClient.invalidateQueries({ queryKey: ['auth-status'] });
