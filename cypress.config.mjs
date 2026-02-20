@@ -1,4 +1,9 @@
 import { defineConfig } from 'cypress';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const dirname =
+  typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   component: {
@@ -6,6 +11,19 @@ export default defineConfig({
     devServer: {
       framework: 'react',
       bundler: 'vite',
+      // Force backend auth path in component tests so we can intercept auth/initiate-login
+      // instead of hitting Amplify/Cognito (avoids "Auth UserPool not configured").
+      viteConfig: {
+        resolve: {
+          alias: {
+            '@': path.resolve(dirname, './src'),
+          },
+        },
+        define: {
+          'import.meta.env.VITE_COGNITO_USER_POOL_ID': JSON.stringify(''),
+          'import.meta.env.VITE_COGNITO_CLIENT_ID': JSON.stringify(''),
+        },
+      },
     },
   },
   // E2E against Storybook: pnpm storybook then pnpm cypress:run:e2e

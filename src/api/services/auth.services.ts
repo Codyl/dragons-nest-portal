@@ -32,9 +32,12 @@ const AuthServices = {
       };
     };
   }> => {
-    const response = await unauthenticatedApi.post('auth/google-token-exchange', {
-      json,
-    });
+    const response = await unauthenticatedApi.post(
+      'auth/google-token-exchange',
+      {
+        json,
+      },
+    );
     return response.json();
   },
   verifyUsername: async (json: {
