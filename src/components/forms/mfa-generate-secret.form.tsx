@@ -7,16 +7,28 @@ import useConnectAuthenticator from "@/hooks/use-connect-authenticator-app";
 import useGenerateAuthenticatorSecret from "@/hooks/use-generate-authenticator-secret";
 import { useMemo } from "react";
 import { useRouter } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
-const MFAGenerateSecretForm = () => {
+const MFAGenerateSecretForm = ({
+  source,
+  userEmail,
+  onSetupSuccess,
+}: {
+  source?: "login" | "settings";
+  userEmail?: string;
+  onSetupSuccess?: () => void;
+} = {}) => {
   const router = useRouter();
-  const session = sessionStorage.getItem("session") || "";
-  const username = sessionStorage.getItem("username") || "";
-  const password = sessionStorage.getItem("password") || "";
+  const queryClient = useQueryClient();
+  const isSettings = source === "settings";
+  const session = isSettings ? "" : (sessionStorage.getItem("session") || "");
+  const username = isSettings ? (userEmail ?? "") : (sessionStorage.getItem("username") || "");
+  const password = isSettings ? "" : (sessionStorage.getItem("password") || "");
 
   const { data, error } = useGenerateAuthenticatorSecret({
-    session: session,
-    username: username,
+    session,
+    username,
+    enabled: isSettings ? !!userEmail : !!(session && username),
   });
 
   // Extract the new session from AssociateSoftwareTokenCommand response
@@ -51,22 +63,26 @@ const MFAGenerateSecretForm = () => {
       onSubmit: schema,
     },
     onSubmit: async ({ value }) => {
-      // Use the session from AssociateSoftwareTokenCommand response, not the old session
       const sessionToUse = associateSession || session;
       connectAuthenticatorApp(
         {
           friendlyDeviceName: "Authenticator App",
           session: sessionToUse,
           userCode: value.code,
-          username: username,
-          password: password,
+          username: isSettings ? "" : username,
+          password: isSettings ? "" : password,
         },
         {
           onSuccess: (data) => {
-            if (data.data.Session) {
-              sessionStorage.setItem("session", data.data.Session);
+            if (isSettings) {
+              queryClient.invalidateQueries({ queryKey: ["user", "me"] });
+              onSetupSuccess?.();
+            } else {
+              if (data.data.Session) {
+                sessionStorage.setItem("session", data.data.Session);
+              }
+              router.navigate({ to: "/mfa/verify-code" });
             }
-            router.navigate({ to: "/mfa/verify-code" });
           },
         },
       );

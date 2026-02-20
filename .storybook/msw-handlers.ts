@@ -72,6 +72,8 @@ export const handlers = [
           family_name: 'Doe',
           middle_name: '',
           phone_number: '+12025550123',
+          softwareTokenMfaEnabled: false,
+          preferredMfa: undefined,
         },
       },
       { status: 200 },
@@ -80,6 +82,10 @@ export const handlers = [
   // Update user (users/me/account)
   http.put(matchUsersMeAccount, async () => {
     return HttpResponse.json({ message: 'Updated' }, { status: 200 });
+  }),
+  // MFA preference (users/me/mfa-preference)
+  http.post(pathMatch('/users/me/mfa-preference'), async () => {
+    return HttpResponse.json({ message: 'MFA preferences updated successfully', data: {} }, { status: 200 });
   }),
   // Auth: verify username
   http.post(matchAuthVerifyUsername, async () => {
@@ -187,6 +193,25 @@ const replaceHandler = (index: number, variant: (typeof handlers)[number]) => [
   variant,
   ...handlers.slice(index + 1),
 ];
+
+// MFA options section: GET users/me with TOTP enabled (index 2)
+const getUsersMeTOTPEnabled = http.get(matchUsersMe, async () =>
+  HttpResponse.json(
+    {
+      data: {
+        email: 'test@example.com',
+        given_name: 'John',
+        family_name: 'Doe',
+        middle_name: '',
+        phone_number: '+12025550123',
+        softwareTokenMfaEnabled: true,
+        preferredMfa: 'SOFTWARE_TOKEN_MFA',
+      },
+    },
+    { status: 200 },
+  ),
+);
+export const mfaOptionsTOTPEnabledHandlers = replaceHandler(2, getUsersMeTOTPEnabled);
 
 // Handlers for other APIs (used with change-password variants)
 const otherHandlers = handlers.slice(1);

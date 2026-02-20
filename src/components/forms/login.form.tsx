@@ -60,12 +60,6 @@ const LoginForm = ({ className }: { className?: string }) => {
           if (data.data.ChallengeName === "SOFTWARE_TOKEN_MFA") {
             router.navigate({ to: "/mfa/verify-code" });
           }
-          if (data.data.ChallengeName === "SMS_MFA") {
-            router.navigate({ to: "/mfa/sms" });
-          }
-          if (data.data.ChallengeName === "EMAIL_MFA") {
-            router.navigate({ to: "/mfa/email" });
-          }
           if (data.data.ChallengeName === "NEW_PASSWORD_REQUIRED") {
             router.navigate({ to: "/reset-password" });
           }

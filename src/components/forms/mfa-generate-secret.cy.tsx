@@ -112,4 +112,21 @@ describe('MFAGenerateSecretForm', () => {
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
   });
+
+  it('should render in settings mode with userEmail', () => {
+    cy.intercept('POST', '**/auth/mfa/generate-authenticator-secret', {
+      statusCode: 200,
+      body: {
+        data: {
+          Session: 'new-session',
+          qrString: 'otpauth://totp/Test:user@example.com?secret=TEST123&issuer=Test',
+        },
+      },
+    });
+    cy.mount(
+      <MFAGenerateSecretForm source="settings" userEmail="user@example.com" />
+    );
+    cy.get('input[name="code"]').should('exist');
+    cy.get('button[type="submit"]').should('exist');
+  });
 });

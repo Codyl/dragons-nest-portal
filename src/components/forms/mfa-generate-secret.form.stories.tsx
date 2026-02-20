@@ -184,3 +184,29 @@ export const ValidationErrorEmptyCode: Story = {
     await submitForm(canvas);
   },
 };
+
+export const SettingsMode: Story = {
+  args: {
+    source: "settings",
+    userEmail: "user@example.com",
+  },
+  parameters: {
+    msw: { handlers: mfaGenerateSecretSuccessHandlers },
+    docs: {
+      description: {
+        story:
+          "MFA setup from account settings (uses access token). QR code is fetched with authenticated request.",
+      },
+    },
+  },
+  decorators: [
+    (Story, context) => {
+      if (context.args?.source === "settings" && typeof sessionStorage !== "undefined") {
+        sessionStorage.removeItem("session");
+        sessionStorage.removeItem("username");
+        sessionStorage.removeItem("password");
+      }
+      return <Story />;
+    },
+  ],
+};
