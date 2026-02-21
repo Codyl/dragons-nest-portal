@@ -13,7 +13,10 @@ describe('Reset Password page', () => {
   it('renders confirm reset code step when username in session', () => {
     cy.visit('/reset-password', {
       onBeforeLoad(win) {
-        win.sessionStorage.setItem('username', 'user@example.com');
+        win.sessionStorage.setItem(
+          'username',
+          Cypress.env('VITE_MAILSLURP_EMAIL'),
+        );
       },
     });
     cy.contains('Confirm Reset Code').should('be.visible');

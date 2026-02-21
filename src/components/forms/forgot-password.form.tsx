@@ -63,27 +63,8 @@ const ForgotPasswordForm = ({ preFilledEmail }: ForgotPasswordFormProps = {}) =>
           disabled={isPending}
           isPending={isPending}
         >
-          Send reset code
+          Send Reset Code
         </Button>
-        <FieldSeparator>Or</FieldSeparator>
-        <div className="space-y-2">
-          <Button type="button" variant="outline" className="w-full" disabled>
-            <span className="flex items-center gap-2">
-              <span>Send code via SMS</span>
-              <span className="text-xs text-muted-foreground">
-                (Coming soon)
-              </span>
-            </span>
-          </Button>
-          <Button type="button" variant="outline" className="w-full" disabled>
-            <span className="flex items-center gap-2">
-              <span>Send code via Email</span>
-              <span className="text-xs text-muted-foreground">
-                (Coming soon)
-              </span>
-            </span>
-          </Button>
-        </div>
       </div>
       <div className="text-center text-sm">
         {preFilledEmail ? (

@@ -9,16 +9,16 @@ const config: StorybookConfig = {
     '@storybook/addon-docs',
     '@storybook/addon-onboarding',
   ],
+  env: (config) => ({
+    ...config,
+    VITE_API_URL: '',
+    USER_POOL_ID: 'trash',
+    USER_POOL_CLIENT_ID: 'trash',
+  }),
   framework: '@storybook/react-vite',
   staticDirs: ['../public'],
   async viteFinal(config) {
-    const { mergeConfig } = await import('vite');
-    return mergeConfig(config, {
-      // Send API requests to same origin so MSW service worker can intercept them
-      define: {
-        'import.meta.env.VITE_API_URL': JSON.stringify(''),
-      },
-    });
+    return config;
   },
 };
 export default config;

@@ -23,7 +23,7 @@ const fillForm = async (canvas: ReturnType<typeof within>, username: string) => 
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Send reset code" });
+  const submitButton = canvas.getByRole("button", { name: "Send Reset Code" });
   await userEvent.click(submitButton);
 };
 
@@ -177,6 +177,7 @@ export const ValidationErrorEmptyUsername: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await fillForm(canvas, "");
     await submitForm(canvas);
   },
 };

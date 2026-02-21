@@ -38,7 +38,7 @@ const ConfirmResetCodeForm = ({
           )}
         />
       </FieldGroup>
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full mt-2">
         Confirm
       </Button>
     </form>

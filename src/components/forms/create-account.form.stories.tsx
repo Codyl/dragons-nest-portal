@@ -31,7 +31,7 @@ const fillForm = async (
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Create account" });
+  const submitButton = canvas.getByRole("button", { name: "Create Account" });
   await userEvent.click(submitButton);
 };
 

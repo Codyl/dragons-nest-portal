@@ -107,7 +107,7 @@ export const Success: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, { given_name: "Jane", family_name: "Smith" });
+    await fillForm(canvas, { email: "example@email.com", given_name: "Jane", family_name: "Smith" });
     await submitForm(canvas);
   },
 };
@@ -124,7 +124,7 @@ export const Error: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, { given_name: "Jane" });
+    await fillForm(canvas, { family_name: "test" });
     await submitForm(canvas);
   },
 };
@@ -141,7 +141,7 @@ export const Loading: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, { given_name: "Jane" });
+    await fillForm(canvas, { email: "example@email.com", given_name: "Jane" });
     await submitForm(canvas);
   },
 };
@@ -158,7 +158,7 @@ export const NetworkError: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, { given_name: "Jane" });
+    await fillForm(canvas, { email: "example@email.com", given_name: "Jane" });
     await submitForm(canvas);
   },
 };

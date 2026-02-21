@@ -12,7 +12,6 @@ declare global {
         story: React.ComponentType,
         options?: MountOptions,
       ) => Chainable;
-      resetCognito: () => Chainable;
     }
   }
 }

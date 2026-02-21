@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import LoginForm from "@/components/forms/login.form";
 import CommonCard from "@/components/cards/common-card";
 import { useRouter } from "@tanstack/react-router";
-import SelectOTPButton from "@/components/buttons/select-otp.button";
 import CHALLENGE_NAMES from "@/utils/constants/challenge-names";
 
 export const Route = createFileRoute("/(auth)/_auth/login")({
@@ -33,13 +32,6 @@ function Login() {
           <LoginForm />
         </CommonCard>
       )}
-      {availablePasswordlessChallenges.length > 0 &&
-        <div className="flex flex-col gap-2 mt-3.5">
-          {availablePasswordlessChallenges.map((challenge) => (
-            <SelectOTPButton otpType={challenge as keyof typeof CHALLENGE_NAMES} key={challenge} />
-          ))}
-        </div>
-      }
     </>
   );
 }

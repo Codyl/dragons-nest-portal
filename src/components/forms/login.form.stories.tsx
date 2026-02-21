@@ -22,7 +22,7 @@ const fillForm = async (canvas: ReturnType<typeof within>, password: string) => 
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Sign in" });
+  const submitButton = canvas.getByRole("button", { name: "Sign In" });
   await userEvent.click(submitButton);
 };
 
@@ -152,7 +152,7 @@ export const NetworkError: Story = {
     await fillForm(canvas, "Password123!");
     await submitForm(canvas);
   },
-};export const ValidationErrorPasswordTooShort: Story = {
+}; export const ValidationErrorPasswordTooShort: Story = {
   parameters: {
     msw: { handlers: loginSuccessHandlers },
     docs: {

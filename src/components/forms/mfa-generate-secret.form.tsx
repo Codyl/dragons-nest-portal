@@ -25,7 +25,7 @@ const MFAGenerateSecretForm = ({
   const username = isSettings ? (userEmail ?? "") : (sessionStorage.getItem("username") || "");
   const password = isSettings ? "" : (sessionStorage.getItem("password") || "");
 
-  const { data, error } = useGenerateAuthenticatorSecret({
+  const { data, error, isPending: isGeneratingSecret } = useGenerateAuthenticatorSecret({
     session,
     username,
     enabled: isSettings ? !!userEmail : !!(session && username),
@@ -94,6 +94,7 @@ const MFAGenerateSecretForm = ({
       <h1>Scan QR Code</h1>
       <div>Scan this QR code with your authenticator app.</div>
       {qrString && !error && <QRCodeSVG value={qrString} />}
+      {isGeneratingSecret && <div className="animate-pulse bg-muted rounded-md size-32" />}
       <div>Enter the code from your authenticator app.</div>
       <form
         onSubmit={(e) => {
@@ -112,18 +113,14 @@ const MFAGenerateSecretForm = ({
         </Button>
       </form>
       {error?.message && (
-        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
-          <p className="text-destructive mt-2" data-testid="error-message">
-            {error.message}
-          </p>
-        </div>
+        <p className="text-destructive" data-testid="error-message">
+          {error.message}
+        </p>
       )}
       {connectAuthenticatorError?.message && (
-        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-md">
-          <p className="text-destructive mt-2" data-testid="error-message">
-            {connectAuthenticatorError.message}
-          </p>
-        </div>
+        <p className="text-destructive" data-testid="error-message">
+          {connectAuthenticatorError.message}
+        </p>
       )}
     </div>
   );

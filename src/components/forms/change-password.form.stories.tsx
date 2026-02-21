@@ -268,7 +268,7 @@ export const PasswordMissingNumber: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', 'Password123!', 'Password123!');
+    await fillForm(canvas, 'Password!', 'Password!', 'Password!');
     await submitForm(canvas);
   },
 };
@@ -288,7 +288,6 @@ export const IncompleteForm: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', '', '');
     await submitForm(canvas);
   },
 };

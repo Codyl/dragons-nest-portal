@@ -62,7 +62,7 @@ const VerifyUsernameForm = () => {
       >
         Next
       </Button>
-      {error && <p className="text-destructive mt-2" data-testid="error-message">{error.message}</p>}
+      {error && <p className="text-destructive" data-testid="error-message">{error.message}</p>}
       <div className="text-center text-sm text-muted-foreground">
         Don't have an account?{" "}
         <Link to="/signup" className="text-primary font-medium hover:underline">

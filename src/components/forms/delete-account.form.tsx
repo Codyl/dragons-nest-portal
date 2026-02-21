@@ -30,7 +30,7 @@ const DeleteAccountForm = () => {
       <div>Are you sure you want to delete your account? This action is irreversible.</div>
       <form.Field name="password" children={(field) => <InputField field={field} label="Password" type="password" autoFocus />} />
       {error && <div className="text-destructive mt-2" data-testid="error-message">{error.message}</div>}
-      <Button className="mt-2" type="submit" disabled={isPending} isPending={isPending}>
+      <Button className="mt-2 w-32" type="submit" disabled={isPending} isPending={isPending}>
         Delete Account
       </Button>
     </form>

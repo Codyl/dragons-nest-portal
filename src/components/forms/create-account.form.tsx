@@ -75,13 +75,6 @@ const CreateAccountForm = ({
       }}
       className="space-y-4"
     >
-      {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          {error.message
-            ? error.message
-            : "An error occurred. Please try again."}
-        </div>
-      )}
       <FieldGroup>
         <form.Field
           name="email"
@@ -106,6 +99,11 @@ const CreateAccountForm = ({
           )}
         />
       </FieldGroup>
+      {error && (
+        <div className="stext-sm text-destructive">
+          {error.message}
+        </div>
+      )}
       <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
         Create Account
       </Button>

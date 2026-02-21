@@ -1,15 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import AuthServices from "@/api/services/auth.services";
+import { toast } from "sonner";
 
 const ResendSignupConfirmationCodeButton = () => {
   const {
     mutate: resendCode,
     isPending,
     error,
-    data,
   } = useMutation({
     mutationFn: AuthServices.resendSignupConfirmationCode,
+    onSuccess: () => {
+      toast.success(`Code resent to ${sessionStorage.getItem("username")}.`);
+    },
   });
 
   return (
@@ -28,7 +31,6 @@ const ResendSignupConfirmationCodeButton = () => {
         Resend Code
       </Button>
       {error && <p className="text-destructive">Error: {error.message}</p>}
-      {data && <p>Code resent</p>}
     </>
   );
 };

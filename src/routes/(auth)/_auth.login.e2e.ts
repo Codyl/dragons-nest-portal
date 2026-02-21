@@ -12,7 +12,7 @@ describe('Login page', () => {
 
   it('renders login form when session has password challenge', () => {
     cy.visit('/verify-username');
-    cy.get('input[name="username"]').type('user@example.com');
+    cy.get('input[name="username"]').type(Cypress.env('VITE_MAILSLURP_EMAIL'));
     cy.get('button[type="submit"]').click();
     cy.url().should('include', '/login');
     cy.get('input[name="password"]').should('exist');

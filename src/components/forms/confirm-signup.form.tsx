@@ -30,9 +30,9 @@ const ConfirmSignupForm = () => {
   const schema = z.object({
     code: z
       .string()
-      .min(6, "Confirmation code must be 6 digits")
-      .max(6, "Confirmation code must be 6 digits")
-      .regex(/^\d+$/, "Confirmation code must contain only numbers"),
+      .min(6, "Verification code must be 6 digits")
+      .max(6, "Verification code must be 6 digits")
+      .regex(/^\d+$/, "Verification code must contain only numbers"),
   });
 
   const username = sessionStorage.getItem("username") || "";
@@ -65,13 +65,6 @@ const ConfirmSignupForm = () => {
         }}
         className="space-y-4"
       >
-        {error && (
-          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            {error instanceof Error
-              ? error.message
-              : "Invalid code. Please try again."}
-          </div>
-        )}
         <FieldGroup>
           <form.Field
             name="code"
@@ -85,6 +78,13 @@ const ConfirmSignupForm = () => {
             )}
           />
         </FieldGroup>
+        {error && (
+          <div className="rounded-md text-sm text-destructive">
+            {error instanceof Error
+              ? error.message
+              : "Invalid code. Please try again."}
+          </div>
+        )}
         <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
           Verify Email
         </Button>

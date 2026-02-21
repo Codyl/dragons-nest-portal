@@ -22,7 +22,7 @@ const fillForm = async (canvas: ReturnType<typeof within>, code: string) => {
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Verify email" });
+  const submitButton = canvas.getByRole("button", { name: "Verify Email" });
   await userEvent.click(submitButton);
 };
 

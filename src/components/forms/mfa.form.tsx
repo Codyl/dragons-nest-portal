@@ -55,13 +55,6 @@ const MFAForm = () => {
       }}
       className="space-y-4"
     >
-      {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          {error instanceof Error
-            ? error.message
-            : "Invalid code. Please try again."}
-        </div>
-      )}
       <FieldGroup>
         <form.Field
           name="softwareTokenMfaCode"
@@ -70,15 +63,10 @@ const MFAForm = () => {
           )}
         />
       </FieldGroup>
+      {error && <p className="text-destructive mt-2" data-testid="error-message">{error.message}</p>}
       <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
         Verify Code
       </Button>
-      <div className="text-center text-sm text-muted-foreground">
-        <p>Don't have access to your authenticator app?</p>
-        <Button variant="link" type="button" className="text-sm" disabled>
-          Use a different verification method
-        </Button>
-      </div>
     </form>
   );
 };

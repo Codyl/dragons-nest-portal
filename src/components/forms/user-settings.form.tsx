@@ -45,7 +45,7 @@ const UserSettingsForm = () => {
         ...value,
         phone_number: value.phone_number
           ? `+1${value.phone_number}`
-          : undefined,
+          : '',
       });
     },
   });

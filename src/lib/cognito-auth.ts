@@ -12,6 +12,8 @@ import {
 
 const USER_POOL_ID = import.meta.env.VITE_COGNITO_USER_POOL_ID as string;
 const USER_POOL_CLIENT_ID = import.meta.env.VITE_COGNITO_CLIENT_ID as string;
+console.log('USER_POOL_ID', USER_POOL_ID);
+console.log('USER_POOL_CLIENT_ID', USER_POOL_CLIENT_ID);
 
 const AMPLIFY_AUTH_FLOW_KEY = 'authFlow';
 
@@ -32,6 +34,8 @@ export function configureCognitoAuth(): void {
 
 /** Whether direct Cognito (Amplify) auth is configured and should be used for login. */
 export function isCognitoAuthConfigured(): boolean {
+  console.log('USER_POOL_ID', USER_POOL_ID);
+  console.log('USER_POOL_CLIENT_ID', USER_POOL_CLIENT_ID);
   return Boolean(USER_POOL_ID && USER_POOL_CLIENT_ID);
 }
 
