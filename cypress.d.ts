@@ -12,6 +12,14 @@ declare global {
         story: React.ComponentType,
         options?: MountOptions,
       ) => Chainable;
+      /** Log in via auth API and set cookies for domain localhost (for flow tests) */
+      loginViaApi: (username: string, password: string) => Chainable<void>;
+      /** Request helper for cognito auth API (e2e endpoint tests) */
+      authApiRequest: (
+        method: string,
+        path: string,
+        body?: object,
+      ) => Chainable<Cypress.Response<unknown>>;
     }
   }
 }
