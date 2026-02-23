@@ -2,23 +2,23 @@ import { api } from '../api.config';
 import { unauthenticatedApi } from '../api.unauthenticated.config';
 
 const AuthServices = {
-  googleSSOSignin: async (json: {
-    credential: string;
-  }): Promise<{
-    message: string;
-    data: {
-      AuthenticationResult?: {
-        AccessToken?: string;
-        RefreshToken?: string;
-        IdToken?: string;
-      };
-    };
-  }> => {
-    const response = await unauthenticatedApi.post('auth/google-sso-signin', {
-      json,
-    });
-    return response.json();
-  },
+  // googleSSOSignin: async (json: {
+  //   credential: string;
+  // }): Promise<{
+  //   message: string;
+  //   data: {
+  //     AuthenticationResult?: {
+  //       AccessToken?: string;
+  //       RefreshToken?: string;
+  //       IdToken?: string;
+  //     };
+  //   };
+  // }> => {
+  //   const response = await unauthenticatedApi.post('auth/google-sso-signin', {
+  //     json,
+  //   });
+  //   return response.json();
+  // },
   googleTokenExchange: async (json: {
     credential: string;
   }): Promise<{
@@ -60,52 +60,6 @@ const AuthServices = {
         AvailableChallenges: string[];
       };
     }>;
-  },
-  selectAuthChallenge: async (json: {
-    answer: string;
-    username: string;
-    session?: string;
-    emailCode?: string;
-  }): Promise<{
-    message: string;
-    data: {
-      Session: string;
-      ChallengeName: string;
-      AuthenticationResult?: {
-        AccessToken?: string;
-        RefreshToken?: string;
-        IdToken?: string;
-      };
-    };
-  }> => {
-    const response = await unauthenticatedApi.post(
-      'auth/select-auth-challenge',
-      {
-        json,
-      },
-    );
-    return response.json();
-  },
-  answerOTP: async (json: {
-    otpType: string;
-    answer: string;
-    username: string;
-    session?: string;
-    emailCode?: string;
-  }): Promise<{
-    message: string;
-    data: {
-      Session: string;
-      ChallengeName: string;
-      AuthenticationResult?: {
-        AccessToken?: string;
-        RefreshToken?: string;
-        IdToken?: string;
-      };
-    };
-  }> => {
-    const response = await unauthenticatedApi.post('auth/answer-otp', { json });
-    return response.json();
   },
   setSession: async (tokens: {
     AccessToken?: string;

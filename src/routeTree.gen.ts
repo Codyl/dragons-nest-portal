@@ -22,6 +22,7 @@ import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth
 import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
 import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
 import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
+import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
@@ -88,6 +89,11 @@ const authAuthConfirmSignupRoute = authAuthConfirmSignupRouteImport.update({
   path: '/confirm-signup',
   getParentRoute: () => authAuthRoute,
 } as any)
+const authMfaMfaVerifyCodeRoute = authMfaMfaVerifyCodeRouteImport.update({
+  id: '/(auth)/mfa/_mfa/verify-code',
+  path: '/mfa/verify-code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/verify-username': typeof authAuthVerifyUsernameRoute
   '/account-settings': typeof privatePrivateAccountSettingsRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByTo {
   '/verify-username': typeof authAuthVerifyUsernameRoute
   '/account-settings': typeof privatePrivateAccountSettingsRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -130,6 +138,7 @@ export interface FileRoutesById {
   '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute
   '/(private)/_private/account-settings': typeof privatePrivateAccountSettingsRoute
   '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/verify-username'
     | '/account-settings'
     | '/security-settings'
+    | '/mfa/verify-code'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/verify-username'
     | '/account-settings'
     | '/security-settings'
+    | '/mfa/verify-code'
   id:
     | '__root__'
     | '/'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/(auth)/_auth/verify-username'
     | '/(private)/_private/account-settings'
     | '/(private)/_private/security-settings'
+    | '/(auth)/mfa/_mfa/verify-code'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -181,6 +193,7 @@ export interface RootRouteChildren {
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   authAuthRoute: typeof authAuthRouteWithChildren
   privatePrivateRoute: typeof privatePrivateRouteWithChildren
+  authMfaMfaVerifyCodeRoute: typeof authMfaMfaVerifyCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -276,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthConfirmSignupRouteImport
       parentRoute: typeof authAuthRoute
     }
+    '/(auth)/mfa/_mfa/verify-code': {
+      id: '/(auth)/mfa/_mfa/verify-code'
+      path: '/mfa/verify-code'
+      fullPath: '/mfa/verify-code'
+      preLoaderRoute: typeof authMfaMfaVerifyCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -321,6 +341,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsOfServiceRoute: TermsOfServiceRoute,
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,
+  authMfaMfaVerifyCodeRoute: authMfaMfaVerifyCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
