@@ -7,8 +7,8 @@
  * Run with app: pnpm dev then pnpm cypress:run:e2e:app
  */
 
-const STATIC_EMAIL = () => Cypress.env('VITE_STATIC_EMAIL') as string;
-const MAILSLURP_EMAIL = () => Cypress.env('VITE_MAILSLURP_EMAIL') as string;
+const STATIC_EMAIL = () => Cypress.env('VITE_STATIC_EMAIL');
+const MAILSLURP_EMAIL = () => Cypress.env('VITE_MAILSLURP_EMAIL');
 const PASSWORD = 'Password123!';
 
 describe('Auth API endpoints', () => {

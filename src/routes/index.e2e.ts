@@ -28,6 +28,6 @@ describe('Home page', () => {
     });
     cy.visit('/');
     cy.contains('Welcome Home').should('be.visible');
-    cy.contains('Logout').should('be.visible');
+    cy.contains('Sign out').should('be.visible');
   });
 });
