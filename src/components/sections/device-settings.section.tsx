@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import useKnownDevices from "@/hooks/use-known-devices";
+import useLoggedInUser from "@/hooks/use-logged-in-user";
 import { formatDate } from "@/utils/helpers/formatting.helpers";
 import ActionPopover from "../popovers/action-popover";
 import { useState } from "react";
@@ -31,7 +32,12 @@ const UserDevice = ({ device, className }: { device: { DeviceKey: string, Device
 };
 
 const UserDeviceSettingsSection = ({ className }: { className?: string }) => {
+  const { data: userData } = useLoggedInUser();
   const { data } = useKnownDevices();
+
+  if (userData?.data?.hasPassword === false) {
+    return null;
+  }
 
   return (
     <div className={className}>

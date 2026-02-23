@@ -4,7 +4,7 @@ import InputField from "../fields/input-field";
 import { Button } from "../ui/button";
 import { useRouter } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
-import useCompleteMFAAuth from "@/hooks/use-complete-mfa-auth";
+import useCompleteMFAAuth, { type CompleteMFAMutationData } from "@/hooks/use-complete-mfa-auth";
 
 const MFAForm = () => {
   const router = useRouter();
@@ -35,9 +35,16 @@ const MFAForm = () => {
           challengeName: "SOFTWARE_TOKEN_MFA",
         },
         {
-          onSuccess: (data) => {
+          onSuccess: (data: CompleteMFAMutationData) => {
             if (data.data.AuthenticationResult) {
               sessionStorage.clear();
+              const authResult = data.data.AuthenticationResult;
+              if (authResult.NewDeviceMetadata) {
+                localStorage.setItem(
+                  "DeviceKey",
+                  authResult.NewDeviceMetadata.DeviceKey || "",
+                );
+              }
               router.navigate({ to: "/" });
             }
           },
