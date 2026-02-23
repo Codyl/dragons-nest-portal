@@ -3,17 +3,35 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { useState } from "react";
 
+const DISMISSED_KEY = "NewDeviceModalDismissed";
+
+function shouldShowModal(): boolean {
+  if (localStorage.getItem("AddedDeviceKey")) return false;
+  if (localStorage.getItem("isOptedOut") || localStorage.getItem("IsOptedOut")) return false;
+  if (localStorage.getItem(DISMISSED_KEY)) return false;
+  return true;
+}
+
 const NewDeviceModal = () => {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(shouldShowModal);
   const rememberDeviceMutation = useRememberDevice({
     onSuccess: () => {
       localStorage.setItem("AddedDeviceKey", localStorage.getItem("DeviceKey") || "");
       setShow(false);
-    }
+    },
   });
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      localStorage.setItem(DISMISSED_KEY, "true");
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+  };
+
   return (
-    <Dialog open={show} onOpenChange={setShow}>
+    <Dialog open={show} onOpenChange={handleOpenChange}>
       <DialogContent>
         <h2>Would you like to remember this device?</h2>
         <p>This will allow you to login to your account from this device without having to verify your identity.</p>
@@ -22,9 +40,12 @@ const NewDeviceModal = () => {
             rememberDeviceMutation.mutate({
               deviceKey: localStorage.getItem("DeviceKey") || "",
               shouldRememberDevice: true,
-            })
+            });
           }}>Yes, this is my device</Button>
-          <Button variant="link" onClick={() => { localStorage.setItem("isOptedOut", "true") }}>No, other people use this device</Button>
+          <Button variant="link" onClick={() => {
+            localStorage.setItem("isOptedOut", "true");
+            setShow(false);
+          }}>No, other people use this device</Button>
         </div>
       </DialogContent>
     </Dialog>

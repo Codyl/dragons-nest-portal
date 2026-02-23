@@ -15,6 +15,7 @@ const useLogout = (): UseMutationResult<
     mutationFn: AuthServices.logout,
     onSuccess: () => {
       sessionStorage.clear();
+      localStorage.removeItem("NewDeviceModalDismissed");
       router.navigate({ to: '/verify-username' });
     },
   });

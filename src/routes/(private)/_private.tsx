@@ -1,5 +1,4 @@
 import type { RouterContext } from "@/App";
-import NewDeviceModal from "@/components/modals/new-device.modal";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_private")({
@@ -20,9 +19,5 @@ export const Route = createFileRoute("/(private)/_private")({
 });
 
 function RouteComponent() {
-
-  return <>
-    {(!localStorage.getItem("AddedDeviceKey") && !localStorage.getItem("IsOptedOut")) && <NewDeviceModal />}
-    <Outlet />
-  </>;
+  return <Outlet />;
 }

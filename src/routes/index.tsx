@@ -1,4 +1,5 @@
 import type { RouterContext } from "@/App";
+import NewDeviceModal from "@/components/modals/new-device.modal";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -25,11 +26,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-
   return (
     <div className="p-2">
       <h3>Welcome Home!</h3>
-
+      <NewDeviceModal />
     </div>
   );
 }
