@@ -17,13 +17,16 @@ describe('Auth API endpoints', () => {
   });
 
   it('POST /auth/verify-username returns session and available challenges', () => {
-    cy.authApiRequest('POST', '/auth/verify-username', { email: STATIC_EMAIL() })
-      .then((res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body).to.have.property('message');
-        expect(res.body.data).to.have.property('Session').that.is.a('string');
-        expect(res.body.data).to.have.property('AvailableChallenges').that.is.an('array');
-      });
+    cy.authApiRequest('POST', '/auth/verify-username', {
+      email: STATIC_EMAIL(),
+    }).then((res) => {
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('message');
+      expect(res.body.data).to.have.property('Session').that.is.a('string');
+      expect(res.body.data)
+        .to.have.property('AvailableChallenges')
+        .that.is.an('array');
+    });
   });
 
   it('POST /auth/initiate-signup returns 200 for new email', () => {
@@ -38,33 +41,39 @@ describe('Auth API endpoints', () => {
   });
 
   it('POST /auth/initiate-login returns 200 and sets cookies when session + password valid', () => {
-    cy.authApiRequest('POST', '/auth/verify-username', { email: STATIC_EMAIL() }).then(
-      (verifyRes) => {
+    cy.authApiRequest('POST', '/auth/verify-username', {
+      email: STATIC_EMAIL(),
+    })
+      .then((verifyRes) => {
         expect(verifyRes.status).to.eq(200);
-        const session = (verifyRes.body as { data?: { Session?: string } })?.data?.Session;
+        const session = (verifyRes.body as { data?: { Session?: string } })
+          ?.data?.Session;
         expect(session).to.be.a('string');
         return cy.authApiRequest('POST', '/auth/initiate-login', {
           username: STATIC_EMAIL(),
           password: PASSWORD,
           session,
         });
-      },
-    ).then((loginRes) => {
-      expect(loginRes.status).to.eq(200);
-      expect(loginRes.body.data).to.have.property('AuthenticationResult');
-      const setCookie = (loginRes.headers as Record<string, string | string[]>)['set-cookie']
-        ?? (loginRes.headers as Record<string, string | string[]>)['Set-Cookie'];
-      expect(setCookie).to.be.ok;
-    });
+      })
+      .then((loginRes) => {
+        expect(loginRes.status).to.eq(200);
+        expect(loginRes.body.data).to.have.property('AuthenticationResult');
+        const setCookie =
+          (loginRes.headers as Record<string, string | string[]>)[
+            'set-cookie'
+          ] ??
+          (loginRes.headers as Record<string, string | string[]>)['Set-Cookie'];
+        expect(setCookie).to.be.ok;
+      });
   });
 
   it('POST /auth/forgot-password returns 200', () => {
-    cy.authApiRequest('POST', '/auth/forgot-password', { username: STATIC_EMAIL() }).then(
-      (res) => {
-        expect(res.status).to.eq(200);
-        expect(res.body).to.have.property('message');
-      },
-    );
+    cy.authApiRequest('POST', '/auth/forgot-password', {
+      username: STATIC_EMAIL(),
+    }).then((res) => {
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('message');
+    });
   });
 
   it('GET /users/me returns 401 when unauthenticated', () => {
@@ -166,12 +175,18 @@ describe('Auth flow (password-based)', () => {
     cy.get('input[name="username"]').type(MAILSLURP_EMAIL());
     cy.get('button[type="submit"]').click();
     cy.wait('@verifyUsername');
-    cy.contains('Password reset required for the user').should('be.visible');
+    cy.get('input[name="password"]').type(PASSWORD);
+    cy.get('button[type="submit"]').click();
+    cy.get('[data-testid="error-message"]').should(
+      'contain.text',
+      'Incorrect username or password.',
+    );
   });
 
   it('login → change password flow', () => {
     cy.loginViaApi(STATIC_EMAIL(), PASSWORD);
     cy.visit('/security-settings');
+    cy.get('[data-slot="dialog-close"]').click();
     cy.contains('Change Password').click();
     cy.get('input[name="currentPassword"]').type(PASSWORD);
     cy.get('input[name="newPassword"]').type('NewPassword123!');
@@ -208,9 +223,7 @@ describe('Auth flow (password-based)', () => {
       'confirmForgotPassword',
     );
 
-    cy.get('input[name="username"]')
-      .clear()
-      .type(MAILSLURP_EMAIL());
+    cy.get('input[name="username"]').clear().type(MAILSLURP_EMAIL());
     cy.get('button[type="submit"]').click();
     cy.wait('@forgotPassword');
 
