@@ -1,20 +1,10 @@
-import UserServices from '@/api/services/user.services';
+import UserServices, { type KnownDevice } from '@/api/services/user.services';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 
 const useKnownDevices = (): UseQueryResult<
   {
     message: string;
-    data: {
-      DeviceKey: string;
-      DeviceName: string;
-      DeviceLastIPUsed: string;
-      DeviceCreateDate: string;
-      DeviceLastAuthenticatedDate: string;
-      DeviceLastModifiedDate: string;
-      City: string;
-      Region: string;
-      Country: string;
-    }[];
+    data: KnownDevice[];
   },
   Error
 > => {

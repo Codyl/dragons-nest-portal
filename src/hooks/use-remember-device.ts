@@ -3,33 +3,15 @@ import {
   type UseMutationOptions,
   type UseMutationResult,
 } from '@tanstack/react-query';
-import UserServices from '@/api/services/user.services';
+import { rememberDevice } from 'aws-amplify/auth';
 
 const useRememberDevice = (
-  options?: UseMutationOptions<
-    {
-      message: string;
-      data: {};
-    },
-    Error,
-    {
-      deviceKey: string;
-      shouldRememberDevice: boolean;
-    }
-  >,
-): UseMutationResult<
-  {
-    message: string;
-    data: {};
-  },
-  Error,
-  {
-    deviceKey: string;
-    shouldRememberDevice: boolean;
-  }
-> => {
+  options?: UseMutationOptions<void, Error, void>,
+): UseMutationResult<void, Error, void> => {
   return useMutation({
-    mutationFn: UserServices.rememberDevice,
+    mutationFn: async () => {
+      await rememberDevice();
+    },
     ...options,
   });
 };

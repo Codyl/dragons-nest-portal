@@ -1,3 +1,4 @@
+import { forgetDevice } from "aws-amplify/auth";
 import useRememberDevice from "@/hooks/use-remember-device";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
@@ -21,7 +22,7 @@ const NewDeviceModal = () => {
   const [show, setShow] = useState(shouldShowModal);
   const rememberDeviceMutation = useRememberDevice({
     onSuccess: () => {
-      localStorage.setItem("AddedDeviceKey", localStorage.getItem("DeviceKey") || "");
+      localStorage.setItem("AddedDeviceKey", localStorage.getItem("DeviceKey") || "amplify-remembered");
       setShow(false);
     },
   });
@@ -42,12 +43,14 @@ const NewDeviceModal = () => {
         <p>This will allow you to login to your account from this device without having to verify your identity.</p>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => {
-            rememberDeviceMutation.mutate({
-              deviceKey: localStorage.getItem("DeviceKey") || "",
-              shouldRememberDevice: true,
-            });
+            rememberDeviceMutation.mutate();
           }}>Yes, this is my device</Button>
-          <Button variant="link" onClick={() => {
+          <Button variant="link" onClick={async () => {
+            try {
+              await forgetDevice();
+            } catch {
+              // Ignore (e.g. device not tracked or not configured)
+            }
             localStorage.setItem("isOptedOut", "true");
             setShow(false);
           }}>No, other people use this device</Button>

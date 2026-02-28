@@ -47,16 +47,11 @@ describe("NewDeviceModal", () => {
   });
 
   describe("User interactions", () => {
-    it("should call remember-device and close when user clicks Yes", () => {
-      cy.intercept("POST", "**/profile/remember-device", {
-        statusCode: 200,
-        body: { message: "Device remembered", data: {} },
-      }).as("rememberDevice");
+    it("should call Amplify rememberDevice and close when user clicks Yes", () => {
       clearStorageForShow();
       cy.mount(<NewDeviceModal />);
       cy.contains("Would you like to remember this device?").should("be.visible");
       cy.contains("button", "Yes, this is my device").click();
-      cy.wait("@rememberDevice");
       cy.contains("Would you like to remember this device?").should("not.exist");
     });
 

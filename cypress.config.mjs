@@ -32,6 +32,7 @@ export default defineConfig({
         resolve: {
           alias: {
             '@': path.resolve(dirname, './src'),
+            'aws-amplify/auth': path.resolve(dirname, './cypress/mocks/aws-amplify-auth.ts'),
           },
         },
         define: {

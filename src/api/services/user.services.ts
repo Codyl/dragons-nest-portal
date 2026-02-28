@@ -1,4 +1,18 @@
+import { fetchAuthSession, fetchDevices } from 'aws-amplify/auth';
 import { api } from '../api.config';
+
+export type KnownDevice = {
+  DeviceKey: string;
+  DeviceName: string;
+  DeviceLastIPUsed: string;
+  DeviceCreateDate: string;
+  DeviceLastAuthenticatedDate: string;
+  DeviceLastModifiedDate: string;
+  City: string;
+  Region: string;
+  Country: string;
+  isCurrentDevice: boolean;
+};
 
 const UserServices = {
   getUser: async (): Promise<{
@@ -54,20 +68,24 @@ const UserServices = {
   },
   getKnownDevices: async (): Promise<{
     message: string;
-    data: {
-      DeviceKey: string;
-      DeviceName: string;
-      DeviceLastIPUsed: string;
-      DeviceCreateDate: string;
-      DeviceLastAuthenticatedDate: string;
-      DeviceLastModifiedDate: string;
-      City: string;
-      Region: string;
-      Country: string;
-    }[];
+    data: KnownDevice[];
   }> => {
+    const amplifyDevices = await fetchDevices();
+    const session = await fetchAuthSession();
+    const deviceKey = session.tokens?.accessToken?.payload?.['device_key'];
+    const currentDevice = amplifyDevices.find((d) => d.id === deviceKey);
     const response = await api.get('profile/known-devices');
-    return response.json();
+    const data: {
+      message: string;
+      data: KnownDevice[];
+    } = await response.json();
+    return {
+      message: data.message,
+      data: data.data.map((d) => ({
+        ...d,
+        isCurrentDevice: d.DeviceKey === currentDevice?.id,
+      })),
+    };
   },
   rememberDevice: async (json: {
     deviceKey: string;

@@ -7,8 +7,9 @@ import ActionPopover from "../popovers/action-popover";
 import { useState } from "react";
 import DeviceDetailsModal from "../modals/device-details.modal";
 import useForgetDevice from "@/hooks/use-forget-device";
+import type { KnownDevice } from "@/api/services/user.services";
 
-const UserDevice = ({ device, className }: { device: { DeviceKey: string, DeviceName: string, DeviceLastIPUsed: string, DeviceLastAuthenticatedDate: string, DeviceLastModifiedDate: string, DeviceCreateDate: string, City: string, Region: string, Country: string }, onClick: () => void, buttonText: string, className?: string }) => {
+const UserDevice = ({ device, className }: { device: KnownDevice; onClick: () => void; buttonText: string; className?: string }) => {
   const [showDeviceDetailsModal, setShowDeviceDetailsModal] = useState(false);
   const forgetDeviceMutation = useForgetDevice();
 
@@ -16,7 +17,7 @@ const UserDevice = ({ device, className }: { device: { DeviceKey: string, Device
     <>
       <DeviceDetailsModal show={showDeviceDetailsModal} setShow={setShowDeviceDetailsModal} deviceDetails={device} />
       <div className={cn("flex flex-col w-full max-w-102 gap-2 tablet:flex-row justify-between items-center", className)}>
-        <div className="font-bold">{device.DeviceName || "Unknown Device"}</div>
+        <div className="font-bold">{device.DeviceName.split(" ")[0] || "Unknown Device"}{device.isCurrentDevice ? " (Current)" : ""}</div>
         <div className="text-muted-foreground">{device.DeviceLastIPUsed || "Unknown IP"}</div>
         <div className="text-muted-foreground">{formatDate(device.DeviceLastAuthenticatedDate) || "Unknown Date"}</div>
         <ActionPopover actions={[{
@@ -44,7 +45,7 @@ const UserDeviceSettingsSection = ({ className }: { className?: string }) => {
       <h1 className="text-2xl font-bold">User Device Settings</h1>
       <div className="text-muted-foreground mt-2">Manage your devices and connected services.</div>
       <div className="flex flex-col mt-2 divide-y">
-        {data?.data.map((device: any) => (
+        {data?.data.map((device) => (
           <UserDevice key={device.DeviceKey} device={device} onClick={() => { }} buttonText="Forget Device" />
         ))}
       </div>
