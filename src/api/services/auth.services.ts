@@ -30,6 +30,7 @@ const AuthServices = {
         IdToken?: string;
         ExpiresIn?: number;
       };
+      loginProvider?: string;
     };
   }> => {
     const response = await unauthenticatedApi.post(

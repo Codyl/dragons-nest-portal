@@ -17,7 +17,12 @@ const useGoogleSignin = (): {
   } = useMutation({
     mutationFn: (json: { credential: string }) =>
       AuthServices.googleTokenExchange(json),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // So the new-device modal can hide when user signed in with Google
+      sessionStorage.setItem(
+        'lastLoginProvider',
+        data?.data?.loginProvider ?? 'google',
+      );
       // Backend sets auth cookies; invalidate so next checkAuth() refetches /profile
       queryClient.invalidateQueries({ queryKey: ['auth-status'] });
       router.navigate({ to: '/' });

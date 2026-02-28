@@ -4,8 +4,13 @@ import { Dialog, DialogContent } from "../ui/dialog";
 import { useState } from "react";
 
 const DISMISSED_KEY = "NewDeviceModalDismissed";
+const LAST_LOGIN_PROVIDER_KEY = "lastLoginProvider";
 
 function shouldShowModal(): boolean {
+  if (sessionStorage.getItem(LAST_LOGIN_PROVIDER_KEY) === "google") {
+    sessionStorage.removeItem(LAST_LOGIN_PROVIDER_KEY);
+    return false;
+  }
   if (localStorage.getItem("AddedDeviceKey")) return false;
   if (localStorage.getItem("isOptedOut") || localStorage.getItem("IsOptedOut")) return false;
   if (localStorage.getItem(DISMISSED_KEY)) return false;

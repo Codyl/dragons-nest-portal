@@ -90,6 +90,10 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  // Remember device (profile/remember-device)
+  http.post(pathMatch('/profile/remember-device'), async () => {
+    return HttpResponse.json({ message: 'Device remembered', data: {} }, { status: 200 });
+  }),
   // Auth: verify username
   http.post(matchAuthVerifyUsername, async () => {
     return HttpResponse.json(verifyUsernameSuccess, { status: 200 });
