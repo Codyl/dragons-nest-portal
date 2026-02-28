@@ -36,7 +36,7 @@ Cypress.Commands.add('mount', (component: ReactNode, options: MountOptions = {})
     defaultPendingMinMs: 0,
   });
 
-  cy.intercept('GET', '**/users/me', {
+  cy.intercept('GET', '**/profile', {
     statusCode: 200,
     body: {
       data: {

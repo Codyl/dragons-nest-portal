@@ -9,7 +9,7 @@ describe('DeleteAccountForm', () => {
   });
 
   it('should delete account successfully', () => {
-    cy.intercept('DELETE', '**/users/me', {
+    cy.intercept('DELETE', '**/profile', {
       statusCode: 200,
       body: {
         message: 'Account deleted successfully',
@@ -22,7 +22,7 @@ describe('DeleteAccountForm', () => {
   });
 
   it('should show error when password is incorrect', () => {
-    cy.intercept('DELETE', '**/users/me', {
+    cy.intercept('DELETE', '**/profile', {
       statusCode: 400,
       body: {
         message: 'Invalid password',
@@ -41,7 +41,7 @@ describe('DeleteAccountForm', () => {
   });
 
   it('should show loading state when submitting', () => {
-    cy.intercept('DELETE', '**/users/me', {
+    cy.intercept('DELETE', '**/profile', {
       delay: 1000,
       statusCode: 200,
       body: {

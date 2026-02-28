@@ -15,7 +15,7 @@ const UserServices = {
       preferredMfa?: string;
     };
   }> => {
-    const response = await api.get('users/me');
+    const response = await api.get('profile');
     return response.json();
   },
   updateUserSettings: async (json: {
@@ -25,14 +25,14 @@ const UserServices = {
     given_name?: string;
     phone_number?: string;
   }): Promise<{ message: string; data: {} }> => {
-    const response = await api.put('users/me/account', { json });
+    const response = await api.put('profile/account', { json });
     return response.json();
   },
   changePassword: async (json: {
     currentPassword: string;
     newPassword: string;
   }): Promise<{ message: string; data: {} }> => {
-    const response = await api.post('users/me/change-password', {
+    const response = await api.post('profile/change-password', {
       json,
     });
     return response.json();
@@ -43,13 +43,13 @@ const UserServices = {
     softwareTokenMfaEnabled?: boolean;
     preferredMfa?: string;
   }): Promise<{ message: string; data: {} }> => {
-    const response = await api.post('users/me/mfa-preference', { json });
+    const response = await api.post('profile/mfa-preference', { json });
     return response.json();
   },
   deleteUser: async (json: {
     password: string;
   }): Promise<{ message: string; data: {} }> => {
-    const response = await api.delete('users/me', { json });
+    const response = await api.delete('profile', { json });
     return response.json();
   },
   getKnownDevices: async (): Promise<{
@@ -66,35 +66,40 @@ const UserServices = {
       Country: string;
     }[];
   }> => {
-    const response = await api.get('users/me/known-devices');
+    const response = await api.get('profile/known-devices');
     return response.json();
   },
   rememberDevice: async (json: {
     deviceKey: string;
     shouldRememberDevice: boolean;
   }): Promise<{ message: string; data: {} }> => {
-    const response = await api.post('users/me/remember-device', { json });
+    const response = await api.post('profile/remember-device', { json });
     return response.json();
   },
   forgetDevice: async (json: {
     deviceKey: string;
   }): Promise<{ message: string; data: {} }> => {
-    const response = await api.post('users/me/forget-device', { json });
+    const response = await api.post('profile/forget-device', { json });
     return response.json();
   },
-  linkGoogle: async (json: { credential: string }): Promise<{ message: string; data: {} }> => {
-    const response = await api.post('users/me/link-google', { json });
+  linkGoogle: async (json: {
+    credential: string;
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.post('profile/link-google', { json });
     return response.json();
   },
-  unlinkGoogle: async (): Promise<{ message: string; data: { code?: string } }> => {
-    const response = await api.post('users/me/unlink-google', { json: {} });
+  unlinkGoogle: async (): Promise<{
+    message: string;
+    data: { code?: string };
+  }> => {
+    const response = await api.post('profile/unlink-google', { json: {} });
     return response.json();
   },
   getPasskeyRegisterOptions: async (): Promise<{
     message: string;
     data: Record<string, unknown>;
   }> => {
-    const response = await api.post('users/me/passkey/register/options', {
+    const response = await api.post('profile/passkey/register/options', {
       json: {},
     });
     return response.json();
@@ -105,7 +110,7 @@ const UserServices = {
     message: string;
     data: { verified: boolean };
   }> => {
-    const res = await api.post('users/me/passkey/register/verify', {
+    const res = await api.post('profile/passkey/register/verify', {
       json: response,
     });
     return res.json();

@@ -10,7 +10,7 @@ describe('ChangePasswordForm', () => {
   });
 
   it('should render via Storybook story (reuses story setup)', () => {
-    cy.intercept('POST', '**/users/me/change-password', {
+    cy.intercept('POST', '**/profile/change-password', {
       statusCode: 200,
       body: { message: 'Password changed successfully' },
     });
@@ -22,7 +22,7 @@ describe('ChangePasswordForm', () => {
   });
 
   it('should call onPasswordChangeSuccess when password is changed', () => {
-    cy.intercept('POST', '/users/me/change-password', {
+    cy.intercept('POST', '/profile/change-password', {
       statusCode: 200,
       body: {
         message: 'Password changed successfully',
@@ -46,7 +46,7 @@ describe('ChangePasswordForm', () => {
   });
 
   it('should handle error when password is not changed', () => {
-    cy.intercept('POST', '/users/me/change-password', {
+    cy.intercept('POST', '/profile/change-password', {
       statusCode: 400,
       body: {
         message: 'Password change failed',
@@ -84,7 +84,7 @@ describe('ChangePasswordForm', () => {
   });
 
   it('should show loading state when password is being changed', () => {
-    cy.intercept('POST', '/users/me/change-password', {
+    cy.intercept('POST', '/profile/change-password', {
       delay: 1000,
       statusCode: 200,
       body: {

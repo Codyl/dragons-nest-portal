@@ -18,7 +18,7 @@ const useGoogleSignin = (): {
     mutationFn: (json: { credential: string }) =>
       AuthServices.googleTokenExchange(json),
     onSuccess: () => {
-      // Backend sets auth cookies; invalidate so next checkAuth() refetches /users/me
+      // Backend sets auth cookies; invalidate so next checkAuth() refetches /profile
       queryClient.invalidateQueries({ queryKey: ['auth-status'] });
       router.navigate({ to: '/' });
     },

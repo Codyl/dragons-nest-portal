@@ -11,7 +11,7 @@ describe('Account Settings page', () => {
   });
 
   it('renders account settings when authenticated', () => {
-    cy.intercept('GET', '**/users/me*', {
+    cy.intercept('GET', '**/profile*', {
       statusCode: 200,
       body: {
         message: 'OK',

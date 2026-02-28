@@ -149,7 +149,7 @@ const AuthServices = {
     return response.json();
   },
   logout: async (): Promise<{ message: string; data: {} }> => {
-    const response = await unauthenticatedApi.get('auth/logout');
+    const response = await unauthenticatedApi.post('auth/logout');
     return response.json();
   },
   initiateSignup: async (json: {

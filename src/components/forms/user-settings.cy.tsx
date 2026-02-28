@@ -2,7 +2,7 @@ import UserSettingsForm from "./user-settings.form";
 
 describe('UserSettingsForm', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/users/me', {
+    cy.intercept('GET', '**/profile', {
       statusCode: 200,
       body: {
         data: {
@@ -27,7 +27,7 @@ describe('UserSettingsForm', () => {
   });
 
   it('should update user settings successfully', () => {
-    cy.intercept('PUT', '**/users/me/account', {
+    cy.intercept('PUT', '**/profile/account', {
       statusCode: 200,
       body: {
         message: 'Settings updated successfully',
@@ -54,7 +54,7 @@ describe('UserSettingsForm', () => {
   });
 
   it('should show loading state when submitting', () => {
-    cy.intercept('PUT', '**/users/me/account', {
+    cy.intercept('PUT', '**/profile/account', {
       delay: 1000,
       statusCode: 200,
       body: {
@@ -68,13 +68,13 @@ describe('UserSettingsForm', () => {
   });
 
   it('should show error when update fails', () => {
-    cy.intercept('PUT', '**/users/me/account', {
+    cy.intercept('PUT', '**/profile/account', {
       statusCode: 400,
       body: {
         message: 'Update failed',
       },
     });
-    cy.intercept('GET', '**/users/me', {
+    cy.intercept('GET', '**/profile', {
       statusCode: 200,
       body: {
         data: {

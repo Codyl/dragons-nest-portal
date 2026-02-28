@@ -76,15 +76,15 @@ describe('Auth API endpoints', () => {
     });
   });
 
-  it('GET /users/me returns 401 when unauthenticated', () => {
-    cy.authApiRequest('GET', '/users/me').then((res) => {
+  it('GET /profile returns 401 when unauthenticated', () => {
+    cy.authApiRequest('GET', '/profile').then((res) => {
       expect(res.status).to.eq(401);
     });
   });
 
-  it('GET /users/me returns 200 when authenticated', () => {
+  it('GET /profile returns 200 when authenticated', () => {
     cy.loginViaApi(STATIC_EMAIL(), PASSWORD);
-    cy.authApiRequest('GET', '/users/me').then((res) => {
+    cy.authApiRequest('GET', '/profile').then((res) => {
       expect(res.status).to.eq(200);
       expect(res.body.data).to.have.property('sub');
     });
@@ -132,7 +132,7 @@ describe('Auth flow (password-based)', () => {
     cy.url().should('include', '/account-settings');
     cy.get('[data-slot="dialog-close"]').click();
     cy.get('input[name="phone_number"]').clear().type('2086003434');
-    cy.intercept('PUT', '**/users/me/account').as('updateUserSettings');
+    cy.intercept('PUT', '**/profile/account').as('updateUserSettings');
     cy.get('button[type="submit"]').click();
     cy.wait('@updateUserSettings');
     cy.reload();
@@ -143,7 +143,7 @@ describe('Auth flow (password-based)', () => {
     cy.wait('@updateUserSettings');
     cy.reload();
     cy.get('[data-slot="dialog-close"]').click();
-    cy.intercept('GET', '**/users/me').as('me');
+    cy.intercept('GET', '**/profile').as('me');
     cy.wait('@me');
     cy.get('input[name="phone_number"]').should('have.value', '');
   });
@@ -167,7 +167,7 @@ describe('Auth flow (password-based)', () => {
     cy.get('button').contains('Advanced').click();
     cy.contains('Delete Account').click();
     cy.get('input[name="password"]').type(PASSWORD);
-    cy.intercept('DELETE', '**/users/me').as('deleteAccount');
+    cy.intercept('DELETE', '**/profile').as('deleteAccount');
     cy.get('div[role="dialog"]').find('button[type="submit"]').click();
     cy.wait('@deleteAccount');
     cy.url().should('include', '/verify-username');
@@ -191,7 +191,7 @@ describe('Auth flow (password-based)', () => {
     cy.get('input[name="currentPassword"]').type(PASSWORD);
     cy.get('input[name="newPassword"]').type('NewPassword123!');
     cy.get('input[name="confirmPassword"]').type('NewPassword123!');
-    cy.intercept('POST', '**/users/me/change-password').as('changePassword');
+    cy.intercept('POST', '**/profile/change-password').as('changePassword');
     cy.get('div[role="dialog"]').find('button[type="submit"]').click();
     cy.wait('@changePassword');
   });

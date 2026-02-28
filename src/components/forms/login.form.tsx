@@ -36,7 +36,7 @@ const LoginForm = ({ className }: { className?: string }) => {
   const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
   const passwordForm = useForm({
     defaultValues: {
-      password: "",
+      password: "Password123!",
     },
     validators: {
       onSubmit: passwordSchema,
@@ -52,6 +52,7 @@ const LoginForm = ({ className }: { className?: string }) => {
       login(variables, {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onSuccess: (data: any) => {
+          console.log(data);
           if (data.data.Session) {
             sessionStorage.setItem("session", data.data.Session);
           }

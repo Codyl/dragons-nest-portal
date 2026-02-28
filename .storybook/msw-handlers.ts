@@ -6,10 +6,10 @@ const pathMatch =
   ({ request }: { request: Request }) =>
     new URL(request.url).pathname === pathname;
 
-const matchChangePassword = pathMatch('/users/me/change-password');
-const matchDeleteUser = pathMatch('/users/me');
-const matchUsersMe = pathMatch('/users/me');
-const matchUsersMeAccount = pathMatch('/users/me/account');
+const matchChangePassword = pathMatch('/profile/change-password');
+const matchDeleteUser = pathMatch('/profile');
+const matchUsersMe = pathMatch('/profile');
+const matchUsersMeAccount = pathMatch('/profile/account');
 const matchAuthVerifyUsername = pathMatch('/auth/verify-username');
 const matchAuthInitiateLogin = pathMatch('/auth/initiate-login');
 const matchAuthForgotPassword = pathMatch('/auth/forgot-password');
@@ -27,10 +27,10 @@ const matchAuthMfaGenerateSecret = pathMatch(
 const matchAuthMfaConnect = pathMatch('/auth/mfa/connect-authenticator-app');
 const matchAuthRefreshToken = pathMatch('/auth/refresh-token');
 const matchPasskeyRegisterOptions = pathMatch(
-  '/users/me/passkey/register/options',
+  '/profile/passkey/register/options',
 );
 const matchPasskeyRegisterVerify = pathMatch(
-  '/users/me/passkey/register/verify',
+  '/profile/passkey/register/verify',
 );
 
 // Default auth success response (tokens sent as HttpOnly cookies by backend; frontend receives minimal success payload)
@@ -62,7 +62,7 @@ export const handlers = [
   http.delete(matchDeleteUser, async () => {
     return HttpResponse.json({ message: 'User deleted' }, { status: 200 });
   }),
-  // Get user (users/me)
+  // Get user (profile)
   http.get(matchUsersMe, async () => {
     return HttpResponse.json(
       {
@@ -79,13 +79,16 @@ export const handlers = [
       { status: 200 },
     );
   }),
-  // Update user (users/me/account)
+  // Update user (profile/account)
   http.put(matchUsersMeAccount, async () => {
     return HttpResponse.json({ message: 'Updated' }, { status: 200 });
   }),
-  // MFA preference (users/me/mfa-preference)
-  http.post(pathMatch('/users/me/mfa-preference'), async () => {
-    return HttpResponse.json({ message: 'MFA preferences updated successfully', data: {} }, { status: 200 });
+  // MFA preference (profile/mfa-preference)
+  http.post(pathMatch('/profile/mfa-preference'), async () => {
+    return HttpResponse.json(
+      { message: 'MFA preferences updated successfully', data: {} },
+      { status: 200 },
+    );
   }),
   // Auth: verify username
   http.post(matchAuthVerifyUsername, async () => {
@@ -194,7 +197,7 @@ const replaceHandler = (index: number, variant: (typeof handlers)[number]) => [
   ...handlers.slice(index + 1),
 ];
 
-// MFA options section: GET users/me with TOTP enabled (index 2)
+// MFA options section: GET profile with TOTP enabled (index 2)
 const getUsersMeTOTPEnabled = http.get(matchUsersMe, async () =>
   HttpResponse.json(
     {
@@ -211,7 +214,10 @@ const getUsersMeTOTPEnabled = http.get(matchUsersMe, async () =>
     { status: 200 },
   ),
 );
-export const mfaOptionsTOTPEnabledHandlers = replaceHandler(2, getUsersMeTOTPEnabled);
+export const mfaOptionsTOTPEnabledHandlers = replaceHandler(
+  2,
+  getUsersMeTOTPEnabled,
+);
 
 // Handlers for other APIs (used with change-password variants)
 const otherHandlers = handlers.slice(1);
@@ -539,7 +545,7 @@ export const mfaGenerateSecretLoadingHandlers = replaceHandler(
   mfaGenerateSecretLoading,
 );
 
-// User settings: PUT users/me/account (index 3)
+// User settings: PUT profile/account (index 3)
 const updateAccountSuccess = http.put(matchUsersMeAccount, async () =>
   HttpResponse.json({ message: 'Updated' }, { status: 200 }),
 );
