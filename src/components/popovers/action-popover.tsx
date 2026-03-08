@@ -6,7 +6,7 @@ import { EllipsisVertical } from "lucide-react";
 const ActionPopover = ({ actions }: { actions: { label: string, onClick: () => void }[] }) => {
   return (
     <Popover>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button variant="link" size="icon">
           <EllipsisVertical className="size-4" />
         </Button>
