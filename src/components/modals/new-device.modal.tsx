@@ -47,7 +47,7 @@ const NewDeviceModal = () => {
           }}>Yes, this is my device</Button>
           <Button variant="link" onClick={async () => {
             try {
-              await forgetDevice();
+              await forgetDevice({ device: { id: localStorage.getItem("DeviceKey") || "" } });
             } catch {
               // Ignore (e.g. device not tracked or not configured)
             }

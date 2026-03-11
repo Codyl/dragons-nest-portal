@@ -6,12 +6,11 @@ import { formatDate } from "@/utils/helpers/formatting.helpers";
 import ActionPopover from "../popovers/action-popover";
 import { useState } from "react";
 import DeviceDetailsModal from "../modals/device-details.modal";
-import useForgetDevice from "@/hooks/use-forget-device";
 import type { KnownDevice } from "@/api/services/user.services";
+import { forgetDevice } from "aws-amplify/auth";
 
 const UserDevice = ({ device, className }: { device: KnownDevice; onClick: () => void; buttonText: string; className?: string }) => {
   const [showDeviceDetailsModal, setShowDeviceDetailsModal] = useState(false);
-  const forgetDeviceMutation = useForgetDevice();
 
   return (
     <>
@@ -22,9 +21,7 @@ const UserDevice = ({ device, className }: { device: KnownDevice; onClick: () =>
         <div className="text-muted-foreground">{formatDate(device.DeviceLastAuthenticatedDate) || "Unknown Date"}</div>
         <ActionPopover actions={[{
           label: "Forget Device", onClick: () => {
-            forgetDeviceMutation.mutate({
-              deviceKey: device.DeviceKey,
-            });
+            forgetDevice({ device: { id: device.DeviceKey } });
           }
         }, { label: "See more details", onClick: () => { setShowDeviceDetailsModal(true) } }]} />
       </div>
