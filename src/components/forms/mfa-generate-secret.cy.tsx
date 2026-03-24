@@ -23,7 +23,7 @@ describe('MFAGenerateSecretForm', () => {
       },
     });
     cy.mount(<MFAGenerateSecretForm />);
-    cy.get('input[name="code"]').should('exist');
+    cy.get('[data-testid="six-digit-code-code"]').should('exist');
     cy.get('button[type="submit"]').should('exist');
   });
 
@@ -46,7 +46,7 @@ describe('MFAGenerateSecretForm', () => {
       },
     });
     cy.mount(<MFAGenerateSecretForm />);
-    cy.get('input[name="code"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     // Should navigate on success
   });
@@ -68,7 +68,7 @@ describe('MFAGenerateSecretForm', () => {
       },
     });
     cy.mount(<MFAGenerateSecretForm />);
-    cy.get('input[name="code"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.contains('Invalid code').should('exist');
   });
@@ -85,7 +85,7 @@ describe('MFAGenerateSecretForm', () => {
     });
     cy.mount(<MFAGenerateSecretForm />);
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Code is required');
+    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Code must be 6 digits');
   });
 
   it('should show loading state when submitting', () => {
@@ -108,7 +108,7 @@ describe('MFAGenerateSecretForm', () => {
       },
     });
     cy.mount(<MFAGenerateSecretForm />);
-    cy.get('input[name="code"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
   });
@@ -126,7 +126,7 @@ describe('MFAGenerateSecretForm', () => {
     cy.mount(
       <MFAGenerateSecretForm source="settings" userEmail="user@example.com" />
     );
-    cy.get('input[name="code"]').should('exist');
+    cy.get('[data-testid="six-digit-code-code"]').should('exist');
     cy.get('button[type="submit"]').should('exist');
   });
 });

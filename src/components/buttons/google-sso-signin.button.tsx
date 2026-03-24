@@ -12,17 +12,18 @@ const GoogleSSOSigninButton = () => {
             : "Google signin failed. Please try again."}
         </div>
       )}
-      <GoogleLogin
+      {!isPending && !error && <GoogleLogin
         onSuccess={(credentialResponse) => {
           if (credentialResponse.credential) {
             signInWithGoogle(credentialResponse.credential);
           }
         }}
+        width="400"
         onError={() => {
           console.log('Login Failed');
-        }} />
+        }} />}
       {isPending && (
-        <span className="text-sm text-muted-foreground">Signing in...</span>
+        <div className="rounded-md bg-muted-foreground/10 h-11 p-3 text-sm text-muted-foreground w-full text-center animate-pulse" />
       )}
     </>
   )

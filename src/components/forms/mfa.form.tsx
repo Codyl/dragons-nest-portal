@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
-import InputField from "../fields/input-field";
+import SixDigitCodeField from "../fields/six-digit-code-field";
 import { Button } from "../ui/button";
 import { useRouter } from "@tanstack/react-router";
 import { FieldGroup } from "../ui/field";
@@ -66,7 +66,7 @@ const MFAForm = () => {
         <form.Field
           name="softwareTokenMfaCode"
           children={(field) => (
-            <InputField field={field} label="Verification code" type="text" autoFocus />
+            <SixDigitCodeField field={field} label="Verification code" autoFocus />
           )}
         />
       </FieldGroup>

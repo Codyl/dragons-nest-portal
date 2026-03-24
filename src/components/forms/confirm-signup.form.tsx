@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
-import InputField from "../fields/input-field";
+import SixDigitCodeField from "../fields/six-digit-code-field";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import AuthServices from "@/api/services/auth.services";
@@ -69,10 +69,9 @@ const ConfirmSignupForm = () => {
           <form.Field
             name="code"
             children={(field) => (
-              <InputField
+              <SixDigitCodeField
                 field={field}
                 label="Verification code"
-                type="text"
                 autoFocus
               />
             )}

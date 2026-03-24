@@ -14,7 +14,7 @@ describe('MFAForm', () => {
 
   it('should render', () => {
     cy.mount(<MFAForm />);
-    cy.get('input[name="softwareTokenMfaCode"]').should('exist');
+    cy.get('[data-testid="six-digit-code-softwareTokenMfaCode"]').should('exist');
     cy.get('button[type="submit"]').should('exist');
   });
 
@@ -28,7 +28,7 @@ describe('MFAForm', () => {
       },
     });
     cy.mount(<MFAForm />);
-    cy.get('input[name="softwareTokenMfaCode"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     // Should navigate on success
   });
@@ -41,23 +41,23 @@ describe('MFAForm', () => {
       },
     });
     cy.mount(<MFAForm />);
-    cy.get('input[name="softwareTokenMfaCode"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.contains('Invalid code').should('exist');
   });
 
   it('should require code to be 6 digits', () => {
     cy.mount(<MFAForm />);
-    cy.get('input[name="softwareTokenMfaCode"]').type('12345');
+    cy.get('[data-testid="digit-input-0"]').type('12345');
     cy.get('button[type="submit"]').click();
     cy.get('[data-testid="error-message-softwareTokenMfaCode"]').should('contain.text', 'MFA code must be 6 digits');
   });
 
-  it('should require code to contain only numbers', () => {
+  it('should strip non-digits and require 6 digits', () => {
     cy.mount(<MFAForm />);
-    cy.get('input[name="softwareTokenMfaCode"]').type('12345a');
+    cy.get('[data-testid="digit-input-0"]').type('12345a');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-softwareTokenMfaCode"]').should('contain.text', 'MFA code must contain only numbers');
+    cy.get('[data-testid="error-message-softwareTokenMfaCode"]').should('contain.text', 'MFA code must be 6 digits');
   });
 
   it('should show loading state when submitting', () => {
@@ -71,7 +71,7 @@ describe('MFAForm', () => {
       },
     });
     cy.mount(<MFAForm />);
-    cy.get('input[name="softwareTokenMfaCode"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
     cy.get('[data-testid="button-loading-indicator"]').should('exist');

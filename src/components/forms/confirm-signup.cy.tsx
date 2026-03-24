@@ -13,7 +13,7 @@ describe('ConfirmSignupForm', () => {
 
   it('should render', () => {
     cy.mount(<ConfirmSignupForm />);
-    cy.get('input[name="code"]').should('exist');
+    cy.get('[data-testid="six-digit-code-code"]').should('exist');
     cy.get('button[type="submit"]').should('exist');
   });
 
@@ -28,7 +28,7 @@ describe('ConfirmSignupForm', () => {
       },
     });
     cy.mount(<ConfirmSignupForm />);
-    cy.get('input[name="code"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     // Should navigate on success, but we can't test navigation in component tests
   });
@@ -41,23 +41,23 @@ describe('ConfirmSignupForm', () => {
       },
     });
     cy.mount(<ConfirmSignupForm />);
-    cy.get('input[name="code"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.contains('Invalid code').should('exist');
   });
 
   it('should require code to be 6 digits', () => {
     cy.mount(<ConfirmSignupForm />);
-    cy.get('input[name="code"]').type('12345');
+    cy.get('[data-testid="digit-input-0"]').type('12345');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Confirmation code must be 6 digits');
+    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Verification code must be 6 digits');
   });
 
-  it('should require code to contain only numbers', () => {
+  it('should strip non-digits and require 6 digits', () => {
     cy.mount(<ConfirmSignupForm />);
-    cy.get('input[name="code"]').type('12345a');
+    cy.get('[data-testid="digit-input-0"]').type('12345a');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Confirmation code must contain only numbers');
+    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Verification code must be 6 digits');
   });
 
   it('should show loading state when submitting', () => {
@@ -72,7 +72,7 @@ describe('ConfirmSignupForm', () => {
       },
     });
     cy.mount(<ConfirmSignupForm />);
-    cy.get('input[name="code"]').type('123456');
+    cy.get('[data-testid="digit-input-0"]').type('123456');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
     cy.get('[data-testid="button-loading-indicator"]').should('exist');

@@ -1,5 +1,5 @@
 import { QRCodeSVG } from "qrcode.react";
-import InputField from "../fields/input-field";
+import SixDigitCodeField from "../fields/six-digit-code-field";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -30,6 +30,7 @@ const MFAGenerateSecretForm = ({
     username,
     enabled: isSettings ? !!userEmail : !!(session && username),
   });
+  console.log(error);
 
   // Extract the new session from AssociateSoftwareTokenCommand response
   const associateSession = useMemo(() => {
@@ -52,7 +53,11 @@ const MFAGenerateSecretForm = ({
     useConnectAuthenticator();
 
   const schema = z.object({
-    code: z.string().min(1, "Code is required"),
+    code: z
+      .string()
+      .min(6, "Code must be 6 digits")
+      .max(6, "Code must be 6 digits")
+      .regex(/^\d+$/, "Code must contain only numbers"),
   });
 
   const form = useForm({
@@ -106,17 +111,17 @@ const MFAGenerateSecretForm = ({
       >
         <form.Field
           name="code"
-          children={(field) => <InputField field={field} label="Code" autoFocus />}
+          children={(field) => <SixDigitCodeField field={field} label="Code" autoFocus />}
         />
         <Button type="submit" disabled={isPending} isPending={isPending}>
           Continue
         </Button>
       </form>
-      {error?.message && (
+      {error?.message?.map((message) => (
         <p className="text-destructive" data-testid="error-message">
-          {error.message}
+          {message}
         </p>
-      )}
+      ))}
       {connectAuthenticatorError?.message && (
         <p className="text-destructive" data-testid="error-message">
           {connectAuthenticatorError.message}

@@ -2,18 +2,10 @@ import AuthServices from '@/api/services/auth.services';
 import { useRouter } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 
-const useGoogleSignup = (): {
-  signUpWithGoogle: (credential: string) => void;
-  isPending: boolean;
-  error: Error | null;
-} => {
+const useGoogleSignup = () => {
   const router = useRouter();
 
-  const {
-    mutate: googleSignup,
-    isPending,
-    error,
-  } = useMutation({
+  return useMutation({
     mutationFn: (json: { credential: string }) =>
       AuthServices.googleSSOSignup(json),
     onSuccess: (data) => {
@@ -23,12 +15,6 @@ const useGoogleSignup = (): {
       }
     },
   });
-
-  return {
-    signUpWithGoogle: (credential: string) => googleSignup({ credential }),
-    isPending,
-    error,
-  };
 };
 
 export default useGoogleSignup;

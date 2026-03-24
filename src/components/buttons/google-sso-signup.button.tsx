@@ -2,30 +2,30 @@ import { GoogleLogin } from "@react-oauth/google";
 import useGoogleSignup from "@/hooks/use-google-signup";
 
 const GoogleSSOSignupButton = () => {
-  const { signUpWithGoogle, isPending, error } = useGoogleSignup();
+  const { mutate: signUpWithGoogle, isPending, error } = useGoogleSignup();
 
   return (
-    <div className="flex flex-col items-center gap-2 w-full">
+    <>
       {error && (
         <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive w-full text-center">
-          {error instanceof Error
+          {error
             ? error.message
             : "Google signup failed. Please try again."}
         </div>
       )}
-      <GoogleLogin
+      {!isPending && !error && <GoogleLogin
         onSuccess={(credentialResponse) => {
           if (credentialResponse.credential) {
-            signUpWithGoogle(credentialResponse.credential);
+            signUpWithGoogle({ credential: credentialResponse.credential });
           }
         }}
-        onError={() => {}}
         useOneTap={false}
-      />
+        width="400"
+      />}
       {isPending && (
-        <span className="text-sm text-muted-foreground">Signing up...</span>
+        <div className="rounded-md bg-muted-foreground/10 h-11 p-3 text-sm text-muted-foreground w-full text-center animate-pulse" />
       )}
-    </div>
+    </>
   );
 };
 
