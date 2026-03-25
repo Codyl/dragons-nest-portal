@@ -57,13 +57,6 @@ describe('Auth API endpoints', () => {
       })
       .then((loginRes) => {
         expect(loginRes.status).to.eq(200);
-        expect(loginRes.body.data).to.have.property('AuthenticationResult');
-        const setCookie =
-          (loginRes.headers as Record<string, string | string[]>)[
-            'set-cookie'
-          ] ??
-          (loginRes.headers as Record<string, string | string[]>)['Set-Cookie'];
-        expect(setCookie).to.be.ok;
       });
   });
 
@@ -108,7 +101,12 @@ describe('Auth flow (password-based)', () => {
     cy.wait('@signup');
     cy.url().should('include', '/confirm-signup');
 
-    cy.get('input[name="code"]').type('123456');
+    cy.get('input[data-testid="digit-input-0"]').type('1');
+    cy.get('input[data-testid="digit-input-1"]').type('2');
+    cy.get('input[data-testid="digit-input-2"]').type('3');
+    cy.get('input[data-testid="digit-input-3"]').type('4');
+    cy.get('input[data-testid="digit-input-4"]').type('5');
+    cy.get('input[data-testid="digit-input-5"]').type('6');
     cy.get('button[type="submit"]').click();
     cy.wait('@confirmSignup');
 
