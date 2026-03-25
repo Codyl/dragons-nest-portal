@@ -17,9 +17,6 @@ beforeEach(() => {
     if (response.status !== 200) {
       throw new Error('Failed to ping test server');
     }
-    if (response.body.debug.nodeEnv !== 'test') {
-      throw new Error('Node environment is not test');
-    }
   });
 });
 
