@@ -1,7 +1,13 @@
 /// <reference types="cypress" />
 /// <reference types="cypress-storybook/cypress" />
+import { CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY } from '../../src/constants/cypress-e2e-new-device-modal';
 import './commands';
 import 'cypress-storybook/cypress';
+
+/** App E2E only (not component tests): never show “remember this device” during runs. */
+Cypress.on('window:before:load', (win) => {
+  win.sessionStorage.setItem(CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY, '1');
+});
 
 beforeEach(() => {
   cy.request({

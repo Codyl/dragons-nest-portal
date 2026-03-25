@@ -1,4 +1,5 @@
 import { composeStories } from "@storybook/react-vite";
+import { CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY } from "@/constants/cypress-e2e-new-device-modal";
 import * as stories from "./new-device.modal.stories";
 import NewDeviceModal from "./new-device.modal";
 
@@ -7,6 +8,7 @@ const { Default, HiddenWhenGoogleSignIn } = composeStories(stories);
 const clearStorageForShow = () => {
   cy.window().then((win) => {
     win.sessionStorage.removeItem("lastLoginProvider");
+    win.sessionStorage.removeItem(CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY);
     win.localStorage.removeItem("AddedDeviceKey");
     win.localStorage.removeItem("isOptedOut");
     win.localStorage.removeItem("IsOptedOut");
@@ -47,7 +49,7 @@ describe("NewDeviceModal", () => {
   });
 
   describe("User interactions", () => {
-    it("should call Amplify rememberDevice and close when user clicks Yes", () => {
+    it("should close when user clicks Yes, this is my device (mocked rememberDevice)", () => {
       clearStorageForShow();
       cy.mount(<NewDeviceModal />);
       cy.contains("Would you like to remember this device?").should("be.visible");
@@ -81,6 +83,18 @@ describe("NewDeviceModal", () => {
       clearStorageForShow();
       cy.window().then((win) => {
         win.localStorage.setItem("NewDeviceModalDismissed", "true");
+      });
+      cy.mount(<NewDeviceModal />);
+      cy.contains("Would you like to remember this device?").should("not.exist");
+    });
+
+    it("should not show when Cypress E2E suppress session flag is set (mirrors app E2E)", () => {
+      clearStorageForShow();
+      cy.window().then((win) => {
+        win.sessionStorage.setItem(
+          CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY,
+          "1",
+        );
       });
       cy.mount(<NewDeviceModal />);
       cy.contains("Would you like to remember this device?").should("not.exist");

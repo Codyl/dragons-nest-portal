@@ -128,19 +128,19 @@ describe('Auth flow (password-based)', () => {
 
     cy.contains('Account Settings').click();
     cy.url().should('include', '/account-settings');
-    cy.get('[data-slot="dialog-close"]').click();
+    // cy.get('[data-slot="dialog-close"]').click();
     cy.get('input[name="phone_number"]').clear().type('2086003434');
     cy.intercept('PUT', '**/profile/account').as('updateUserSettings');
     cy.get('button[type="submit"]').click();
     cy.wait('@updateUserSettings');
     cy.reload();
-    cy.get('[data-slot="dialog-close"]').click();
+    // cy.get('[data-slot="dialog-close"]').click();
     cy.get('input[name="phone_number"]').should('have.value', '(208) 600-3434');
     cy.get('input[name="phone_number"]').clear();
     cy.get('button[type="submit"]').click();
     cy.wait('@updateUserSettings');
     cy.reload();
-    cy.get('[data-slot="dialog-close"]').click();
+    // cy.get('[data-slot="dialog-close"]').click();
     cy.intercept('GET', '**/profile').as('me');
     cy.wait('@me');
     cy.get('input[name="phone_number"]').should('have.value', '');
@@ -155,13 +155,18 @@ describe('Auth flow (password-based)', () => {
     cy.wait('@signup');
     cy.url().should('include', '/confirm-signup');
 
-    cy.get('input[name="code"]').type('123456');
+    cy.get('input[data-testid="digit-input-0"]').type('1');
+    cy.get('input[data-testid="digit-input-1"]').type('2');
+    cy.get('input[data-testid="digit-input-2"]').type('3');
+    cy.get('input[data-testid="digit-input-3"]').type('4');
+    cy.get('input[data-testid="digit-input-4"]').type('5');
+    cy.get('input[data-testid="digit-input-5"]').type('6');
     cy.get('button[type="submit"]').click();
     cy.wait('@confirmSignup');
 
     cy.contains('Account Settings').click();
     cy.url().should('include', '/account-settings');
-    cy.get('[data-slot="dialog-close"]').click();
+    // cy.get('[data-slot="dialog-close"]').click();
     cy.get('button').contains('Advanced').click();
     cy.contains('Delete Account').click();
     cy.get('input[name="password"]').type(PASSWORD);
@@ -184,7 +189,7 @@ describe('Auth flow (password-based)', () => {
   it('login → change password flow', () => {
     cy.loginViaApi(STATIC_EMAIL(), PASSWORD);
     cy.visit('/security-settings');
-    cy.get('[data-slot="dialog-close"]').click();
+    // cy.get('[data-slot="dialog-close"]').click();
     cy.contains('Change Password').click();
     cy.get('input[name="currentPassword"]').type(PASSWORD);
     cy.get('input[name="newPassword"]').type('NewPassword123!');

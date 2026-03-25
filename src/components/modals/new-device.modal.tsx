@@ -1,4 +1,5 @@
 import { forgetDevice } from "aws-amplify/auth";
+import { CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY } from "@/constants/cypress-e2e-new-device-modal";
 import useRememberDevice from "@/hooks/use-remember-device";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
@@ -8,6 +9,13 @@ const DISMISSED_KEY = "NewDeviceModalDismissed";
 const LAST_LOGIN_PROVIDER_KEY = "lastLoginProvider";
 
 function shouldShowModal(): boolean {
+  if (
+    typeof sessionStorage !== "undefined" &&
+    sessionStorage.getItem(CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY) ===
+      "1"
+  ) {
+    return false;
+  }
   if (sessionStorage.getItem(LAST_LOGIN_PROVIDER_KEY) === "google") {
     sessionStorage.removeItem(LAST_LOGIN_PROVIDER_KEY);
     return false;

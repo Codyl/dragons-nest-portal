@@ -11,3 +11,7 @@
 - **Google SSO**: Uses the Google OAuth consent screen in a popup/redirect. Automated browsers cannot complete real OAuth consent (login to Google, grant permissions) without real credentials and human interaction. Google also restricts automated access. SSO is typically tested manually or with a test identity provider in a staging environment.
 
 The auth flow specs in `auth-flow.e2e.ts` cover only **password-based** auth: verify username → login, signup → confirm signup, and forgot password → reset code → new password.
+
+## “Remember this device” modal
+
+During **E2E** (support file `cypress/support/e2e.ts`), `window:before:load` sets a sessionStorage flag (`CYPRESS_E2E_SUPPRESS_NEW_DEVICE_MODAL_SESSION_KEY` in `src/constants/cypress-e2e-new-device-modal.ts`) so the home-screen **NewDeviceModal** never appears and cannot block flows. **Component** tests do not load that support file, so `new-device.modal.cy.tsx` can still mount the modal with storage cleared.
