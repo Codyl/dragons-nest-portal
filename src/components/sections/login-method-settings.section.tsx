@@ -16,7 +16,7 @@ const LoginMethod = ({ method, onClick, buttonText, className, disabled }: { met
   return (
     <div className={cn("flex flex-col w-full gap-2 tablet:flex-row justify-between items-center", className)}>
       <div>{method}</div>
-      <Button type="button" onClick={onClick} variant="outline" disabled={disabled}>{buttonText}</Button>
+      <Button type="button" data-testid={`${buttonText}-button`} onClick={onClick} variant="outline" disabled={disabled}>{buttonText}</Button>
     </div>
   );
 };

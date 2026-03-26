@@ -190,7 +190,7 @@ describe('Auth flow (password-based)', () => {
     cy.loginViaApi(STATIC_EMAIL(), PASSWORD);
     cy.visit('/security-settings');
     // cy.get('[data-slot="dialog-close"]').click();
-    cy.contains('Change Password').click();
+    cy.get('button[data-testid="Change Password-button"]').click();
     cy.get('input[name="currentPassword"]').type(PASSWORD);
     cy.get('input[name="newPassword"]').type('NewPassword123!');
     cy.get('input[name="confirmPassword"]').type('NewPassword123!');
@@ -208,7 +208,12 @@ describe('Auth flow (password-based)', () => {
     cy.wait('@signup');
     cy.url().should('include', '/confirm-signup');
 
-    cy.get('input[name="code"]').type('123456');
+    cy.get('input[data-testid="digit-input-0"]').type('1');
+    cy.get('input[data-testid="digit-input-1"]').type('2');
+    cy.get('input[data-testid="digit-input-2"]').type('3');
+    cy.get('input[data-testid="digit-input-3"]').type('4');
+    cy.get('input[data-testid="digit-input-4"]').type('5');
+    cy.get('input[data-testid="digit-input-5"]').type('6');
     cy.get('button[type="submit"]').click();
     cy.wait('@confirmSignup');
 
