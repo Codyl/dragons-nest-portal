@@ -17,6 +17,8 @@ const useLoggedInUser = (): UseQueryResult<
       preferredMfa?: string;
       loginMethods?: string[];
       hasPassword?: boolean;
+      hasPasskey?: boolean;
+      passkeyCount?: number;
     };
   },
   Error

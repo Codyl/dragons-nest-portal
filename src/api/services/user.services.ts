@@ -27,6 +27,10 @@ const UserServices = {
       smsMfaEnabled?: boolean;
       softwareTokenMfaEnabled?: boolean;
       preferredMfa?: string;
+      loginMethods?: string[];
+      hasPassword?: boolean;
+      hasPasskey?: boolean;
+      passkeyCount?: number;
     };
   }> => {
     const response = await api.get('profile');

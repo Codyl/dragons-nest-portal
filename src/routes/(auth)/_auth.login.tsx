@@ -2,6 +2,8 @@ import { createFileRoute } from '@tanstack/react-router';
 import LoginForm from '@/components/forms/login.form';
 import CommonCard from '@/components/cards/common-card';
 import { useRouter } from '@tanstack/react-router';
+import usePasskeyLogin from '@/hooks/use-passkey-login';
+import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute('/(auth)/_auth/login')({
   head: () => ({
@@ -18,6 +20,7 @@ export const Route = createFileRoute('/(auth)/_auth/login')({
 
 function Login() {
   const router = useRouter();
+  const passkeyLogin = usePasskeyLogin();
 
   const availableChallenges =
     sessionStorage.getItem('availableChallenges')?.split(',') || [];
@@ -34,16 +37,60 @@ function Login() {
     router.navigate({ to: '/verify-username' });
   }
 
+  const canPasskey =
+    availablePasswordlessChallenges.includes('WEB_AUTHN');
+  const canPassword = availablePasswordChallenges.length > 0;
+
+  const description =
+    canPasskey && canPassword
+      ? 'Sign in with passkey or password.'
+      : canPasskey
+        ? 'Sign in with your passkey.'
+        : 'Enter your email and password to login';
+
+  if (!canPasskey && !canPassword) {
+    return null;
+  }
+
   return (
-    <>
-      {availablePasswordChallenges.length > 0 && (
-        <CommonCard
-          title="Login"
-          description="Enter your email and password to login"
-        >
-          <LoginForm />
-        </CommonCard>
-      )}
-    </>
+    <CommonCard title="Login" description={description}>
+      <div className="space-y-4">
+        {canPasskey && (
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => passkeyLogin.mutate()}
+              disabled={passkeyLogin.isPending}
+              data-testid="sign-in-with-passkey"
+            >
+              {passkeyLogin.isPending ? 'Signing in…' : 'Sign in with Passkey'}
+            </Button>
+            {passkeyLogin.isError && (
+              <p
+                className="text-sm text-destructive"
+                data-testid="passkey-login-error"
+              >
+                {passkeyLogin.error?.message}
+              </p>
+            )}
+          </>
+        )}
+        {canPasskey && canPassword && (
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">
+                Or continue with password
+              </span>
+            </div>
+          </div>
+        )}
+        {canPassword && <LoginForm />}
+      </div>
+    </CommonCard>
   );
 }

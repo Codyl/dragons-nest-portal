@@ -74,6 +74,10 @@ export const handlers = [
           phone_number: '+12025550123',
           softwareTokenMfaEnabled: false,
           preferredMfa: undefined,
+          loginMethods: [] as string[],
+          hasPassword: true,
+          hasPasskey: false,
+          passkeyCount: 0,
         },
       },
       { status: 200 },
@@ -220,6 +224,10 @@ const getUsersMeTOTPEnabled = http.get(matchUsersMe, async () =>
         phone_number: '+12025550123',
         softwareTokenMfaEnabled: true,
         preferredMfa: 'SOFTWARE_TOKEN_MFA',
+        loginMethods: [] as string[],
+        hasPassword: true,
+        hasPasskey: false,
+        passkeyCount: 0,
       },
     },
     { status: 200 },
@@ -228,6 +236,46 @@ const getUsersMeTOTPEnabled = http.get(matchUsersMe, async () =>
 export const mfaOptionsTOTPEnabledHandlers = replaceHandler(
   2,
   getUsersMeTOTPEnabled,
+);
+
+// Login method section: GET profile with passkey registered (index 2)
+const getUsersMePasskeyRegistered = http.get(matchUsersMe, async () =>
+  HttpResponse.json(
+    {
+      data: {
+        email: 'user@example.com',
+        loginMethods: [],
+        hasPassword: true,
+        hasPasskey: true,
+        passkeyCount: 1,
+      },
+    },
+    { status: 200 },
+  ),
+);
+export const loginMethodSectionPasskeyRegisteredHandlers = replaceHandler(
+  2,
+  getUsersMePasskeyRegistered,
+);
+
+// Login method section: GET profile with Google linked (index 2)
+const getUsersMeWithGoogle = http.get(matchUsersMe, async () =>
+  HttpResponse.json(
+    {
+      data: {
+        email: 'user@example.com',
+        loginMethods: ['GOOGLE'],
+        hasPassword: true,
+        hasPasskey: false,
+        passkeyCount: 0,
+      },
+    },
+    { status: 200 },
+  ),
+);
+export const loginMethodSectionWithGoogleHandlers = replaceHandler(
+  2,
+  getUsersMeWithGoogle,
 );
 
 // Handlers for other APIs (used with change-password variants)

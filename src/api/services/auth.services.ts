@@ -72,6 +72,22 @@ const AuthServices = {
     });
     return response.json();
   },
+  getPasskeyAuthOptions: async (): Promise<{
+    message: string;
+    data: Record<string, unknown>;
+  }> => {
+    const response = await unauthenticatedApi.post('auth/passkey/options');
+    return response.json();
+  },
+  verifyPasskeyAuth: async (response: Record<string, unknown>): Promise<{
+    message: string;
+    data: { verified: boolean };
+  }> => {
+    const res = await unauthenticatedApi.post('auth/passkey/verify', {
+      json: response,
+    });
+    return res.json();
+  },
   initiateAuth: async (json: {
     username: string;
     password: string;

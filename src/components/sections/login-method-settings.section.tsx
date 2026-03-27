@@ -56,6 +56,8 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
   const unlinkGoogle = useUnlinkGoogle();
   const hasGoogle = user?.loginMethods?.includes('GOOGLE');
   const hasPassword = user?.hasPassword ?? true;
+  const passkeyCount = user?.passkeyCount ?? 0;
+  const hasPasskey = user?.hasPasskey ?? passkeyCount > 0;
 
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
@@ -200,13 +202,48 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
               </>
             )}
           </div>
-          <LoginMethod
-            className="py-2"
-            method="Passkey"
-            buttonText="Register Passkey"
-            onClick={() => registerPasskey.mutate()}
-            disabled={registerPasskey.isPending}
-          />
+          <div
+            className={cn(
+              'flex flex-col w-full gap-2 tablet:flex-row justify-between items-center py-2',
+            )}
+          >
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span>Passkey</span>
+                {hasPasskey && (
+                  <span
+                    className="text-sm text-muted-foreground"
+                    data-testid="passkey-count"
+                  >
+                    {passkeyCount} saved
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col items-end gap-1 w-full tablet:w-auto">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => registerPasskey.mutate()}
+                disabled={registerPasskey.isPending}
+                data-testid="register-passkey-button"
+              >
+                {registerPasskey.isPending
+                  ? 'Registering…'
+                  : hasPasskey
+                    ? 'Add another passkey'
+                    : 'Register Passkey'}
+              </Button>
+              {registerPasskey.isSuccess && (
+                <span
+                  className="text-sm text-green-600 dark:text-green-400"
+                  data-testid="passkey-register-success"
+                >
+                  Passkey registered successfully.
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </>
