@@ -25,11 +25,13 @@ const fillForm = async (
     await userEvent.clear(emailInput);
     await userEvent.type(emailInput, updates.email);
   }
+
   if (updates.given_name !== undefined) {
     const firstInput = canvas.getByLabelText('First');
     await userEvent.clear(firstInput);
     await userEvent.type(firstInput, updates.given_name);
   }
+
   if (updates.family_name !== undefined) {
     const lastInput = canvas.getByLabelText('Last');
     await userEvent.clear(lastInput);

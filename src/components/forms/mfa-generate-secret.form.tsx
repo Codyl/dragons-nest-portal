@@ -43,6 +43,7 @@ const MFAGenerateSecretForm = ({
       const responseData = (data as { data?: { Session?: string } }).data;
       return responseData?.Session || '';
     }
+
     return '';
   }, [data]);
 
@@ -51,6 +52,7 @@ const MFAGenerateSecretForm = ({
     if (data && typeof data === 'object' && 'data' in data) {
       return (data as { data?: { qrString?: string } }).data?.qrString || null;
     }
+
     return null;
   }, [data]);
 
@@ -94,6 +96,7 @@ const MFAGenerateSecretForm = ({
               if (data.data.Session) {
                 sessionStorage.setItem('session', data.data.Session);
               }
+
               router.navigate({ to: '/mfa/verify-code' });
             }
           },

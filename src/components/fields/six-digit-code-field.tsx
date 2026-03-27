@@ -62,6 +62,7 @@ const SixDigitCodeField = ({
     (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
       const inputValue = e.target.value;
       if (inputValue.length > 1) return;
+
       if (inputValue && !/^\d$/.test(inputValue)) return;
 
       const newDigits = [...digits];
@@ -85,6 +86,7 @@ const SixDigitCodeField = ({
         focusDigit(index - 1);
         return;
       }
+
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         focusDigit(index - 1);
@@ -101,6 +103,7 @@ const SixDigitCodeField = ({
       e.preventDefault();
       const pasted = e.clipboardData.getData('text').trim().replace(/\D/g, '');
       if (pasted.length !== DIGIT_COUNT) return;
+
       setValue(pasted);
       focusDigit(DIGIT_COUNT - 1);
     },

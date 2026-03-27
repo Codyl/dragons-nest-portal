@@ -27,6 +27,7 @@ const CreateAccountForm = ({
       if (data.data.Session) {
         sessionStorage.setItem('session', data.data.Session);
       }
+
       sessionStorage.setItem('username', variables.email);
       sessionStorage.setItem('password', variables.password);
       router.navigate({ to: '/confirm-signup' });

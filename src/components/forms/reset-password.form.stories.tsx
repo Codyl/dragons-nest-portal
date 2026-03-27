@@ -72,6 +72,7 @@ const meta = {
         sessionStorage.setItem('username', 'test@example.com');
         sessionStorage.setItem('code', '123456');
       }
+
       return <Story />;
     },
   ],

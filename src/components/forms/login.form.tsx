@@ -56,14 +56,17 @@ const LoginForm = ({ className }: { className?: string }) => {
           if (data.data?.Session) {
             sessionStorage.setItem('session', data.data.Session);
           }
+
           sessionStorage.setItem('username', username);
 
           if (data.data.ChallengeName === 'SOFTWARE_TOKEN_MFA') {
             router.navigate({ to: '/mfa/verify-code' });
           }
+
           if (data.data.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
             router.navigate({ to: '/reset-password' });
           }
+
           if (data.data.ChallengeName === 'MFA_SETUP') {
             setShowMFAAuthenticatorQRCodeModal(true);
           }

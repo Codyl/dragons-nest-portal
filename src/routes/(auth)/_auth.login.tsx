@@ -2,7 +2,6 @@ import { createFileRoute } from '@tanstack/react-router';
 import LoginForm from '@/components/forms/login.form';
 import CommonCard from '@/components/cards/common-card';
 import { useRouter } from '@tanstack/react-router';
-import CHALLENGE_NAMES from '@/utils/constants/challenge-names';
 
 export const Route = createFileRoute('/(auth)/_auth/login')({
   head: () => ({

@@ -21,6 +21,7 @@ function clearStorageForShow() {
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.removeItem('lastLoginProvider');
   }
+
   if (typeof localStorage !== 'undefined') {
     keysToClearForShow.forEach((key) => {
       if (key !== 'lastLoginProvider') localStorage.removeItem(key);
@@ -84,6 +85,7 @@ export const HiddenWhenGoogleSignIn: Story = {
       if (typeof sessionStorage !== 'undefined') {
         sessionStorage.setItem('lastLoginProvider', 'google');
       }
+
       return <Story />;
     },
   ],

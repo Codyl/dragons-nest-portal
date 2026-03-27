@@ -21,6 +21,7 @@ const ConfirmSignupForm = () => {
       if (data.data.Session) {
         sessionStorage.setItem('session', data.data.Session);
       }
+
       if (data.data.AuthenticationResult) {
         router.navigate({ to: '/' });
       }

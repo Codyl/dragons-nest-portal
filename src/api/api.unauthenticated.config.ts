@@ -22,6 +22,7 @@ export const unauthenticatedApi = ky.create({
         if (error.response.status === 500) {
           throw new Error('Internal server error');
         }
+
         const errorBody = await error.response.clone().json();
         throw { ...error, ...errorBody };
       },

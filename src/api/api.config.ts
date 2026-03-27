@@ -81,6 +81,7 @@ export const api = ky.create({
             throw Object.assign(error, errorBody, { message });
           } catch (e) {
             if (e === error) throw e;
+
             throw error;
           }
         }
@@ -88,6 +89,7 @@ export const api = ky.create({
         if (error instanceof HTTPError && error.response.status === 500) {
           throw new Error('Internal server error');
         }
+
         throw error;
       },
     ],

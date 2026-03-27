@@ -20,6 +20,7 @@ export function configureCognitoAuth(): void {
   if (!USER_POOL_ID || !USER_POOL_CLIENT_ID) {
     return;
   }
+
   Amplify.configure({
     Auth: {
       Cognito: {
@@ -73,10 +74,13 @@ function tokensFromSession(
 } {
   const t = session.tokens;
   if (!t) return {};
+
   const toJwt = (x: unknown): string | undefined => {
     if (typeof x === 'string') return x;
+
     if (x && typeof (x as { toString?: () => string }).toString === 'function')
       return (x as { toString: () => string }).toString();
+
     return undefined;
   };
   return {
@@ -169,6 +173,7 @@ export async function confirmSignInAndGetTokens(
   if (nextStep.signInStep !== 'DONE') {
     throw new Error('Sign-in not complete');
   }
+
   const session = await fetchAuthSession();
   return tokensFromSession(session);
 }

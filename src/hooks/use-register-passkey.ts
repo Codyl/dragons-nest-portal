@@ -21,6 +21,7 @@ const useRegisterPasskey = () => {
       if (!verifyResult?.verified) {
         throw new Error('Passkey registration verification failed');
       }
+
       return verifyResult;
     },
     onSuccess: () => {

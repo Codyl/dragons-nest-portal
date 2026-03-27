@@ -28,6 +28,7 @@ function Input({
         if (normalize) {
           e.target.value = normalize(e.target.value);
         }
+
         props.onChange?.(e);
       }}
       value={format ? format(props.value) : props.value}

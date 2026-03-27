@@ -67,6 +67,7 @@ const meta = {
         sessionStorage.setItem('password', 'Password123!');
         sessionStorage.setItem('session', 'test-session');
       }
+
       return <Story />;
     },
   ],

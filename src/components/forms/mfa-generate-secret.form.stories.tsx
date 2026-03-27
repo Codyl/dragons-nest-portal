@@ -69,6 +69,7 @@ const meta = {
         sessionStorage.setItem('username', 'test@example.com');
         sessionStorage.setItem('password', 'Password123!');
       }
+
       return <Story />;
     },
   ],
@@ -209,6 +210,7 @@ export const SettingsMode: Story = {
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('password');
       }
+
       return <Story />;
     },
   ],

@@ -47,6 +47,7 @@ const MFAForm = () => {
                   authResult.NewDeviceMetadata.DeviceKey || '',
                 );
               }
+
               router.navigate({ to: '/' });
             }
           },

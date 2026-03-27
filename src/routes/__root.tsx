@@ -89,10 +89,12 @@ const RootLayout = () => {
 export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
     if (location.pathname === '/maintenance') return;
+
     try {
       await runHealthCheck();
     } catch (error) {
       if (isRedirect(error)) throw error;
+
       throw redirect({ to: '/maintenance', replace: true });
     }
   },
