@@ -192,6 +192,13 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  // Create password (OAuth-only users; index 19)
+  http.post(pathMatch('/profile/create-password'), async () => {
+    return HttpResponse.json(
+      { message: 'Password created successfully', data: {} },
+      { status: 200 },
+    );
+  }),
 ];
 
 /** Replace handler at index with variant for story-specific behavior */
@@ -575,4 +582,42 @@ export const userSettingsLoadingHandlers = replaceHandler(
 export const userSettingsNetworkErrorHandlers = replaceHandler(
   3,
   updateAccountNetworkError,
+);
+
+// Create password (index 19) — reference: change-password story variants
+const matchCreatePassword = pathMatch('/profile/create-password');
+const createPasswordSuccess = http.post(matchCreatePassword, async () =>
+  HttpResponse.json(
+    { message: 'Password created successfully', data: {} },
+    { status: 200 },
+  ),
+);
+const createPasswordError = http.post(matchCreatePassword, async () =>
+  HttpResponse.json(
+    { message: 'Could not create password' },
+    { status: 400 },
+  ),
+);
+const createPasswordLoading = http.post(matchCreatePassword, async () => {
+  await delay(2000);
+  return HttpResponse.json(
+    { message: 'Password created successfully', data: {} },
+    { status: 200 },
+  );
+});
+const createPasswordNetworkError = http.post(matchCreatePassword, () =>
+  HttpResponse.error(),
+);
+export const createPasswordSuccessHandlers = replaceHandler(
+  19,
+  createPasswordSuccess,
+);
+export const createPasswordErrorHandlers = replaceHandler(19, createPasswordError);
+export const createPasswordLoadingHandlers = replaceHandler(
+  19,
+  createPasswordLoading,
+);
+export const createPasswordNetworkErrorHandlers = replaceHandler(
+  19,
+  createPasswordNetworkError,
 );

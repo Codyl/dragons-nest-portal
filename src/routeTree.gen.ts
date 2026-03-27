@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
 import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
 import { Route as privatePrivateSecuritySettingsRouteImport } from './routes/(private)/_private.security-settings'
+import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(private)/_private.create-password'
 import { Route as privatePrivateAccountSettingsRouteImport } from './routes/(private)/_private.account-settings'
 import { Route as authAuthVerifyUsernameRouteImport } from './routes/(auth)/_auth.verify-username'
 import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup'
@@ -51,6 +52,12 @@ const privatePrivateSecuritySettingsRoute =
   privatePrivateSecuritySettingsRouteImport.update({
     id: '/security-settings',
     path: '/security-settings',
+    getParentRoute: () => privatePrivateRoute,
+  } as any)
+const privatePrivateCreatePasswordRoute =
+  privatePrivateCreatePasswordRouteImport.update({
+    id: '/create-password',
+    path: '/create-password',
     getParentRoute: () => privatePrivateRoute,
   } as any)
 const privatePrivateAccountSettingsRoute =
@@ -106,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof authAuthSignupRoute
   '/verify-username': typeof authAuthVerifyUsernameRoute
   '/account-settings': typeof privatePrivateAccountSettingsRoute
+  '/create-password': typeof privatePrivateCreatePasswordRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
@@ -120,6 +128,7 @@ export interface FileRoutesByTo {
   '/signup': typeof authAuthSignupRoute
   '/verify-username': typeof authAuthVerifyUsernameRoute
   '/account-settings': typeof privatePrivateAccountSettingsRoute
+  '/create-password': typeof privatePrivateCreatePasswordRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
@@ -137,6 +146,7 @@ export interface FileRoutesById {
   '/(auth)/_auth/signup': typeof authAuthSignupRoute
   '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute
   '/(private)/_private/account-settings': typeof privatePrivateAccountSettingsRoute
+  '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute
   '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/verify-username'
     | '/account-settings'
+    | '/create-password'
     | '/security-settings'
     | '/mfa/verify-code'
   fileRoutesByTo: FileRoutesByTo
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/verify-username'
     | '/account-settings'
+    | '/create-password'
     | '/security-settings'
     | '/mfa/verify-code'
   id:
@@ -183,6 +195,7 @@ export interface FileRouteTypes {
     | '/(auth)/_auth/signup'
     | '/(auth)/_auth/verify-username'
     | '/(private)/_private/account-settings'
+    | '/(private)/_private/create-password'
     | '/(private)/_private/security-settings'
     | '/(auth)/mfa/_mfa/verify-code'
   fileRoutesById: FileRoutesById
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       path: '/security-settings'
       fullPath: '/security-settings'
       preLoaderRoute: typeof privatePrivateSecuritySettingsRouteImport
+      parentRoute: typeof privatePrivateRoute
+    }
+    '/(private)/_private/create-password': {
+      id: '/(private)/_private/create-password'
+      path: '/create-password'
+      fullPath: '/create-password'
+      preLoaderRoute: typeof privatePrivateCreatePasswordRouteImport
       parentRoute: typeof privatePrivateRoute
     }
     '/(private)/_private/account-settings': {
@@ -323,11 +343,13 @@ const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
 
 interface privatePrivateRouteChildren {
   privatePrivateAccountSettingsRoute: typeof privatePrivateAccountSettingsRoute
+  privatePrivateCreatePasswordRoute: typeof privatePrivateCreatePasswordRoute
   privatePrivateSecuritySettingsRoute: typeof privatePrivateSecuritySettingsRoute
 }
 
 const privatePrivateRouteChildren: privatePrivateRouteChildren = {
   privatePrivateAccountSettingsRoute: privatePrivateAccountSettingsRoute,
+  privatePrivateCreatePasswordRoute: privatePrivateCreatePasswordRoute,
   privatePrivateSecuritySettingsRoute: privatePrivateSecuritySettingsRoute,
 }
 

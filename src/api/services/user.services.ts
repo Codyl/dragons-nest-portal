@@ -51,6 +51,14 @@ const UserServices = {
     });
     return response.json();
   },
+  createPassword: async (json: {
+    newPassword: string;
+  }): Promise<{ message: string; data: {} }> => {
+    const response = await api.post('profile/create-password', {
+      json,
+    });
+    return response.json();
+  },
   setUserMFAPreference: async (json: {
     emailMfaEnabled?: boolean;
     smsMfaEnabled?: boolean;
