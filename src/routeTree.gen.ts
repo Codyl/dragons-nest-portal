@@ -23,6 +23,7 @@ import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth
 import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
 import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
 import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
+import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery'
 import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
@@ -96,6 +97,11 @@ const authAuthConfirmSignupRoute = authAuthConfirmSignupRouteImport.update({
   path: '/confirm-signup',
   getParentRoute: () => authAuthRoute,
 } as any)
+const authAuthAccountRecoveryRoute = authAuthAccountRecoveryRouteImport.update({
+  id: '/account-recovery',
+  path: '/account-recovery',
+  getParentRoute: () => authAuthRoute,
+} as any)
 const authMfaMfaVerifyCodeRoute = authMfaMfaVerifyCodeRouteImport.update({
   id: '/(auth)/mfa/_mfa/verify-code',
   path: '/mfa/verify-code',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/account-recovery': typeof authAuthAccountRecoveryRoute
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
   '/login': typeof authAuthLoginRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/account-recovery': typeof authAuthAccountRecoveryRoute
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
   '/login': typeof authAuthLoginRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
+  '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRoute
   '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute
   '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute
   '/(auth)/_auth/login': typeof authAuthLoginRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/'
     | '/maintenance'
     | '/terms-of-service'
+    | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
     | '/login'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/'
     | '/maintenance'
     | '/terms-of-service'
+    | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
     | '/login'
@@ -188,6 +199,7 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/(auth)/_auth'
     | '/(private)/_private'
+    | '/(auth)/_auth/account-recovery'
     | '/(auth)/_auth/confirm-signup'
     | '/(auth)/_auth/forgot-password'
     | '/(auth)/_auth/login'
@@ -309,6 +321,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthConfirmSignupRouteImport
       parentRoute: typeof authAuthRoute
     }
+    '/(auth)/_auth/account-recovery': {
+      id: '/(auth)/_auth/account-recovery'
+      path: '/account-recovery'
+      fullPath: '/account-recovery'
+      preLoaderRoute: typeof authAuthAccountRecoveryRouteImport
+      parentRoute: typeof authAuthRoute
+    }
     '/(auth)/mfa/_mfa/verify-code': {
       id: '/(auth)/mfa/_mfa/verify-code'
       path: '/mfa/verify-code'
@@ -320,6 +339,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface authAuthRouteChildren {
+  authAuthAccountRecoveryRoute: typeof authAuthAccountRecoveryRoute
   authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute
   authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute
   authAuthLoginRoute: typeof authAuthLoginRoute
@@ -329,6 +349,7 @@ interface authAuthRouteChildren {
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
+  authAuthAccountRecoveryRoute: authAuthAccountRecoveryRoute,
   authAuthConfirmSignupRoute: authAuthConfirmSignupRoute,
   authAuthForgotPasswordRoute: authAuthForgotPasswordRoute,
   authAuthLoginRoute: authAuthLoginRoute,

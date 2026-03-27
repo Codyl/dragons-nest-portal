@@ -165,6 +165,28 @@ const AuthServices = {
     );
     return response.json();
   },
+  verifyAccountRecoveryCode: async (json: {
+    username: string;
+    code: string;
+    password: string;
+  }): Promise<{
+    message: string;
+    data: {
+      AuthenticationResult?: {
+        AccessToken?: string;
+        RefreshToken?: string;
+        IdToken?: string;
+      };
+    };
+  }> => {
+    const response = await unauthenticatedApi.post(
+      'auth/account-recovery/verify-code',
+      {
+        json,
+      },
+    );
+    return response.json();
+  },
   logout: async (): Promise<{ message: string; data: {} }> => {
     const response = await unauthenticatedApi.post('auth/logout');
     return response.json();

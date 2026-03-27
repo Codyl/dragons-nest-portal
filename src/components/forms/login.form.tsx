@@ -167,6 +167,12 @@ const LoginForm = ({ className }: { className?: string }) => {
         >
           Forgot password?
         </Link>
+        <Link
+          to="/account-recovery"
+          className="text-primary hover:underline ml-auto block text-end"
+        >
+          Use temporary recovery code
+        </Link>
         <Button
           type="submit"
           className="w-full"
