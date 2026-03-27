@@ -7,6 +7,7 @@ import useUpdateUserSettings from '@/hooks/use-update-user-account';
 import { normalizePhoneNumber } from '@/utils/helpers/input-normalization.helpers';
 import { formatPhoneNumber } from '@/utils/helpers/formatting.helpers';
 import { useQueryClient } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
 
 const UserSettingsForm = () => {
   const queryClient = useQueryClient();
@@ -116,29 +117,14 @@ const UserSettingsForm = () => {
             />
           )}
         />
-        <div>
-          By providing your phone number, you agree to receive a one-time
-          passcode for identity verification. Message and data rates may apply.
+        <p>
+          By providing your phone number, you agree to receive SMS messages for security notifications and account recovery from Cody Lillywhite. Message and data rates may apply.
           Message frequency varies. Text HELP for help or STOP to cancel.
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            window.open('localhost:5173/privacy-policy', '_blank');
-          }}
-        >
-          Privacy Policy
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            window.open('localhost:5173/terms-of-service', '_blank');
-          }}
-        >
-          Terms of Service
-        </Button>
+        </p>
+        <p>
+          See our{' '}
+          <Button to="/privacy-policy" variant="link">Privacy Policy</Button> and <Button to="/terms-of-service" variant="link">Terms of Service</Button> for more information.
+        </p>
         <Button
           type="submit"
           disabled={isPending || isUpdating}
