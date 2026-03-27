@@ -6,14 +6,8 @@ const GoogleSSOSignupButton = () => {
 
   return (
     <>
-      {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive w-full text-center">
-          {error
-            ? error.message
-            : "Google signup failed. Please try again."}
-        </div>
-      )}
-      {!isPending && !error && <GoogleLogin
+
+      {!isPending && <GoogleLogin
         onSuccess={(credentialResponse) => {
           if (credentialResponse.credential) {
             signUpWithGoogle({ credential: credentialResponse.credential });
@@ -24,6 +18,12 @@ const GoogleSSOSignupButton = () => {
       />}
       {isPending && (
         <div className="rounded-md bg-muted-foreground/10 h-11 p-3 text-sm text-muted-foreground w-full text-center animate-pulse" />
+      )}
+      {error && (
+        <div className="text-destructive mt-1">
+          {error.message ||
+            "Google signup failed. Please try again."}
+        </div>
       )}
     </>
   );
