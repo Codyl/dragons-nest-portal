@@ -165,22 +165,12 @@ const AuthServices = {
     );
     return response.json();
   },
-  verifyAccountRecoveryCode: async (json: {
-    username: string;
-    code: string;
-    password: string;
-  }): Promise<{
+  consumeRecoveryMagicLink: async (json: { token: string }): Promise<{
     message: string;
-    data: {
-      AuthenticationResult?: {
-        AccessToken?: string;
-        RefreshToken?: string;
-        IdToken?: string;
-      };
-    };
+    data: {};
   }> => {
     const response = await unauthenticatedApi.post(
-      'auth/account-recovery/verify-code',
+      'auth/account-recovery/consume-magic-link',
       {
         json,
       },

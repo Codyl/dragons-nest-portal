@@ -1,110 +1,40 @@
-import { useForm } from '@tanstack/react-form';
-import { Link, useRouter } from '@tanstack/react-router';
-import { z } from 'zod';
-import InputField from '../fields/input-field';
-import { Button } from '../ui/button';
-import { FieldGroup } from '../ui/field';
-import useVerifyAccountRecoveryCode from '@/hooks/use-verify-account-recovery-code';
+import { Link } from '@tanstack/react-router';
 
-interface AccountRecoveryFormProps {
-  preFilledEmail?: string;
-}
-
-const AccountRecoveryForm = ({
-  preFilledEmail,
-}: AccountRecoveryFormProps = {}) => {
-  const router = useRouter();
-  const { mutate: verifyRecoveryCode, isPending, error } =
-    useVerifyAccountRecoveryCode();
-  const schema = z.object({
-    username: z.string().min(1, 'Username or email is required'),
-    code: z.string().min(1, 'Temporary recovery code is required'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-  });
-
-  const form = useForm({
-    defaultValues: {
-      username: preFilledEmail || sessionStorage.getItem('username') || '',
-      code: '',
-      password: '',
-    },
-    validators: {
-      onSubmit: schema,
-    },
-    onSubmit: async ({ value }) => {
-      verifyRecoveryCode(value, {
-        onSuccess: () => {
-          sessionStorage.setItem('username', value.username);
-          router.navigate({ to: '/' });
-        },
-      });
-    },
-  });
-
+const AccountRecoveryForm = () => {
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-      className="space-y-4"
-    >
-      <FieldGroup>
-        <form.Field name="username">
-          {(field) => (
-            <InputField
-              field={field}
-              label="Username or email"
-              autoFocus
-            />
-          )}
-        </form.Field>
-        <form.Field name="code">
-          {(field) => (
-            <InputField
-              field={field}
-              label="Temporary recovery code"
-            />
-          )}
-        </form.Field>
-        <form.Field name="password">
-          {(field) => (
-            <InputField
-              field={field}
-              label="New password"
-              type="password"
-            />
-          )}
-        </form.Field>
-      </FieldGroup>
-      <div className="space-y-3">
-        {error && (
-          <p
-            className="text-destructive mt-2"
-            data-testid="error-message"
-          >
-            {error.message}
-          </p>
-        )}
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isPending}
-          isPending={isPending}
-        >
-          Recover Account
-        </Button>
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">
+        After support verifies your recent account activity, they can send a
+        one-time magic link. Opening that link signs you in immediately and
+        bypasses password and TOTP challenges.
+      </p>
+      <div className="rounded-md border p-3 text-sm">
+        <p className="font-medium">Need recovery?</p>
+        <p className="text-muted-foreground">
+          Contact support and request an account recovery magic link.
+        </p>
       </div>
-      <div className="text-center text-sm">
+      <div className="text-sm text-muted-foreground">
+        If you no longer have access to your saved email and phone number, this
+        recovery path is unavailable.
+      </div>
+      <div className="text-center text-sm space-y-2">
         <Link
           to="/login"
           className="text-primary hover:underline"
         >
           Back to sign in
         </Link>
+        <div>
+          <Link
+            to="/signup"
+            className="text-primary hover:underline"
+          >
+            Create a new account
+          </Link>
+        </div>
       </div>
-    </form>
+    </div>
   );
 };
 

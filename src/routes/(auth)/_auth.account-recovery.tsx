@@ -9,7 +9,7 @@ export const Route = createFileRoute('/(auth)/_auth/account-recovery')({
       {
         name: 'description',
         content:
-          'Enter your temporary recovery code to restore account access.',
+          'Contact support to receive a one-time account recovery magic link.',
       },
     ],
   }),
@@ -20,12 +20,12 @@ function AccountRecovery() {
   return (
     <CommonCard
       title="Account Recovery"
-      description="Enter the temporary code sent after support verification to recover your account."
+      description="Support can send a one-time magic link after verifying your recent account activity."
     >
       <div className="space-y-4">
         <div className="text-sm text-muted-foreground">
           If you cannot sign in because of lost TOTP, email access, or any other
-          reason, contact support first. A temporary code is only sent after
+          reason, contact support first. A one-time magic link is only sent after
           confirming your recent account activity over the phone.
         </div>
         <div className="text-sm">

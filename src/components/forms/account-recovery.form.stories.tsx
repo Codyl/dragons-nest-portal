@@ -42,9 +42,6 @@ const meta = {
       );
     },
   ],
-  args: {
-    preFilledEmail: undefined,
-  },
 } satisfies Meta<typeof AccountRecoveryForm>;
 
 export default meta;
@@ -55,21 +52,18 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'Users can enter username/email, temporary recovery code, and a new password to recover their account.',
+          'Displays support-mediated recovery instructions for one-time magic link sign-in.',
       },
     },
   },
 };
 
-export const WithPreFilledEmail: Story = {
-  args: {
-    preFilledEmail: 'user@example.com',
-  },
+export const NoContactFallback: Story = {
   parameters: {
     docs: {
       description: {
         story:
-          'Form with username/email pre-filled from existing session context.',
+          'Highlights the edge-case fallback where users with no accessible saved email/phone are directed to create a new account.',
       },
     },
   },

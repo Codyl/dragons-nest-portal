@@ -25,6 +25,7 @@ import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_aut
 import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
 import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery'
 import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
+import { Route as authAuthAccountRecoveryMagicLinkRouteImport } from './routes/(auth)/_auth.account-recovery.magic-link'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
@@ -107,12 +108,18 @@ const authMfaMfaVerifyCodeRoute = authMfaMfaVerifyCodeRouteImport.update({
   path: '/mfa/verify-code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authAuthAccountRecoveryMagicLinkRoute =
+  authAuthAccountRecoveryMagicLinkRouteImport.update({
+    id: '/magic-link',
+    path: '/magic-link',
+    getParentRoute: () => authAuthAccountRecoveryRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/account-recovery': typeof authAuthAccountRecoveryRoute
+  '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
   '/login': typeof authAuthLoginRoute
@@ -122,13 +129,14 @@ export interface FileRoutesByFullPath {
   '/account-settings': typeof privatePrivateAccountSettingsRoute
   '/create-password': typeof privatePrivateCreatePasswordRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/account-recovery': typeof authAuthAccountRecoveryRoute
+  '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
   '/login': typeof authAuthLoginRoute
@@ -138,6 +146,7 @@ export interface FileRoutesByTo {
   '/account-settings': typeof privatePrivateAccountSettingsRoute
   '/create-password': typeof privatePrivateCreatePasswordRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
 export interface FileRoutesById {
@@ -147,7 +156,7 @@ export interface FileRoutesById {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
-  '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRoute
+  '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute
   '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute
   '/(auth)/_auth/login': typeof authAuthLoginRoute
@@ -157,6 +166,7 @@ export interface FileRoutesById {
   '/(private)/_private/account-settings': typeof privatePrivateAccountSettingsRoute
   '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute
   '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/(auth)/_auth/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
 }
 export interface FileRouteTypes {
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/account-settings'
     | '/create-password'
     | '/security-settings'
+    | '/account-recovery/magic-link'
     | '/mfa/verify-code'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/account-settings'
     | '/create-password'
     | '/security-settings'
+    | '/account-recovery/magic-link'
     | '/mfa/verify-code'
   id:
     | '__root__'
@@ -209,6 +221,7 @@ export interface FileRouteTypes {
     | '/(private)/_private/account-settings'
     | '/(private)/_private/create-password'
     | '/(private)/_private/security-settings'
+    | '/(auth)/_auth/account-recovery/magic-link'
     | '/(auth)/mfa/_mfa/verify-code'
   fileRoutesById: FileRoutesById
 }
@@ -335,11 +348,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authMfaMfaVerifyCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(auth)/_auth/account-recovery/magic-link': {
+      id: '/(auth)/_auth/account-recovery/magic-link'
+      path: '/magic-link'
+      fullPath: '/account-recovery/magic-link'
+      preLoaderRoute: typeof authAuthAccountRecoveryMagicLinkRouteImport
+      parentRoute: typeof authAuthAccountRecoveryRoute
+    }
   }
 }
 
+interface authAuthAccountRecoveryRouteChildren {
+  authAuthAccountRecoveryMagicLinkRoute: typeof authAuthAccountRecoveryMagicLinkRoute
+}
+
+const authAuthAccountRecoveryRouteChildren: authAuthAccountRecoveryRouteChildren =
+  {
+    authAuthAccountRecoveryMagicLinkRoute:
+      authAuthAccountRecoveryMagicLinkRoute,
+  }
+
+const authAuthAccountRecoveryRouteWithChildren =
+  authAuthAccountRecoveryRoute._addFileChildren(
+    authAuthAccountRecoveryRouteChildren,
+  )
+
 interface authAuthRouteChildren {
-  authAuthAccountRecoveryRoute: typeof authAuthAccountRecoveryRoute
+  authAuthAccountRecoveryRoute: typeof authAuthAccountRecoveryRouteWithChildren
   authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute
   authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute
   authAuthLoginRoute: typeof authAuthLoginRoute
@@ -349,7 +384,7 @@ interface authAuthRouteChildren {
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
-  authAuthAccountRecoveryRoute: authAuthAccountRecoveryRoute,
+  authAuthAccountRecoveryRoute: authAuthAccountRecoveryRouteWithChildren,
   authAuthConfirmSignupRoute: authAuthConfirmSignupRoute,
   authAuthForgotPasswordRoute: authAuthForgotPasswordRoute,
   authAuthLoginRoute: authAuthLoginRoute,

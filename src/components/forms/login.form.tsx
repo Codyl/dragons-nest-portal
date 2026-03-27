@@ -77,7 +77,7 @@ const LoginForm = ({ className }: { className?: string }) => {
               localStorage.setItem(
                 'DeviceKey',
                 data.data.AuthenticationResult.NewDeviceMetadata.DeviceKey ||
-                  '',
+                '',
               );
               localStorage.setItem(
                 'DeviceGroupKey',
@@ -149,9 +149,8 @@ const LoginForm = ({ className }: { className?: string }) => {
               </Button>
             </div>
           </Field>
-          <passwordForm.Field
-            name="password"
-            children={(field) => (
+          <passwordForm.Field name="password">
+            {(field) => (
               <InputField
                 field={field}
                 label="Password"
@@ -159,7 +158,7 @@ const LoginForm = ({ className }: { className?: string }) => {
                 autoFocus
               />
             )}
-          />
+          </passwordForm.Field>
         </FieldGroup>
         <Link
           to="/forgot-password"
@@ -171,7 +170,7 @@ const LoginForm = ({ className }: { className?: string }) => {
           to="/account-recovery"
           className="text-primary hover:underline ml-auto block text-end"
         >
-          Use temporary recovery code
+          Need a recovery magic link?
         </Link>
         <Button
           type="submit"
