@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import { userEvent, within } from "storybook/test";
-import MFAGenerateSecretForm from "./mfa-generate-secret.form";
+} from '@tanstack/react-router';
+import { userEvent, within } from 'storybook/test';
+import MFAGenerateSecretForm from './mfa-generate-secret.form';
 import {
   mfaGenerateSecretSuccessHandlers,
   mfaGenerateSecretLoadingHandlers,
@@ -16,28 +16,28 @@ import {
   mfaConnectErrorHandlers,
   mfaConnectLoadingHandlers,
   mfaConnectNetworkErrorHandlers,
-} from "../../../.storybook/msw-handlers";
+} from '../../../.storybook/msw-handlers';
 
 const fillForm = async (canvas: ReturnType<typeof within>, code: string) => {
-  const input = canvas.getByLabelText("Code");
+  const input = canvas.getByLabelText('Code');
   await userEvent.type(input, code);
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Continue" });
+  const submitButton = canvas.getByRole('button', { name: 'Continue' });
   await userEvent.click(submitButton);
 };
 
 const meta = {
-  title: "Forms/MFAGenerateSecretForm",
+  title: 'Forms/MFAGenerateSecretForm',
   component: MFAGenerateSecretForm,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: {
       handlers: mfaGenerateSecretSuccessHandlers,
     },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -50,7 +50,7 @@ const meta = {
         component: () => <Story />,
       });
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
       ]);
       const router = createRouter({
         routeTree,
@@ -64,10 +64,10 @@ const meta = {
       );
     },
     (Story) => {
-      if (typeof sessionStorage !== "undefined") {
-        sessionStorage.setItem("session", "test-session");
-        sessionStorage.setItem("username", "test@example.com");
-        sessionStorage.setItem("password", "Password123!");
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('session', 'test-session');
+        sessionStorage.setItem('username', 'test@example.com');
+        sessionStorage.setItem('password', 'Password123!');
       }
       return <Story />;
     },
@@ -83,7 +83,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "Scan QR code and enter code from authenticator app to complete MFA setup.",
+          'Scan QR code and enter code from authenticator app to complete MFA setup.',
       },
     },
   },
@@ -95,13 +95,13 @@ export const Success: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a successful MFA setup. Submit the form to see the success flow (navigate to verify-code).",
+          'This story demonstrates a successful MFA setup. Submit the form to see the success flow (navigate to verify-code).',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "123456");
+    await fillForm(canvas, '123456');
     await submitForm(canvas);
   },
 };
@@ -112,13 +112,13 @@ export const Error: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates an error state when the code is invalid. Submit the form to see the error message displayed.",
+          'This story demonstrates an error state when the code is invalid. Submit the form to see the error message displayed.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "123456");
+    await fillForm(canvas, '123456');
     await submitForm(canvas);
   },
 };
@@ -129,13 +129,13 @@ export const Loading: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates the loading state when the connect request is in progress. Submit the form to see the button disabled with loading for 2 seconds.",
+          'This story demonstrates the loading state when the connect request is in progress. Submit the form to see the button disabled with loading for 2 seconds.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "123456");
+    await fillForm(canvas, '123456');
     await submitForm(canvas);
   },
 };
@@ -146,13 +146,13 @@ export const NetworkError: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a network error state. Submit the form to see how the component handles network failures.",
+          'This story demonstrates a network error state. Submit the form to see how the component handles network failures.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "123456");
+    await fillForm(canvas, '123456');
     await submitForm(canvas);
   },
 };
@@ -163,7 +163,7 @@ export const GenerateSecretLoading: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates the loading state when the initial generate-secret request is slow. The form loads with a delayed QR code.",
+          'This story demonstrates the loading state when the initial generate-secret request is slow. The form loads with a delayed QR code.',
       },
     },
   },
@@ -175,7 +175,7 @@ export const ValidationErrorEmptyCode: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates form validation when the code is empty. Submit the form to see the validation error.",
+          'This story demonstrates form validation when the code is empty. Submit the form to see the validation error.',
       },
     },
   },
@@ -187,24 +187,27 @@ export const ValidationErrorEmptyCode: Story = {
 
 export const SettingsMode: Story = {
   args: {
-    source: "settings",
-    userEmail: "user@example.com",
+    source: 'settings',
+    userEmail: 'user@example.com',
   },
   parameters: {
     msw: { handlers: mfaGenerateSecretSuccessHandlers },
     docs: {
       description: {
         story:
-          "MFA setup from account settings (uses access token). QR code is fetched with authenticated request.",
+          'MFA setup from account settings (uses access token). QR code is fetched with authenticated request.',
       },
     },
   },
   decorators: [
     (Story, context) => {
-      if (context.args?.source === "settings" && typeof sessionStorage !== "undefined") {
-        sessionStorage.removeItem("session");
-        sessionStorage.removeItem("username");
-        sessionStorage.removeItem("password");
+      if (
+        context.args?.source === 'settings' &&
+        typeof sessionStorage !== 'undefined'
+      ) {
+        sessionStorage.removeItem('session');
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('password');
       }
       return <Story />;
     },

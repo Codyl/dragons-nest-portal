@@ -1,10 +1,10 @@
-import MFAGenerateSecretForm from "./mfa-generate-secret.form";
+import MFAGenerateSecretForm from './mfa-generate-secret.form';
 
 describe('MFAGenerateSecretForm', () => {
   beforeEach(() => {
-    sessionStorage.setItem("username", "test@example.com");
-    sessionStorage.setItem("password", "Password123!");
-    sessionStorage.setItem("session", "test-session");
+    sessionStorage.setItem('username', 'test@example.com');
+    sessionStorage.setItem('password', 'Password123!');
+    sessionStorage.setItem('session', 'test-session');
   });
 
   afterEach(() => {
@@ -18,7 +18,8 @@ describe('MFAGenerateSecretForm', () => {
       body: {
         data: {
           Session: 'new-session',
-          qrString: 'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
+          qrString:
+            'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
         },
       },
     });
@@ -33,7 +34,8 @@ describe('MFAGenerateSecretForm', () => {
       body: {
         data: {
           Session: 'new-session',
-          qrString: 'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
+          qrString:
+            'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
         },
       },
     });
@@ -57,7 +59,8 @@ describe('MFAGenerateSecretForm', () => {
       body: {
         data: {
           Session: 'new-session',
-          qrString: 'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
+          qrString:
+            'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
         },
       },
     });
@@ -79,13 +82,17 @@ describe('MFAGenerateSecretForm', () => {
       body: {
         data: {
           Session: 'new-session',
-          qrString: 'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
+          qrString:
+            'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
         },
       },
     });
     cy.mount(<MFAGenerateSecretForm />);
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Code must be 6 digits');
+    cy.get('[data-testid="error-message-code"]').should(
+      'contain.text',
+      'Code must be 6 digits',
+    );
   });
 
   it('should show loading state when submitting', () => {
@@ -94,7 +101,8 @@ describe('MFAGenerateSecretForm', () => {
       body: {
         data: {
           Session: 'new-session',
-          qrString: 'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
+          qrString:
+            'otpauth://totp/Test:test@example.com?secret=TEST123&issuer=Test',
         },
       },
     });
@@ -119,12 +127,16 @@ describe('MFAGenerateSecretForm', () => {
       body: {
         data: {
           Session: 'new-session',
-          qrString: 'otpauth://totp/Test:user@example.com?secret=TEST123&issuer=Test',
+          qrString:
+            'otpauth://totp/Test:user@example.com?secret=TEST123&issuer=Test',
         },
       },
     });
     cy.mount(
-      <MFAGenerateSecretForm source="settings" userEmail="user@example.com" />
+      <MFAGenerateSecretForm
+        source="settings"
+        userEmail="user@example.com"
+      />,
     );
     cy.get('[data-testid="six-digit-code-code"]').should('exist');
     cy.get('button[type="submit"]').should('exist');

@@ -1,4 +1,4 @@
-import VerifyUsernameForm from "./verify-username.form";
+import VerifyUsernameForm from './verify-username.form';
 
 describe('VerifyUsernameForm', () => {
   afterEach(() => {
@@ -43,7 +43,10 @@ describe('VerifyUsernameForm', () => {
   it('should require username field', () => {
     cy.mount(<VerifyUsernameForm />);
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-username"]').should('contain.text', 'Email or username is required');
+    cy.get('[data-testid="error-message-username"]').should(
+      'contain.text',
+      'Email or username is required',
+    );
   });
 
   it('should show loading state when submitting', () => {

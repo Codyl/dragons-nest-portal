@@ -1,22 +1,27 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import { fn, userEvent, within } from "storybook/test";
-import ChangePasswordForm from "./change-password.form";
+} from '@tanstack/react-router';
+import { fn, userEvent, within } from 'storybook/test';
+import ChangePasswordForm from './change-password.form';
 import {
   successHandlers,
   errorHandlers,
   loadingHandlers,
   networkErrorHandlers,
-} from "../../../.storybook/msw-handlers";
+} from '../../../.storybook/msw-handlers';
 
-const fillForm = async (canvas: ReturnType<typeof within>, currentPassword: string, newPassword: string, confirmPassword: string) => {
+const fillForm = async (
+  canvas: ReturnType<typeof within>,
+  currentPassword: string,
+  newPassword: string,
+  confirmPassword: string,
+) => {
   const currentPasswordInput = canvas.getByLabelText('Current password');
   const newPasswordInput = canvas.getByLabelText('New password');
   const confirmPasswordInput = canvas.getByLabelText('Confirm new password');
@@ -31,15 +36,15 @@ const submitForm = async (canvas: ReturnType<typeof within>) => {
 };
 
 const meta = {
-  title: "Forms/ChangePasswordForm",
+  title: 'Forms/ChangePasswordForm',
   component: ChangePasswordForm,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: {
       handlers: successHandlers, // Default to success handlers
     },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -54,7 +59,7 @@ const meta = {
       });
 
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
       ]);
 
       const router = createRouter({
@@ -87,7 +92,8 @@ export const Default: Story = {
     },
     docs: {
       description: {
-        story: "The default state of the change password form. The form is pre-filled with example values. Submit the form to see a successful API response.",
+        story:
+          'The default state of the change password form. The form is pre-filled with example values. Submit the form to see a successful API response.',
       },
     },
   },
@@ -102,13 +108,19 @@ export const Success: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates a successful password change. Submit the form to see the success callback triggered. The form will call `onPasswordChangeSuccess` when the mutation succeeds.",
+        story:
+          'This story demonstrates a successful password change. Submit the form to see the success callback triggered. The form will call `onPasswordChangeSuccess` when the mutation succeeds.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await fillForm(
+      canvas,
+      'Password123!',
+      'NewPassword123!',
+      'NewPassword123!',
+    );
     await submitForm(canvas);
   },
 };
@@ -122,13 +134,19 @@ export const Error: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates an error state when the password change fails. Submit the form to see the error message displayed below the form fields.",
+        story:
+          'This story demonstrates an error state when the password change fails. Submit the form to see the error message displayed below the form fields.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await fillForm(
+      canvas,
+      'Password123!',
+      'NewPassword123!',
+      'NewPassword123!',
+    );
     await submitForm(canvas);
   },
 };
@@ -142,13 +160,19 @@ export const Loading: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates the loading state when the password change request is in progress. Submit the form to see the submit button disabled with a loading indicator for 2 seconds.",
+        story:
+          'This story demonstrates the loading state when the password change request is in progress. Submit the form to see the submit button disabled with a loading indicator for 2 seconds.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await fillForm(
+      canvas,
+      'Password123!',
+      'NewPassword123!',
+      'NewPassword123!',
+    );
     await submitForm(canvas);
   },
 };
@@ -162,13 +186,19 @@ export const NetworkError: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates a network error state. Submit the form to see how the component handles network failures.",
+        story:
+          'This story demonstrates a network error state. Submit the form to see how the component handles network failures.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', 'NewPassword123!', 'NewPassword123!');
+    await fillForm(
+      canvas,
+      'Password123!',
+      'NewPassword123!',
+      'NewPassword123!',
+    );
     await submitForm(canvas);
   },
 };
@@ -182,13 +212,19 @@ export const PasswordsDoNotMatch: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates form validation when passwords don't match. Try changing the 'Confirm new password' field to a different value than 'New password' and submit the form. You'll see a validation error message: 'Passwords do not match'.",
+        story:
+          "This story demonstrates form validation when passwords don't match. Try changing the 'Confirm new password' field to a different value than 'New password' and submit the form. You'll see a validation error message: 'Passwords do not match'.",
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', 'NewPassword113!', 'NewPassword123!');
+    await fillForm(
+      canvas,
+      'Password123!',
+      'NewPassword113!',
+      'NewPassword123!',
+    );
     await submitForm(canvas);
   },
 };
@@ -202,7 +238,8 @@ export const PasswordTooShort: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates form validation when the password is too short (less than 8 characters). Try changing the 'New password' field to something like 'Short1!' (7 characters) and submit the form. You'll see a validation error message: 'Password must be at least 8 characters long'.",
+        story:
+          "This story demonstrates form validation when the password is too short (less than 8 characters). Try changing the 'New password' field to something like 'Short1!' (7 characters) and submit the form. You'll see a validation error message: 'Password must be at least 8 characters long'.",
       },
     },
   },
@@ -222,7 +259,8 @@ export const PasswordMissingUppercase: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates form validation when the password doesn't contain an uppercase letter. Try changing the 'New password' field to something like 'password123!' (all lowercase) and submit the form. You'll see a validation error message.",
+        story:
+          "This story demonstrates form validation when the password doesn't contain an uppercase letter. Try changing the 'New password' field to something like 'password123!' (all lowercase) and submit the form. You'll see a validation error message.",
       },
     },
   },
@@ -242,7 +280,8 @@ export const PasswordMissingLowercase: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates form validation when the password doesn't contain a lowercase letter. Try changing the 'New password' field to something like 'PASSWORD123!' (all uppercase) and submit the form. You'll see a validation error message.",
+        story:
+          "This story demonstrates form validation when the password doesn't contain a lowercase letter. Try changing the 'New password' field to something like 'PASSWORD123!' (all uppercase) and submit the form. You'll see a validation error message.",
       },
     },
   },
@@ -262,7 +301,8 @@ export const PasswordMissingNumber: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates form validation when the password doesn't contain a number. Try changing the 'New password' field to something like 'Password!' (no numbers) and submit the form. You'll see a validation error message.",
+        story:
+          "This story demonstrates form validation when the password doesn't contain a number. Try changing the 'New password' field to something like 'Password!' (no numbers) and submit the form. You'll see a validation error message.",
       },
     },
   },
@@ -282,7 +322,8 @@ export const IncompleteForm: Story = {
     },
     docs: {
       description: {
-        story: "This story demonstrates form validation when fields are empty. Clear all the fields and submit the form. You'll see validation error messages for each required field: 'Current password is required', 'Password must be at least 8 characters long', and 'Please confirm your password'.",
+        story:
+          "This story demonstrates form validation when fields are empty. Clear all the fields and submit the form. You'll see validation error messages for each required field: 'Current password is required', 'Password must be at least 8 characters long', and 'Please confirm your password'.",
       },
     },
   },

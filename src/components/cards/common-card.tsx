@@ -1,4 +1,11 @@
-import { Card as CardUI, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card as CardUI,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card';
 
 interface CardWrapperProps {
   children: React.ReactNode;
@@ -8,7 +15,13 @@ interface CardWrapperProps {
   className?: string;
 }
 
-const CommonCard = ({ children, title, description, footer, className }: CardWrapperProps) => {
+const CommonCard = ({
+  children,
+  title,
+  description,
+  footer,
+  className,
+}: CardWrapperProps) => {
   return (
     <CardUI className={className}>
       {(title || description) && (

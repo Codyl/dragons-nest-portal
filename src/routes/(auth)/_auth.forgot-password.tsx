@@ -1,13 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
-import ForgotPasswordForm from "@/components/forms/forgot-password.form";
-import CommonCard from "@/components/cards/common-card";
-import useLoggedInUser from "@/hooks/use-logged-in-user";
+import { createFileRoute } from '@tanstack/react-router';
+import ForgotPasswordForm from '@/components/forms/forgot-password.form';
+import CommonCard from '@/components/cards/common-card';
+import useLoggedInUser from '@/hooks/use-logged-in-user';
 
-export const Route = createFileRoute("/(auth)/_auth/forgot-password")({
+export const Route = createFileRoute('/(auth)/_auth/forgot-password')({
   head: () => ({
     meta: [
-      { title: "Forgot Password | Cody Lillywhite" },
-      { name: "description", content: "Recover your password. Enter your email to receive a recovery code." },
+      { title: 'Forgot Password | Cody Lillywhite' },
+      {
+        name: 'description',
+        content:
+          'Recover your password. Enter your email to receive a recovery code.',
+      },
     ],
   }),
   component: ForgotPassword,
@@ -15,7 +19,7 @@ export const Route = createFileRoute("/(auth)/_auth/forgot-password")({
 
 function ForgotPassword() {
   const user = useLoggedInUser();
-  const userEmail = user.data?.data?.email || "";
+  const userEmail = user.data?.data?.email || '';
 
   return (
     <CommonCard

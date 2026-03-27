@@ -1,16 +1,16 @@
-import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
-import CreatePasswordForm from "@/components/forms/create-password.form";
-import CommonCard from "@/components/cards/common-card";
-import useLoggedInUser from "@/hooks/use-logged-in-user";
+import { createFileRoute, Link, Navigate } from '@tanstack/react-router';
+import CreatePasswordForm from '@/components/forms/create-password.form';
+import CommonCard from '@/components/cards/common-card';
+import useLoggedInUser from '@/hooks/use-logged-in-user';
 
-export const Route = createFileRoute("/(private)/_private/create-password")({
+export const Route = createFileRoute('/(private)/_private/create-password')({
   head: () => ({
     meta: [
-      { title: "Create Password | Cody Lillywhite" },
+      { title: 'Create Password | Cody Lillywhite' },
       {
-        name: "description",
+        name: 'description',
         content:
-          "Set a password for your account so you can sign in without Google.",
+          'Set a password for your account so you can sign in without Google.',
       },
     ],
   }),
@@ -33,7 +33,10 @@ function CreatePasswordPage() {
     return (
       <div className="flex flex-col mx-auto max-w-md gap-2">
         <p className="text-destructive text-sm">Could not load your profile.</p>
-        <Link to="/security-settings" className="text-primary text-sm underline">
+        <Link
+          to="/security-settings"
+          className="text-primary text-sm underline"
+        >
           Back to security settings
         </Link>
       </div>

@@ -1,13 +1,13 @@
-import type { RouterContext } from "@/App";
-import NewDeviceModal from "@/components/modals/new-device.modal";
-import useLoggedInUser from "@/hooks/use-logged-in-user";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import type { RouterContext } from '@/App';
+import NewDeviceModal from '@/components/modals/new-device.modal';
+import useLoggedInUser from '@/hooks/use-logged-in-user';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
-      { title: "Home | Cody Lillywhite" },
-      { name: "description", content: "Your account dashboard" },
+      { title: 'Home | Cody Lillywhite' },
+      { name: 'description', content: 'Your account dashboard' },
     ],
   }),
   beforeLoad: async ({ context, location }) => {
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/")({
 
     if (!isAuthenticated) {
       throw redirect({
-        to: "/verify-username",
+        to: '/verify-username',
         search: {
           redirect: location.href,
         },
@@ -29,7 +29,6 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { data: userData } = useLoggedInUser();
   const hasPassword = userData?.data?.hasPassword !== false;
-
 
   return (
     <div className="p-2">

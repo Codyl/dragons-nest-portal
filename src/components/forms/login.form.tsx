@@ -1,24 +1,25 @@
-import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
-import InputField from "../fields/input-field";
-import { Button } from "../ui/button";
-import useLoginMutation, { type LoginMutationVariables } from "@/hooks/use-login-mutation";
-import { useRouter, Link } from "@tanstack/react-router";
-import { FieldGroup, Field } from "../ui/field";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { cn } from "@/lib/utils";
-import { useResendSignupConfirmationCode } from "@/hooks/use-resend-signup-confirmation-code";
-import { useState } from "react";
-import MFAAuthenticatorQRCodeModal from "../modals/mfa-authenticator-qrcode.modal";
-import { UAParser } from "ua-parser-js";
+import { useForm } from '@tanstack/react-form';
+import { z } from 'zod';
+import InputField from '../fields/input-field';
+import { Button } from '../ui/button';
+import useLoginMutation, {
+  type LoginMutationVariables,
+} from '@/hooks/use-login-mutation';
+import { useRouter, Link } from '@tanstack/react-router';
+import { FieldGroup, Field } from '../ui/field';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { cn } from '@/lib/utils';
+import { useResendSignupConfirmationCode } from '@/hooks/use-resend-signup-confirmation-code';
+import { useState } from 'react';
+import MFAAuthenticatorQRCodeModal from '../modals/mfa-authenticator-qrcode.modal';
+import { UAParser } from 'ua-parser-js';
 
 const LoginForm = ({ className }: { className?: string }) => {
   const router = useRouter();
-  const username = sessionStorage.getItem("username") || "";
-  const session = sessionStorage.getItem("session") || "";
-  const addedDeviceKey = localStorage.getItem("AddedDeviceKey") || "";
-
+  const username = sessionStorage.getItem('username') || '';
+  const session = sessionStorage.getItem('session') || '';
+  const addedDeviceKey = localStorage.getItem('AddedDeviceKey') || '';
 
   const parser = new UAParser();
   const result = parser.getResult();
@@ -29,14 +30,14 @@ const LoginForm = ({ className }: { className?: string }) => {
     useState(false);
 
   const passwordSchema = z.object({
-    password: z.string().min(6, "Password must be at least 6 characters long"),
+    password: z.string().min(6, 'Password must be at least 6 characters long'),
   });
 
   const { mutate: login, error, isPending } = useLoginMutation();
   const { mutateAsync: resendCode } = useResendSignupConfirmationCode();
   const passwordForm = useForm({
     defaultValues: {
-      password: "",
+      password: '',
     },
     validators: {
       onSubmit: passwordSchema,
@@ -53,17 +54,17 @@ const LoginForm = ({ className }: { className?: string }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onSuccess: (data: any) => {
           if (data.data?.Session) {
-            sessionStorage.setItem("session", data.data.Session);
+            sessionStorage.setItem('session', data.data.Session);
           }
-          sessionStorage.setItem("username", username);
+          sessionStorage.setItem('username', username);
 
-          if (data.data.ChallengeName === "SOFTWARE_TOKEN_MFA") {
-            router.navigate({ to: "/mfa/verify-code" });
+          if (data.data.ChallengeName === 'SOFTWARE_TOKEN_MFA') {
+            router.navigate({ to: '/mfa/verify-code' });
           }
-          if (data.data.ChallengeName === "NEW_PASSWORD_REQUIRED") {
-            router.navigate({ to: "/reset-password" });
+          if (data.data.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
+            router.navigate({ to: '/reset-password' });
           }
-          if (data.data.ChallengeName === "MFA_SETUP") {
+          if (data.data.ChallengeName === 'MFA_SETUP') {
             setShowMFAAuthenticatorQRCodeModal(true);
           }
 
@@ -71,31 +72,33 @@ const LoginForm = ({ className }: { className?: string }) => {
           if (!data.data.ChallengeName && data.data.AuthenticationResult) {
             if (data.data.AuthenticationResult.NewDeviceMetadata) {
               localStorage.setItem(
-                "DeviceKey",
-                data.data.AuthenticationResult.NewDeviceMetadata.DeviceKey || "",
+                'DeviceKey',
+                data.data.AuthenticationResult.NewDeviceMetadata.DeviceKey ||
+                  '',
               );
               localStorage.setItem(
-                "DeviceGroupKey",
-                data.data.AuthenticationResult.NewDeviceMetadata.DeviceGroupKey || "",
+                'DeviceGroupKey',
+                data.data.AuthenticationResult.NewDeviceMetadata
+                  .DeviceGroupKey || '',
               );
             }
 
             if (data.data.AuthenticationResult.DeviceRandomPassword) {
               localStorage.setItem(
-                "DeviceRandomPassword",
-                data.data.AuthenticationResult.DeviceRandomPassword || "",
+                'DeviceRandomPassword',
+                data.data.AuthenticationResult.DeviceRandomPassword || '',
               );
             }
 
-            router.navigate({ to: "/" });
+            router.navigate({ to: '/' });
           }
         },
         onError: async (error) => {
-          if (error.name === "UserNotConfirmedException") {
+          if (error.name === 'UserNotConfirmedException') {
             await resendCode({ username: username });
-            sessionStorage.removeItem("session");
-            sessionStorage.setItem("username", username);
-            router.navigate({ to: "/confirm-signup" });
+            sessionStorage.removeItem('session');
+            sessionStorage.setItem('username', username);
+            router.navigate({ to: '/confirm-signup' });
           }
         },
       });
@@ -103,7 +106,7 @@ const LoginForm = ({ className }: { className?: string }) => {
   });
 
   const handleBack = () => {
-    router.navigate({ to: "/verify-username" });
+    router.navigate({ to: '/verify-username' });
     passwordForm.reset();
   };
 
@@ -119,7 +122,7 @@ const LoginForm = ({ className }: { className?: string }) => {
           e.stopPropagation();
           passwordForm.handleSubmit();
         }}
-        className={cn("space-y-4", className)}
+        className={cn('space-y-4', className)}
       >
         <FieldGroup>
           <Field>
@@ -146,17 +149,37 @@ const LoginForm = ({ className }: { className?: string }) => {
           <passwordForm.Field
             name="password"
             children={(field) => (
-              <InputField field={field} label="Password" type="password" autoFocus />
+              <InputField
+                field={field}
+                label="Password"
+                type="password"
+                autoFocus
+              />
             )}
           />
         </FieldGroup>
-        <Link to="/forgot-password" className="text-primary hover:underline ml-auto block text-end">
+        <Link
+          to="/forgot-password"
+          className="text-primary hover:underline ml-auto block text-end"
+        >
           Forgot password?
         </Link>
-        <Button type="submit" className="w-full" disabled={isPending} isPending={isPending}>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isPending}
+          isPending={isPending}
+        >
           Sign In
         </Button>
-        {error && <p className="text-destructive mt-2" data-testid="error-message">{error.message}</p>}
+        {error && (
+          <p
+            className="text-destructive mt-2"
+            data-testid="error-message"
+          >
+            {error.message}
+          </p>
+        )}
       </form>
     </>
   );

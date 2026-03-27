@@ -28,7 +28,7 @@ export type CompleteMFAMutationVariables = {
 };
 
 async function completeMFAMutationFn(
-  variables: CompleteMFAMutationVariables
+  variables: CompleteMFAMutationVariables,
 ): Promise<CompleteMFAMutationData> {
   const { softwareTokenMfaCode } = variables;
 

@@ -1,4 +1,4 @@
-import ForgotPasswordForm from "./forgot-password.form";
+import ForgotPasswordForm from './forgot-password.form';
 
 describe('ForgotPasswordForm', () => {
   afterEach(() => {
@@ -40,7 +40,10 @@ describe('ForgotPasswordForm', () => {
   it('should require username field', () => {
     cy.mount(<ForgotPasswordForm />);
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-username"]').should('contain.text', 'Username or email is required');
+    cy.get('[data-testid="error-message-username"]').should(
+      'contain.text',
+      'Username or email is required',
+    );
   });
 
   it('should show loading state when submitting', () => {
@@ -58,9 +61,12 @@ describe('ForgotPasswordForm', () => {
   });
 
   it('should pre-fill username from sessionStorage', () => {
-    sessionStorage.setItem("username", "prefilled@example.com");
+    sessionStorage.setItem('username', 'prefilled@example.com');
     cy.mount(<ForgotPasswordForm />);
-    cy.get('input[name="username"]').should('have.value', 'prefilled@example.com');
+    cy.get('input[name="username"]').should(
+      'have.value',
+      'prefilled@example.com',
+    );
   });
 
   it('should pre-fill username from preFilledEmail prop', () => {

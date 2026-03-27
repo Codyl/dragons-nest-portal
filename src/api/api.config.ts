@@ -1,4 +1,4 @@
-import ky, { HTTPError } from "ky";
+import ky, { HTTPError } from 'ky';
 
 // Track if we're currently refreshing to prevent infinite loops
 let isRefreshing = false;
@@ -17,11 +17,11 @@ const refreshAccessToken = async (): Promise<boolean> => {
   refreshPromise = (async () => {
     try {
       const { unauthenticatedApi } =
-        await import("./api.unauthenticated.config");
-      const response = await unauthenticatedApi.post("auth/refresh-token", {
+        await import('./api.unauthenticated.config');
+      const response = await unauthenticatedApi.post('auth/refresh-token', {
         json: {},
         throwHttpErrors: false,
-        credentials: "include",
+        credentials: 'include',
       });
 
       if (response.ok) {
@@ -45,9 +45,9 @@ const refreshAccessToken = async (): Promise<boolean> => {
  */
 export const api = ky.create({
   prefixUrl: import.meta.env.VITE_API_URL,
-  credentials: "include",
+  credentials: 'include',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   hooks: {
     beforeRetry: [
@@ -58,14 +58,14 @@ export const api = ky.create({
           error.response.status === 401 &&
           retryCount < 2
         ) {
-          if (request.url.includes("auth/refresh-token")) {
+          if (request.url.includes('auth/refresh-token')) {
             return;
           }
 
           const refreshSuccess = await refreshAccessToken();
 
           if (!refreshSuccess) {
-            throw new Error("Token refresh failed");
+            throw new Error('Token refresh failed');
           }
         }
       },
@@ -74,7 +74,9 @@ export const api = ky.create({
       async (error) => {
         if (error.response) {
           try {
-            const errorBody = (await error.response.json()) as { message?: string };
+            const errorBody = (await error.response.json()) as {
+              message?: string;
+            };
             const message = errorBody?.message ?? error.message;
             throw Object.assign(error, errorBody, { message });
           } catch (e) {
@@ -84,7 +86,7 @@ export const api = ky.create({
         }
 
         if (error instanceof HTTPError && error.response.status === 500) {
-          throw new Error("Internal server error");
+          throw new Error('Internal server error');
         }
         throw error;
       },
@@ -92,7 +94,7 @@ export const api = ky.create({
   },
   retry: {
     limit: 2,
-    methods: ["get", "post", "put", "delete"],
+    methods: ['get', 'post', 'put', 'delete'],
     statusCodes: [401],
   },
 });

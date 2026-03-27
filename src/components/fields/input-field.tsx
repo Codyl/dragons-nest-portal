@@ -1,11 +1,11 @@
-import { Field, FieldError, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
+import { Field, FieldError, FieldLabel } from '../ui/field';
+import { Input } from '../ui/input';
 
 const InputField = ({
   field,
   label,
   className,
-  type = "text",
+  type = 'text',
   placeholder,
   normalize,
   format,
@@ -21,12 +21,21 @@ const InputField = ({
   normalize?: (value: string) => string;
   format?: (value: string) => string;
   required?: boolean;
-} & React.ComponentProps<"input">) => {
+} & React.ComponentProps<'input'>) => {
   const isInvalid = !field.state.meta.isValid && field.state.meta.isTouched;
 
   return (
-    <Field data-invalid={isInvalid} className={className}>
-      <FieldLabel htmlFor={field.name} data-testid={`label-${field.name}`}>{label}{required && <span className="text-destructive">*</span>}</FieldLabel>
+    <Field
+      data-invalid={isInvalid}
+      className={className}
+    >
+      <FieldLabel
+        htmlFor={field.name}
+        data-testid={`label-${field.name}`}
+      >
+        {label}
+        {required && <span className="text-destructive">*</span>}
+      </FieldLabel>
       <Input
         id={field.name}
         data-testid={`input-${field.name}`}
@@ -42,7 +51,12 @@ const InputField = ({
         autoComplete="off"
         {...props}
       />
-      {isInvalid && <FieldError data-testid={`error-message-${field.name}`} errors={field.state.meta.errors} />}
+      {isInvalid && (
+        <FieldError
+          data-testid={`error-message-${field.name}`}
+          errors={field.state.meta.errors}
+        />
+      )}
     </Field>
   );
 };

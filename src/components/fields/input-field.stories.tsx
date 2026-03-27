@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import InputField from "./input-field";
+import InputField from './input-field';
 const meta = {
-  title: "Fields/InputField",
+  title: 'Fields/InputField',
   component: InputField,
   argTypes: {
     field: {
-      control: "object",
+      control: 'object',
     },
     label: {
-      control: "text",
+      control: 'text',
     },
   },
 } satisfies Meta<typeof InputField>;
@@ -20,38 +20,38 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     field: {
-      name: "email",
-      value: "",
-      onChange: () => { },
-      onBlur: () => { },
+      name: 'email',
+      value: '',
+      onChange: () => {},
+      onBlur: () => {},
       state: {
         meta: {
           isValid: true,
           isTouched: false,
-          placeholder: "Enter your email",
+          placeholder: 'Enter your email',
         },
       },
     },
-    label: "Email",
+    label: 'Email',
   },
 };
 
 export const Invalid: Story = {
   args: {
     field: {
-      name: "email",
-      value: "",
-      onChange: () => { },
-      onBlur: () => { },
+      name: 'email',
+      value: '',
+      onChange: () => {},
+      onBlur: () => {},
       state: {
         meta: {
-          placeholder: "Enter your email",
+          placeholder: 'Enter your email',
           isValid: false,
           isTouched: true,
-          errors: [{ message: "Invalid email" }],
+          errors: [{ message: 'Invalid email' }],
         },
       },
     },
-    label: "Email",
+    label: 'Email',
   },
 };

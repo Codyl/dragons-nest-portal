@@ -1,4 +1,4 @@
-import UserSettingsForm from "./user-settings.form";
+import UserSettingsForm from './user-settings.form';
 
 describe('UserSettingsForm', () => {
   beforeEach(() => {
@@ -43,14 +43,20 @@ describe('UserSettingsForm', () => {
     cy.mount(<UserSettingsForm />);
     cy.get('input[name="email"]').clear().type('invalid-email');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-email"]').should('contain.text', 'Invalid email address');
+    cy.get('[data-testid="error-message-email"]').should(
+      'contain.text',
+      'Invalid email address',
+    );
   });
 
   it('should show error when phone number is invalid', () => {
     cy.mount(<UserSettingsForm />);
     cy.get('input[name="phone_number"]').clear().type('123');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-phone_number"]').should('contain.text', 'Invalid phone number');
+    cy.get('[data-testid="error-message-phone_number"]').should(
+      'contain.text',
+      'Invalid phone number',
+    );
   });
 
   it('should show loading state when submitting', () => {

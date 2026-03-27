@@ -1,23 +1,48 @@
-import useLoggedInUser from "@/hooks/use-logged-in-user";
-import useLinkGoogle from "@/hooks/use-link-google";
-import useUnlinkGoogle from "@/hooks/use-unlink-google";
-import useRegisterPasskey from "@/hooks/use-register-passkey";
-import { Button } from "../ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "@/lib/utils";
-import { useRef, useState } from "react";
-import ChangePasswordModal from "../modals/change-password.modal";
-import { GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "@tanstack/react-router";
+import useLoggedInUser from '@/hooks/use-logged-in-user';
+import useLinkGoogle from '@/hooks/use-link-google';
+import useUnlinkGoogle from '@/hooks/use-unlink-google';
+import useRegisterPasskey from '@/hooks/use-register-passkey';
+import { Button } from '../ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { cn } from '@/lib/utils';
+import { useRef, useState } from 'react';
+import ChangePasswordModal from '../modals/change-password.modal';
+import { GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from '@tanstack/react-router';
 
 export const UNLINK_GOOGLE_NEEDS_PASSWORD_MESSAGE =
-  "You must create a password before you can disconnect your Google account.";
+  'You must create a password before you can disconnect your Google account.';
 
-const LoginMethod = ({ method, onClick, buttonText, className, disabled }: { method: string, onClick: () => void, buttonText: string, className?: string, disabled?: boolean }) => {
+const LoginMethod = ({
+  method,
+  onClick,
+  buttonText,
+  className,
+  disabled,
+}: {
+  method: string;
+  onClick: () => void;
+  buttonText: string;
+  className?: string;
+  disabled?: boolean;
+}) => {
   return (
-    <div className={cn("flex flex-col w-full gap-2 tablet:flex-row justify-between items-center", className)}>
+    <div
+      className={cn(
+        'flex flex-col w-full gap-2 tablet:flex-row justify-between items-center',
+        className,
+      )}
+    >
       <div>{method}</div>
-      <Button type="button" data-testid={`${buttonText}-button`} onClick={onClick} variant="outline" disabled={disabled}>{buttonText}</Button>
+      <Button
+        type="button"
+        data-testid={`${buttonText}-button`}
+        onClick={onClick}
+        variant="outline"
+        disabled={disabled}
+      >
+        {buttonText}
+      </Button>
     </div>
   );
 };
@@ -29,7 +54,7 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
   const registerPasskey = useRegisterPasskey();
   const linkGoogle = useLinkGoogle();
   const unlinkGoogle = useUnlinkGoogle();
-  const hasGoogle = user?.loginMethods?.includes("GOOGLE");
+  const hasGoogle = user?.loginMethods?.includes('GOOGLE');
   const hasPassword = user?.hasPassword ?? true;
 
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
@@ -40,10 +65,15 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
 
   const disableRemoveGoogle = hasGoogle && !hasPassword;
   const [unlinkPopoverOpen, setUnlinkPopoverOpen] = useState(false);
-  const unlinkPopoverCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const unlinkPopoverCloseTimerRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
 
   const scheduleUnlinkPopoverClose = () => {
-    unlinkPopoverCloseTimerRef.current = setTimeout(() => setUnlinkPopoverOpen(false), 150);
+    unlinkPopoverCloseTimerRef.current = setTimeout(
+      () => setUnlinkPopoverOpen(false),
+      150,
+    );
   };
   const cancelUnlinkPopoverClose = () => {
     if (unlinkPopoverCloseTimerRef.current) {
@@ -62,25 +92,34 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
       )}
       <div className={className}>
         <h1 className="text-2xl font-bold">Login Methods</h1>
-        <div className="text-muted-foreground mt-2">Manage your login methods and connected services.</div>
+        <div className="text-muted-foreground mt-2">
+          Manage your login methods and connected services.
+        </div>
         <div className="flex flex-col gap-2 mt-2 divide-y max-w-102 w-full">
           {/* allow user to remove sso login methods and change password */}
           <LoginMethod
             className="py-2"
             method="Email & Password"
-            buttonText={hasPassword ? "Change Password" : "Create Password"}
+            buttonText={hasPassword ? 'Change Password' : 'Create Password'}
             onClick={() =>
               hasPassword
                 ? setShowChangePasswordModal(true)
-                : navigate({ to: "/create-password" })
+                : navigate({ to: '/create-password' })
             }
           />
-          <div className={cn("flex flex-col w-full gap-2 tablet:flex-row justify-between items-center py-2")}>
+          <div
+            className={cn(
+              'flex flex-col w-full gap-2 tablet:flex-row justify-between items-center py-2',
+            )}
+          >
             <div>Google</div>
             {hasGoogle ? (
               <div className="flex flex-col items-end w-full tablet:w-auto">
                 {disableRemoveGoogle ? (
-                  <Popover open={unlinkPopoverOpen} onOpenChange={setUnlinkPopoverOpen}>
+                  <Popover
+                    open={unlinkPopoverOpen}
+                    onOpenChange={setUnlinkPopoverOpen}
+                  >
                     <PopoverTrigger asChild>
                       <span
                         className="inline-flex"
@@ -116,7 +155,7 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
                         className="mt-2 text-sm underline font-medium hover:no-underline text-primary"
                         onClick={() => {
                           setUnlinkPopoverOpen(false);
-                          navigate({ to: "/create-password" });
+                          navigate({ to: '/create-password' });
                         }}
                       >
                         Set a password
@@ -143,14 +182,16 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
                         handleConnectGoogle(credentialResponse.credential);
                       }
                     }}
-                    onError={() => { }}
+                    onError={() => {}}
                   />
                 )}
                 {window.Cypress && (
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => handleConnectGoogle("mock-google-credential")}
+                    onClick={() =>
+                      handleConnectGoogle('mock-google-credential')
+                    }
                     disabled={linkGoogle.isPending}
                   >
                     Connect

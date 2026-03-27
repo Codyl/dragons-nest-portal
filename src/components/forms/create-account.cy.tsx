@@ -1,4 +1,4 @@
-import CreateAccountForm from "./create-account.form";
+import CreateAccountForm from './create-account.form';
 
 describe('CreateAccountForm', () => {
   afterEach(() => {
@@ -36,7 +36,10 @@ describe('CreateAccountForm', () => {
     cy.get('input[name="password"]').type('Password123!');
     cy.get('input[name="confirmPassword"]').type('Password123!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-email"]').should('contain.text', 'Please enter a valid email address');
+    cy.get('[data-testid="error-message-email"]').should(
+      'contain.text',
+      'Please enter a valid email address',
+    );
   });
 
   it('should show error when passwords do not match', () => {
@@ -45,7 +48,10 @@ describe('CreateAccountForm', () => {
     cy.get('input[name="password"]').type('Password123!');
     cy.get('input[name="confirmPassword"]').type('DifferentPassword123!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-confirmPassword"]').should('contain.text', 'Passwords do not match');
+    cy.get('[data-testid="error-message-confirmPassword"]').should(
+      'contain.text',
+      'Passwords do not match',
+    );
   });
 
   it('should show error when password is too short', () => {
@@ -54,7 +60,10 @@ describe('CreateAccountForm', () => {
     cy.get('input[name="password"]').type('Short1!');
     cy.get('input[name="confirmPassword"]').type('Short1!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-password"]').should('contain.text', 'Password must be at least 8 characters long');
+    cy.get('[data-testid="error-message-password"]').should(
+      'contain.text',
+      'Password must be at least 8 characters long',
+    );
   });
 
   it('should show error when password is missing uppercase letter', () => {
@@ -63,7 +72,10 @@ describe('CreateAccountForm', () => {
     cy.get('input[name="password"]').type('password123!');
     cy.get('input[name="confirmPassword"]').type('password123!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-password"]').should('contain.text', 'Password must contain at least one uppercase letter');
+    cy.get('[data-testid="error-message-password"]').should(
+      'contain.text',
+      'Password must contain at least one uppercase letter',
+    );
   });
 
   it('should show error when password is missing lowercase letter', () => {
@@ -72,7 +84,10 @@ describe('CreateAccountForm', () => {
     cy.get('input[name="password"]').type('PASSWORD123!');
     cy.get('input[name="confirmPassword"]').type('PASSWORD123!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-password"]').should('contain.text', 'Password must contain at least one lowercase letter');
+    cy.get('[data-testid="error-message-password"]').should(
+      'contain.text',
+      'Password must contain at least one lowercase letter',
+    );
   });
 
   it('should show error when password is missing number', () => {
@@ -81,7 +96,10 @@ describe('CreateAccountForm', () => {
     cy.get('input[name="password"]').type('Password!');
     cy.get('input[name="confirmPassword"]').type('Password!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-password"]').should('contain.text', 'Password must contain at least one number');
+    cy.get('[data-testid="error-message-password"]').should(
+      'contain.text',
+      'Password must contain at least one number',
+    );
   });
 
   it('should show loading state when submitting', () => {

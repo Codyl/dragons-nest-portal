@@ -1,11 +1,10 @@
-
 const formatPhoneNumber = (value: string) => {
-  if (value.startsWith("+1")) {
+  if (value.startsWith('+1')) {
     value = value.slice(1);
   }
 
   if (value.length === 0) {
-    return "";
+    return '';
   }
 
   if (value.length <= 3) {
@@ -17,9 +16,7 @@ const formatPhoneNumber = (value: string) => {
   }
 
   return `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
-
 };
-
 
 const formatDate = (value: string) => {
   return new Date(value).toLocaleDateString();

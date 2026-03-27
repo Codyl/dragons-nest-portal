@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import { fn, userEvent, within } from "storybook/test";
-import ConfirmResetCodeForm from "./confirm-reset-code.form";
-import { handlers } from "../../../.storybook/msw-handlers";
+} from '@tanstack/react-router';
+import { fn, userEvent, within } from 'storybook/test';
+import ConfirmResetCodeForm from './confirm-reset-code.form';
+import { handlers } from '../../../.storybook/msw-handlers';
 
 const fillForm = async (canvas: ReturnType<typeof within>, code: string) => {
   const codeInput = canvas.getByLabelText('Code');
@@ -22,13 +22,13 @@ const submitForm = async (canvas: ReturnType<typeof within>) => {
 };
 
 const meta = {
-  title: "Forms/ConfirmResetCodeForm",
+  title: 'Forms/ConfirmResetCodeForm',
   component: ConfirmResetCodeForm,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: { handlers }, // Form does not call API; handlers for consistency
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -41,7 +41,7 @@ const meta = {
         component: () => <Story />,
       });
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
       ]);
       const router = createRouter({
         routeTree,
@@ -67,7 +67,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Enter the reset code received via email. Calls setStep(2) on successful submit.",
+        story:
+          'Enter the reset code received via email. Calls setStep(2) on successful submit.',
       },
     },
   },
@@ -83,7 +84,8 @@ export const InvalidCode: Story = {
     msw: { handlers },
     docs: {
       description: {
-        story: "This story demonstrates an error state when the code is invalid. Submit the form to see the error message displayed below the form fields.",
+        story:
+          'This story demonstrates an error state when the code is invalid. Submit the form to see the error message displayed below the form fields.',
       },
     },
   },
@@ -99,7 +101,8 @@ export const EmptyCode: Story = {
     msw: { handlers },
     docs: {
       description: {
-        story: "This story demonstrates an error state when the code is empty. Submit the form to see the error message displayed below the form fields.",
+        story:
+          'This story demonstrates an error state when the code is empty. Submit the form to see the error message displayed below the form fields.',
       },
     },
   },
@@ -114,7 +117,8 @@ export const Success: Story = {
     msw: { handlers },
     docs: {
       description: {
-        story: "This story demonstrates a successful state when the code is valid. Submit the form to see the success callback triggered. The form will call `setStep(2)` when the mutation succeeds.",
+        story:
+          'This story demonstrates a successful state when the code is valid. Submit the form to see the success callback triggered. The form will call `setStep(2)` when the mutation succeeds.',
       },
     },
   },
@@ -130,13 +134,14 @@ export const Loading: Story = {
     msw: { handlers },
     docs: {
       description: {
-        story: "Form does not call an API; submit triggers setStep(2). Play fills and submits.",
+        story:
+          'Form does not call an API; submit triggers setStep(2). Play fills and submits.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "123456");
+    await fillForm(canvas, '123456');
     await submitForm(canvas);
   },
 };
@@ -146,13 +151,14 @@ export const NetworkError: Story = {
     msw: { handlers },
     docs: {
       description: {
-        story: "Form does not call an API; submit triggers setStep(2). Play fills and submits.",
+        story:
+          'Form does not call an API; submit triggers setStep(2). Play fills and submits.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "123456");
+    await fillForm(canvas, '123456');
     await submitForm(canvas);
   },
 };

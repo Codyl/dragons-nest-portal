@@ -1,12 +1,15 @@
 import { runHealthCheck } from '@/hooks/use-health-check';
-import { createFileRoute, redirect, isRedirect } from '@tanstack/react-router'
+import { createFileRoute, redirect, isRedirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/maintenance')({
   head: () => ({
     meta: [
-      { title: "Maintenance | Cody Lillywhite" },
-      { name: "description", content: "Server is temporarily unavailable. Please try again later." },
-      { name: "robots", content: "noindex, nofollow" },
+      { title: 'Maintenance | Cody Lillywhite' },
+      {
+        name: 'description',
+        content: 'Server is temporarily unavailable. Please try again later.',
+      },
+      { name: 'robots', content: 'noindex, nofollow' },
     ],
   }),
   component: RouteComponent,
@@ -21,9 +24,8 @@ export const Route = createFileRoute('/maintenance')({
       // Backend still down – stay on maintenance page
     }
   },
-})
+});
 
 function RouteComponent() {
-
-  return <div>Server is down for maintainance</div>
+  return <div>Server is down for maintainance</div>;
 }

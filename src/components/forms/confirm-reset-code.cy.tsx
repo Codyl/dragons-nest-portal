@@ -1,4 +1,4 @@
-import ConfirmResetCodeForm from "./confirm-reset-code.form";
+import ConfirmResetCodeForm from './confirm-reset-code.form';
 
 describe('ConfirmResetCodeForm', () => {
   it('should render', () => {

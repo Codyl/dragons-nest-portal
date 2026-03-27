@@ -1,9 +1,9 @@
-import LoginForm from "./login.form";
+import LoginForm from './login.form';
 
 describe('LoginForm', () => {
   beforeEach(() => {
-    sessionStorage.setItem("username", "test@example.com");
-    sessionStorage.setItem("session", "test-session");
+    sessionStorage.setItem('username', 'test@example.com');
+    sessionStorage.setItem('session', 'test-session');
   });
 
   afterEach(() => {
@@ -50,7 +50,10 @@ describe('LoginForm', () => {
     cy.mount(<LoginForm />);
     cy.get('input[name="password"]').type('12345');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-password"]').should('contain.text', 'Password must be at least 6 characters long');
+    cy.get('[data-testid="error-message-password"]').should(
+      'contain.text',
+      'Password must be at least 6 characters long',
+    );
   });
 
   it('should show loading state when submitting', () => {

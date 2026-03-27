@@ -1,10 +1,10 @@
-import ConfirmSignupForm from "./confirm-signup.form";
+import ConfirmSignupForm from './confirm-signup.form';
 
 describe('ConfirmSignupForm', () => {
   beforeEach(() => {
-    sessionStorage.setItem("username", "test@example.com");
-    sessionStorage.setItem("session", "test-session");
-    sessionStorage.setItem("password", "Password123!");
+    sessionStorage.setItem('username', 'test@example.com');
+    sessionStorage.setItem('session', 'test-session');
+    sessionStorage.setItem('password', 'Password123!');
   });
 
   afterEach(() => {
@@ -50,14 +50,20 @@ describe('ConfirmSignupForm', () => {
     cy.mount(<ConfirmSignupForm />);
     cy.get('[data-testid="digit-input-0"]').type('12345');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Verification code must be 6 digits');
+    cy.get('[data-testid="error-message-code"]').should(
+      'contain.text',
+      'Verification code must be 6 digits',
+    );
   });
 
   it('should strip non-digits and require 6 digits', () => {
     cy.mount(<ConfirmSignupForm />);
     cy.get('[data-testid="digit-input-0"]').type('12345a');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-code"]').should('contain.text', 'Verification code must be 6 digits');
+    cy.get('[data-testid="error-message-code"]').should(
+      'contain.text',
+      'Verification code must be 6 digits',
+    );
   });
 
   it('should show loading state when submitting', () => {

@@ -1,42 +1,45 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import { userEvent, within } from "storybook/test";
-import ForgotPasswordForm from "./forgot-password.form";
+} from '@tanstack/react-router';
+import { userEvent, within } from 'storybook/test';
+import ForgotPasswordForm from './forgot-password.form';
 import {
   forgotPasswordSuccessHandlers,
   forgotPasswordErrorHandlers,
   forgotPasswordLoadingHandlers,
   forgotPasswordNetworkErrorHandlers,
-} from "../../../.storybook/msw-handlers";
+} from '../../../.storybook/msw-handlers';
 
-const fillForm = async (canvas: ReturnType<typeof within>, username: string) => {
-  const input = canvas.getByLabelText("Username or email");
+const fillForm = async (
+  canvas: ReturnType<typeof within>,
+  username: string,
+) => {
+  const input = canvas.getByLabelText('Username or email');
   await userEvent.clear(input);
   await userEvent.type(input, username);
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Send Reset Code" });
+  const submitButton = canvas.getByRole('button', { name: 'Send Reset Code' });
   await userEvent.click(submitButton);
 };
 
 const meta = {
-  title: "Forms/ForgotPasswordForm",
+  title: 'Forms/ForgotPasswordForm',
   component: ForgotPasswordForm,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: {
       handlers: forgotPasswordSuccessHandlers,
     },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -49,7 +52,7 @@ const meta = {
         component: () => <Story />,
       });
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
       ]);
       const router = createRouter({
         routeTree,
@@ -76,8 +79,7 @@ export const Default: Story = {
     msw: { handlers: forgotPasswordSuccessHandlers },
     docs: {
       description: {
-        story:
-          "Enter username or email to receive a password reset code.",
+        story: 'Enter username or email to receive a password reset code.',
       },
     },
   },
@@ -85,13 +87,13 @@ export const Default: Story = {
 
 export const WithPreFilledEmail: Story = {
   args: {
-    preFilledEmail: "user@example.com",
+    preFilledEmail: 'user@example.com',
   },
   parameters: {
     msw: { handlers: forgotPasswordSuccessHandlers },
     docs: {
       description: {
-        story: "Form with email pre-filled from security settings.",
+        story: 'Form with email pre-filled from security settings.',
       },
     },
   },
@@ -103,13 +105,13 @@ export const Success: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a successful forgot password request. Submit the form to see the success flow.",
+          'This story demonstrates a successful forgot password request. Submit the form to see the success flow.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "user@example.com");
+    await fillForm(canvas, 'user@example.com');
     await submitForm(canvas);
   },
 };
@@ -120,13 +122,13 @@ export const Error: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates an error state when the user is not found. Submit the form to see the error message displayed.",
+          'This story demonstrates an error state when the user is not found. Submit the form to see the error message displayed.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "user@example.com");
+    await fillForm(canvas, 'user@example.com');
     await submitForm(canvas);
   },
 };
@@ -137,13 +139,13 @@ export const Loading: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates the loading state when the request is in progress. Submit the form to see the button disabled with loading for 2 seconds.",
+          'This story demonstrates the loading state when the request is in progress. Submit the form to see the button disabled with loading for 2 seconds.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "user@example.com");
+    await fillForm(canvas, 'user@example.com');
     await submitForm(canvas);
   },
 };
@@ -154,13 +156,13 @@ export const NetworkError: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a network error state. Submit the form to see how the component handles network failures.",
+          'This story demonstrates a network error state. Submit the form to see how the component handles network failures.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "user@example.com");
+    await fillForm(canvas, 'user@example.com');
     await submitForm(canvas);
   },
 };
@@ -171,13 +173,13 @@ export const ValidationErrorEmptyUsername: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates form validation when username is empty. Submit the form to see the validation error.",
+          'This story demonstrates form validation when username is empty. Submit the form to see the validation error.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "");
+    await fillForm(canvas, '');
     await submitForm(canvas);
   },
 };

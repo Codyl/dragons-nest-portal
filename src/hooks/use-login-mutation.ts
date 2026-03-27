@@ -1,9 +1,6 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import AuthServices from '@/api/services/auth.services';
-import {
-  isCognitoAuthConfigured,
-  signInWithCognito,
-} from '@/lib/cognito-auth';
+import { isCognitoAuthConfigured, signInWithCognito } from '@/lib/cognito-auth';
 
 export type LoginMutationVariables = {
   username: string;
@@ -33,7 +30,7 @@ export type LoginMutationData = {
 
 async function loginWithDirectHandoff(
   username: string,
-  password: string
+  password: string,
 ): Promise<LoginMutationData> {
   const result = await signInWithCognito(username, password);
 
@@ -60,11 +57,16 @@ async function loginWithDirectHandoff(
     };
   }
 
-  const err = result.success === false && 'error' in result ? result.error : new Error('Sign-in failed');
+  const err =
+    result.success === false && 'error' in result
+      ? result.error
+      : new Error('Sign-in failed');
   throw err;
 }
 
-async function loginMutationFn(variables: LoginMutationVariables): Promise<LoginMutationData> {
+async function loginMutationFn(
+  variables: LoginMutationVariables,
+): Promise<LoginMutationData> {
   const { username, password, session, deviceKey, deviceName } = variables;
 
   if (isCognitoAuthConfigured()) {

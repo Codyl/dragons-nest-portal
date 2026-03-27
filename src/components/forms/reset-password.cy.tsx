@@ -1,9 +1,9 @@
-import ResetPasswordForm from "./reset-password.form";
+import ResetPasswordForm from './reset-password.form';
 
 describe('ResetPasswordForm', () => {
   beforeEach(() => {
-    sessionStorage.setItem("username", "test@example.com");
-    sessionStorage.setItem("code", "123456");
+    sessionStorage.setItem('username', 'test@example.com');
+    sessionStorage.setItem('code', '123456');
   });
 
   afterEach(() => {
@@ -53,7 +53,10 @@ describe('ResetPasswordForm', () => {
     cy.get('input[name="newPassword"]').type('NewPassword123!');
     cy.get('input[name="confirmPassword"]').type('DifferentPassword123!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-confirmPassword"]').should('contain.text', 'Passwords do not match');
+    cy.get('[data-testid="error-message-confirmPassword"]').should(
+      'contain.text',
+      'Passwords do not match',
+    );
   });
 
   it('should show error when password is too short', () => {
@@ -61,7 +64,10 @@ describe('ResetPasswordForm', () => {
     cy.get('input[name="newPassword"]').type('Short1!');
     cy.get('input[name="confirmPassword"]').type('Short1!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-newPassword"]').should('contain.text', 'Password must be at least 8 characters long');
+    cy.get('[data-testid="error-message-newPassword"]').should(
+      'contain.text',
+      'Password must be at least 8 characters long',
+    );
   });
 
   it('should show error when password is missing uppercase letter', () => {
@@ -69,7 +75,10 @@ describe('ResetPasswordForm', () => {
     cy.get('input[name="newPassword"]').type('password123!');
     cy.get('input[name="confirmPassword"]').type('password123!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-newPassword"]').should('contain.text', 'Password must contain at least one uppercase letter');
+    cy.get('[data-testid="error-message-newPassword"]').should(
+      'contain.text',
+      'Password must contain at least one uppercase letter',
+    );
   });
 
   it('should show error when password is missing lowercase letter', () => {
@@ -77,7 +86,10 @@ describe('ResetPasswordForm', () => {
     cy.get('input[name="newPassword"]').type('PASSWORD123!');
     cy.get('input[name="confirmPassword"]').type('PASSWORD123!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-newPassword"]').should('contain.text', 'Password must contain at least one lowercase letter');
+    cy.get('[data-testid="error-message-newPassword"]').should(
+      'contain.text',
+      'Password must contain at least one lowercase letter',
+    );
   });
 
   it('should show error when password is missing number', () => {
@@ -85,7 +97,10 @@ describe('ResetPasswordForm', () => {
     cy.get('input[name="newPassword"]').type('Password!');
     cy.get('input[name="confirmPassword"]').type('Password!');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-newPassword"]').should('contain.text', 'Password must contain at least one number');
+    cy.get('[data-testid="error-message-newPassword"]').should(
+      'contain.text',
+      'Password must contain at least one number',
+    );
   });
 
   it('should show loading state when submitting', () => {

@@ -1,41 +1,44 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import { userEvent, within } from "storybook/test";
-import DeleteAccountForm from "./delete-account.form";
+} from '@tanstack/react-router';
+import { userEvent, within } from 'storybook/test';
+import DeleteAccountForm from './delete-account.form';
 import {
   deleteUserSuccessHandlers,
   deleteUserErrorHandlers,
   deleteUserLoadingHandlers,
   deleteUserNetworkErrorHandlers,
-} from "../../../.storybook/msw-handlers";
+} from '../../../.storybook/msw-handlers';
 
-const fillForm = async (canvas: ReturnType<typeof within>, password: string) => {
-  const passwordInput = canvas.getByLabelText("Password");
+const fillForm = async (
+  canvas: ReturnType<typeof within>,
+  password: string,
+) => {
+  const passwordInput = canvas.getByLabelText('Password');
   await userEvent.type(passwordInput, password);
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Delete Account" });
+  const submitButton = canvas.getByRole('button', { name: 'Delete Account' });
   await userEvent.click(submitButton);
 };
 
 const meta = {
-  title: "Forms/DeleteAccountForm",
+  title: 'Forms/DeleteAccountForm',
   component: DeleteAccountForm,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: {
       handlers: deleteUserSuccessHandlers,
     },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -48,7 +51,7 @@ const meta = {
         component: () => <Story />,
       });
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
       ]);
       const router = createRouter({
         routeTree,
@@ -73,7 +76,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "Enter password to confirm account deletion. Requires authentication.",
+          'Enter password to confirm account deletion. Requires authentication.',
       },
     },
   },
@@ -85,13 +88,13 @@ export const Success: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a successful account deletion. Submit the form to see the success flow.",
+          'This story demonstrates a successful account deletion. Submit the form to see the success flow.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "Password123!");
+    await fillForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -102,13 +105,13 @@ export const Error: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates an error state when the password is invalid. Submit the form to see the error message displayed.",
+          'This story demonstrates an error state when the password is invalid. Submit the form to see the error message displayed.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "WrongPassword!");
+    await fillForm(canvas, 'WrongPassword!');
     await submitForm(canvas);
   },
 };
@@ -119,13 +122,13 @@ export const Loading: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates the loading state when the delete request is in progress. Submit the form to see the button disabled with loading for 2 seconds.",
+          'This story demonstrates the loading state when the delete request is in progress. Submit the form to see the button disabled with loading for 2 seconds.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "Password123!");
+    await fillForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -136,13 +139,13 @@ export const NetworkError: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a network error state. Submit the form to see how the component handles network failures.",
+          'This story demonstrates a network error state. Submit the form to see how the component handles network failures.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "Password123!");
+    await fillForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -153,7 +156,7 @@ export const ValidationErrorEmptyPassword: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates form validation when password is empty. Submit the form to see the validation error.",
+          'This story demonstrates form validation when password is empty. Submit the form to see the validation error.',
       },
     },
   },

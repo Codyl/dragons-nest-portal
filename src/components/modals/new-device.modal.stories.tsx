@@ -1,40 +1,40 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import NewDeviceModal from "./new-device.modal";
+} from '@tanstack/react-router';
+import NewDeviceModal from './new-device.modal';
 
 const keysToClearForShow = [
-  "lastLoginProvider",
-  "AddedDeviceKey",
-  "isOptedOut",
-  "IsOptedOut",
-  "NewDeviceModalDismissed",
+  'lastLoginProvider',
+  'AddedDeviceKey',
+  'isOptedOut',
+  'IsOptedOut',
+  'NewDeviceModalDismissed',
 ] as const;
 
 function clearStorageForShow() {
-  if (typeof sessionStorage !== "undefined") {
-    sessionStorage.removeItem("lastLoginProvider");
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.removeItem('lastLoginProvider');
   }
-  if (typeof localStorage !== "undefined") {
+  if (typeof localStorage !== 'undefined') {
     keysToClearForShow.forEach((key) => {
-      if (key !== "lastLoginProvider") localStorage.removeItem(key);
+      if (key !== 'lastLoginProvider') localStorage.removeItem(key);
     });
   }
 }
 
 const meta = {
-  title: "Modals/NewDeviceModal",
+  title: 'Modals/NewDeviceModal',
   component: NewDeviceModal,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story: () => React.ReactNode) => {
       const queryClient = new QueryClient({
@@ -47,7 +47,7 @@ const meta = {
         component: () => <Story />,
       });
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
       ]);
       const router = createRouter({
         routeTree,
@@ -81,8 +81,8 @@ export const HiddenWhenGoogleSignIn: Story = {
   decorators: [
     (Story: () => React.ReactNode) => {
       clearStorageForShow();
-      if (typeof sessionStorage !== "undefined") {
-        sessionStorage.setItem("lastLoginProvider", "google");
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('lastLoginProvider', 'google');
       }
       return <Story />;
     },

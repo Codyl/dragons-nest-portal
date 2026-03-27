@@ -1,5 +1,9 @@
 import UserServices from '@/api/services/user.services';
-import { useMutation, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationResult,
+} from '@tanstack/react-query';
 
 const useCreatePassword = (): UseMutationResult<
   { message: string; data: {} },

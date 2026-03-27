@@ -1,14 +1,14 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
-import useAuth from "./hooks/use-auth";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { createRouter, RouterProvider } from '@tanstack/react-router';
+import { routeTree } from './routeTree.gen';
+import useAuth from './hooks/use-auth';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export interface RouterContext {
   checkAuth: () => Promise<boolean>;
   isLoading: boolean;
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
   }
@@ -27,7 +27,10 @@ const App = () => {
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <RouterProvider router={router} context={{ isLoading, checkAuth }} />
+      <RouterProvider
+        router={router}
+        context={{ isLoading, checkAuth }}
+      />
     </GoogleOAuthProvider>
   );
 };

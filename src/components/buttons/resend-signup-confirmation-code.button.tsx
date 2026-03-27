@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import { Button } from "../ui/button";
-import AuthServices from "@/api/services/auth.services";
-import { toast } from "sonner";
+import { useMutation } from '@tanstack/react-query';
+import { Button } from '../ui/button';
+import AuthServices from '@/api/services/auth.services';
+import { toast } from 'sonner';
 
 const ResendSignupConfirmationCodeButton = () => {
   const {
@@ -11,7 +11,7 @@ const ResendSignupConfirmationCodeButton = () => {
   } = useMutation({
     mutationFn: AuthServices.resendSignupConfirmationCode,
     onSuccess: () => {
-      toast.success(`Code resent to ${sessionStorage.getItem("username")}.`);
+      toast.success(`Code resent to ${sessionStorage.getItem('username')}.`);
     },
   });
 
@@ -23,7 +23,7 @@ const ResendSignupConfirmationCodeButton = () => {
         disabled={isPending}
         onClick={() =>
           resendCode({
-            username: sessionStorage.getItem("username") || "",
+            username: sessionStorage.getItem('username') || '',
           })
         }
         isPending={isPending}

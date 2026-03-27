@@ -1,11 +1,11 @@
-import { useRef, useCallback, useId, useMemo, useEffect } from "react";
-import { Field, FieldError, FieldLabel } from "../ui/field";
-import { cn } from "@/lib/utils";
+import { useRef, useCallback, useId, useMemo, useEffect } from 'react';
+import { Field, FieldError, FieldLabel } from '../ui/field';
+import { cn } from '@/lib/utils';
 
 const digitInputClassName = cn(
-  "border-input dark:bg-input/30 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-  "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-  "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  'border-input dark:bg-input/30 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground file:text-foreground h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+  'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+  'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
 );
 
 const DIGIT_COUNT = 6;
@@ -25,12 +25,15 @@ const SixDigitCodeField = ({
   className?: string;
   required?: boolean;
   onSubmit?: () => void;
-} & Omit<React.ComponentProps<"input">, "value" | "onChange" | "onBlur" | "name">) => {
+} & Omit<
+  React.ComponentProps<'input'>,
+  'value' | 'onChange' | 'onBlur' | 'name'
+>) => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const isInvalid = !field.state.meta.isValid && field.state.meta.isTouched;
-  const value = (field.state.value as string) || "";
+  const value = (field.state.value as string) || '';
   const digits = useMemo(
-    () => value.padEnd(DIGIT_COUNT, " ").split("").slice(0, DIGIT_COUNT),
+    () => value.padEnd(DIGIT_COUNT, ' ').split('').slice(0, DIGIT_COUNT),
     [value],
   );
   const id = useId();
@@ -38,7 +41,7 @@ const SixDigitCodeField = ({
 
   const setValue = useCallback(
     (newValue: string) => {
-      const digitsOnly = newValue.replace(/\D/g, "").slice(0, DIGIT_COUNT);
+      const digitsOnly = newValue.replace(/\D/g, '').slice(0, DIGIT_COUNT);
       field.handleChange(digitsOnly);
     },
     [field],
@@ -62,8 +65,8 @@ const SixDigitCodeField = ({
       if (inputValue && !/^\d$/.test(inputValue)) return;
 
       const newDigits = [...digits];
-      newDigits[index] = inputValue || " ";
-      const newValue = newDigits.join("").replace(/\s+$/, "");
+      newDigits[index] = inputValue || ' ';
+      const newValue = newDigits.join('').replace(/\s+$/, '');
       setValue(newValue);
 
       if (inputValue && index < DIGIT_COUNT - 1) {
@@ -75,17 +78,17 @@ const SixDigitCodeField = ({
 
   const handleDigitKeyDown = useCallback(
     (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Backspace" && digits[index] === " " && index > 0) {
+      if (e.key === 'Backspace' && digits[index] === ' ' && index > 0) {
         const newDigits = [...digits];
-        newDigits[index - 1] = " ";
-        setValue(newDigits.join("").replace(/\s+$/, ""));
+        newDigits[index - 1] = ' ';
+        setValue(newDigits.join('').replace(/\s+$/, ''));
         focusDigit(index - 1);
         return;
       }
-      if (e.key === "ArrowLeft") {
+      if (e.key === 'ArrowLeft') {
         e.preventDefault();
         focusDigit(index - 1);
-      } else if (e.key === "ArrowRight") {
+      } else if (e.key === 'ArrowRight') {
         e.preventDefault();
         focusDigit(index + 1);
       }
@@ -96,7 +99,7 @@ const SixDigitCodeField = ({
   const handleDigitPaste = useCallback(
     (e: React.ClipboardEvent<HTMLInputElement>) => {
       e.preventDefault();
-      const pasted = e.clipboardData.getData("text").trim().replace(/\D/g, "");
+      const pasted = e.clipboardData.getData('text').trim().replace(/\D/g, '');
       if (pasted.length !== DIGIT_COUNT) return;
       setValue(pasted);
       focusDigit(DIGIT_COUNT - 1);
@@ -105,8 +108,14 @@ const SixDigitCodeField = ({
   );
 
   return (
-    <Field data-invalid={isInvalid} className={className}>
-      <FieldLabel htmlFor={hiddenInputId} data-testid={`label-${field.name}`}>
+    <Field
+      data-invalid={isInvalid}
+      className={className}
+    >
+      <FieldLabel
+        htmlFor={hiddenInputId}
+        data-testid={`label-${field.name}`}
+      >
         {label}
         {required && <span className="text-destructive">*</span>}
       </FieldLabel>
@@ -133,15 +142,15 @@ const SixDigitCodeField = ({
             }}
             type="text"
             inputMode="numeric"
-            autoComplete={i === 0 ? "one-time-code" : "off"}
+            autoComplete={i === 0 ? 'one-time-code' : 'off'}
             autoFocus={i === 0 ? autoFocus : undefined}
             maxLength={1}
             aria-label={`Digit ${i + 1}`}
             data-testid={`digit-input-${i}`}
-            value={digits[i] === " " ? "" : digits[i]}
+            value={digits[i] === ' ' ? '' : digits[i]}
             className={cn(
               digitInputClassName,
-              "h-10 w-9 text-center text-lg tabular-nums sm:w-10 p-0",
+              'h-10 w-9 text-center text-lg tabular-nums sm:w-10 p-0',
             )}
             onBlur={field.handleBlur}
             onChange={(e) => handleDigitChange(i, e)}

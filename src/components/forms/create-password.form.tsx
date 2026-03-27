@@ -1,38 +1,34 @@
-import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
-import InputField from "../fields/input-field";
-import { Button } from "../ui/button";
-import { Link, useRouter } from "@tanstack/react-router";
-import { FieldGroup } from "../ui/field";
-import useCreatePassword from "@/hooks/use-create-password";
+import { useForm } from '@tanstack/react-form';
+import { z } from 'zod';
+import InputField from '../fields/input-field';
+import { Button } from '../ui/button';
+import { Link, useRouter } from '@tanstack/react-router';
+import { FieldGroup } from '../ui/field';
+import useCreatePassword from '@/hooks/use-create-password';
 
 const CreatePasswordForm = () => {
   const router = useRouter();
-  const {
-    mutate: createPassword,
-    isPending,
-    error,
-  } = useCreatePassword();
+  const { mutate: createPassword, isPending, error } = useCreatePassword();
 
   const schema = z
     .object({
       newPassword: z
         .string()
-        .min(8, "Password must be at least 8 characters long")
-        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-        .regex(/[0-9]/, "Password must contain at least one number"),
-      confirmPassword: z.string().min(1, "Please confirm your password"),
+        .min(8, 'Password must be at least 8 characters long')
+        .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .regex(/[0-9]/, 'Password must contain at least one number'),
+      confirmPassword: z.string().min(1, 'Please confirm your password'),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
+      message: 'Passwords do not match',
+      path: ['confirmPassword'],
     });
 
   const form = useForm({
     defaultValues: {
-      newPassword: "",
-      confirmPassword: "",
+      newPassword: '',
+      confirmPassword: '',
     },
     validators: {
       onSubmit: schema,
@@ -42,7 +38,7 @@ const CreatePasswordForm = () => {
         { newPassword: value.newPassword },
         {
           onSuccess: () => {
-            router.navigate({ to: "/security-settings" });
+            router.navigate({ to: '/security-settings' });
           },
         },
       );
@@ -62,7 +58,12 @@ const CreatePasswordForm = () => {
         <form.Field
           name="newPassword"
           children={(field) => (
-            <InputField field={field} label="New password" type="password" autoFocus />
+            <InputField
+              field={field}
+              label="New password"
+              type="password"
+              autoFocus
+            />
           )}
         />
         <form.Field
@@ -77,7 +78,10 @@ const CreatePasswordForm = () => {
         />
       </FieldGroup>
       {error && (
-        <p className="text-destructive mt-2" data-testid="error-message">
+        <p
+          className="text-destructive mt-2"
+          data-testid="error-message"
+        >
           {error.message}
         </p>
       )}
@@ -90,7 +94,10 @@ const CreatePasswordForm = () => {
         Create password
       </Button>
       <div className="text-center text-sm">
-        <Link to="/security-settings" className="text-primary hover:underline">
+        <Link
+          to="/security-settings"
+          className="text-primary hover:underline"
+        >
           Back to security settings
         </Link>
       </div>

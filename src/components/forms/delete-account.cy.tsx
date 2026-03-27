@@ -1,11 +1,13 @@
-import DeleteAccountForm from "./delete-account.form";
+import DeleteAccountForm from './delete-account.form';
 
 describe('DeleteAccountForm', () => {
   it('should render', () => {
     cy.mount(<DeleteAccountForm />);
     cy.get('input[name="password"]').should('exist');
     cy.get('button[type="submit"]').should('exist');
-    cy.contains('Are you sure you want to delete your account?').should('exist');
+    cy.contains('Are you sure you want to delete your account?').should(
+      'exist',
+    );
   });
 
   it('should delete account successfully', () => {
@@ -37,7 +39,10 @@ describe('DeleteAccountForm', () => {
   it('should require password field', () => {
     cy.mount(<DeleteAccountForm />);
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-password"]').should('contain.text', 'Password is required');
+    cy.get('[data-testid="error-message-password"]').should(
+      'contain.text',
+      'Password is required',
+    );
   });
 
   it('should show loading state when submitting', () => {

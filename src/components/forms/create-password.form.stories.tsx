@@ -1,20 +1,20 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import { userEvent, within } from "storybook/test";
-import CreatePasswordForm from "./create-password.form";
+} from '@tanstack/react-router';
+import { userEvent, within } from 'storybook/test';
+import CreatePasswordForm from './create-password.form';
 import {
   createPasswordSuccessHandlers,
   createPasswordErrorHandlers,
   createPasswordLoadingHandlers,
   createPasswordNetworkErrorHandlers,
-} from "../../../.storybook/msw-handlers";
+} from '../../../.storybook/msw-handlers';
 
 /** Reference story patterns: `reset-password.form.stories.tsx` (forgot/reset flow). */
 
@@ -23,27 +23,27 @@ const fillForm = async (
   newPassword: string,
   confirmPassword: string,
 ) => {
-  const newPasswordInput = canvas.getByLabelText("New password");
-  const confirmInput = canvas.getByLabelText("Confirm new password");
+  const newPasswordInput = canvas.getByLabelText('New password');
+  const confirmInput = canvas.getByLabelText('Confirm new password');
   await userEvent.type(newPasswordInput, newPassword);
   await userEvent.type(confirmInput, confirmPassword);
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Create password" });
+  const submitButton = canvas.getByRole('button', { name: 'Create password' });
   await userEvent.click(submitButton);
 };
 
 const meta = {
-  title: "Forms/CreatePasswordForm",
+  title: 'Forms/CreatePasswordForm',
   component: CreatePasswordForm,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: {
       handlers: createPasswordSuccessHandlers,
     },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -56,16 +56,16 @@ const meta = {
         component: () => <Story />,
       });
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
         createRoute({
           getParentRoute: () => rootRoute,
-          path: "/security-settings",
+          path: '/security-settings',
         }),
       ]);
       const router = createRouter({
         routeTree,
         history: createMemoryHistory({
-          initialEntries: ["/"],
+          initialEntries: ['/'],
         }),
         defaultPendingMinMs: 0,
       });
@@ -87,7 +87,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "Logged-in OAuth users set an initial password (no old password).",
+          'Logged-in OAuth users set an initial password (no old password).',
       },
     },
   },
@@ -99,13 +99,13 @@ export const Success: Story = {
     docs: {
       description: {
         story:
-          "Successful submit navigates to security settings (see play interaction).",
+          'Successful submit navigates to security settings (see play interaction).',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "NewPassword123!", "NewPassword123!");
+    await fillForm(canvas, 'NewPassword123!', 'NewPassword123!');
     await submitForm(canvas);
   },
 };
@@ -115,13 +115,13 @@ export const Error: Story = {
     msw: { handlers: createPasswordErrorHandlers },
     docs: {
       description: {
-        story: "API error message is shown below the form.",
+        story: 'API error message is shown below the form.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "NewPassword123!", "NewPassword123!");
+    await fillForm(canvas, 'NewPassword123!', 'NewPassword123!');
     await submitForm(canvas);
   },
 };
@@ -131,13 +131,13 @@ export const Loading: Story = {
     msw: { handlers: createPasswordLoadingHandlers },
     docs: {
       description: {
-        story: "Submit button shows loading while the request is in flight.",
+        story: 'Submit button shows loading while the request is in flight.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "NewPassword123!", "NewPassword123!");
+    await fillForm(canvas, 'NewPassword123!', 'NewPassword123!');
     await submitForm(canvas);
   },
 };
@@ -147,13 +147,13 @@ export const NetworkError: Story = {
     msw: { handlers: createPasswordNetworkErrorHandlers },
     docs: {
       description: {
-        story: "Network failure surfaces as a mutation error.",
+        story: 'Network failure surfaces as a mutation error.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "NewPassword123!", "NewPassword123!");
+    await fillForm(canvas, 'NewPassword123!', 'NewPassword123!');
     await submitForm(canvas);
   },
 };
@@ -163,13 +163,13 @@ export const PasswordsDoNotMatch: Story = {
     msw: { handlers: createPasswordSuccessHandlers },
     docs: {
       description: {
-        story: "Client-side validation when passwords do not match.",
+        story: 'Client-side validation when passwords do not match.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "NewPassword123!", "OtherPassword123!");
+    await fillForm(canvas, 'NewPassword123!', 'OtherPassword123!');
     await submitForm(canvas);
   },
 };
@@ -179,13 +179,13 @@ export const PasswordTooShort: Story = {
     msw: { handlers: createPasswordSuccessHandlers },
     docs: {
       description: {
-        story: "Password must meet the same rules as change/reset password.",
+        story: 'Password must meet the same rules as change/reset password.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "Short1!", "Short1!");
+    await fillForm(canvas, 'Short1!', 'Short1!');
     await submitForm(canvas);
   },
 };

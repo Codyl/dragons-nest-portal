@@ -1,41 +1,44 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createRootRoute,
   createRoute,
   createRouter,
   RouterProvider,
   createMemoryHistory,
-} from "@tanstack/react-router";
-import { userEvent, within } from "storybook/test";
-import LoginForm from "./login.form";
+} from '@tanstack/react-router';
+import { userEvent, within } from 'storybook/test';
+import LoginForm from './login.form';
 import {
   loginSuccessHandlers,
   loginErrorHandlers,
   loginLoadingHandlers,
   loginNetworkErrorHandlers,
-} from "../../../.storybook/msw-handlers";
+} from '../../../.storybook/msw-handlers';
 
-const fillForm = async (canvas: ReturnType<typeof within>, password: string) => {
-  const passwordInput = canvas.getByLabelText("Password");
+const fillForm = async (
+  canvas: ReturnType<typeof within>,
+  password: string,
+) => {
+  const passwordInput = canvas.getByLabelText('Password');
   await userEvent.type(passwordInput, password);
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
-  const submitButton = canvas.getByRole("button", { name: "Sign In" });
+  const submitButton = canvas.getByRole('button', { name: 'Sign In' });
   await userEvent.click(submitButton);
 };
 
 const meta = {
-  title: "Forms/LoginForm",
+  title: 'Forms/LoginForm',
   component: LoginForm,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: {
       handlers: loginSuccessHandlers,
     },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -48,7 +51,7 @@ const meta = {
         component: () => <Story />,
       });
       const routeTree = rootRoute.addChildren([
-        createRoute({ getParentRoute: () => rootRoute, path: "/" }),
+        createRoute({ getParentRoute: () => rootRoute, path: '/' }),
       ]);
       const router = createRouter({
         routeTree,
@@ -62,9 +65,9 @@ const meta = {
       );
     },
     (Story) => {
-      if (typeof sessionStorage !== "undefined") {
-        sessionStorage.setItem("username", "test@example.com");
-        sessionStorage.setItem("session", "test-session");
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('username', 'test@example.com');
+        sessionStorage.setItem('session', 'test-session');
       }
       return <Story />;
     },
@@ -80,7 +83,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "The login form with username pre-filled from session. Enter password and submit to sign in.",
+          'The login form with username pre-filled from session. Enter password and submit to sign in.',
       },
     },
   },
@@ -92,13 +95,13 @@ export const Success: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a successful login. Submit the form to see the success flow.",
+          'This story demonstrates a successful login. Submit the form to see the success flow.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "Password123!");
+    await fillForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -109,13 +112,13 @@ export const Error: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates an error state when credentials are invalid. Submit the form to see the error message displayed.",
+          'This story demonstrates an error state when credentials are invalid. Submit the form to see the error message displayed.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "WrongPassword!");
+    await fillForm(canvas, 'WrongPassword!');
     await submitForm(canvas);
   },
 };
@@ -132,7 +135,7 @@ export const Loading: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "Password123!");
+    await fillForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -143,28 +146,29 @@ export const NetworkError: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates a network error state. Submit the form to see how the component handles network failures.",
+          'This story demonstrates a network error state. Submit the form to see how the component handles network failures.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "Password123!");
+    await fillForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
-}; export const ValidationErrorPasswordTooShort: Story = {
+};
+export const ValidationErrorPasswordTooShort: Story = {
   parameters: {
     msw: { handlers: loginSuccessHandlers },
     docs: {
       description: {
         story:
-          "This story demonstrates form validation when the password is too short (less than 6 characters). Submit the form to see the validation error.",
+          'This story demonstrates form validation when the password is too short (less than 6 characters). Submit the form to see the validation error.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, "12345");
+    await fillForm(canvas, '12345');
     await submitForm(canvas);
   },
 };

@@ -8,150 +8,150 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as MaintenanceRouteImport } from './routes/maintenance'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
-import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
-import { Route as privatePrivateSecuritySettingsRouteImport } from './routes/(private)/_private.security-settings'
-import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(private)/_private.create-password'
-import { Route as privatePrivateAccountSettingsRouteImport } from './routes/(private)/_private.account-settings'
-import { Route as authAuthVerifyUsernameRouteImport } from './routes/(auth)/_auth.verify-username'
-import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup'
-import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth.reset-password'
-import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
-import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
-import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
-import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service';
+import { Route as MaintenanceRouteImport } from './routes/maintenance';
+import { Route as IndexRouteImport } from './routes/index';
+import { Route as privatePrivateRouteImport } from './routes/(private)/_private';
+import { Route as authAuthRouteImport } from './routes/(auth)/_auth';
+import { Route as privatePrivateSecuritySettingsRouteImport } from './routes/(private)/_private.security-settings';
+import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(private)/_private.create-password';
+import { Route as privatePrivateAccountSettingsRouteImport } from './routes/(private)/_private.account-settings';
+import { Route as authAuthVerifyUsernameRouteImport } from './routes/(auth)/_auth.verify-username';
+import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup';
+import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth.reset-password';
+import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login';
+import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password';
+import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup';
+import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code';
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MaintenanceRoute = MaintenanceRouteImport.update({
   id: '/maintenance',
   path: '/maintenance',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const privatePrivateRoute = privatePrivateRouteImport.update({
   id: '/(private)/_private',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const authAuthRoute = authAuthRouteImport.update({
   id: '/(auth)/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const privatePrivateSecuritySettingsRoute =
   privatePrivateSecuritySettingsRouteImport.update({
     id: '/security-settings',
     path: '/security-settings',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const privatePrivateCreatePasswordRoute =
   privatePrivateCreatePasswordRouteImport.update({
     id: '/create-password',
     path: '/create-password',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const privatePrivateAccountSettingsRoute =
   privatePrivateAccountSettingsRouteImport.update({
     id: '/account-settings',
     path: '/account-settings',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const authAuthVerifyUsernameRoute = authAuthVerifyUsernameRouteImport.update({
   id: '/verify-username',
   path: '/verify-username',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthSignupRoute = authAuthSignupRouteImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthResetPasswordRoute = authAuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthLoginRoute = authAuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthForgotPasswordRoute = authAuthForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthConfirmSignupRoute = authAuthConfirmSignupRouteImport.update({
   id: '/confirm-signup',
   path: '/confirm-signup',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authMfaMfaVerifyCodeRoute = authMfaMfaVerifyCodeRouteImport.update({
   id: '/(auth)/mfa/_mfa/verify-code',
   path: '/mfa/verify-code',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/maintenance': typeof MaintenanceRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/confirm-signup': typeof authAuthConfirmSignupRoute
-  '/forgot-password': typeof authAuthForgotPasswordRoute
-  '/login': typeof authAuthLoginRoute
-  '/reset-password': typeof authAuthResetPasswordRoute
-  '/signup': typeof authAuthSignupRoute
-  '/verify-username': typeof authAuthVerifyUsernameRoute
-  '/account-settings': typeof privatePrivateAccountSettingsRoute
-  '/create-password': typeof privatePrivateCreatePasswordRoute
-  '/security-settings': typeof privatePrivateSecuritySettingsRoute
-  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
+  '/': typeof IndexRoute;
+  '/maintenance': typeof MaintenanceRoute;
+  '/terms-of-service': typeof TermsOfServiceRoute;
+  '/confirm-signup': typeof authAuthConfirmSignupRoute;
+  '/forgot-password': typeof authAuthForgotPasswordRoute;
+  '/login': typeof authAuthLoginRoute;
+  '/reset-password': typeof authAuthResetPasswordRoute;
+  '/signup': typeof authAuthSignupRoute;
+  '/verify-username': typeof authAuthVerifyUsernameRoute;
+  '/account-settings': typeof privatePrivateAccountSettingsRoute;
+  '/create-password': typeof privatePrivateCreatePasswordRoute;
+  '/security-settings': typeof privatePrivateSecuritySettingsRoute;
+  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/maintenance': typeof MaintenanceRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/confirm-signup': typeof authAuthConfirmSignupRoute
-  '/forgot-password': typeof authAuthForgotPasswordRoute
-  '/login': typeof authAuthLoginRoute
-  '/reset-password': typeof authAuthResetPasswordRoute
-  '/signup': typeof authAuthSignupRoute
-  '/verify-username': typeof authAuthVerifyUsernameRoute
-  '/account-settings': typeof privatePrivateAccountSettingsRoute
-  '/create-password': typeof privatePrivateCreatePasswordRoute
-  '/security-settings': typeof privatePrivateSecuritySettingsRoute
-  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
+  '/': typeof IndexRoute;
+  '/maintenance': typeof MaintenanceRoute;
+  '/terms-of-service': typeof TermsOfServiceRoute;
+  '/confirm-signup': typeof authAuthConfirmSignupRoute;
+  '/forgot-password': typeof authAuthForgotPasswordRoute;
+  '/login': typeof authAuthLoginRoute;
+  '/reset-password': typeof authAuthResetPasswordRoute;
+  '/signup': typeof authAuthSignupRoute;
+  '/verify-username': typeof authAuthVerifyUsernameRoute;
+  '/account-settings': typeof privatePrivateAccountSettingsRoute;
+  '/create-password': typeof privatePrivateCreatePasswordRoute;
+  '/security-settings': typeof privatePrivateSecuritySettingsRoute;
+  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/maintenance': typeof MaintenanceRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/(auth)/_auth': typeof authAuthRouteWithChildren
-  '/(private)/_private': typeof privatePrivateRouteWithChildren
-  '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute
-  '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute
-  '/(auth)/_auth/login': typeof authAuthLoginRoute
-  '/(auth)/_auth/reset-password': typeof authAuthResetPasswordRoute
-  '/(auth)/_auth/signup': typeof authAuthSignupRoute
-  '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute
-  '/(private)/_private/account-settings': typeof privatePrivateAccountSettingsRoute
-  '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute
-  '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute
-  '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/maintenance': typeof MaintenanceRoute;
+  '/terms-of-service': typeof TermsOfServiceRoute;
+  '/(auth)/_auth': typeof authAuthRouteWithChildren;
+  '/(private)/_private': typeof privatePrivateRouteWithChildren;
+  '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute;
+  '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute;
+  '/(auth)/_auth/login': typeof authAuthLoginRoute;
+  '/(auth)/_auth/reset-password': typeof authAuthResetPasswordRoute;
+  '/(auth)/_auth/signup': typeof authAuthSignupRoute;
+  '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute;
+  '/(private)/_private/account-settings': typeof privatePrivateAccountSettingsRoute;
+  '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute;
+  '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute;
+  '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
     | '/maintenance'
@@ -165,8 +165,8 @@ export interface FileRouteTypes {
     | '/account-settings'
     | '/create-password'
     | '/security-settings'
-    | '/mfa/verify-code'
-  fileRoutesByTo: FileRoutesByTo
+    | '/mfa/verify-code';
+  fileRoutesByTo: FileRoutesByTo;
   to:
     | '/'
     | '/maintenance'
@@ -180,7 +180,7 @@ export interface FileRouteTypes {
     | '/account-settings'
     | '/create-password'
     | '/security-settings'
-    | '/mfa/verify-code'
+    | '/mfa/verify-code';
   id:
     | '__root__'
     | '/'
@@ -197,135 +197,135 @@ export interface FileRouteTypes {
     | '/(private)/_private/account-settings'
     | '/(private)/_private/create-password'
     | '/(private)/_private/security-settings'
-    | '/(auth)/mfa/_mfa/verify-code'
-  fileRoutesById: FileRoutesById
+    | '/(auth)/mfa/_mfa/verify-code';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  MaintenanceRoute: typeof MaintenanceRoute
-  TermsOfServiceRoute: typeof TermsOfServiceRoute
-  authAuthRoute: typeof authAuthRouteWithChildren
-  privatePrivateRoute: typeof privatePrivateRouteWithChildren
-  authMfaMfaVerifyCodeRoute: typeof authMfaMfaVerifyCodeRoute
+  IndexRoute: typeof IndexRoute;
+  MaintenanceRoute: typeof MaintenanceRoute;
+  TermsOfServiceRoute: typeof TermsOfServiceRoute;
+  authAuthRoute: typeof authAuthRouteWithChildren;
+  privatePrivateRoute: typeof privatePrivateRouteWithChildren;
+  authMfaMfaVerifyCodeRoute: typeof authMfaMfaVerifyCodeRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/terms-of-service': {
-      id: '/terms-of-service'
-      path: '/terms-of-service'
-      fullPath: '/terms-of-service'
-      preLoaderRoute: typeof TermsOfServiceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/terms-of-service';
+      path: '/terms-of-service';
+      fullPath: '/terms-of-service';
+      preLoaderRoute: typeof TermsOfServiceRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/maintenance': {
-      id: '/maintenance'
-      path: '/maintenance'
-      fullPath: '/maintenance'
-      preLoaderRoute: typeof MaintenanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/maintenance';
+      path: '/maintenance';
+      fullPath: '/maintenance';
+      preLoaderRoute: typeof MaintenanceRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(private)/_private': {
-      id: '/(private)/_private'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof privatePrivateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(private)/_private';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof privatePrivateRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(auth)/_auth': {
-      id: '/(auth)/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof authAuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(auth)/_auth';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof authAuthRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(private)/_private/security-settings': {
-      id: '/(private)/_private/security-settings'
-      path: '/security-settings'
-      fullPath: '/security-settings'
-      preLoaderRoute: typeof privatePrivateSecuritySettingsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/security-settings';
+      path: '/security-settings';
+      fullPath: '/security-settings';
+      preLoaderRoute: typeof privatePrivateSecuritySettingsRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/create-password': {
-      id: '/(private)/_private/create-password'
-      path: '/create-password'
-      fullPath: '/create-password'
-      preLoaderRoute: typeof privatePrivateCreatePasswordRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/create-password';
+      path: '/create-password';
+      fullPath: '/create-password';
+      preLoaderRoute: typeof privatePrivateCreatePasswordRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/account-settings': {
-      id: '/(private)/_private/account-settings'
-      path: '/account-settings'
-      fullPath: '/account-settings'
-      preLoaderRoute: typeof privatePrivateAccountSettingsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/account-settings';
+      path: '/account-settings';
+      fullPath: '/account-settings';
+      preLoaderRoute: typeof privatePrivateAccountSettingsRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(auth)/_auth/verify-username': {
-      id: '/(auth)/_auth/verify-username'
-      path: '/verify-username'
-      fullPath: '/verify-username'
-      preLoaderRoute: typeof authAuthVerifyUsernameRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/verify-username';
+      path: '/verify-username';
+      fullPath: '/verify-username';
+      preLoaderRoute: typeof authAuthVerifyUsernameRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/signup': {
-      id: '/(auth)/_auth/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof authAuthSignupRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/signup';
+      path: '/signup';
+      fullPath: '/signup';
+      preLoaderRoute: typeof authAuthSignupRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/reset-password': {
-      id: '/(auth)/_auth/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof authAuthResetPasswordRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/reset-password';
+      path: '/reset-password';
+      fullPath: '/reset-password';
+      preLoaderRoute: typeof authAuthResetPasswordRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/login': {
-      id: '/(auth)/_auth/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authAuthLoginRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/login';
+      path: '/login';
+      fullPath: '/login';
+      preLoaderRoute: typeof authAuthLoginRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/forgot-password': {
-      id: '/(auth)/_auth/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof authAuthForgotPasswordRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/forgot-password';
+      path: '/forgot-password';
+      fullPath: '/forgot-password';
+      preLoaderRoute: typeof authAuthForgotPasswordRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/confirm-signup': {
-      id: '/(auth)/_auth/confirm-signup'
-      path: '/confirm-signup'
-      fullPath: '/confirm-signup'
-      preLoaderRoute: typeof authAuthConfirmSignupRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/confirm-signup';
+      path: '/confirm-signup';
+      fullPath: '/confirm-signup';
+      preLoaderRoute: typeof authAuthConfirmSignupRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/mfa/_mfa/verify-code': {
-      id: '/(auth)/mfa/_mfa/verify-code'
-      path: '/mfa/verify-code'
-      fullPath: '/mfa/verify-code'
-      preLoaderRoute: typeof authMfaMfaVerifyCodeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(auth)/mfa/_mfa/verify-code';
+      path: '/mfa/verify-code';
+      fullPath: '/mfa/verify-code';
+      preLoaderRoute: typeof authMfaMfaVerifyCodeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 interface authAuthRouteChildren {
-  authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute
-  authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute
-  authAuthLoginRoute: typeof authAuthLoginRoute
-  authAuthResetPasswordRoute: typeof authAuthResetPasswordRoute
-  authAuthSignupRoute: typeof authAuthSignupRoute
-  authAuthVerifyUsernameRoute: typeof authAuthVerifyUsernameRoute
+  authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute;
+  authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute;
+  authAuthLoginRoute: typeof authAuthLoginRoute;
+  authAuthResetPasswordRoute: typeof authAuthResetPasswordRoute;
+  authAuthSignupRoute: typeof authAuthSignupRoute;
+  authAuthVerifyUsernameRoute: typeof authAuthVerifyUsernameRoute;
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
@@ -335,27 +335,27 @@ const authAuthRouteChildren: authAuthRouteChildren = {
   authAuthResetPasswordRoute: authAuthResetPasswordRoute,
   authAuthSignupRoute: authAuthSignupRoute,
   authAuthVerifyUsernameRoute: authAuthVerifyUsernameRoute,
-}
+};
 
 const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
   authAuthRouteChildren,
-)
+);
 
 interface privatePrivateRouteChildren {
-  privatePrivateAccountSettingsRoute: typeof privatePrivateAccountSettingsRoute
-  privatePrivateCreatePasswordRoute: typeof privatePrivateCreatePasswordRoute
-  privatePrivateSecuritySettingsRoute: typeof privatePrivateSecuritySettingsRoute
+  privatePrivateAccountSettingsRoute: typeof privatePrivateAccountSettingsRoute;
+  privatePrivateCreatePasswordRoute: typeof privatePrivateCreatePasswordRoute;
+  privatePrivateSecuritySettingsRoute: typeof privatePrivateSecuritySettingsRoute;
 }
 
 const privatePrivateRouteChildren: privatePrivateRouteChildren = {
   privatePrivateAccountSettingsRoute: privatePrivateAccountSettingsRoute,
   privatePrivateCreatePasswordRoute: privatePrivateCreatePasswordRoute,
   privatePrivateSecuritySettingsRoute: privatePrivateSecuritySettingsRoute,
-}
+};
 
 const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
   privatePrivateRouteChildren,
-)
+);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -364,7 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,
   authMfaMfaVerifyCodeRoute: authMfaMfaVerifyCodeRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

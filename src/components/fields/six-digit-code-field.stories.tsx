@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
-import SixDigitCodeField from "./six-digit-code-field";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
+import SixDigitCodeField from './six-digit-code-field';
 
 const meta = {
-  title: "Fields/SixDigitCodeField",
+  title: 'Fields/SixDigitCodeField',
   component: SixDigitCodeField,
   argTypes: {
-    label: { control: "text" },
-    required: { control: "boolean" },
+    label: { control: 'text' },
+    required: { control: 'boolean' },
   },
 } satisfies Meta<typeof SixDigitCodeField>;
 
@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function InteractiveWrapper({
-  initialValue = "",
+  initialValue = '',
   isValid = true,
   isTouched = false,
   errors,
@@ -34,7 +34,7 @@ function InteractiveWrapper({
   const [value, setValue] = useState(initialValue);
   const [submitCount, setSubmitCount] = useState(0);
   const field = {
-    name: "code",
+    name: 'code',
     state: {
       value,
       meta: {
@@ -52,7 +52,9 @@ function InteractiveWrapper({
         field={field}
         label={label}
         required={required}
-        onSubmit={withOnSubmit ? () => setSubmitCount((count) => count + 1) : undefined}
+        onSubmit={
+          withOnSubmit ? () => setSubmitCount((count) => count + 1) : undefined
+        }
       />
       {withOnSubmit && <p className="text-sm">Submit calls: {submitCount}</p>}
     </div>
@@ -60,14 +62,15 @@ function InteractiveWrapper({
 }
 
 export const Default: Story = {
-  render: () => (
-    <InteractiveWrapper label="Verification code" />
-  ),
+  render: () => <InteractiveWrapper label="Verification code" />,
 };
 
 export const WithValue: Story = {
   render: () => (
-    <InteractiveWrapper initialValue="123" label="Verification code" />
+    <InteractiveWrapper
+      initialValue="123"
+      label="Verification code"
+    />
   ),
 };
 
@@ -77,7 +80,7 @@ export const Invalid: Story = {
       initialValue="12345"
       isValid={false}
       isTouched={true}
-      errors={[{ message: "Code must be 6 digits" }]}
+      errors={[{ message: 'Code must be 6 digits' }]}
       label="Verification code"
     />
   ),
@@ -85,12 +88,18 @@ export const Invalid: Story = {
 
 export const Required: Story = {
   render: () => (
-    <InteractiveWrapper label="Verification code" required />
+    <InteractiveWrapper
+      label="Verification code"
+      required
+    />
   ),
 };
 
 export const AutoSubmitOnComplete: Story = {
   render: () => (
-    <InteractiveWrapper label="Verification code" withOnSubmit />
+    <InteractiveWrapper
+      label="Verification code"
+      withOnSubmit
+    />
   ),
 };

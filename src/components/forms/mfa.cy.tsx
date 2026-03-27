@@ -1,10 +1,10 @@
-import MFAForm from "./mfa.form";
+import MFAForm from './mfa.form';
 
 describe('MFAForm', () => {
   beforeEach(() => {
-    sessionStorage.setItem("username", "test@example.com");
-    sessionStorage.setItem("password", "Password123!");
-    sessionStorage.setItem("session", "test-session");
+    sessionStorage.setItem('username', 'test@example.com');
+    sessionStorage.setItem('password', 'Password123!');
+    sessionStorage.setItem('session', 'test-session');
   });
 
   afterEach(() => {
@@ -14,7 +14,9 @@ describe('MFAForm', () => {
 
   it('should render', () => {
     cy.mount(<MFAForm />);
-    cy.get('[data-testid="six-digit-code-softwareTokenMfaCode"]').should('exist');
+    cy.get('[data-testid="six-digit-code-softwareTokenMfaCode"]').should(
+      'exist',
+    );
     cy.get('button[type="submit"]').should('exist');
   });
 
@@ -50,14 +52,20 @@ describe('MFAForm', () => {
     cy.mount(<MFAForm />);
     cy.get('[data-testid="digit-input-0"]').type('12345');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-softwareTokenMfaCode"]').should('contain.text', 'MFA code must be 6 digits');
+    cy.get('[data-testid="error-message-softwareTokenMfaCode"]').should(
+      'contain.text',
+      'MFA code must be 6 digits',
+    );
   });
 
   it('should strip non-digits and require 6 digits', () => {
     cy.mount(<MFAForm />);
     cy.get('[data-testid="digit-input-0"]').type('12345a');
     cy.get('button[type="submit"]').click();
-    cy.get('[data-testid="error-message-softwareTokenMfaCode"]').should('contain.text', 'MFA code must be 6 digits');
+    cy.get('[data-testid="error-message-softwareTokenMfaCode"]').should(
+      'contain.text',
+      'MFA code must be 6 digits',
+    );
   });
 
   it('should show loading state when submitting', () => {

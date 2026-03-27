@@ -1,38 +1,38 @@
-import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
-import InputField from "../fields/input-field";
-import { Button } from "../ui/button";
-import { FieldGroup } from "../ui/field";
-import useChangePassword from "@/hooks/use-change-password";
+import { useForm } from '@tanstack/react-form';
+import { z } from 'zod';
+import InputField from '../fields/input-field';
+import { Button } from '../ui/button';
+import { FieldGroup } from '../ui/field';
+import useChangePassword from '@/hooks/use-change-password';
 
-const ChangePasswordForm = ({ onPasswordChangeSuccess }: { onPasswordChangeSuccess: () => void }) => {
-  const {
-    mutate: changePassword,
-    isPending,
-    error,
-  } = useChangePassword();
+const ChangePasswordForm = ({
+  onPasswordChangeSuccess,
+}: {
+  onPasswordChangeSuccess: () => void;
+}) => {
+  const { mutate: changePassword, isPending, error } = useChangePassword();
 
   const schema = z
     .object({
-      currentPassword: z.string().min(1, "Current password is required"),
+      currentPassword: z.string().min(1, 'Current password is required'),
       newPassword: z
         .string()
-        .min(8, "Password must be at least 8 characters long")
-        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-        .regex(/[0-9]/, "Password must contain at least one number"),
-      confirmPassword: z.string().min(1, "Please confirm your password"),
+        .min(8, 'Password must be at least 8 characters long')
+        .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .regex(/[0-9]/, 'Password must contain at least one number'),
+      confirmPassword: z.string().min(1, 'Please confirm your password'),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
+      message: 'Passwords do not match',
+      path: ['confirmPassword'],
     });
 
   const form = useForm({
     defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
     },
     validators: {
       onSubmit: schema,
@@ -63,13 +63,22 @@ const ChangePasswordForm = ({ onPasswordChangeSuccess }: { onPasswordChangeSucce
         <form.Field
           name="currentPassword"
           children={(field) => (
-            <InputField field={field} label="Current password" type="password" autoFocus />
+            <InputField
+              field={field}
+              label="Current password"
+              type="password"
+              autoFocus
+            />
           )}
         />
         <form.Field
           name="newPassword"
           children={(field) => (
-            <InputField field={field} label="New password" type="password" />
+            <InputField
+              field={field}
+              label="New password"
+              type="password"
+            />
           )}
         />
         <form.Field
@@ -83,7 +92,14 @@ const ChangePasswordForm = ({ onPasswordChangeSuccess }: { onPasswordChangeSucce
           )}
         />
       </FieldGroup>
-      {error && <p className="text-destructive" data-testid="error-message">{error.message}</p>}
+      {error && (
+        <p
+          className="text-destructive"
+          data-testid="error-message"
+        >
+          {error.message}
+        </p>
+      )}
       <Button
         type="submit"
         className="w-full"
