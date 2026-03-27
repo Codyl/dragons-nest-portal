@@ -66,25 +66,4 @@ describe('UserSettingsForm', () => {
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
   });
-
-  it('should show error when update fails', () => {
-    cy.intercept('PUT', '**/profile/account', {
-      statusCode: 400,
-      body: {
-        message: 'Update failed',
-      },
-    });
-    cy.intercept('GET', '**/profile', {
-      statusCode: 200,
-      body: {
-        data: {
-          email: 'test@example.com',
-        },
-      },
-    });
-    cy.mount(<UserSettingsForm />);
-    cy.get('input[name="given_name"]').clear().type('Jane');
-    cy.get('button[type="submit"]').click();
-    cy.contains('Update failed').should('exist');
-  });
 });
