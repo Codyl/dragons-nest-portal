@@ -1,4 +1,4 @@
-import { useRef, useCallback, useId } from "react";
+import { useRef, useCallback, useId, useMemo, useEffect } from "react";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +16,7 @@ const SixDigitCodeField = ({
   className,
   required = false,
   autoFocus,
+  onSubmit,
   ...props
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,11 +24,15 @@ const SixDigitCodeField = ({
   label: string;
   className?: string;
   required?: boolean;
+  onSubmit?: () => void;
 } & Omit<React.ComponentProps<"input">, "value" | "onChange" | "onBlur" | "name">) => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const isInvalid = !field.state.meta.isValid && field.state.meta.isTouched;
   const value = (field.state.value as string) || "";
-  const digits = value.padEnd(DIGIT_COUNT, " ").split("").slice(0, DIGIT_COUNT);
+  const digits = useMemo(
+    () => value.padEnd(DIGIT_COUNT, " ").split("").slice(0, DIGIT_COUNT),
+    [value],
+  );
   const id = useId();
   const hiddenInputId = `${id}-hidden`;
 
@@ -44,36 +49,40 @@ const SixDigitCodeField = ({
     inputRefs.current[i]?.focus();
   }, []);
 
+  useEffect(() => {
+    if (value.length === DIGIT_COUNT && onSubmit) {
+      onSubmit();
+    }
+  }, [value, onSubmit]);
+
   const handleDigitChange = useCallback(
     (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = e.target.value;
-      if (raw.length > 1) {
-        const digitsOnly = raw.replace(/\D/g, "").slice(0, DIGIT_COUNT);
-        setValue(digitsOnly);
-        focusDigit(digitsOnly.length >= DIGIT_COUNT ? DIGIT_COUNT - 1 : digitsOnly.length);
-        return;
-      }
-      const char = raw.replace(/\D/g, "");
+      const inputValue = e.target.value;
+      if (inputValue.length > 1) return;
+      if (inputValue && !/^\d$/.test(inputValue)) return;
+
       const newDigits = [...digits];
-      newDigits[index] = char;
-      const newValue = newDigits.join("").trimEnd();
+      newDigits[index] = inputValue || " ";
+      const newValue = newDigits.join("").replace(/\s+$/, "");
       setValue(newValue);
-      if (char) focusDigit(index + 1);
+
+      if (inputValue && index < DIGIT_COUNT - 1) {
+        focusDigit(index + 1);
+      }
     },
     [digits, setValue, focusDigit],
   );
 
   const handleDigitKeyDown = useCallback(
     (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Backspace") {
-        if (!digits[index] && index > 0) {
-          e.preventDefault();
-          const newDigits = [...digits];
-          newDigits[index - 1] = " ";
-          setValue(newDigits.join("").trimEnd());
-          setTimeout(() => focusDigit(index - 1), 0);
-        }
-      } else if (e.key === "ArrowLeft") {
+      if (e.key === "Backspace" && digits[index] === " " && index > 0) {
+        const newDigits = [...digits];
+        newDigits[index - 1] = " ";
+        setValue(newDigits.join("").replace(/\s+$/, ""));
+        focusDigit(index - 1);
+        return;
+      }
+      if (e.key === "ArrowLeft") {
         e.preventDefault();
         focusDigit(index - 1);
       } else if (e.key === "ArrowRight") {
@@ -87,9 +96,10 @@ const SixDigitCodeField = ({
   const handleDigitPaste = useCallback(
     (e: React.ClipboardEvent<HTMLInputElement>) => {
       e.preventDefault();
-      const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, DIGIT_COUNT);
+      const pasted = e.clipboardData.getData("text").trim().replace(/\D/g, "");
+      if (pasted.length !== DIGIT_COUNT) return;
       setValue(pasted);
-      focusDigit(Math.min(pasted.length, DIGIT_COUNT - 1));
+      focusDigit(DIGIT_COUNT - 1);
     },
     [setValue, focusDigit],
   );
@@ -125,7 +135,7 @@ const SixDigitCodeField = ({
             inputMode="numeric"
             autoComplete={i === 0 ? "one-time-code" : "off"}
             autoFocus={i === 0 ? autoFocus : undefined}
-            maxLength={DIGIT_COUNT}
+            maxLength={1}
             aria-label={`Digit ${i + 1}`}
             data-testid={`digit-input-${i}`}
             value={digits[i] === " " ? "" : digits[i]}

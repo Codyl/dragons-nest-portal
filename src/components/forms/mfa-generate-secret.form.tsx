@@ -30,7 +30,6 @@ const MFAGenerateSecretForm = ({
     username,
     enabled: isSettings ? !!userEmail : !!(session && username),
   });
-  console.log(error);
 
   // Extract the new session from AssociateSoftwareTokenCommand response
   const associateSession = useMemo(() => {
@@ -117,11 +116,11 @@ const MFAGenerateSecretForm = ({
           Continue
         </Button>
       </form>
-      {error?.message?.map((message) => (
+      {error?.message && (
         <p className="text-destructive" data-testid="error-message">
-          {message}
+          {error.message}
         </p>
-      ))}
+      )}
       {connectAuthenticatorError?.message && (
         <p className="text-destructive" data-testid="error-message">
           {connectAuthenticatorError.message}

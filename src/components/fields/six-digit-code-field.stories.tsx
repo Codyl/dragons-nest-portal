@@ -21,6 +21,7 @@ function InteractiveWrapper({
   errors,
   label,
   required,
+  withOnSubmit = false,
 }: {
   initialValue?: string;
   isValid?: boolean;
@@ -28,8 +29,10 @@ function InteractiveWrapper({
   errors?: Array<{ message?: string }>;
   label: string;
   required?: boolean;
+  withOnSubmit?: boolean;
 }) {
   const [value, setValue] = useState(initialValue);
+  const [submitCount, setSubmitCount] = useState(0);
   const field = {
     name: "code",
     state: {
@@ -44,11 +47,15 @@ function InteractiveWrapper({
     handleBlur: () => {},
   };
   return (
-    <SixDigitCodeField
-      field={field}
-      label={label}
-      required={required}
-    />
+    <div className="space-y-2">
+      <SixDigitCodeField
+        field={field}
+        label={label}
+        required={required}
+        onSubmit={withOnSubmit ? () => setSubmitCount((count) => count + 1) : undefined}
+      />
+      {withOnSubmit && <p className="text-sm">Submit calls: {submitCount}</p>}
+    </div>
   );
 }
 
@@ -79,5 +86,11 @@ export const Invalid: Story = {
 export const Required: Story = {
   render: () => (
     <InteractiveWrapper label="Verification code" required />
+  ),
+};
+
+export const AutoSubmitOnComplete: Story = {
+  render: () => (
+    <InteractiveWrapper label="Verification code" withOnSubmit />
   ),
 };

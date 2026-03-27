@@ -33,9 +33,11 @@ describe("SixDigitCodeField", () => {
   function StatefulWrapper({
     initialValue = "",
     onChanges,
+    onSubmit,
   }: {
     initialValue?: string;
     onChanges?: (value: string) => void;
+    onSubmit?: () => void;
   }) {
     const [value, setValue] = useState(initialValue);
     const field = {
@@ -50,7 +52,7 @@ describe("SixDigitCodeField", () => {
       },
       handleBlur: () => {},
     };
-    return <SixDigitCodeField field={field} label="Code" />;
+    return <SixDigitCodeField field={field} label="Code" onSubmit={onSubmit} />;
   }
 
   it("should render six digit inputs and label", () => {
@@ -68,6 +70,7 @@ describe("SixDigitCodeField", () => {
     cy.mount(<StatefulWrapper onChanges={handleChange} />);
     cy.get("[data-testid=digit-input-0]").type("1");
     cy.get("@handleChange").should("have.been.calledWith", "1");
+    cy.focused().should("have.attr", "data-testid", "digit-input-1");
     cy.get("[data-testid=digit-input-1]").type("2");
     cy.get("@handleChange").should("have.been.calledWith", "12");
     cy.get("[data-testid=digit-input-2]").type("3");
@@ -80,8 +83,13 @@ describe("SixDigitCodeField", () => {
   it("should accept paste of full code", () => {
     const handleChange = cy.stub().as("handleChange");
     cy.mount(<StatefulWrapper onChanges={handleChange} />);
-    cy.get("[data-testid=digit-input-0]").type("123456");
+    cy.get("[data-testid=digit-input-0]").trigger("paste", {
+      clipboardData: {
+        getData: () => "123456",
+      },
+    });
     cy.get("@handleChange").should("have.been.calledWith", "123456");
+    cy.focused().should("have.attr", "data-testid", "digit-input-5");
   });
 
   it("should show error when invalid and touched", () => {
@@ -107,18 +115,46 @@ describe("SixDigitCodeField", () => {
     cy.get("[data-testid=label-code]").find(".text-destructive").should("exist");
   });
 
-  it("should limit to 6 digits when pasting extra", () => {
+  it("should reject paste when not exactly 6 digits", () => {
     const handleChange = cy.stub().as("handleChange");
     cy.mount(<StatefulWrapper onChanges={handleChange} />);
-    cy.get("[data-testid=digit-input-0]").type("123456789");
+    cy.get("[data-testid=digit-input-0]").trigger("paste", {
+      clipboardData: {
+        getData: () => "12345",
+      },
+    });
+    cy.get("@handleChange").should("not.have.been.called");
+  });
+
+  it("should strip non-digits and accept exact-length paste", () => {
+    const handleChange = cy.stub().as("handleChange");
+    cy.mount(<StatefulWrapper onChanges={handleChange} />);
+    cy.get("[data-testid=digit-input-0]").trigger("paste", {
+      clipboardData: {
+        getData: () => "12a34b56",
+      },
+    });
     cy.get("@handleChange").should("have.been.calledWith", "123456");
   });
 
-  it("should strip non-digits on paste", () => {
+  it("should ignore non-digit single-character input", () => {
     const handleChange = cy.stub().as("handleChange");
     cy.mount(<StatefulWrapper onChanges={handleChange} />);
-    cy.get("[data-testid=digit-input-0]").type("12a34b56");
-    cy.get("@handleChange").should("have.been.calledWith", "123456");
+    cy.get("[data-testid=digit-input-0]").type("a");
+    cy.get("@handleChange").should("not.have.been.called");
+    cy.get("[data-testid=digit-input-0]").should("have.value", "");
+  });
+
+  it("should submit when all six digits are entered", () => {
+    const onSubmit = cy.stub().as("onSubmit");
+    cy.mount(<StatefulWrapper onSubmit={onSubmit} />);
+    cy.get("[data-testid=digit-input-0]").type("1");
+    cy.get("[data-testid=digit-input-1]").type("2");
+    cy.get("[data-testid=digit-input-2]").type("3");
+    cy.get("[data-testid=digit-input-3]").type("4");
+    cy.get("[data-testid=digit-input-4]").type("5");
+    cy.get("[data-testid=digit-input-5]").type("6");
+    cy.get("@onSubmit").should("have.been.calledOnce");
   });
 
   it("should have hidden input with name for form submission", () => {
