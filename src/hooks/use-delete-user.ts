@@ -5,7 +5,7 @@ import { useRouter } from '@tanstack/react-router';
 const useDeleteUser = (): UseMutationResult<
   { message: string; data: {} },
   Error,
-  { password: string; mfaCode?: string }
+  { password?: string; mfaCode?: string; googleCredential?: string }
 > => {
   const router = useRouter();
 

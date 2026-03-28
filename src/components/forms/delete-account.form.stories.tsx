@@ -8,6 +8,7 @@ import {
   createMemoryHistory,
 } from '@tanstack/react-router';
 import { userEvent, within } from 'storybook/test';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import DeleteAccountForm from './delete-account.form';
 import {
   deleteUserSuccessHandlers,
@@ -16,16 +17,43 @@ import {
   deleteUserNetworkErrorHandlers,
 } from '../../../.storybook/msw-handlers';
 
-const fillForm = async (
+const googleClientId =
+  import.meta.env.VITE_GOOGLE_CLIENT_ID ?? 'stub.apps.googleusercontent.com';
+
+type UserMePayload = {
+  message: string;
+  data: {
+    email?: string;
+    hasPassword?: boolean;
+    softwareTokenMfaEnabled?: boolean;
+    loginMethods?: string[];
+    hasPasskey?: boolean;
+    passkeyCount?: number;
+  };
+};
+
+const defaultUserMe: UserMePayload = {
+  message: 'ok',
+  data: {
+    email: 'user@example.com',
+    hasPassword: true,
+    softwareTokenMfaEnabled: false,
+    loginMethods: [],
+    hasPasskey: false,
+    passkeyCount: 0,
+  },
+};
+
+const fillPasswordForm = async (
   canvas: ReturnType<typeof within>,
   password: string,
-  mfaCode?: string,
+  opts?: { mfaCode?: string },
 ) => {
   const passwordInput = canvas.getByLabelText('Password');
   await userEvent.type(passwordInput, password);
-  if (mfaCode) {
+  if (opts?.mfaCode) {
     const mfaInput = canvas.getByLabelText('Authenticator code');
-    await userEvent.type(mfaInput, mfaCode);
+    await userEvent.type(mfaInput, opts.mfaCode);
   }
 };
 
@@ -39,19 +67,23 @@ const meta = {
   component: DeleteAccountForm,
   parameters: {
     layout: 'centered',
+    userMe: defaultUserMe,
     msw: {
       handlers: deleteUserSuccessHandlers,
     },
   },
   tags: ['autodocs'],
   decorators: [
-    (Story) => {
+    (Story, context) => {
       const queryClient = new QueryClient({
         defaultOptions: {
           queries: { retry: false },
           mutations: { retry: false },
         },
       });
+      const userMe = (context.parameters.userMe ??
+        defaultUserMe) as UserMePayload;
+      queryClient.setQueryData(['user', 'me'], userMe);
       const rootRoute = createRootRoute({
         component: () => <Story />,
       });
@@ -65,7 +97,9 @@ const meta = {
       });
       return (
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+          <GoogleOAuthProvider clientId={googleClientId}>
+            <RouterProvider router={router} />
+          </GoogleOAuthProvider>
         </QueryClientProvider>
       );
     },
@@ -75,13 +109,55 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Reference: `Success` / `PasswordWithTotp` — MSW delete profile + react-query + router (same shell as other form stories). */
 export const Default: Story = {
   parameters: {
     msw: { handlers: deleteUserSuccessHandlers },
     docs: {
       description: {
         story:
-          'Enter password to confirm account deletion. If you use TOTP MFA, also enter your authenticator code. Requires authentication.',
+          'Password confirmation only when the account has a password and no TOTP MFA. Google-only accounts use Google sign-in instead.',
+      },
+    },
+  },
+};
+
+export const PasswordWithTotp: Story = {
+  parameters: {
+    userMe: {
+      message: 'ok',
+      data: {
+        ...defaultUserMe.data,
+        softwareTokenMfaEnabled: true,
+      },
+    },
+    msw: { handlers: deleteUserSuccessHandlers },
+    docs: {
+      description: {
+        story:
+          'Password plus authenticator code when software-token MFA is enabled.',
+      },
+    },
+  },
+};
+
+export const GoogleOnly: Story = {
+  parameters: {
+    userMe: {
+      message: 'ok',
+      data: {
+        email: 'user@example.com',
+        hasPassword: false,
+        loginMethods: ['GOOGLE'],
+        hasPasskey: false,
+        passkeyCount: 0,
+      },
+    },
+    msw: { handlers: deleteUserSuccessHandlers },
+    docs: {
+      description: {
+        story:
+          'Google-only accounts confirm deletion with Google sign-in (requires VITE_GOOGLE_CLIENT_ID in local Storybook).',
       },
     },
   },
@@ -89,35 +165,41 @@ export const Default: Story = {
 
 export const Success: Story = {
   parameters: {
+    userMe: {
+      message: 'ok',
+      data: {
+        ...defaultUserMe.data,
+        softwareTokenMfaEnabled: true,
+      },
+    },
     msw: { handlers: deleteUserSuccessHandlers },
     docs: {
       description: {
         story:
-          'This story demonstrates a successful account deletion. Submit the form to see the success flow.',
+          'Successful deletion with password and TOTP when MFA is enabled.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!', '123456');
+    await fillPasswordForm(canvas, 'Password123!', { mfaCode: '123456' });
     await submitForm(canvas);
   },
 };
 
-/** Reference for MFA field: same patterns as `Success` with optional authenticator code. */
-export const SuccessWithoutMfa: Story = {
+export const SuccessPasswordOnly: Story = {
   parameters: {
     msw: { handlers: deleteUserSuccessHandlers },
     docs: {
       description: {
         story:
-          'Deletion when the account does not require an MFA step on the server (authenticator field left empty).',
+          'Deletion when the account has a password and no TOTP MFA (no authenticator field).',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!');
+    await fillPasswordForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -128,13 +210,13 @@ export const Error: Story = {
     docs: {
       description: {
         story:
-          'This story demonstrates an error state when the password is invalid. Submit the form to see the error message displayed.',
+          'Error state when the password is invalid. Submit the form to see the error message displayed.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'WrongPassword!');
+    await fillPasswordForm(canvas, 'WrongPassword!');
     await submitForm(canvas);
   },
 };
@@ -145,13 +227,13 @@ export const Loading: Story = {
     docs: {
       description: {
         story:
-          'This story demonstrates the loading state when the delete request is in progress. Submit the form to see the button disabled with loading for 2 seconds.',
+          'Loading state while the delete request is in progress.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!');
+    await fillPasswordForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -162,13 +244,13 @@ export const NetworkError: Story = {
     docs: {
       description: {
         story:
-          'This story demonstrates a network error state. Submit the form to see how the component handles network failures.',
+          'Network error while deleting. Submit the form to see how failures are surfaced.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await fillForm(canvas, 'Password123!');
+    await fillPasswordForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };
@@ -179,12 +261,36 @@ export const ValidationErrorEmptyPassword: Story = {
     docs: {
       description: {
         story:
-          'This story demonstrates form validation when password is empty. Submit the form to see the validation error.',
+          'Validation when password is too short or empty. Submit to see the validation error.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await submitForm(canvas);
+  },
+};
+
+export const ValidationErrorMissingTotp: Story = {
+  parameters: {
+    userMe: {
+      message: 'ok',
+      data: {
+        ...defaultUserMe.data,
+        softwareTokenMfaEnabled: true,
+      },
+    },
+    msw: { handlers: deleteUserSuccessHandlers },
+    docs: {
+      description: {
+        story:
+          'When TOTP MFA is enabled, submit requires a 6-digit authenticator code.',
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillPasswordForm(canvas, 'Password123!');
     await submitForm(canvas);
   },
 };

@@ -89,8 +89,9 @@ const UserServices = {
     return response.json();
   },
   deleteUser: async (json: {
-    password: string;
+    password?: string;
     mfaCode?: string;
+    googleCredential?: string;
   }): Promise<{ message: string; data: {} }> => {
     const response = await api.delete('profile', { json });
     return response.json();

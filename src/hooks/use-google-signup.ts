@@ -8,11 +8,8 @@ const useGoogleSignup = () => {
   return useMutation({
     mutationFn: (json: { credential: string }) =>
       AuthServices.googleSSOSignup(json),
-    onSuccess: (data) => {
-      const result = data?.data?.AuthenticationResult;
-      if (result) {
-        router.navigate({ to: '/' });
-      }
+    onSuccess: () => {
+      router.navigate({ to: '/' });
     },
   });
 };

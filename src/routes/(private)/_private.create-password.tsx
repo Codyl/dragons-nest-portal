@@ -21,14 +21,6 @@ function CreatePasswordPage() {
   const { data, isLoading, isFetching, isError } = useLoggedInUser();
   const hasPassword = data?.data?.hasPassword ?? true;
 
-  if (isLoading || isFetching) {
-    return (
-      <div className="flex flex-col mx-auto max-w-md">
-        <p className="text-muted-foreground text-sm">Loading…</p>
-      </div>
-    );
-  }
-
   if (isError) {
     return (
       <div className="flex flex-col mx-auto max-w-md gap-2">
@@ -53,7 +45,9 @@ function CreatePasswordPage() {
         title="Create password"
         description="Choose a password that meets the requirements below. You can use it to sign in without Google or to disconnect Google from your account."
       >
-        <CreatePasswordForm />
+        {isLoading || isFetching ? <div className="flex flex-col mx-auto max-w-md">
+          <div className="animate-pulse bg-muted rounded-md h-40 w-full" />
+        </div> : <CreatePasswordForm />}
       </CommonCard>
     </div>
   );
