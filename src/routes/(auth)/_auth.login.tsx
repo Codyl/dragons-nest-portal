@@ -4,6 +4,8 @@ import CommonCard from '@/components/cards/common-card';
 import { useRouter } from '@tanstack/react-router';
 import usePasskeyLogin from '@/hooks/use-passkey-login';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import MFAAuthenticatorQRCodeModal from '@/components/modals/mfa-authenticator-qrcode.modal';
 
 export const Route = createFileRoute('/(auth)/_auth/login')({
   head: () => ({
@@ -20,7 +22,10 @@ export const Route = createFileRoute('/(auth)/_auth/login')({
 
 function Login() {
   const router = useRouter();
-  const passkeyLogin = usePasskeyLogin();
+  const [showMfaSetupModal, setShowMfaSetupModal] = useState(false);
+  const passkeyLogin = usePasskeyLogin({
+    onMfaSetupRequired: () => setShowMfaSetupModal(true),
+  });
 
   const availableChallenges =
     sessionStorage.getItem('availableChallenges')?.split(',') || [];
@@ -54,6 +59,10 @@ function Login() {
 
   return (
     <CommonCard title="Login" description={description}>
+      <MFAAuthenticatorQRCodeModal
+        show={showMfaSetupModal}
+        setShow={setShowMfaSetupModal}
+      />
       <div className="space-y-4">
         {canPasskey && (
           <>

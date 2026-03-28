@@ -97,6 +97,23 @@ describe('PasskeySettingsSection', () => {
   });
 
   describe('Edge cases', () => {
+    it('shows em dash for last used when Cognito omits last-used metadata', () => {
+      mountPasskeySection(
+        [
+          {
+            credentialId: 'cred-no-last',
+            displayName: 'Passkey',
+            provider: 'unknown',
+            createdAt: '2024-03-01T00:00:00.000Z',
+            lastUsedAt: null,
+          },
+        ],
+        <PasskeySettingsSection />,
+      );
+      cy.contains('Last used:').should('be.visible');
+      cy.contains('Last used: —').should('be.visible');
+    });
+
     it('renders a single row without count header edge cases', () => {
       mountPasskeySection(
         [

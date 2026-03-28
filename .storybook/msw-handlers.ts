@@ -26,19 +26,23 @@ const matchAuthMfaGenerateSecret = pathMatch(
 );
 const matchAuthMfaConnect = pathMatch('/auth/mfa/connect-authenticator-app');
 const matchAuthRefreshToken = pathMatch('/auth/refresh-token');
-const matchPasskeyRegisterOptions = pathMatch(
-  '/profile/passkey/register/options',
+const matchWebAuthnRegisterBegin = pathMatch(
+  '/profile/webauthn/register/begin',
 );
-const matchPasskeyRegisterVerify = pathMatch(
-  '/profile/passkey/register/verify',
+const matchWebAuthnRegisterComplete = pathMatch(
+  '/profile/webauthn/register/complete',
 );
-const matchProfilePasskeys = pathMatch('/profile/passkeys');
+const matchProfileWebAuthnCredentials = pathMatch(
+  '/profile/webauthn/credentials',
+);
 
-const defaultPasskeysListHandler = http.get(matchProfilePasskeys, async () =>
-  HttpResponse.json(
-    { message: 'Passkeys', data: { passkeys: [] } },
-    { status: 200 },
-  ),
+const defaultPasskeysListHandler = http.get(
+  matchProfileWebAuthnCredentials,
+  async () =>
+    HttpResponse.json(
+      { message: 'Passkeys', data: { passkeys: [] } },
+      { status: 200 },
+    ),
 );
 
 // Default auth success response (tokens sent as HttpOnly cookies by backend; frontend receives minimal success payload)
@@ -174,36 +178,38 @@ export const handlers = [
       { status: 200 },
     );
   }),
-  // Passkey: register options
-  http.post(matchPasskeyRegisterOptions, async () => {
+  // WebAuthn (Cognito): registration begin
+  http.post(matchWebAuthnRegisterBegin, async () => {
     return HttpResponse.json(
       {
-        message: 'Registration options',
+        message: 'Passkey registration started',
         data: {
-          challenge: 'mock-challenge-base64url',
-          rp: { name: 'Auth App', id: 'localhost' },
-          user: {
-            id: 'mock-user-id',
-            name: 'test@example.com',
-            displayName: 'test@example.com',
-          },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
-          timeout: 60000,
-          attestation: 'none',
-          excludeCredentials: [],
-          authenticatorSelection: {
-            residentKey: 'preferred',
-            userVerification: 'preferred',
+          credentialCreationOptions: {
+            challenge: 'mock-challenge-base64url',
+            rp: { name: 'Auth App', id: 'localhost' },
+            user: {
+              id: 'mock-user-id',
+              name: 'test@example.com',
+              displayName: 'test@example.com',
+            },
+            pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+            timeout: 60000,
+            attestation: 'none',
+            excludeCredentials: [],
+            authenticatorSelection: {
+              residentKey: 'preferred',
+              userVerification: 'preferred',
+            },
           },
         },
       },
       { status: 200 },
     );
   }),
-  // Passkey: register verify
-  http.post(matchPasskeyRegisterVerify, async () => {
+  // WebAuthn (Cognito): registration complete
+  http.post(matchWebAuthnRegisterComplete, async () => {
     return HttpResponse.json(
-      { message: 'Passkey registered successfully', data: { verified: true } },
+      { message: 'Passkey registered successfully', data: {} },
       { status: 200 },
     );
   }),
@@ -224,14 +230,14 @@ const replaceHandler = (index: number, variant: (typeof handlers)[number]) => [
   ...handlers.slice(index + 1),
 ];
 
-/** Swap the default GET /profile/passkeys mock (reference equality). */
+/** Swap the default GET /profile/webauthn/credentials mock (reference equality). */
 export function replacePasskeysInHandlers(
   baseHandlers: typeof handlers,
   passkeys: Array<Record<string, unknown>>,
 ) {
   return baseHandlers.map((h) =>
     h === defaultPasskeysListHandler
-      ? http.get(matchProfilePasskeys, async () =>
+      ? http.get(matchProfileWebAuthnCredentials, async () =>
           HttpResponse.json(
             { message: 'Passkeys', data: { passkeys } },
             { status: 200 },

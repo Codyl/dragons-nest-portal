@@ -14,7 +14,7 @@ const samplePasskeyOne = [
     displayName: 'iCloud Keychain',
     provider: 'apple_icloud',
     createdAt: '2023-12-31T00:00:00.000Z',
-    lastUsedAt: '2023-12-31T00:00:00.000Z',
+    lastUsedAt: null,
   },
 ];
 
@@ -24,14 +24,14 @@ const samplePasskeysTwo = [
     displayName: 'iCloud Keychain',
     provider: 'apple_icloud',
     createdAt: '2023-12-31T00:00:00.000Z',
-    lastUsedAt: '2023-12-31T00:00:00.000Z',
+    lastUsedAt: null,
   },
   {
     credentialId: 'c2',
     displayName: 'Windows Hello',
     provider: 'windows_hello',
     createdAt: '2023-12-15T00:00:00.000Z',
-    lastUsedAt: '2023-12-20T00:00:00.000Z',
+    lastUsedAt: null,
   },
 ];
 
@@ -103,7 +103,7 @@ export const TwoPasskeysSaved: Story = {
     docs: {
       description: {
         story:
-          'Multiple passkeys: rows match Trailblazer-style metadata from GET /profile/passkeys.',
+          'Multiple passkeys: rows match metadata from GET /profile/webauthn/credentials.',
       },
     },
   },

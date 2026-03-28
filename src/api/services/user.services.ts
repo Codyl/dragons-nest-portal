@@ -6,7 +6,8 @@ export type PasskeyListItem = {
   displayName: string;
   provider: string;
   createdAt: string;
-  lastUsedAt: string;
+  /** Cognito does not expose last-used; null when unknown. */
+  lastUsedAt: string | null;
 };
 
 export type KnownDevice = {
@@ -143,23 +144,20 @@ const UserServices = {
     const response = await api.post('profile/unlink-google', { json: {} });
     return response.json();
   },
-  getPasskeyRegisterOptions: async (): Promise<{
+  getWebAuthnRegistrationOptions: async (): Promise<{
     message: string;
-    data: Record<string, unknown>;
+    data: { credentialCreationOptions: Record<string, unknown> };
   }> => {
-    const response = await api.post('profile/passkey/register/options', {
+    const response = await api.post('profile/webauthn/register/begin', {
       json: {},
     });
     return response.json();
   },
-  verifyPasskeyRegistration: async (
-    response: Record<string, unknown>,
-  ): Promise<{
-    message: string;
-    data: { verified: boolean };
-  }> => {
-    const res = await api.post('profile/passkey/register/verify', {
-      json: response,
+  completeWebAuthnRegistration: async (
+    credential: Record<string, unknown>,
+  ): Promise<{ message: string; data: Record<string, never> }> => {
+    const res = await api.post('profile/webauthn/register/complete', {
+      json: { credential },
     });
     return res.json();
   },
@@ -167,13 +165,13 @@ const UserServices = {
     message: string;
     data: { passkeys: PasskeyListItem[] };
   }> => {
-    const response = await api.get('profile/passkeys');
+    const response = await api.get('profile/webauthn/credentials');
     return response.json();
   },
   deletePasskey: async (
     credentialId: string,
   ): Promise<{ message: string; data: Record<string, never> }> => {
-    const response = await api.delete('profile/passkeys', {
+    const response = await api.delete('profile/webauthn/credentials', {
       json: { credentialId },
     });
     return response.json();

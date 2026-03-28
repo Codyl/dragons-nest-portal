@@ -56,7 +56,8 @@ function PasskeySettingsRow({
           Date created: {formatDate(passkey.createdAt)}
         </p>
         <p className="text-sm text-muted-foreground">
-          Last used: {formatDate(passkey.lastUsedAt)}
+          Last used:{' '}
+          {passkey.lastUsedAt ? formatDate(passkey.lastUsedAt) : '—'}
         </p>
       </div>
       <Button

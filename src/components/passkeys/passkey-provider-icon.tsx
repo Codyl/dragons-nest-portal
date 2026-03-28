@@ -8,7 +8,7 @@ import {
   Usb,
 } from 'lucide-react';
 
-/** Visual hint from server `provider` (see nest `resolvePasskeyDisplay`). */
+/** Visual hint from server `provider` (see `resolvePasskeyDisplay` in nest-app profile). */
 export function PasskeyProviderIcon({
   provider,
   className,

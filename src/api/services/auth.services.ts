@@ -72,21 +72,47 @@ const AuthServices = {
     });
     return response.json();
   },
-  getPasskeyAuthOptions: async (): Promise<{
+  webAuthnSignInBegin: async (json: {
+    username: string;
+    session: string;
+  }): Promise<{
     message: string;
-    data: Record<string, unknown>;
+    data: {
+      session?: string;
+      challengeName?: string;
+      challengeParameters?: Record<string, string>;
+      availableChallenges?: string[];
+      authenticationResult?: Record<string, never>;
+    };
   }> => {
-    const response = await unauthenticatedApi.post('auth/passkey/options');
+    const response = await unauthenticatedApi.post(
+      'auth/webauthn/sign-in/begin',
+      { json },
+    );
     return response.json();
   },
-  verifyPasskeyAuth: async (response: Record<string, unknown>): Promise<{
+  webAuthnSignInComplete: async (json: {
+    username: string;
+    session: string;
+    credential: Record<string, unknown>;
+    deviceName?: string;
+  }): Promise<{
     message: string;
-    data: { verified: boolean };
+    data: {
+      session?: string;
+      challengeName?: string;
+      device?: {
+        DeviceKey?: string;
+        DeviceGroupKey?: string;
+        DeviceName?: string;
+      };
+    };
   }> => {
-    const res = await unauthenticatedApi.post('auth/passkey/verify', {
-      json: response,
-    });
-    return res.json();
+    const response = await unauthenticatedApi.post(
+      'auth/webauthn/sign-in/complete',
+      { json },
+    );
+    return response.json();
   },
   initiateAuth: async (json: {
     username: string;

@@ -1,32 +1,79 @@
-import AuthServices from '@/api/services/auth.services';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from '@tanstack/react-router';
+import { useMutation } from '@tanstack/react-query';
 import { startAuthentication } from '@simplewebauthn/browser';
+import { UAParser } from 'ua-parser-js';
+import { useRouter } from '@tanstack/react-router';
+import AuthServices from '@/api/services/auth.services';
+import { parseCredentialRequestOptionsFromCognito } from '@/utils/cognito-webauthn-challenge';
 
-const usePasskeyLogin = () => {
+export type UsePasskeyLoginOptions = {
+  onMfaSetupRequired?: () => void;
+};
+
+const usePasskeyLogin = (options?: UsePasskeyLoginOptions) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
-      const { data: optionsJSON } = await AuthServices.getPasskeyAuthOptions();
-      const assertion = await startAuthentication({
-        optionsJSON: optionsJSON as unknown as Parameters<
-          typeof startAuthentication
-        >[0]['optionsJSON'],
-      });
-      const { data: verifyResult } = await AuthServices.verifyPasskeyAuth(
-        assertion as unknown as Record<string, unknown>,
-      );
-      if (!verifyResult?.verified) {
-        throw new Error('Passkey authentication failed');
+      const username = sessionStorage.getItem('username') || '';
+      const session = sessionStorage.getItem('session') || '';
+      if (!username || !session) {
+        throw new Error(
+          'Missing sign-in session. Go back and verify your email again.',
+        );
       }
 
-      return verifyResult;
-    },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
-      router.navigate({ to: '/' });
+      const begin = await AuthServices.webAuthnSignInBegin({
+        username,
+        session,
+      });
+
+      if (begin.data.authenticationResult !== undefined) {
+        router.navigate({ to: '/' });
+        return;
+      }
+
+      const optionsJson = parseCredentialRequestOptionsFromCognito(
+        begin.data.challengeParameters,
+      );
+
+      const credential = await startAuthentication({
+        optionsJSON: optionsJson,
+      });
+
+      const parser = new UAParser();
+      const deviceName = `${parser.getBrowser().name ?? 'Browser'} on ${parser.getOS().name ?? 'OS'}`;
+
+      const complete = await AuthServices.webAuthnSignInComplete({
+        username,
+        session: begin.data.session ?? session,
+        credential: credential as unknown as Record<string, unknown>,
+        deviceName,
+      });
+
+      const cd = complete.data;
+      if (cd.session) {
+        sessionStorage.setItem('session', cd.session);
+        activeSession = cd.session;
+      }
+
+      if (cd.challengeName === 'SOFTWARE_TOKEN_MFA') {
+        router.navigate({ to: '/mfa/verify-code' });
+        return;
+      }
+
+      if (cd.challengeName === 'NEW_PASSWORD_REQUIRED') {
+        router.navigate({ to: '/reset-password' });
+        return;
+      }
+
+      if (cd.challengeName === 'MFA_SETUP') {
+        options?.onMfaSetupRequired?.();
+        return;
+      }
+
+      if (!cd.challengeName) {
+        router.navigate({ to: '/' });
+      }
     },
   });
 };
