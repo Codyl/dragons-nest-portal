@@ -28,7 +28,7 @@ const LoginMethod = ({
   return (
     <div
       className={cn(
-        'flex flex-col w-full gap-2 tablet:flex-row justify-between items-center',
+        'flex w-full gap-2 justify-between items-center',
         className,
       )}
     >
@@ -92,7 +92,7 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
         <div className="text-muted-foreground mt-2">
           Manage your login methods and connected services.
         </div>
-        <div className="flex flex-col gap-2 mt-2 divide-y max-w-102 w-full">
+        <div className="flex flex-col gap-2 mt-2 divide-y w-full">
           {/* allow user to remove sso login methods and change password */}
           <LoginMethod
             className="py-2"
@@ -106,7 +106,7 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
           />
           <div
             className={cn(
-              'flex flex-col w-full gap-2 tablet:flex-row justify-between items-center py-2',
+              'flex w-full gap-2 justify-between items-center py-2',
             )}
           >
             <div>Google</div>

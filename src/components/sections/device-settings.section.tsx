@@ -28,7 +28,7 @@ const UserDevice = ({
       />
       <div
         className={cn(
-          'flex flex-col w-full max-w-102 gap-2 tablet:flex-row justify-between items-center',
+          'flex flex-col w-full gap-2 tablet:flex-row justify-between items-center',
           className,
         )}
       >
@@ -73,12 +73,11 @@ const UserDeviceSettingsSection = ({ className }: { className?: string }) => {
 
   return (
     <div className={className}>
-      <h1 className="text-2xl font-bold">User Device Settings</h1>
       <div className="text-muted-foreground mt-2">
         Manage your devices and connected services.
       </div>
       <div className="flex flex-col mt-2 divide-y">
-        {data?.data.length === 0 && <div className="text-muted-foreground">No devices found</div>}
+        {(data?.data.length === 0 || !data) && <div className="text-muted-foreground">No devices found</div>}
         {data?.data.map((device) => (
           <UserDevice
             key={device.DeviceKey}

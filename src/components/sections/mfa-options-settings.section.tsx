@@ -44,7 +44,7 @@ const TOTPSettings = ({ className }: { className?: string }) => {
     <>
       <div
         className={cn(
-          'flex flex-col tablet:flex-row gap-2 w-full justify-between items-center',
+          'flex gap-2 w-full justify-between items-center',
           className,
         )}
       >
@@ -115,7 +115,7 @@ const MFAOptionsSettingsSection = ({ className }: { className?: string }) => {
       <div className="text-muted-foreground mt-2">
         Manage your MFA options and connected services.
       </div>
-      <div className="flex flex-col gap-2 mt-2 divide-y max-w-102 w-full">
+      <div className="flex flex-col gap-2 mt-2 divide-y w-full">
         <TOTPSettings className="py-2" />
       </div>
     </div>
