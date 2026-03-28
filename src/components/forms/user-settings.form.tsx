@@ -7,7 +7,7 @@ import useUpdateUserSettings from '@/hooks/use-update-user-account';
 import { normalizePhoneNumber } from '@/utils/helpers/input-normalization.helpers';
 import { formatPhoneNumber } from '@/utils/helpers/formatting.helpers';
 import { useQueryClient } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
+import { Check } from 'lucide-react';
 
 const UserSettingsForm = () => {
   const queryClient = useQueryClient();
@@ -16,6 +16,7 @@ const UserSettingsForm = () => {
     mutate: updateSettings,
     error: updateSettingsError,
     isPending: isUpdating,
+    isSuccess,
   } = useUpdateUserSettings({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
@@ -123,7 +124,7 @@ const UserSettingsForm = () => {
         </p>
         <p>
           See our{' '}
-          <Button to="/privacy-policy" variant="link">Privacy Policy</Button> and <Button to="/terms-of-service" variant="link">Terms of Service</Button> for more information.
+          <Button onClick={() => window.open('/privacy-policy', '_blank')} type="button" variant="link">Privacy Policy</Button> and <Button onClick={() => window.open('/terms-of-service', '_blank')} type="button" variant="link">Terms of Service</Button> for more information.
         </p>
         <Button
           type="submit"
@@ -132,6 +133,7 @@ const UserSettingsForm = () => {
         >
           Update
         </Button>
+        {isSuccess && <span className='flex justify-end items-center text-success gap-2 -mt-3'><Check className='size-4' /> Updated Successfully</span>}
       </form>
 
       {updateSettingsError?.message && (
