@@ -1,6 +1,8 @@
 import type { RouterContext } from '@/App';
+import UserServices from '@/api/services/user.services';
 import NewDeviceModal from '@/components/modals/new-device.modal';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
+import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
@@ -17,6 +19,13 @@ export const Route = createFileRoute('/')({
       });
     }
   },
+  loader: async () => {
+    const res = await UserServices.getUser();
+    if (profileNeedsWelcome(res.data ?? {})) {
+      throw redirect({ to: '/welcome', replace: true });
+    }
+    return null;
+  },
   head: () => ({
     meta: [
       { title: 'Home | Cody Lillywhite' },
@@ -32,7 +41,7 @@ function Index() {
 
   return (
     <div className="p-2">
-      <h3>Welcome Home!</h3>
+      <h3>Welcome Home</h3>
       {hasPassword && <NewDeviceModal />}
     </div>
   );

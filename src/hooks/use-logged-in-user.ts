@@ -19,6 +19,7 @@ const useLoggedInUser = (): UseQueryResult<
       hasPassword?: boolean;
       hasPasskey?: boolean;
       passkeyCount?: number;
+      first_logged_in_at?: string | null;
     };
   },
   Error

@@ -110,6 +110,7 @@ describe('Auth flow (password-based)', () => {
     cy.get('button[type="submit"]').click();
     cy.wait('@confirmSignup');
 
+    cy.dismissWelcomeIfShown();
     cy.contains('Welcome Home').should('be.visible');
   });
 
@@ -244,6 +245,7 @@ describe('Auth flow (password-based)', () => {
     cy.get('button[type="submit"]').click();
     cy.wait('@confirmForgotPassword');
     cy.url().should('match', /\/(\?.*)?$/);
+    cy.dismissWelcomeIfShown();
     cy.contains('Welcome Home').should('be.visible');
 
     cy.contains('Sign out').click();
@@ -256,6 +258,7 @@ describe('Auth flow (password-based)', () => {
     cy.get('input[name="password"]').type('NewPassword123!');
     cy.get('button[type="submit"]').click();
     cy.url().should('include', '/');
+    cy.dismissWelcomeIfShown();
     cy.contains('Welcome Home').should('be.visible');
   });
 });

@@ -31,9 +31,17 @@ const UserServices = {
       hasPassword?: boolean;
       hasPasskey?: boolean;
       passkeyCount?: number;
+      first_logged_in_at?: string | null;
     };
   }> => {
     const response = await api.get('profile');
+    return response.json();
+  },
+  recordFirstLogin: async (): Promise<{
+    message: string;
+    data: { first_logged_in_at: string };
+  }> => {
+    const response = await api.post('profile/first-login', { json: {} });
     return response.json();
   },
   updateUserSettings: async (json: {

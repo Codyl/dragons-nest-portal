@@ -62,6 +62,16 @@ Cypress.Commands.add('loginViaApi', (username: string, password: string) => {
   });
 });
 
+/** Click through first-login welcome when present (e.g. MailSlurp users without loginViaApi). */
+Cypress.Commands.add('dismissWelcomeIfShown', () => {
+  cy.get('body').then(($body) => {
+    const btn = $body.find('[data-testid="welcome-continue"]');
+    if (btn.length) {
+      cy.wrap(btn).click();
+    }
+  });
+});
+
 /**
  * Request helper for auth API. Use in endpoint tests and when building session for flow tests.
  */

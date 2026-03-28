@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as IndexRouteImport } from './routes/index'
@@ -27,6 +28,11 @@ import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_au
 import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
 import { Route as authAuthAccountRecoveryMagicLinkRouteImport } from './routes/(auth)/_auth.account-recovery.magic-link'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/welcome': typeof WelcomeRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/welcome': typeof WelcomeRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/welcome': typeof WelcomeRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
   '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/'
     | '/maintenance'
     | '/terms-of-service'
+    | '/welcome'
     | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/'
     | '/maintenance'
     | '/terms-of-service'
+    | '/welcome'
     | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/'
     | '/maintenance'
     | '/terms-of-service'
+    | '/welcome'
     | '/(auth)/_auth'
     | '/(private)/_private'
     | '/(auth)/_auth/account-recovery'
@@ -229,6 +241,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MaintenanceRoute: typeof MaintenanceRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
+  WelcomeRoute: typeof WelcomeRoute
   authAuthRoute: typeof authAuthRouteWithChildren
   privatePrivateRoute: typeof privatePrivateRouteWithChildren
   authMfaMfaVerifyCodeRoute: typeof authMfaMfaVerifyCodeRoute
@@ -236,6 +249,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms-of-service': {
       id: '/terms-of-service'
       path: '/terms-of-service'
@@ -417,6 +437,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MaintenanceRoute: MaintenanceRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
+  WelcomeRoute: WelcomeRoute,
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,
   authMfaMfaVerifyCodeRoute: authMfaMfaVerifyCodeRoute,
