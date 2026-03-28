@@ -3,7 +3,8 @@ import DeleteAccountForm from './delete-account.form';
 describe('DeleteAccountForm', () => {
   it('should render', () => {
     cy.mount(<DeleteAccountForm />);
-    cy.get('input[name="password"]').should('exist');
+    cy.get('[data-testid="input-password"]').should('exist');
+    cy.get('[data-testid="input-mfaCode"]').should('exist');
     cy.get('button[type="submit"]').should('exist');
     cy.contains('Are you sure you want to delete your account?').should(
       'exist',
@@ -16,11 +17,16 @@ describe('DeleteAccountForm', () => {
       body: {
         message: 'Account deleted successfully',
       },
-    });
+    }).as('deleteProfile');
     cy.mount(<DeleteAccountForm />);
-    cy.get('input[name="password"]').type('Password123!');
+    cy.get('[data-testid="input-password"]').type('Password123!');
+    cy.get('[data-testid="input-mfaCode"]').type('123456');
     cy.get('button[type="submit"]').click();
-    // Should handle success
+    cy.wait('@deleteProfile').then((interception) => {
+      const raw = interception.request.body;
+      const body = typeof raw === 'string' ? JSON.parse(raw) : raw;
+      expect(body).to.include({ mfaCode: '123456' });
+    });
   });
 
   it('should show error when password is incorrect', () => {
@@ -31,7 +37,7 @@ describe('DeleteAccountForm', () => {
       },
     });
     cy.mount(<DeleteAccountForm />);
-    cy.get('input[name="password"]').type('WrongPassword123!');
+    cy.get('[data-testid="input-password"]').type('WrongPassword123!');
     cy.get('button[type="submit"]').click();
     cy.contains('Invalid password').should('exist');
   });
@@ -54,7 +60,7 @@ describe('DeleteAccountForm', () => {
       },
     });
     cy.mount(<DeleteAccountForm />);
-    cy.get('input[name="password"]').type('Password123!');
+    cy.get('[data-testid="input-password"]').type('Password123!');
     cy.get('button[type="submit"]').click();
     cy.get('button[type="submit"]').should('be.disabled');
   });

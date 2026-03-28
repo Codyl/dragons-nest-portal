@@ -74,6 +74,7 @@ const UserServices = {
   },
   deleteUser: async (json: {
     password: string;
+    mfaCode?: string;
   }): Promise<{ message: string; data: {} }> => {
     const response = await api.delete('profile', { json });
     return response.json();

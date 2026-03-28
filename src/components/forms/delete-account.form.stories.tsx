@@ -19,9 +19,14 @@ import {
 const fillForm = async (
   canvas: ReturnType<typeof within>,
   password: string,
+  mfaCode?: string,
 ) => {
   const passwordInput = canvas.getByLabelText('Password');
   await userEvent.type(passwordInput, password);
+  if (mfaCode) {
+    const mfaInput = canvas.getByLabelText('Authenticator code');
+    await userEvent.type(mfaInput, mfaCode);
+  }
 };
 
 const submitForm = async (canvas: ReturnType<typeof within>) => {
@@ -76,7 +81,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'Enter password to confirm account deletion. Requires authentication.',
+          'Enter password to confirm account deletion. If you use TOTP MFA, also enter your authenticator code. Requires authentication.',
       },
     },
   },
@@ -89,6 +94,24 @@ export const Success: Story = {
       description: {
         story:
           'This story demonstrates a successful account deletion. Submit the form to see the success flow.',
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await fillForm(canvas, 'Password123!', '123456');
+    await submitForm(canvas);
+  },
+};
+
+/** Reference for MFA field: same patterns as `Success` with optional authenticator code. */
+export const SuccessWithoutMfa: Story = {
+  parameters: {
+    msw: { handlers: deleteUserSuccessHandlers },
+    docs: {
+      description: {
+        story:
+          'Deletion when the account does not require an MFA step on the server (authenticator field left empty).',
       },
     },
   },

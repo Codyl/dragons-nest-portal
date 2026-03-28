@@ -8,17 +8,24 @@ const DeleteAccountForm = () => {
   const { mutate: deleteAccount, isPending, error } = useDeleteUser();
   const schema = z.object({
     password: z.string().min(1, 'Password is required'),
+    mfaCode: z.string().optional(),
   });
 
   const form = useForm({
     defaultValues: {
       password: '',
+      mfaCode: '',
     },
     validators: {
       onSubmit: schema,
     },
     onSubmit: async ({ value }) => {
-      deleteAccount(value);
+      deleteAccount({
+        password: value.password,
+        ...(value.mfaCode?.trim()
+          ? { mfaCode: value.mfaCode.trim() }
+          : {}),
+      });
     },
   });
   return (
@@ -41,6 +48,19 @@ const DeleteAccountForm = () => {
             label="Password"
             type="password"
             autoFocus
+          />
+        )}
+      />
+      <form.Field
+        name="mfaCode"
+        children={(field) => (
+          <InputField
+            field={field}
+            label="Authenticator code"
+            type="text"
+            placeholder="If you use 2FA, enter your 6-digit code"
+            inputMode="numeric"
+            autoComplete="one-time-code"
           />
         )}
       />
