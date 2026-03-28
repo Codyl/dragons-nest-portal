@@ -82,6 +82,13 @@ const ForgotPasswordForm = ({
         </Button>
       </div>
       <div className="text-center text-sm">
+        <Button
+          type="button"
+          className="w-full"
+          onClick={() => router.navigate({ to: '/account-recovery' })}
+        >
+          Try a different method
+        </Button>
         {preFilledEmail ? (
           <Link
             to="/security-settings"
