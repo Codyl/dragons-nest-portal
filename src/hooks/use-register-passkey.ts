@@ -1,4 +1,5 @@
 import UserServices from '@/api/services/user.services';
+import { passkeysQueryKey } from '@/hooks/use-passkeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { startRegistration } from '@simplewebauthn/browser';
 
@@ -25,7 +26,8 @@ const useRegisterPasskey = () => {
       return verifyResult;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
+      void queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
+      void queryClient.invalidateQueries({ queryKey: passkeysQueryKey });
     },
   });
 };

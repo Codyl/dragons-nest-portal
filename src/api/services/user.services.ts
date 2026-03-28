@@ -1,6 +1,14 @@
 import { fetchAuthSession, fetchDevices } from 'aws-amplify/auth';
 import { api } from '../api.config';
 
+export type PasskeyListItem = {
+  credentialId: string;
+  displayName: string;
+  provider: string;
+  createdAt: string;
+  lastUsedAt: string;
+};
+
 export type KnownDevice = {
   DeviceKey: string;
   DeviceName: string;
@@ -153,6 +161,21 @@ const UserServices = {
       json: response,
     });
     return res.json();
+  },
+  listPasskeys: async (): Promise<{
+    message: string;
+    data: { passkeys: PasskeyListItem[] };
+  }> => {
+    const response = await api.get('profile/passkeys');
+    return response.json();
+  },
+  deletePasskey: async (
+    credentialId: string,
+  ): Promise<{ message: string; data: Record<string, never> }> => {
+    const response = await api.delete('profile/passkeys', {
+      json: { credentialId },
+    });
+    return response.json();
   },
 };
 

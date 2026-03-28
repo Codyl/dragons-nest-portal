@@ -1,7 +1,6 @@
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useLinkGoogle from '@/hooks/use-link-google';
 import useUnlinkGoogle from '@/hooks/use-unlink-google';
-import useRegisterPasskey from '@/hooks/use-register-passkey';
 import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { cn } from '@/lib/utils';
@@ -51,14 +50,10 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
   const userData = useLoggedInUser();
   const user = userData.data?.data;
-  const registerPasskey = useRegisterPasskey();
   const linkGoogle = useLinkGoogle();
   const unlinkGoogle = useUnlinkGoogle();
   const hasGoogle = user?.loginMethods?.includes('GOOGLE');
   const hasPassword = user?.hasPassword ?? true;
-  const passkeyCount = user?.passkeyCount ?? 0;
-  const hasPasskey = user?.hasPasskey ?? passkeyCount > 0;
-
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
   const handleConnectGoogle = (credential: string) => {
@@ -184,7 +179,7 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
                         handleConnectGoogle(credentialResponse.credential);
                       }
                     }}
-                    onError={() => {}}
+                    onError={() => { }}
                   />
                 )}
                 {window.Cypress && (
@@ -201,48 +196,6 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
                 )}
               </>
             )}
-          </div>
-          <div
-            className={cn(
-              'flex flex-col w-full gap-2 tablet:flex-row justify-between items-center py-2',
-            )}
-          >
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span>Passkey</span>
-                {hasPasskey && (
-                  <span
-                    className="text-sm text-muted-foreground"
-                    data-testid="passkey-count"
-                  >
-                    {passkeyCount} saved
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col items-end gap-1 w-full tablet:w-auto">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => registerPasskey.mutate()}
-                disabled={registerPasskey.isPending}
-                data-testid="register-passkey-button"
-              >
-                {registerPasskey.isPending
-                  ? 'Registering…'
-                  : hasPasskey
-                    ? 'Add another passkey'
-                    : 'Register Passkey'}
-              </Button>
-              {registerPasskey.isSuccess && (
-                <span
-                  className="text-sm text-green-600 dark:text-green-400"
-                  data-testid="passkey-register-success"
-                >
-                  Passkey registered successfully.
-                </span>
-              )}
-            </div>
           </div>
         </div>
       </div>

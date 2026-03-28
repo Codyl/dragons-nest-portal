@@ -32,6 +32,14 @@ const matchPasskeyRegisterOptions = pathMatch(
 const matchPasskeyRegisterVerify = pathMatch(
   '/profile/passkey/register/verify',
 );
+const matchProfilePasskeys = pathMatch('/profile/passkeys');
+
+const defaultPasskeysListHandler = http.get(matchProfilePasskeys, async () =>
+  HttpResponse.json(
+    { message: 'Passkeys', data: { passkeys: [] } },
+    { status: 200 },
+  ),
+);
 
 // Default auth success response (tokens sent as HttpOnly cookies by backend; frontend receives minimal success payload)
 const authSuccess = {
@@ -96,7 +104,10 @@ export const handlers = [
   }),
   // Remember device (profile/remember-device)
   http.post(pathMatch('/profile/remember-device'), async () => {
-    return HttpResponse.json({ message: 'Device remembered', data: {} }, { status: 200 });
+    return HttpResponse.json(
+      { message: 'Device remembered', data: {} },
+      { status: 200 },
+    );
   }),
   // Auth: verify username
   http.post(matchAuthVerifyUsername, async () => {
@@ -203,6 +214,7 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  defaultPasskeysListHandler,
 ];
 
 /** Replace handler at index with variant for story-specific behavior */
@@ -211,6 +223,23 @@ const replaceHandler = (index: number, variant: (typeof handlers)[number]) => [
   variant,
   ...handlers.slice(index + 1),
 ];
+
+/** Swap the default GET /profile/passkeys mock (reference equality). */
+export function replacePasskeysInHandlers(
+  baseHandlers: typeof handlers,
+  passkeys: Array<Record<string, unknown>>,
+) {
+  return baseHandlers.map((h) =>
+    h === defaultPasskeysListHandler
+      ? http.get(matchProfilePasskeys, async () =>
+          HttpResponse.json(
+            { message: 'Passkeys', data: { passkeys } },
+            { status: 200 },
+          ),
+        )
+      : h,
+  );
+}
 
 // MFA options section: GET profile with TOTP enabled (index 2)
 const getUsersMeTOTPEnabled = http.get(matchUsersMe, async () =>
@@ -256,6 +285,26 @@ const getUsersMePasskeyRegistered = http.get(matchUsersMe, async () =>
 export const loginMethodSectionPasskeyRegisteredHandlers = replaceHandler(
   2,
   getUsersMePasskeyRegistered,
+);
+
+// Passkey settings section: GET profile with two passkeys (same handler slot as profile GET)
+const getUsersMeTwoPasskeys = http.get(matchUsersMe, async () =>
+  HttpResponse.json(
+    {
+      data: {
+        email: 'user@example.com',
+        loginMethods: [],
+        hasPassword: true,
+        hasPasskey: true,
+        passkeyCount: 2,
+      },
+    },
+    { status: 200 },
+  ),
+);
+export const passkeySectionTwoPasskeysHandlers = replaceHandler(
+  2,
+  getUsersMeTwoPasskeys,
 );
 
 // Login method section: GET profile with Google linked (index 2)
@@ -641,10 +690,7 @@ const createPasswordSuccess = http.post(matchCreatePassword, async () =>
   ),
 );
 const createPasswordError = http.post(matchCreatePassword, async () =>
-  HttpResponse.json(
-    { message: 'Could not create password' },
-    { status: 400 },
-  ),
+  HttpResponse.json({ message: 'Could not create password' }, { status: 400 }),
 );
 const createPasswordLoading = http.post(matchCreatePassword, async () => {
   await delay(2000);
@@ -660,7 +706,10 @@ export const createPasswordSuccessHandlers = replaceHandler(
   19,
   createPasswordSuccess,
 );
-export const createPasswordErrorHandlers = replaceHandler(19, createPasswordError);
+export const createPasswordErrorHandlers = replaceHandler(
+  19,
+  createPasswordError,
+);
 export const createPasswordLoadingHandlers = replaceHandler(
   19,
   createPasswordLoading,

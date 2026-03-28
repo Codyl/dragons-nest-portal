@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import LoginMethodSettingsSection from "./login-method-settings.section";
 import {
   handlers,
-  loginMethodSectionPasskeyRegisteredHandlers,
   loginMethodSectionWithGoogleHandlers,
 } from "../../../.storybook/msw-handlers";
 
@@ -41,19 +40,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "Login methods section with no passkey registered. Register Passkey button is enabled.",
-      },
-    },
-  },
-};
-
-export const PasskeyRegistered: Story = {
-  parameters: {
-    msw: { handlers: loginMethodSectionPasskeyRegisteredHandlers },
-    docs: {
-      description: {
-        story:
-          "User with one or more passkeys: shows count and an Add another passkey action.",
+          'Login methods: email/password and Google. Passkeys live in PasskeySettingsSection.',
       },
     },
   },
