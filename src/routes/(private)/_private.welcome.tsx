@@ -1,5 +1,6 @@
 import WelcomePage from '@/components/pages/welcome-page';
 import UserServices from '@/api/services/user.services';
+import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
 import {
   createFileRoute,
@@ -14,6 +15,14 @@ export const Route = createFileRoute('/(private)/_private/welcome')({
 
     if (!profileNeedsWelcome(res.data ?? {})) {
       throw redirect({ to: '/', replace: true });
+    }
+
+    const hasFinishedAccountSetup =
+      typeof window !== 'undefined' &&
+      sessionStorage.getItem(ACCOUNT_SETUP_SESSION_KEY) === '1';
+
+    if (!hasFinishedAccountSetup) {
+      throw redirect({ to: '/account-setup', replace: true });
     }
 
     const { given_name, email } = res.data ?? {};
@@ -44,6 +53,10 @@ function WelcomeRoute() {
   const { mutate: completeWelcome, isPending } = useMutation({
     mutationFn: () => UserServices.recordFirstLogin(),
     onSuccess: () => {
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem(ACCOUNT_SETUP_SESSION_KEY);
+      }
+
       void queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
       void router.navigate({ to: '/', replace: true });
     },

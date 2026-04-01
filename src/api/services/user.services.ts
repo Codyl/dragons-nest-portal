@@ -40,7 +40,8 @@ const UserServices = {
       hasPassword?: boolean;
       hasPasskey?: boolean;
       passkeyCount?: number;
-      first_logged_in_at?: string | null;
+      firstLoggedInAt?: string | null;
+      completedAt?: string | null;
     };
   }> => {
     const response = await api.get('profile');
@@ -48,9 +49,24 @@ const UserServices = {
   },
   recordFirstLogin: async (): Promise<{
     message: string;
-    data: { first_logged_in_at: string };
+    data: { firstLoggedInAt: string };
   }> => {
     const response = await api.post('profile/first-login', { json: {} });
+    return response.json();
+  },
+  submitAccountSetup: async (json: {
+    name: string;
+    age: number;
+    avatar: string;
+    interests: string[];
+    shortTermGoal: string;
+    longTermGoal: string;
+    learningStyles: string[];
+  }): Promise<{
+    message: string;
+    data: { completedAt: string };
+  }> => {
+    const response = await api.post('profile/account-setup', { json });
     return response.json();
   },
   updateUserSettings: async (json: {

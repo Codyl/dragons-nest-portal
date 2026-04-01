@@ -14,6 +14,8 @@ declare global {
       ) => Chainable;
       /** Log in via auth API and set cookies for domain localhost (for flow tests) */
       loginViaApi: (username: string, password: string) => Chainable<void>;
+      /** Completes the account-setup steps when on /account-setup */
+      completeAccountSetupIfShown: () => Chainable<void>;
       /** Clicks welcome CTA when the first-login welcome screen is shown */
       dismissWelcomeIfShown: () => Chainable<void>;
       /** Request helper for cognito auth API (e2e endpoint tests) */

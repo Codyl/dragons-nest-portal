@@ -11,12 +11,14 @@ const AUTH_API_BASE = 'http://localhost:8080';
  */
 function parseSetCookie(header: string | string[] | undefined): Array<{ name: string; value: string; options: Cypress.SetCookieOptions }> {
   if (!header) return [];
+
   const raw = Array.isArray(header) ? header : [header];
   const result: Array<{ name: string; value: string; options: Cypress.SetCookieOptions }> = [];
   for (const line of raw) {
     const parts = line.split(';').map((p) => p.trim());
     const [nameVal] = parts;
     if (!nameVal || !nameVal.includes('=')) continue;
+
     const eq = nameVal.indexOf('=');
     const name = nameVal.slice(0, eq);
     const value = nameVal.slice(eq + 1);
@@ -24,6 +26,7 @@ function parseSetCookie(header: string | string[] | undefined): Array<{ name: st
     for (let i = 1; i < parts.length; i++) {
       const part = parts[i];
       if (part.toLowerCase().startsWith('max-age=')) options.maxAge = parseInt(part.split('=')[1], 10);
+
       if (part.toLowerCase() === 'secure') options.secure = true;
     }
     result.push({ name, value, options });
@@ -59,6 +62,27 @@ Cypress.Commands.add('loginViaApi', (username: string, password: string) => {
     for (const c of cookies) {
       cy.setCookie(c.name, c.value, c.options);
     }
+  });
+});
+
+/** Complete the /account-setup wizard when that URL is shown (before welcome). */
+Cypress.Commands.add('completeAccountSetupIfShown', () => {
+  cy.url().then((url) => {
+    if (!url.includes('/account-setup')) {
+      return;
+    }
+
+    cy.get('input[name="name"]').type('Test User');
+    cy.get('input[name="age"]').type('10');
+    cy.get('[data-testid="avatar-dragon"]').click();
+    cy.contains('button', 'Continue').click();
+
+    cy.get('[data-testid="interest-reading"]').click();
+    cy.contains('button', 'Continue').click();
+
+    cy.contains('button', 'Continue').click();
+
+    cy.url({ timeout: 15000 }).should('include', '/welcome');
   });
 });
 

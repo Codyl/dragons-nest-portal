@@ -1,10 +1,15 @@
 import { useForm, type ReactFormExtendedApi } from '@tanstack/react-form';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
 import {
   createContext,
   useContext,
   type ReactNode,
 } from 'react';
 import { z } from 'zod';
+
+import UserServices from '@/api/services/user.services';
+import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
 
 export type AccountSetupFormValues = {
   name: string;
@@ -76,6 +81,9 @@ const AccountSetupForm = ({
   children: ReactNode;
   stepIndex: number;
 }) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const form = useForm({
     defaultValues: {
       name: '',
@@ -90,7 +98,22 @@ const AccountSetupForm = ({
       onSubmit: accountSetupSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      await UserServices.submitAccountSetup({
+        name: value.name,
+        age: Number(value.age),
+        avatar: value.avatar,
+        interests: value.interests,
+        shortTermGoal: value.shortTermGoal,
+        longTermGoal: value.longTermGoal,
+        learningStyles: value.learningStyles,
+      });
+
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem(ACCOUNT_SETUP_SESSION_KEY, '1');
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
+      await router.navigate({ to: '/welcome', replace: true });
     },
   });
 

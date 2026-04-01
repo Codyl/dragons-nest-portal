@@ -10,6 +10,7 @@ const matchChangePassword = pathMatch('/profile/change-password');
 const matchDeleteUser = pathMatch('/profile');
 const matchUsersMe = pathMatch('/profile');
 const matchUsersMeAccount = pathMatch('/profile/account');
+const matchProfileAccountSetup = pathMatch('/profile/account-setup');
 const matchAuthVerifyUsername = pathMatch('/auth/verify-username');
 const matchAuthInitiateLogin = pathMatch('/auth/initiate-login');
 const matchAuthForgotPassword = pathMatch('/auth/forgot-password');
@@ -98,6 +99,18 @@ export const handlers = [
   // Update user (profile/account)
   http.put(matchUsersMeAccount, async () => {
     return HttpResponse.json({ message: 'Updated' }, { status: 200 });
+  }),
+  // Account setup wizard (onboarding)
+  http.post(matchProfileAccountSetup, async () => {
+    return HttpResponse.json(
+      {
+        message: 'Account setup saved',
+        data: {
+          completedAt: new Date().toISOString(),
+        },
+      },
+      { status: 200 },
+    );
   }),
   // MFA preference (profile/mfa-preference)
   http.post(pathMatch('/profile/mfa-preference'), async () => {

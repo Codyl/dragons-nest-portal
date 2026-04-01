@@ -32,7 +32,17 @@ export const Route = createFileRoute('/(private)/_private')({
 
 function RouteComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAccountSetupShell =
+    pathname === '/account-setup' || pathname.startsWith('/account-setup/');
   const isSettingsShell = pathname.startsWith('/settings');
+
+  if (isAccountSetupShell) {
+    return (
+      <div className="bg-background min-h-svh w-full">
+        <Outlet />
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>

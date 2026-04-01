@@ -19,7 +19,7 @@ describe('Home page', () => {
           email: 'test@example.com',
           given_name: 'Test',
           family_name: 'User',
-          first_logged_in_at: '2020-01-01T00:00:00.000Z',
+          firstLoggedInAt: '2020-01-01T00:00:00.000Z',
         },
       },
     }).as('me');

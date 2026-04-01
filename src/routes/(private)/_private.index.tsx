@@ -9,8 +9,9 @@ export const Route = createFileRoute('/(private)/_private/')({
     const res = await UserServices.getUser();
 
     if (profileNeedsWelcome(res.data ?? {})) {
-      throw redirect({ to: '/welcome', replace: true });
+      throw redirect({ to: '/account-setup', replace: true });
     }
+
     return null;
   },
   head: () => ({

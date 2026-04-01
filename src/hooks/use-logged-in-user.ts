@@ -1,7 +1,7 @@
 import UserServices from '@/api/services/user.services';
 import { useQuery } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
- 
+
 const useLoggedInUser = (): UseQueryResult<
   {
     message: string;
@@ -19,7 +19,7 @@ const useLoggedInUser = (): UseQueryResult<
       hasPassword?: boolean;
       hasPasskey?: boolean;
       passkeyCount?: number;
-      first_logged_in_at?: string | null;
+      firstLoggedInAt?: string | null;
     };
   },
   Error

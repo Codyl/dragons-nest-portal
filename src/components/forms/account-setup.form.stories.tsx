@@ -1,4 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { useState } from 'react';
 import { userEvent, within } from 'storybook/test';
 import AccountSetupForm from './account-setup.form';
@@ -33,6 +41,39 @@ const meta = {
   args: {
     initialStep: 0,
   },
+  decorators: [
+    (Story) => {
+      const queryClient = new QueryClient({
+        defaultOptions: {
+          queries: { retry: false },
+          mutations: { retry: false },
+        },
+      });
+      const rootRoute = createRootRoute({
+        component: () => <Story />,
+      });
+      const indexRoute = createRoute({
+        getParentRoute: () => rootRoute,
+        path: '/',
+      });
+      const welcomeRoute = createRoute({
+        getParentRoute: () => rootRoute,
+        path: '/welcome',
+      });
+      const routeTree = rootRoute.addChildren([indexRoute, welcomeRoute]);
+      const router = createRouter({
+        routeTree,
+        history: createMemoryHistory({ initialEntries: ['/'] }),
+        defaultPendingMinMs: 0,
+      });
+
+      return (
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      );
+    },
+  ],
 } satisfies Meta<typeof AccountSetupFlow>;
 
 export default meta;
