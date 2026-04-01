@@ -29,6 +29,7 @@ describe('Home page', () => {
     });
     cy.visit('/');
     cy.contains('Welcome Home').should('be.visible');
+    cy.get('[data-slot="popover-trigger"]').click();
     cy.contains('Sign out').should('be.visible');
   });
 });

@@ -1,26 +1,13 @@
-import type { RouterContext } from '@/App';
 import UserServices from '@/api/services/user.services';
 import NewDeviceModal from '@/components/modals/new-device.modal';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/')({
-  beforeLoad: async ({ context, location }) => {
-    const authContext = context as RouterContext;
-    const isAuthenticated = await authContext.checkAuth();
-
-    if (!isAuthenticated) {
-      throw redirect({
-        to: '/verify-username',
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
+export const Route = createFileRoute('/(private)/_private/')({
   loader: async () => {
     const res = await UserServices.getUser();
+
     if (profileNeedsWelcome(res.data ?? {})) {
       throw redirect({ to: '/welcome', replace: true });
     }

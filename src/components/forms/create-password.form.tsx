@@ -38,7 +38,7 @@ const CreatePasswordForm = () => {
         { newPassword: value.newPassword },
         {
           onSuccess: () => {
-            router.navigate({ to: '/security-settings' });
+            router.navigate({ to: '/settings/security' });
           },
         },
       );
@@ -95,7 +95,7 @@ const CreatePasswordForm = () => {
       </Button>
       <div className="text-center text-sm">
         <Link
-          to="/security-settings"
+          to="/settings/security"
           className="text-primary hover:underline"
         >
           Back to security settings

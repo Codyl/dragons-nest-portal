@@ -9,12 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as MaintenanceRouteImport } from './routes/maintenance'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
 import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
+import { Route as privatePrivateIndexRouteImport } from './routes/(private)/_private.index'
+import { Route as privatePrivateWelcomeRouteImport } from './routes/(private)/_private.welcome'
+import { Route as privatePrivateSettingsRouteImport } from './routes/(private)/_private.settings'
 import { Route as privatePrivateSecuritySettingsRouteImport } from './routes/(private)/_private.security-settings'
 import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(private)/_private.create-password'
 import { Route as privatePrivateAccountSetupRouteImport } from './routes/(private)/_private.account-setup'
@@ -26,14 +27,14 @@ import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
 import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
 import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
 import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery'
+import { Route as privatePrivateSettingsSecurityRouteImport } from './routes/(private)/_private.settings.security'
+import { Route as privatePrivateSettingsProfileRouteImport } from './routes/(private)/_private.settings.profile'
+import { Route as privatePrivateSettingsNotificationsRouteImport } from './routes/(private)/_private.settings.notifications'
+import { Route as privatePrivateSettingsBillingRouteImport } from './routes/(private)/_private.settings.billing'
+import { Route as privatePrivateSettingsAccountRouteImport } from './routes/(private)/_private.settings.account'
 import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
 import { Route as authAuthAccountRecoveryMagicLinkRouteImport } from './routes/(auth)/_auth.account-recovery.magic-link'
 
-const WelcomeRoute = WelcomeRouteImport.update({
-  id: '/welcome',
-  path: '/welcome',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
@@ -44,11 +45,6 @@ const MaintenanceRoute = MaintenanceRouteImport.update({
   path: '/maintenance',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const privatePrivateRoute = privatePrivateRouteImport.update({
   id: '/(private)/_private',
   getParentRoute: () => rootRouteImport,
@@ -56,6 +52,21 @@ const privatePrivateRoute = privatePrivateRouteImport.update({
 const authAuthRoute = authAuthRouteImport.update({
   id: '/(auth)/_auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const privatePrivateIndexRoute = privatePrivateIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => privatePrivateRoute,
+} as any)
+const privatePrivateWelcomeRoute = privatePrivateWelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => privatePrivateRoute,
+} as any)
+const privatePrivateSettingsRoute = privatePrivateSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => privatePrivateRoute,
 } as any)
 const privatePrivateSecuritySettingsRoute =
   privatePrivateSecuritySettingsRouteImport.update({
@@ -116,6 +127,36 @@ const authAuthAccountRecoveryRoute = authAuthAccountRecoveryRouteImport.update({
   path: '/account-recovery',
   getParentRoute: () => authAuthRoute,
 } as any)
+const privatePrivateSettingsSecurityRoute =
+  privatePrivateSettingsSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => privatePrivateSettingsRoute,
+  } as any)
+const privatePrivateSettingsProfileRoute =
+  privatePrivateSettingsProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => privatePrivateSettingsRoute,
+  } as any)
+const privatePrivateSettingsNotificationsRoute =
+  privatePrivateSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => privatePrivateSettingsRoute,
+  } as any)
+const privatePrivateSettingsBillingRoute =
+  privatePrivateSettingsBillingRouteImport.update({
+    id: '/billing',
+    path: '/billing',
+    getParentRoute: () => privatePrivateSettingsRoute,
+  } as any)
+const privatePrivateSettingsAccountRoute =
+  privatePrivateSettingsAccountRouteImport.update({
+    id: '/account',
+    path: '/account',
+    getParentRoute: () => privatePrivateSettingsRoute,
+  } as any)
 const authMfaMfaVerifyCodeRoute = authMfaMfaVerifyCodeRouteImport.update({
   id: '/(auth)/mfa/_mfa/verify-code',
   path: '/mfa/verify-code',
@@ -129,10 +170,8 @@ const authAuthAccountRecoveryMagicLinkRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/welcome': typeof WelcomeRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -144,14 +183,20 @@ export interface FileRoutesByFullPath {
   '/account-setup': typeof privatePrivateAccountSetupRoute
   '/create-password': typeof privatePrivateCreatePasswordRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/settings': typeof privatePrivateSettingsRouteWithChildren
+  '/welcome': typeof privatePrivateWelcomeRoute
+  '/': typeof privatePrivateIndexRoute
   '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
+  '/settings/account': typeof privatePrivateSettingsAccountRoute
+  '/settings/billing': typeof privatePrivateSettingsBillingRoute
+  '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
+  '/settings/profile': typeof privatePrivateSettingsProfileRoute
+  '/settings/security': typeof privatePrivateSettingsSecurityRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/welcome': typeof WelcomeRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -163,15 +208,21 @@ export interface FileRoutesByTo {
   '/account-setup': typeof privatePrivateAccountSetupRoute
   '/create-password': typeof privatePrivateCreatePasswordRoute
   '/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/settings': typeof privatePrivateSettingsRouteWithChildren
+  '/welcome': typeof privatePrivateWelcomeRoute
+  '/': typeof privatePrivateIndexRoute
   '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
+  '/settings/account': typeof privatePrivateSettingsAccountRoute
+  '/settings/billing': typeof privatePrivateSettingsBillingRoute
+  '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
+  '/settings/profile': typeof privatePrivateSettingsProfileRoute
+  '/settings/security': typeof privatePrivateSettingsSecurityRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/maintenance': typeof MaintenanceRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/welcome': typeof WelcomeRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
   '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
@@ -185,16 +236,22 @@ export interface FileRoutesById {
   '/(private)/_private/account-setup': typeof privatePrivateAccountSetupRoute
   '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute
   '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute
+  '/(private)/_private/settings': typeof privatePrivateSettingsRouteWithChildren
+  '/(private)/_private/welcome': typeof privatePrivateWelcomeRoute
+  '/(private)/_private/': typeof privatePrivateIndexRoute
   '/(auth)/_auth/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
+  '/(private)/_private/settings/account': typeof privatePrivateSettingsAccountRoute
+  '/(private)/_private/settings/billing': typeof privatePrivateSettingsBillingRoute
+  '/(private)/_private/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
+  '/(private)/_private/settings/profile': typeof privatePrivateSettingsProfileRoute
+  '/(private)/_private/settings/security': typeof privatePrivateSettingsSecurityRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/maintenance'
     | '/terms-of-service'
-    | '/welcome'
     | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
@@ -206,14 +263,20 @@ export interface FileRouteTypes {
     | '/account-setup'
     | '/create-password'
     | '/security-settings'
+    | '/settings'
+    | '/welcome'
+    | '/'
     | '/account-recovery/magic-link'
     | '/mfa/verify-code'
+    | '/settings/account'
+    | '/settings/billing'
+    | '/settings/notifications'
+    | '/settings/profile'
+    | '/settings/security'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/maintenance'
     | '/terms-of-service'
-    | '/welcome'
     | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
@@ -225,14 +288,20 @@ export interface FileRouteTypes {
     | '/account-setup'
     | '/create-password'
     | '/security-settings'
+    | '/settings'
+    | '/welcome'
+    | '/'
     | '/account-recovery/magic-link'
     | '/mfa/verify-code'
+    | '/settings/account'
+    | '/settings/billing'
+    | '/settings/notifications'
+    | '/settings/profile'
+    | '/settings/security'
   id:
     | '__root__'
-    | '/'
     | '/maintenance'
     | '/terms-of-service'
-    | '/welcome'
     | '/(auth)/_auth'
     | '/(private)/_private'
     | '/(auth)/_auth/account-recovery'
@@ -246,15 +315,21 @@ export interface FileRouteTypes {
     | '/(private)/_private/account-setup'
     | '/(private)/_private/create-password'
     | '/(private)/_private/security-settings'
+    | '/(private)/_private/settings'
+    | '/(private)/_private/welcome'
+    | '/(private)/_private/'
     | '/(auth)/_auth/account-recovery/magic-link'
     | '/(auth)/mfa/_mfa/verify-code'
+    | '/(private)/_private/settings/account'
+    | '/(private)/_private/settings/billing'
+    | '/(private)/_private/settings/notifications'
+    | '/(private)/_private/settings/profile'
+    | '/(private)/_private/settings/security'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   MaintenanceRoute: typeof MaintenanceRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
-  WelcomeRoute: typeof WelcomeRoute
   authAuthRoute: typeof authAuthRouteWithChildren
   privatePrivateRoute: typeof privatePrivateRouteWithChildren
   authMfaMfaVerifyCodeRoute: typeof authMfaMfaVerifyCodeRoute
@@ -262,13 +337,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/welcome': {
-      id: '/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof WelcomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms-of-service': {
       id: '/terms-of-service'
       path: '/terms-of-service'
@@ -281,13 +349,6 @@ declare module '@tanstack/react-router' {
       path: '/maintenance'
       fullPath: '/maintenance'
       preLoaderRoute: typeof MaintenanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(private)/_private': {
@@ -303,6 +364,27 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof authAuthRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(private)/_private/': {
+      id: '/(private)/_private/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof privatePrivateIndexRouteImport
+      parentRoute: typeof privatePrivateRoute
+    }
+    '/(private)/_private/welcome': {
+      id: '/(private)/_private/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof privatePrivateWelcomeRouteImport
+      parentRoute: typeof privatePrivateRoute
+    }
+    '/(private)/_private/settings': {
+      id: '/(private)/_private/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof privatePrivateSettingsRouteImport
+      parentRoute: typeof privatePrivateRoute
     }
     '/(private)/_private/security-settings': {
       id: '/(private)/_private/security-settings'
@@ -381,6 +463,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthAccountRecoveryRouteImport
       parentRoute: typeof authAuthRoute
     }
+    '/(private)/_private/settings/security': {
+      id: '/(private)/_private/settings/security'
+      path: '/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof privatePrivateSettingsSecurityRouteImport
+      parentRoute: typeof privatePrivateSettingsRoute
+    }
+    '/(private)/_private/settings/profile': {
+      id: '/(private)/_private/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof privatePrivateSettingsProfileRouteImport
+      parentRoute: typeof privatePrivateSettingsRoute
+    }
+    '/(private)/_private/settings/notifications': {
+      id: '/(private)/_private/settings/notifications'
+      path: '/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof privatePrivateSettingsNotificationsRouteImport
+      parentRoute: typeof privatePrivateSettingsRoute
+    }
+    '/(private)/_private/settings/billing': {
+      id: '/(private)/_private/settings/billing'
+      path: '/billing'
+      fullPath: '/settings/billing'
+      preLoaderRoute: typeof privatePrivateSettingsBillingRouteImport
+      parentRoute: typeof privatePrivateSettingsRoute
+    }
+    '/(private)/_private/settings/account': {
+      id: '/(private)/_private/settings/account'
+      path: '/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof privatePrivateSettingsAccountRouteImport
+      parentRoute: typeof privatePrivateSettingsRoute
+    }
     '/(auth)/mfa/_mfa/verify-code': {
       id: '/(auth)/mfa/_mfa/verify-code'
       path: '/mfa/verify-code'
@@ -437,11 +554,37 @@ const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
   authAuthRouteChildren,
 )
 
+interface privatePrivateSettingsRouteChildren {
+  privatePrivateSettingsAccountRoute: typeof privatePrivateSettingsAccountRoute
+  privatePrivateSettingsBillingRoute: typeof privatePrivateSettingsBillingRoute
+  privatePrivateSettingsNotificationsRoute: typeof privatePrivateSettingsNotificationsRoute
+  privatePrivateSettingsProfileRoute: typeof privatePrivateSettingsProfileRoute
+  privatePrivateSettingsSecurityRoute: typeof privatePrivateSettingsSecurityRoute
+}
+
+const privatePrivateSettingsRouteChildren: privatePrivateSettingsRouteChildren =
+  {
+    privatePrivateSettingsAccountRoute: privatePrivateSettingsAccountRoute,
+    privatePrivateSettingsBillingRoute: privatePrivateSettingsBillingRoute,
+    privatePrivateSettingsNotificationsRoute:
+      privatePrivateSettingsNotificationsRoute,
+    privatePrivateSettingsProfileRoute: privatePrivateSettingsProfileRoute,
+    privatePrivateSettingsSecurityRoute: privatePrivateSettingsSecurityRoute,
+  }
+
+const privatePrivateSettingsRouteWithChildren =
+  privatePrivateSettingsRoute._addFileChildren(
+    privatePrivateSettingsRouteChildren,
+  )
+
 interface privatePrivateRouteChildren {
   privatePrivateAccountSettingsRoute: typeof privatePrivateAccountSettingsRoute
   privatePrivateAccountSetupRoute: typeof privatePrivateAccountSetupRoute
   privatePrivateCreatePasswordRoute: typeof privatePrivateCreatePasswordRoute
   privatePrivateSecuritySettingsRoute: typeof privatePrivateSecuritySettingsRoute
+  privatePrivateSettingsRoute: typeof privatePrivateSettingsRouteWithChildren
+  privatePrivateWelcomeRoute: typeof privatePrivateWelcomeRoute
+  privatePrivateIndexRoute: typeof privatePrivateIndexRoute
 }
 
 const privatePrivateRouteChildren: privatePrivateRouteChildren = {
@@ -449,6 +592,9 @@ const privatePrivateRouteChildren: privatePrivateRouteChildren = {
   privatePrivateAccountSetupRoute: privatePrivateAccountSetupRoute,
   privatePrivateCreatePasswordRoute: privatePrivateCreatePasswordRoute,
   privatePrivateSecuritySettingsRoute: privatePrivateSecuritySettingsRoute,
+  privatePrivateSettingsRoute: privatePrivateSettingsRouteWithChildren,
+  privatePrivateWelcomeRoute: privatePrivateWelcomeRoute,
+  privatePrivateIndexRoute: privatePrivateIndexRoute,
 }
 
 const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
@@ -456,10 +602,8 @@ const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   MaintenanceRoute: MaintenanceRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
-  WelcomeRoute: WelcomeRoute,
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,
   authMfaMfaVerifyCodeRoute: authMfaMfaVerifyCodeRoute,

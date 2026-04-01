@@ -1,4 +1,3 @@
-import type { RouterContext } from '@/App';
 import WelcomePage from '@/components/pages/welcome-page';
 import UserServices from '@/api/services/user.services';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
@@ -9,20 +8,7 @@ import {
 } from '@tanstack/react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const Route = createFileRoute('/welcome')({
-  beforeLoad: async ({ context, location }) => {
-    const authContext = context as RouterContext;
-    const isAuthenticated = await authContext.checkAuth();
-
-    if (!isAuthenticated) {
-      throw redirect({
-        to: '/verify-username',
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
+export const Route = createFileRoute('/(private)/_private/welcome')({
   loader: async () => {
     const res = await UserServices.getUser();
 

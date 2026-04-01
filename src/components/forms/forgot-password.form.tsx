@@ -91,7 +91,7 @@ const ForgotPasswordForm = ({
         </Button>
         {preFilledEmail ? (
           <Link
-            to="/security-settings"
+            to="/settings/security"
             className="text-primary hover:underline"
           >
             Back to security settings

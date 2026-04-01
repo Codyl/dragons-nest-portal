@@ -26,7 +26,7 @@ function CreatePasswordPage() {
       <div className="flex flex-col mx-auto max-w-md gap-2">
         <p className="text-destructive text-sm">Could not load your profile.</p>
         <Link
-          to="/security-settings"
+          to="/settings/security"
           className="text-primary text-sm underline"
         >
           Back to security settings
@@ -36,7 +36,7 @@ function CreatePasswordPage() {
   }
 
   if (hasPassword) {
-    return <Navigate to="/security-settings" />;
+    return <Navigate to="/settings/security" />;
   }
 
   return (

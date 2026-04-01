@@ -127,8 +127,8 @@ describe('Auth flow (password-based)', () => {
     cy.visit('/');
     cy.contains('Welcome Home').should('be.visible');
 
-    cy.contains('Account Settings').click();
-    cy.url().should('include', '/account-settings');
+    cy.visit('/settings/profile');
+    cy.url().should('include', '/settings/profile');
     // cy.get('[data-slot="dialog-close"]').click();
     cy.get('input[name="phone_number"]').clear().type('2086003434');
     cy.intercept('PUT', '**/profile/account').as('updateUserSettings');
@@ -165,8 +165,8 @@ describe('Auth flow (password-based)', () => {
     cy.get('button[type="submit"]').click();
     cy.wait('@confirmSignup');
 
-    cy.contains('Account Settings').click();
-    cy.url().should('include', '/account-settings');
+    cy.visit('/settings/profile');
+    cy.url().should('include', '/settings/profile');
     // cy.get('[data-slot="dialog-close"]').click();
     cy.get('button').contains('Advanced').click();
     cy.contains('Delete Account').click();
@@ -189,7 +189,7 @@ describe('Auth flow (password-based)', () => {
 
   it('login → change password flow', () => {
     cy.loginViaApi(STATIC_EMAIL(), PASSWORD);
-    cy.visit('/security-settings');
+    cy.visit('/settings/security');
     // cy.get('[data-slot="dialog-close"]').click();
     cy.get('button[data-testid="Change Password-button"]').click();
     cy.get('input[name="currentPassword"]').type(PASSWORD);

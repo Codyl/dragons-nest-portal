@@ -59,7 +59,7 @@ const meta = {
         createRoute({ getParentRoute: () => rootRoute, path: '/' }),
         createRoute({
           getParentRoute: () => rootRoute,
-          path: '/security-settings',
+          path: '/settings/security',
         }),
       ]);
       const router = createRouter({
