@@ -5,6 +5,7 @@ const InputField = ({
   field,
   label,
   className,
+  inputClassName,
   type = 'text',
   placeholder,
   normalize,
@@ -16,6 +17,7 @@ const InputField = ({
   field: any;
   label: string;
   className?: string;
+  inputClassName?: string;
   type?: string;
   placeholder?: string;
   normalize?: (value: string) => string;
@@ -41,6 +43,7 @@ const InputField = ({
         data-testid={`input-${field.name}`}
         name={field.name}
         type={type}
+        className={inputClassName}
         value={field.state.value}
         normalize={normalize}
         format={format}
@@ -54,7 +57,9 @@ const InputField = ({
       {isInvalid && (
         <FieldError
           data-testid={`error-message-${field.name}`}
-          errors={field.state.meta.errors}
+          errors={field.state.meta.errors.map((e: unknown) =>
+            typeof e === 'string' ? { message: e } : e,
+          )}
         />
       )}
     </Field>
