@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState } from 'react';
+import { userEvent, within } from 'storybook/test';
+import AccountSetupForm from './account-setup.form';
+import AccountSetupComplianceStep from '@/components/steps/account-setup-compliance-step';
+import AccountSetupInterestsStep from '@/components/steps/account-setup-interests-step';
+import AccountSetupAddStudentsStep from '@/components/steps/account-setup-add-students-step';
+import AccountSetupTeachableStep from '@/components/steps/account-setup-teachable-step';
 import {
   createMemoryHistory,
   createRootRoute,
@@ -7,33 +13,35 @@ import {
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
-import { useState } from 'react';
-import { userEvent, within } from 'storybook/test';
-import AccountSetupForm from './account-setup.form';
-import AccountSetupGoalsStep from '@/components/steps/account-setup-goals-step';
-import AccountSetupInterestsStep from '@/components/steps/account-setup-interests-step';
-import AccountSetupProfileStep from '@/components/steps/account-setup-profile-step';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-function AccountSetupFlow({ initialStep = 0 }: { initialStep?: number }) {
+function AccountSetupStudentFlow({
+  initialStep = 0,
+}: {
+  initialStep?: number;
+}) {
   const [step, setStep] = useState(initialStep);
-
+  const totalSteps = 2;
   return (
-    <AccountSetupForm stepIndex={step}>
-      {step === 0 && <AccountSetupProfileStep onNext={() => setStep(1)} />}
+    <AccountSetupForm
+      stepIndex={step}
+      totalSteps={totalSteps}
+    >
+      {step === 0 && <AccountSetupComplianceStep onNext={() => setStep(1)} />}
       {step === 1 && (
         <AccountSetupInterestsStep
+          isLastStep
           onBack={() => setStep(0)}
-          onNext={() => setStep(2)}
+          onNext={() => undefined}
         />
       )}
-      {step === 2 && <AccountSetupGoalsStep onBack={() => setStep(1)} />}
     </AccountSetupForm>
   );
 }
 
-const meta = {
+const formFlowMeta = {
   title: 'Forms/AccountSetupForm',
-  component: AccountSetupFlow,
+  component: AccountSetupStudentFlow,
   parameters: {
     layout: 'fullscreen',
   },
@@ -42,7 +50,12 @@ const meta = {
     initialStep: 0,
   },
   decorators: [
-    (Story) => {
+    (Story, context) => {
+      if (typeof window !== 'undefined') {
+        const role =
+          context.parameters.signupRole === 'adult' ? 'adult' : 'student';
+        sessionStorage.setItem('signupRole', role);
+      }
       const queryClient = new QueryClient({
         defaultOptions: {
           queries: { retry: false },
@@ -74,64 +87,42 @@ const meta = {
       );
     },
   ],
-} satisfies Meta<typeof AccountSetupFlow>;
+} satisfies Meta<typeof AccountSetupStudentFlow>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default formFlowMeta;
+type Story = StoryObj<typeof formFlowMeta>;
 
-export const ProfileStep: Story = {
+/** Wired to `AccountSetupStudentFlow` step state; use for Cypress / multi-step flows. */
+export const ComplianceStep: Story = {
   args: { initialStep: 0 },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Profile step: name, age, and avatar selection matching the Dragon's Nest onboarding mockup.",
-      },
-    },
-  },
 };
 
+/** Student onboarding interests step only (same flow as step 2 after compliance). */
 export const InterestsStep: Story = {
   args: { initialStep: 1 },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Interests step: multi-select topic grid. Prefills step index only; complete the profile step in isolation for a realistic flow.',
-      },
-    },
-  },
 };
 
-export const GoalsStep: Story = {
-  args: { initialStep: 2 },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Goals step: optional goals and learning-style multi-select; primary Continue submits the full form.',
-      },
-    },
-  },
-};
-
-export const ProfileValidation: Story = {
-  args: { initialStep: 0 },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
-    await canvas.findByTestId('error-message-name');
-  },
-};
-
-export const ProfileToInterests: Story = {
+/** Multi-step integration: compliance → interests (see individual step stories under `Steps/`). */
+export const ComplianceToInterests: Story = {
   args: { initialStep: 0 },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('input-name'), 'Alex');
     await userEvent.type(canvas.getByTestId('input-age'), '11');
+    await userEvent.selectOptions(canvas.getByTestId('input-state'), 'ca');
+    await userEvent.type(canvas.getByTestId('input-zip'), '90210');
+    await userEvent.type(canvas.getByTestId('input-phone'), '5551234567');
     await userEvent.click(canvas.getByTestId('avatar-owl'));
     await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
     await canvas.findByRole('heading', { name: 'What interests you?' });
+  },
+};
+
+export const ComplianceValidation: Story = {
+  args: { initialStep: 0 },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await canvas.findByTestId('error-message-name');
   },
 };

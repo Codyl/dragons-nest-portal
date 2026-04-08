@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Flame } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { ACCOUNT_SETUP_PROGRESS_SEGMENTS } from '@/utils/constants/account-setup.constants';
 import { useAccountSetupForm } from '@/components/forms/account-setup.form';
 
 type AccountSetupCardProps = {
@@ -19,8 +18,8 @@ const AccountSetupCard = ({
   children,
   footer,
 }: AccountSetupCardProps) => {
-  const { stepIndex } = useAccountSetupForm();
-  const filledSegments = Math.min(stepIndex + 1, ACCOUNT_SETUP_PROGRESS_SEGMENTS);
+  const { stepIndex, totalSteps } = useAccountSetupForm();
+  const filledSegments = Math.min(stepIndex + 1, totalSteps);
 
   return (
     <div className="flex min-h-full w-full items-center justify-center p-4 py-10">
@@ -34,7 +33,10 @@ const AccountSetupCard = ({
             className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#6d8567] text-white shadow-sm"
             aria-hidden
           >
-            <Flame className="h-7 w-7" strokeWidth={1.75} />
+            <Flame
+              className="h-7 w-7"
+              strokeWidth={1.75}
+            />
           </div>
           <h1 className="text-xl font-bold tracking-tight text-stone-900 sm:text-2xl">
             Welcome to Dragon&apos;s Nest
@@ -46,26 +48,27 @@ const AccountSetupCard = ({
             className="mt-6 flex w-full max-w-md gap-1.5"
             role="progressbar"
             aria-valuemin={1}
-            aria-valuemax={ACCOUNT_SETUP_PROGRESS_SEGMENTS}
+            aria-valuemax={totalSteps}
             aria-valuenow={filledSegments}
-            aria-label={`Step ${filledSegments} of ${ACCOUNT_SETUP_PROGRESS_SEGMENTS}`}
+            aria-label={`Step ${filledSegments} of ${totalSteps}`}
           >
-            {Array.from({ length: ACCOUNT_SETUP_PROGRESS_SEGMENTS }).map(
-              (_, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    'h-2 flex-1 rounded-full transition-colors',
-                    i < filledSegments ? 'bg-[#8b7355]' : 'bg-[#ebe6dc]',
-                  )}
-                />
-              ),
-            )}
+            {Array.from({ length: totalSteps }).map((_, i) => (
+              <div
+                key={i}
+                className={cn(
+                  'h-2 flex-1 rounded-full transition-colors',
+                  i < filledSegments ? 'bg-[#8b7355]' : 'bg-[#ebe6dc]',
+                )}
+              />
+            ))}
           </div>
         </div>
 
         <div className="mt-8 flex flex-col items-center text-center">
-          <div className="mb-3 text-[#8b7355]" aria-hidden>
+          <div
+            className="mb-3 text-[#8b7355]"
+            aria-hidden
+          >
             {stepIcon}
           </div>
           <h2 className="text-lg font-bold text-stone-900 sm:text-xl">

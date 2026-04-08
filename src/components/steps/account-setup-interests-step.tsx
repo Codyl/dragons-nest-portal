@@ -5,28 +5,59 @@ import { Sprout } from 'lucide-react';
 import AccountSetupCard from '@/components/cards/account-setup-card';
 import { INTEREST_OPTIONS } from '@/utils/constants/account-setup.constants';
 import { FieldError } from '@/components/ui/field';
+import useSubjects from '@/hooks/use-subjects';
 
 const AccountSetupInterestsStep = ({
   onNext,
   onBack,
+  isLastStep = false,
 }: {
   onNext: () => void;
   onBack: () => void;
+  /** When true, complete onboarding (submit) instead of advancing a step. */
+  isLastStep?: boolean;
 }) => {
-  const { form } = useAccountSetupForm();
+  const { form, submitOnboarding } = useAccountSetupForm();
+  const {
+    data: subjects,
+    isLoading: isLoadingSubjects,
+    isError: isSubjectsError,
+  } = useSubjects();
+  const availableSubjects =
+    subjects && subjects.length > 0
+      ? subjects.map((subject) => ({
+          id: subject.slug,
+          label: subject.name,
+          color: subject.color,
+        }))
+      : INTEREST_OPTIONS.map((opt) => ({
+          id: opt.id,
+          label: opt.label,
+          color: '#e7e1d8',
+        }));
 
   const tryContinue = async () => {
     await form.validateField('interests', 'change');
     form.setFieldMeta('interests', (prev) => ({ ...prev, isTouched: true }));
     const err = form.getFieldMeta('interests')?.errors?.length ?? 0;
-    if (err === 0) onNext();
+    if (err !== 0) return;
+    if (isLastStep) {
+      await submitOnboarding();
+    } else {
+      onNext();
+    }
   };
 
   return (
     <AccountSetupCard
-      stepIcon={<Sprout className="mx-auto h-9 w-9" strokeWidth={1.5} />}
+      stepIcon={
+        <Sprout
+          className="mx-auto h-9 w-9"
+          strokeWidth={1.5}
+        />
+      }
       title="What interests you?"
-      subtitle="Select all topics you'd like to explore"
+      subtitle="Select all subjects you'd like to explore"
       footer={
         <div className="flex gap-3">
           <Button
@@ -40,9 +71,9 @@ const AccountSetupInterestsStep = ({
           <Button
             type="button"
             className="h-11 min-w-0 flex-1 rounded-xl bg-[#8b7355] text-base font-semibold text-white hover:bg-[#7a6549]"
-            onClick={tryContinue}
+            onClick={() => void tryContinue()}
           >
-            Continue
+            {isLastStep ? 'Finish setup' : 'Continue'}
           </Button>
         </div>
       }
@@ -51,7 +82,7 @@ const AccountSetupInterestsStep = ({
         name="interests"
         validators={{
           onChange: ({ value }) =>
-            value.length === 0 ? 'Select at least one topic' : undefined,
+            value.length === 0 ? 'Select at least one subject' : undefined,
         }}
       >
         {(field) => {
@@ -67,15 +98,21 @@ const AccountSetupInterestsStep = ({
 
           return (
             <div className="space-y-2 text-left">
+              {(isLoadingSubjects || isSubjectsError) && (
+                <p className="text-muted-foreground text-xs">
+                  {isLoadingSubjects
+                    ? 'Loading subjects...'
+                    : 'Could not load subjects, showing defaults.'}
+                </p>
+              )}
               <div className="grid grid-cols-2 gap-3">
-                {INTEREST_OPTIONS.map((opt) => {
-                  const isOn = selected.has(opt.id);
-                  const Icon = opt.icon;
+                {availableSubjects.map((subject) => {
+                  const isOn = selected.has(subject.id);
                   return (
                     <button
-                      key={opt.id}
+                      key={subject.id}
                       type="button"
-                      data-testid={`interest-${opt.id}`}
+                      data-testid={`interest-${subject.id}`}
                       aria-pressed={isOn}
                       className={cn(
                         'flex flex-col items-start gap-2 rounded-xl border-2 p-3 text-left transition-colors',
@@ -83,18 +120,18 @@ const AccountSetupInterestsStep = ({
                           ? 'border-[#8b7355] bg-[#f9f6f1]'
                           : 'border-stone-200 bg-white hover:border-stone-300',
                       )}
-                      onClick={() => toggle(opt.id)}
+                      onClick={() => toggle(subject.id)}
                     >
                       <div
-                        className={cn(
-                          'flex size-9 items-center justify-center rounded-lg',
-                          opt.swatchClass,
-                        )}
+                        className="flex size-9 items-center justify-center rounded-lg border text-xs font-semibold uppercase text-stone-800"
+                        style={{
+                          backgroundColor: subject.color || '#e7e1d8',
+                        }}
                       >
-                        <Icon className="size-4" strokeWidth={2} />
+                        {subject.label.slice(0, 1)}
                       </div>
                       <span className="text-sm font-medium leading-snug text-stone-900">
-                        {opt.label}
+                        {subject.label}
                       </span>
                     </button>
                   );
@@ -104,9 +141,11 @@ const AccountSetupInterestsStep = ({
                 field.state.meta.errors.length > 0 && (
                   <FieldError
                     data-testid="error-message-interests"
-                    errors={field.state.meta.errors.map((e: unknown) =>
-                      typeof e === 'string' ? { message: e } : e,
-                    )}
+                    errors={
+                      field.state.meta.errors.map((e: unknown) =>
+                        typeof e === 'string' ? { message: e } : e,
+                      ) as { message?: string }[]
+                    }
                   />
                 )}
             </div>

@@ -10,15 +10,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-export const ACCOUNT_SETUP_PROGRESS_SEGMENTS = 4;
-
-export type AvatarId =
-  | 'dragon'
-  | 'eagle'
-  | 'owl'
-  | 'fox'
-  | 'bear'
-  | 'turtle';
+export type AvatarId = 'dragon' | 'eagle' | 'owl' | 'fox' | 'bear' | 'turtle';
 
 export const AVATAR_OPTIONS: { id: AvatarId; emoji: string; label: string }[] =
   [
