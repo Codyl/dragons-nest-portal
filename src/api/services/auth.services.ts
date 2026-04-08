@@ -1,5 +1,11 @@
 import { api } from '../api.config';
 import { unauthenticatedApi } from '../api.unauthenticated.config';
+import {
+  SIGNUP_COPPA_CONSENT_KEY,
+  SIGNUP_FAMILY_NAME_KEY,
+  SIGNUP_GIVEN_NAME_KEY,
+  readSignupAccountTypeFromSession,
+} from '@/utils/constants/signup.constants';
 
 const AuthServices = {
   // googleSSOSignin: async (json: {
@@ -191,7 +197,9 @@ const AuthServices = {
     );
     return response.json();
   },
-  consumeRecoveryMagicLink: async (json: { token: string }): Promise<{
+  consumeRecoveryMagicLink: async (json: {
+    token: string;
+  }): Promise<{
     message: string;
     data: {};
   }> => {
@@ -226,6 +234,10 @@ const AuthServices = {
     code: string;
     session?: string;
     password?: string;
+    accountType?: 'adult' | 'student';
+    givenName?: string;
+    familyName?: string;
+    coppaConsent?: boolean;
   }): Promise<{
     message: string;
     data: {
@@ -238,8 +250,29 @@ const AuthServices = {
       };
     };
   }> => {
+    const accountType = json.accountType ?? readSignupAccountTypeFromSession();
+    const givenName =
+      json.givenName ??
+      sessionStorage.getItem(SIGNUP_GIVEN_NAME_KEY) ??
+      undefined;
+    const familyName =
+      json.familyName ??
+      sessionStorage.getItem(SIGNUP_FAMILY_NAME_KEY) ??
+      undefined;
+    const coppaConsent =
+      json.coppaConsent ??
+      (sessionStorage.getItem(SIGNUP_COPPA_CONSENT_KEY) === '1'
+        ? true
+        : undefined);
+
     const response = await unauthenticatedApi.post('auth/confirm-signup', {
-      json,
+      json: {
+        ...json,
+        accountType,
+        givenName,
+        familyName,
+        ...(coppaConsent ? { coppaConsent: true } : {}),
+      },
     });
     return response.json();
   },

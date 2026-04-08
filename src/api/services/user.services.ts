@@ -1,6 +1,5 @@
 import { fetchAuthSession, fetchDevices } from 'aws-amplify/auth';
 import { api } from '../api.config';
-
 export type PasskeyListItem = {
   credentialId: string;
   displayName: string;
@@ -41,7 +40,7 @@ const UserServices = {
       hasPasskey?: boolean;
       passkeyCount?: number;
       firstLoggedInAt?: string | null;
-      completedAt?: string | null;
+      onboardingCompletedAt?: string | null;
     };
   }> => {
     const response = await api.get('profile');
@@ -62,11 +61,23 @@ const UserServices = {
     shortTermGoal: string;
     longTermGoal: string;
     learningStyles: string[];
+    accountType: 'adult' | 'student';
+    state: string;
+    zipCode: string;
+    phoneNumber: string;
+    pendingStudents?: { displayName: string; age: number }[];
+    teachableCourses?: {
+      subjectId: string;
+      grade: string;
+      curriculum: string;
+    }[];
   }): Promise<{
     message: string;
-    data: { completedAt: string };
+    data: { onboardingCompletedAt: string };
   }> => {
-    const response = await api.post('profile/account-setup', { json });
+    const response = await api.post('profile/account-setup', {
+      json,
+    });
     return response.json();
   },
   updateUserSettings: async (json: {

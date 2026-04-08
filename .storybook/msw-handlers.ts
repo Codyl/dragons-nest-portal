@@ -22,6 +22,7 @@ const matchAuthConfirmSignup = pathMatch('/auth/confirm-signup');
 const matchAuthResendCode = pathMatch('/auth/confirm-signup/resend-code');
 const matchAuthMfa = pathMatch('/auth/mfa');
 const matchAuthAnswerOtp = pathMatch('/auth/answer-otp');
+const matchSubjects = pathMatch('/subjects');
 const matchAuthMfaGenerateSecret = pathMatch(
   '/auth/mfa/generate-authenticator-secret',
 );
@@ -96,6 +97,30 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  // Subject catalog for signup/account setup interests
+  http.get(matchSubjects, async () => {
+    return HttpResponse.json(
+      [
+        {
+          _id: 't-music',
+          name: 'Music',
+          icon: 'music',
+          color: '#f8d9c4',
+          slug: 'music',
+          isEnrichment: true,
+        },
+        {
+          _id: 't-science',
+          name: 'Science',
+          icon: 'flask',
+          color: '#d8e8ff',
+          slug: 'science',
+          isEnrichment: false,
+        },
+      ],
+      { status: 200 },
+    );
+  }),
   // Update user (profile/account)
   http.put(matchUsersMeAccount, async () => {
     return HttpResponse.json({ message: 'Updated' }, { status: 200 });
@@ -106,7 +131,7 @@ export const handlers = [
       {
         message: 'Account setup saved',
         data: {
-          completedAt: new Date().toISOString(),
+          onboardingCompletedAt: new Date().toISOString(),
         },
       },
       { status: 200 },
