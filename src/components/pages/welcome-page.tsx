@@ -22,8 +22,7 @@ function WelcomePage({
   onContinue,
   continueDisabled = false,
 }: WelcomePageProps) {
-  const greeting =
-    displayName.trim().length > 0 ? displayName.trim() : 'there';
+  const greeting = displayName.trim().length > 0 ? displayName.trim() : 'there';
 
   return (
     <div className="relative isolate min-h-[min(32rem,calc(100vh-5rem))] overflow-hidden rounded-2xl border border-border/60 bg-linear-to-b from-muted/40 via-background to-background px-4 py-10 shadow-sm sm:px-8 md:py-14">

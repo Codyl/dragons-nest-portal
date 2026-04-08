@@ -45,9 +45,13 @@ function CreatePasswordPage() {
         title="Create password"
         description="Choose a password that meets the requirements below. You can use it to sign in without Google or to disconnect Google from your account."
       >
-        {isLoading || isFetching ? <div className="flex flex-col mx-auto max-w-md">
-          <div className="animate-pulse bg-muted rounded-md h-40 w-full" />
-        </div> : <CreatePasswordForm />}
+        {isLoading || isFetching ? (
+          <div className="flex flex-col mx-auto max-w-md">
+            <div className="animate-pulse bg-muted rounded-md h-40 w-full" />
+          </div>
+        ) : (
+          <CreatePasswordForm />
+        )}
       </CommonCard>
     </div>
   );

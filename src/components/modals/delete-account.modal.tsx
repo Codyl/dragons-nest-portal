@@ -1,6 +1,11 @@
 import DeleteAccountForm from '../forms/delete-account.form';
 import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 
 const DeleteAccountModal = () => {
   return (

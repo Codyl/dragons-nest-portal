@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import LoginMethodSettingsSection from "./login-method-settings.section";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import LoginMethodSettingsSection from './login-method-settings.section';
 import {
   handlers,
   loginMethodSectionWithGoogleHandlers,
-} from "../../../.storybook/msw-handlers";
+} from '../../../.storybook/msw-handlers';
 
 const meta = {
-  title: "Sections/LoginMethodSettingsSection",
+  title: 'Sections/LoginMethodSettingsSection',
   component: LoginMethodSettingsSection,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     msw: { handlers },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   decorators: [
     (Story) => {
       const queryClient = new QueryClient({
@@ -51,7 +51,8 @@ export const WithGoogleLinked: Story = {
     msw: { handlers: loginMethodSectionWithGoogleHandlers },
     docs: {
       description: {
-        story: "Login methods when Google is linked. Shows Remove option for Google.",
+        story:
+          'Login methods when Google is linked. Shows Remove option for Google.',
       },
     },
   },

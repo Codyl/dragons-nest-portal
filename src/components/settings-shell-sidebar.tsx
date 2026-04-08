@@ -63,9 +63,7 @@ export function SettingsShellSidebar() {
                 <SidebarMenuItem key={to}>
                   <SidebarMenuButton
                     asChild
-                    isActive={
-                      pathname === to || pathname.startsWith(`${to}/`)
-                    }
+                    isActive={pathname === to || pathname.startsWith(`${to}/`)}
                     tooltip={label}
                   >
                     <Link to={to}>

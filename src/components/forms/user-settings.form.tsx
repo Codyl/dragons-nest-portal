@@ -119,12 +119,29 @@ const UserSettingsForm = () => {
           )}
         />
         <p>
-          By providing your phone number, you agree to receive SMS messages for security notifications and account recovery from Cody Lillywhite. Message and data rates may apply.
-          Message frequency varies. Text HELP for help or STOP to cancel.
+          By providing your phone number, you agree to receive SMS messages for
+          security notifications and account recovery from Cody Lillywhite.
+          Message and data rates may apply. Message frequency varies. Text HELP
+          for help or STOP to cancel.
         </p>
         <p>
           See our{' '}
-          <Button onClick={() => window.open('/privacy-policy', '_blank')} type="button" variant="link">Privacy Policy</Button> and <Button onClick={() => window.open('/terms-of-service', '_blank')} type="button" variant="link">Terms of Service</Button> for more information.
+          <Button
+            onClick={() => window.open('/privacy-policy', '_blank')}
+            type="button"
+            variant="link"
+          >
+            Privacy Policy
+          </Button>{' '}
+          and{' '}
+          <Button
+            onClick={() => window.open('/terms-of-service', '_blank')}
+            type="button"
+            variant="link"
+          >
+            Terms of Service
+          </Button>{' '}
+          for more information.
         </p>
         <Button
           type="submit"
@@ -133,7 +150,11 @@ const UserSettingsForm = () => {
         >
           Update
         </Button>
-        {isSuccess && <span className='flex justify-end items-center text-success gap-2 -mt-3'><Check className='size-4' /> Updated Successfully</span>}
+        {isSuccess && (
+          <span className="flex justify-end items-center text-success gap-2 -mt-3">
+            <Check className="size-4" /> Updated Successfully
+          </span>
+        )}
       </form>
 
       {updateSettingsError?.message && (

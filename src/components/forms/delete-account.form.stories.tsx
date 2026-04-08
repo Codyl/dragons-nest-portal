@@ -226,8 +226,7 @@ export const Loading: Story = {
     msw: { handlers: deleteUserLoadingHandlers },
     docs: {
       description: {
-        story:
-          'Loading state while the delete request is in progress.',
+        story: 'Loading state while the delete request is in progress.',
       },
     },
   },

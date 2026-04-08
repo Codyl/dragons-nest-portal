@@ -80,12 +80,14 @@ const UserDeviceSettingsSection = ({ className }: { className?: string }) => {
         Manage your devices and connected services.
       </div>
       <div className="flex flex-col mt-2 divide-y">
-        {(data?.data.length === 0 || !data) && <div className="text-muted-foreground">No devices found</div>}
+        {(data?.data.length === 0 || !data) && (
+          <div className="text-muted-foreground">No devices found</div>
+        )}
         {data?.data.map((device) => (
           <UserDevice
             key={device.DeviceKey}
             device={device}
-            onClick={() => { }}
+            onClick={() => {}}
             buttonText="Forget Device"
           />
         ))}

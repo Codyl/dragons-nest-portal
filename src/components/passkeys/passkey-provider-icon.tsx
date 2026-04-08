@@ -19,18 +19,53 @@ export function PasskeyProviderIcon({
   const iconClass = cn('size-6', className);
   switch (provider) {
     case 'apple_icloud':
-      return <Smartphone className={iconClass} aria-hidden />;
+      return (
+        <Smartphone
+          className={iconClass}
+          aria-hidden
+        />
+      );
     case 'google_password_manager':
-      return <Cloud className={iconClass} aria-hidden />;
+      return (
+        <Cloud
+          className={iconClass}
+          aria-hidden
+        />
+      );
     case 'windows_hello':
-      return <Monitor className={iconClass} aria-hidden />;
+      return (
+        <Monitor
+          className={iconClass}
+          aria-hidden
+        />
+      );
     case 'synced_passkey':
-      return <CloudUpload className={iconClass} aria-hidden />;
+      return (
+        <CloudUpload
+          className={iconClass}
+          aria-hidden
+        />
+      );
     case 'this_device':
-      return <Smartphone className={iconClass} aria-hidden />;
+      return (
+        <Smartphone
+          className={iconClass}
+          aria-hidden
+        />
+      );
     case 'security_key':
-      return <Usb className={iconClass} aria-hidden />;
+      return (
+        <Usb
+          className={iconClass}
+          aria-hidden
+        />
+      );
     default:
-      return <KeyRound className={iconClass} aria-hidden />;
+      return (
+        <KeyRound
+          className={iconClass}
+          aria-hidden
+        />
+      );
   }
 }

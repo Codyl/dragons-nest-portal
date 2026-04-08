@@ -15,15 +15,12 @@ const DeleteAccountForm = () => {
   const hasPassword = user?.hasPassword ?? true;
   const hasGoogle = user?.loginMethods?.includes('GOOGLE') ?? false;
   const isGoogleOnlyDeletion = !hasPassword && hasGoogle;
-  const requiresTotp =
-    hasPassword && user?.softwareTokenMfaEnabled === true;
+  const requiresTotp = hasPassword && user?.softwareTokenMfaEnabled === true;
 
   const schema = useMemo(() => {
     return z
       .object({
-        password: z
-          .string()
-          .min(8, 'Password must be at least 8 characters'),
+        password: z.string().min(8, 'Password must be at least 8 characters'),
         mfaCode: z.string(),
       })
       .superRefine((val, ctx) => {
@@ -34,8 +31,7 @@ const DeleteAccountForm = () => {
         if (code.length < 6) {
           ctx.addIssue({
             code: 'custom',
-            message:
-              'Enter the 6-digit code from your authenticator app',
+            message: 'Enter the 6-digit code from your authenticator app',
             path: ['mfaCode'],
           });
           return;
@@ -93,8 +89,8 @@ const DeleteAccountForm = () => {
         className="text-destructive text-sm"
         data-testid="delete-account-unsupported"
       >
-        Account deletion is not available for this sign-in setup. Please
-        contact support.
+        Account deletion is not available for this sign-in setup. Please contact
+        support.
       </div>
     );
   }
@@ -124,7 +120,7 @@ const DeleteAccountForm = () => {
                   });
                 }
               }}
-              onError={() => { }}
+              onError={() => {}}
             />
           </div>
         )}
@@ -135,9 +131,7 @@ const DeleteAccountForm = () => {
             disabled={isPending}
             isPending={isPending}
             data-testid="delete-account-google-confirm"
-            onClick={() =>
-              deleteAccount({ googleCredential: 'x'.repeat(40) })
-            }
+            onClick={() => deleteAccount({ googleCredential: 'x'.repeat(40) })}
           >
             Confirm delete with Google
           </Button>

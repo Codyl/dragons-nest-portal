@@ -2,11 +2,7 @@ import WelcomePage from '@/components/pages/welcome-page';
 import UserServices from '@/api/services/user.services';
 import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
-import {
-  createFileRoute,
-  redirect,
-  useRouter,
-} from '@tanstack/react-router';
+import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const Route = createFileRoute('/(private)/_private/welcome')({

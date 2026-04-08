@@ -179,7 +179,7 @@ const LoginMethodSettingsSection = ({ className }: { className?: string }) => {
                         handleConnectGoogle(credentialResponse.credential);
                       }
                     }}
-                    onError={() => { }}
+                    onError={() => {}}
                   />
                 )}
                 {window.Cypress && (

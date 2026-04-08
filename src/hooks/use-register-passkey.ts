@@ -11,8 +11,8 @@ const useRegisterPasskey = () => {
     mutationFn: async () => {
       const { data } = await UserServices.getWebAuthnRegistrationOptions();
       const credential = await startRegistration({
-        optionsJSON: data
-          .credentialCreationOptions as PublicKeyCredentialCreationOptionsJSON,
+        optionsJSON:
+          data.credentialCreationOptions as PublicKeyCredentialCreationOptionsJSON,
       });
       await UserServices.completeWebAuthnRegistration(
         credential as unknown as Record<string, unknown>,

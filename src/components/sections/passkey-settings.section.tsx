@@ -56,8 +56,7 @@ function PasskeySettingsRow({
           Date created: {formatDate(passkey.createdAt)}
         </p>
         <p className="text-sm text-muted-foreground">
-          Last used:{' '}
-          {passkey.lastUsedAt ? formatDate(passkey.lastUsedAt) : '—'}
+          Last used: {passkey.lastUsedAt ? formatDate(passkey.lastUsedAt) : '—'}
         </p>
       </div>
       <Button
@@ -77,7 +76,12 @@ function PasskeySettingsRow({
 }
 
 const PasskeySettingsSection = ({ className }: { className?: string }) => {
-  const { data: passkeys = [], isLoading, isError, refetch } = usePasskeysList();
+  const {
+    data: passkeys = [],
+    isLoading,
+    isError,
+    refetch,
+  } = usePasskeysList();
   const registerPasskey = useRegisterPasskey();
   const deletePasskey = useDeletePasskey();
   const [removeCredentialId, setRemoveCredentialId] = useState<string | null>(
@@ -103,7 +107,10 @@ const PasskeySettingsSection = ({ className }: { className?: string }) => {
               className="flex items-center gap-2 py-8 text-muted-foreground"
               data-testid="passkeys-loading"
             >
-              <Loader2 className="size-5 animate-spin" aria-hidden />
+              <Loader2
+                className="size-5 animate-spin"
+                aria-hidden
+              />
               Loading passkeys…
             </div>
           )}
@@ -136,7 +143,10 @@ const PasskeySettingsSection = ({ className }: { className?: string }) => {
                   </span>
                 </div>
               )}
-              <ul className="flex flex-col" aria-label="Passkeys on this account">
+              <ul
+                className="flex flex-col"
+                aria-label="Passkeys on this account"
+              >
                 {passkeys.map((pk) => (
                   <PasskeySettingsRow
                     key={pk.credentialId}
@@ -174,7 +184,10 @@ const PasskeySettingsSection = ({ className }: { className?: string }) => {
                     {registerPasskey.isPending
                       ? 'Creating passkey…'
                       : 'Create a new passkey'}
-                    <Plus className="size-4" aria-hidden />
+                    <Plus
+                      className="size-4"
+                      aria-hidden
+                    />
                   </Button>
                   {registerPasskey.isSuccess && (
                     <p
