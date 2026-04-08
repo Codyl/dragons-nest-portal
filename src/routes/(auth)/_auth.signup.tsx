@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import CreateAccountForm from '@/components/forms/create-account.form';
-import CommonCard from '@/components/cards/common-card';
+import SignupFlow from '@/components/forms/signup-flow';
 
 export const Route = createFileRoute('/(auth)/_auth/signup')({
   head: () => ({
@@ -13,12 +12,5 @@ export const Route = createFileRoute('/(auth)/_auth/signup')({
 });
 
 function Signup() {
-  return (
-    <CommonCard
-      title="Create Account"
-      description="Enter your email below to create your account"
-    >
-      <CreateAccountForm />
-    </CommonCard>
-  );
+  return <SignupFlow />;
 }
