@@ -1,5 +1,10 @@
 import type { RouterContext } from '@/App';
-import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute('/(auth)/_auth')({
@@ -53,7 +58,7 @@ function RouteComponent() {
         </div>
       </header>
       <main className="container mx-auto flex w-full flex-1 justify-center px-4 py-6">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-2xl">
           <Outlet />
         </div>
       </main>

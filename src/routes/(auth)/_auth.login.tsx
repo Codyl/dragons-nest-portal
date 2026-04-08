@@ -42,8 +42,7 @@ function Login() {
     router.navigate({ to: '/verify-username' });
   }
 
-  const canPasskey =
-    availablePasswordlessChallenges.includes('WEB_AUTHN');
+  const canPasskey = availablePasswordlessChallenges.includes('WEB_AUTHN');
   const canPassword = availablePasswordChallenges.length > 0;
 
   const description =
@@ -58,7 +57,10 @@ function Login() {
   }
 
   return (
-    <CommonCard title="Login" description={description}>
+    <CommonCard
+      title="Login"
+      description={description}
+    >
       <MFAAuthenticatorQRCodeModal
         show={showMfaSetupModal}
         setShow={setShowMfaSetupModal}

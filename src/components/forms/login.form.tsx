@@ -77,7 +77,7 @@ const LoginForm = ({ className }: { className?: string }) => {
               localStorage.setItem(
                 'DeviceKey',
                 data.data.AuthenticationResult.NewDeviceMetadata.DeviceKey ||
-                '',
+                  '',
               );
               localStorage.setItem(
                 'DeviceGroupKey',

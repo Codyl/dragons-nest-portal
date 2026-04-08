@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import CommonCard from '@/components/cards/common-card';
 import useConsumeRecoveryMagicLink from '@/hooks/use-consume-recovery-magic-link';
 
-export const Route = createFileRoute('/(auth)/_auth/account-recovery/magic-link')(
-  {
-    component: AccountRecoveryMagicLink,
-  },
-);
+export const Route = createFileRoute(
+  '/(auth)/_auth/account-recovery/magic-link',
+)({
+  component: AccountRecoveryMagicLink,
+});
 
 function AccountRecoveryMagicLink() {
   const router = useRouter();

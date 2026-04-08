@@ -25,8 +25,8 @@ function AccountRecovery() {
       <div className="space-y-4">
         <div className="text-sm text-muted-foreground">
           If you cannot sign in because of lost TOTP, email access, or any other
-          reason, contact support first. A one-time magic link is only sent after
-          confirming your recent account activity over the phone.
+          reason, contact support first. A one-time magic link is only sent
+          after confirming your recent account activity over the phone.
         </div>
         <div className="text-sm">
           <p>
