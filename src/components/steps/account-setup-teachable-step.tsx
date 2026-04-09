@@ -6,13 +6,29 @@ import useSubjects from '@/hooks/use-subjects';
 import {
   newCourseRow,
   teachableCoursesFormIsSubmittable,
+  type GetTeachableSubject,
   type TeachableCourseDraft,
 } from '@/lib/teachable-course-validation';
 import { BookOpen, Plus } from 'lucide-react';
+import { useMemo } from 'react';
 
 const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
   const { form, submitOnboarding } = useAccountSetupForm();
   const { data: subjects = [], isLoading } = useSubjects();
+
+  const getSubject = useMemo((): GetTeachableSubject => {
+    const byId = new Map(subjects.map((s) => [s._id, s]));
+    return (subjectId: string) => {
+      const s = byId.get(subjectId);
+      if (!s) return undefined;
+
+      return {
+        slug: s.slug,
+        name: s.name,
+        isEnrichment: s.isEnrichment,
+      };
+    };
+  }, [subjects]);
 
   const beigeSelectClassName =
     'border-stone-200 bg-[#f5f1eb] h-9 w-full rounded-md border px-3 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50';
@@ -47,7 +63,7 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
           setRows([...rows, newCourseRow()]);
         };
 
-        const canFinish = teachableCoursesFormIsSubmittable(rows);
+        const canFinish = teachableCoursesFormIsSubmittable(rows, getSubject);
 
         const tryFinish = () => {
           if (!canFinish) return;
@@ -66,26 +82,35 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
               />
             }
             title="Courses you can teach"
-            subtitle="Add each subject you offer, with grade band and curriculum. You can edit this later."
+            subtitle="Add each subject you are willing to teach to get a 10% discount on your subscription. You can edit this later."
             footer={
-              <div className="flex gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="h-11 shrink-0 rounded-xl border-stone-300 bg-white px-5 font-medium text-stone-900 hover:bg-stone-50"
-                  onClick={onBack}
-                >
-                  Back
-                </Button>
-                <Button
-                  type="button"
-                  className="h-11 min-w-0 flex-1 rounded-xl bg-[#8b7355] text-base font-semibold text-white hover:bg-[#7a6549] disabled:opacity-60"
-                  onClick={tryFinish}
-                  disabled={!canFinish}
-                  data-testid="account-setup-teachable-continue"
-                >
-                  Finish setup
-                </Button>
+              <div>
+                <div className="flex gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-11 shrink-0 rounded-xl border-stone-300 bg-white px-5 font-medium text-stone-900 hover:bg-stone-50"
+                    onClick={onBack}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    type="button"
+                    className="h-11 min-w-0 flex-1 rounded-xl bg-[#8b7355] text-base font-semibold text-white hover:bg-[#7a6549] disabled:opacity-60"
+                    onClick={tryFinish}
+                    disabled={!canFinish}
+                    data-testid="account-setup-teachable-continue"
+                  >
+                    Finish setup
+                  </Button>
+                </div>
+                {!canFinish && (
+                  <div
+                    className="text-xs leading-snug text-destructive mt-2"
+                  >
+                    You have at least one course that is incomplete. Remove the course or finish adding the required information to continue.
+                  </div>
+                )}
               </div>
             }
           >
@@ -98,6 +123,7 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
                   key={r.id}
                   row={r}
                   subjectOptions={subjectOptions}
+                  getSubject={getSubject}
                   subjectsLoading={isLoading}
                   beigeSelectClassName={beigeSelectClassName}
                   onChangePatch={(patch) => updateRow(r.id, patch)}

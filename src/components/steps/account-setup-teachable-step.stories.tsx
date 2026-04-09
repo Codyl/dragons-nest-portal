@@ -31,6 +31,7 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * Cypress: `src/components/steps/account-setup-teachable-step.cy.tsx`.
+ * Reference (form / subjects intercept): `src/components/forms/account-setup.cy.tsx`.
  * Row UI Storybook: `src/components/steps/course-form-row.stories.tsx`.
  */
 export const Default: Story = {};

@@ -6,18 +6,23 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
+  type MutableRefObject,
   type ReactNode,
 } from 'react';
 import { z } from 'zod';
 
 import UserServices from '@/api/services/user.services';
 import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
+import useSubjects from '@/hooks/use-subjects';
 import type { ExpectedBirthBand } from '@/lib/account-setup-flow';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
 import { newStudentRow } from '@/lib/pending-student-draft';
+import type { Subject } from '@/api/services/subjects.services';
 import {
   draftGradesToApiPayload,
   newCourseRow,
+  rowIsComplete,
   teachableCoursesFormIsSubmittable,
   type TeachableCourseDraft,
 } from '@/lib/teachable-course-validation';
@@ -102,7 +107,10 @@ function normalizeUsPhoneToE164(raw: string): string {
   return raw.trim().startsWith('+') ? raw.trim() : `+${digits}`;
 }
 
-function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
+function buildAccountSetupSchema(
+  expectedBirthBand: ExpectedBirthBand,
+  subjectsRef: MutableRefObject<Subject[]>,
+) {
   return z
     .object({
       accountType: z.enum(['adult', 'student']),
@@ -231,13 +239,25 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
           });
         }
 
+        const getSubject = (subjectId: string) => {
+          const s = subjectsRef.current.find((x) => x._id === subjectId);
+          if (!s) return undefined;
+
+          return {
+            slug: s.slug,
+            name: s.name,
+            isEnrichment: s.isEnrichment,
+          };
+        };
+
         const coursesOk = teachableCoursesFormIsSubmittable(
           data.teachableCourses,
+          getSubject,
         );
-        if (!coursesOk || data.teachableCourses.length < 1) {
+        if (!coursesOk) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'Add at least one complete course row',
+            message: 'Complete each started course or clear those rows',
             path: ['teachableCourses'],
           });
         }
@@ -260,9 +280,12 @@ const AccountSetupForm = ({
 }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { data: subjects = [] } = useSubjects();
+  const subjectsRef = useRef<Subject[]>([]);
+  subjectsRef.current = subjects;
 
   const accountSetupSchema = useMemo(
-    () => buildAccountSetupSchema(expectedBirthBand),
+    () => buildAccountSetupSchema(expectedBirthBand, subjectsRef),
     [expectedBirthBand],
   );
 
@@ -327,18 +350,31 @@ const AccountSetupForm = ({
             : undefined,
         teachableCourses:
           value.accountType === 'adult'
-            ? value.teachableCourses.map((c) => {
-                const { matchesAllGrades, grades } = draftGradesToApiPayload(
-                  c.grades,
-                );
-                return {
-                  className: c.className.trim(),
-                  subjectId: c.subjectId,
-                  matchesAllGrades,
-                  grades,
-                  curriculum: c.curriculum,
-                };
-              })
+            ? value.teachableCourses
+                .filter((c) =>
+                  rowIsComplete(c, (subjectId) => {
+                    const s = subjectsRef.current.find((x) => x._id === subjectId);
+                    if (!s) return undefined;
+
+                    return {
+                      slug: s.slug,
+                      name: s.name,
+                      isEnrichment: s.isEnrichment,
+                    };
+                  }),
+                )
+                .map((c) => {
+                  const { matchesAllGrades, grades } = draftGradesToApiPayload(
+                    c.grades,
+                  );
+                  return {
+                    className: c.className.trim(),
+                    subjectId: c.subjectId,
+                    matchesAllGrades,
+                    grades,
+                    curriculum: c.curriculum,
+                  };
+                })
             : undefined,
       });
 

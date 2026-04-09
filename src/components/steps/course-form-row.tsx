@@ -10,7 +10,12 @@ import {
 } from '@/lib/homeschool-options';
 import {
   ANY_GRADE_VALUE,
+  getMaxConsecutiveGradesForSubject,
+  homeschoolGradeOptionsWithinSpanLimit,
   reconcileGradesAfterMultiSelect,
+  rowGradeSpanViolationMessage,
+  selectedGradesConsecutiveSpan,
+  type GetTeachableSubject,
   type TeachableCourseDraft,
 } from '@/lib/teachable-course-validation';
 import { cn } from '@/lib/utils';
@@ -91,6 +96,7 @@ const gradeSelectStyles: StylesConfig<GradeOption, true> = {
 export type CourseFormRowProps = {
   row: TeachableCourseDraft;
   subjectOptions: SelectFieldOption[];
+  getSubject: GetTeachableSubject;
   subjectsLoading?: boolean;
   beigeSelectClassName: string;
   onChangePatch: (patch: Partial<TeachableCourseDraft>) => void;
@@ -101,13 +107,43 @@ export type CourseFormRowProps = {
 export default function CourseFormRow({
   row,
   subjectOptions,
+  getSubject,
   subjectsLoading = false,
   beigeSelectClassName,
   onChangePatch,
   showRemove,
   onRemove,
 }: CourseFormRowProps) {
-  const gradeOptions = useMemo(() => GRADE_OPTIONS_WITH_ANY, []);
+  const selectedSubject = getSubject(row.subjectId);
+  const allowAnyGrade = selectedSubject?.isEnrichment === true;
+  const subjectResolved = Boolean(
+    row.subjectId.trim().length > 0 && selectedSubject,
+  );
+  const spanLimit = selectedSubject
+    ? getMaxConsecutiveGradesForSubject(selectedSubject)
+    : null;
+
+  const gradeOptions = useMemo((): GradeOption[] => {
+    if (!subjectResolved) return [];
+
+    if (allowAnyGrade) return GRADE_OPTIONS_WITH_ANY;
+
+    const limited = homeschoolGradeOptionsWithinSpanLimit(row.grades, spanLimit);
+    const byValue = new Map(
+      HOMESCHOOL_GRADE_OPTIONS.map((o) => [o.value, o] as const),
+    );
+    const out: GradeOption[] = [...limited];
+    for (const g of row.grades) {
+      if (g === ANY_GRADE_VALUE) continue;
+
+      if (!out.some((o) => o.value === g)) {
+        const o = byValue.get(g);
+        if (o) out.push(o);
+      }
+    }
+
+    return out;
+  }, [subjectResolved, allowAnyGrade, row.grades, spanLimit]);
 
   const gradeValue: MultiValue<GradeOption> = useMemo(() => {
     return row.grades
@@ -116,7 +152,11 @@ export default function CourseFormRow({
   }, [row.grades, gradeOptions]);
 
   const showAnyHint =
-    row.grades.length === 1 && row.grades[0] === ANY_GRADE_VALUE;
+    allowAnyGrade &&
+    row.grades.length === 1 &&
+    row.grades[0] === ANY_GRADE_VALUE;
+
+  const gradeSpanWarning = rowGradeSpanViolationMessage(row, getSubject);
 
   const beigeInputClassName =
     'border-stone-200 bg-[#f5f1eb] h-9 text-sm shadow-xs md:text-sm';
@@ -161,7 +201,24 @@ export default function CourseFormRow({
           options={subjectOptions}
           placeholder="Select subject"
           value={row.subjectId}
-          onValueChange={(v) => onChangePatch({ subjectId: v })}
+          onValueChange={(v) => {
+            const subj = getSubject(v);
+            const allow = subj?.isEnrichment === true;
+            let nextGrades = row.grades;
+            if (!allow && nextGrades.includes(ANY_GRADE_VALUE)) {
+              nextGrades = nextGrades.filter((g) => g !== ANY_GRADE_VALUE);
+            }
+
+            if (subj && !subj.isEnrichment) {
+              const lim = getMaxConsecutiveGradesForSubject(subj);
+              const sp = selectedGradesConsecutiveSpan(nextGrades);
+              if (lim !== null && sp !== null && sp > lim) {
+                nextGrades = [];
+              }
+            }
+
+            onChangePatch({ subjectId: v, grades: nextGrades });
+          }}
           selectClassName={beigeSelectClassName}
           className="gap-1.5"
           disabled={subjectsLoading}
@@ -170,30 +227,41 @@ export default function CourseFormRow({
         <Field className="gap-1.5">
           <FieldLabel htmlFor={`grade-select-${row.id}`}>Grade</FieldLabel>
           <div data-testid={`select-grade-${row.id}`}>
-          <Select<GradeOption, true>
-            inputId={`grade-select-${row.id}`}
-            instanceId={`grade-select-${row.id}`}
-            isMulti
-            options={gradeOptions}
-            value={gradeValue}
-            placeholder="Select grade(s)"
-            isDisabled={subjectsLoading}
-            closeMenuOnSelect={false}
-            hideSelectedOptions={false}
-            classNamePrefix="teachable-grade"
-            theme={gradeSelectTheme}
-            styles={gradeSelectStyles}
-            onChange={(next: MultiValue<GradeOption>) => {
-              const nextVals = (next ?? []).map((o) => o.value);
-              const reconciled = reconcileGradesAfterMultiSelect(
-                row.grades,
-                nextVals,
-              );
-              onChangePatch({ grades: reconciled });
-            }}
-            aria-invalid={undefined}
-          />
+            <Select<GradeOption, true>
+              inputId={`grade-select-${row.id}`}
+              instanceId={`grade-select-${row.id}`}
+              isMulti
+              options={gradeOptions}
+              value={gradeValue}
+              placeholder={
+                subjectResolved ? 'Select grade(s)' : 'Select a subject first'
+              }
+              isDisabled={subjectsLoading || !subjectResolved}
+              closeMenuOnSelect={false}
+              hideSelectedOptions={false}
+              classNamePrefix="teachable-grade"
+              theme={gradeSelectTheme}
+              styles={gradeSelectStyles}
+              onChange={(next: MultiValue<GradeOption>) => {
+                const nextVals = (next ?? []).map((o) => o.value);
+                const reconciled = reconcileGradesAfterMultiSelect(
+                  row.grades,
+                  nextVals,
+                  allowAnyGrade,
+                );
+                onChangePatch({ grades: reconciled });
+              }}
+              aria-invalid={undefined}
+            />
           </div>
+          {gradeSpanWarning && (
+            <p
+              className="text-destructive text-xs leading-snug"
+              data-testid={`grade-span-warning-${row.id}`}
+            >
+              {gradeSpanWarning}
+            </p>
+          )}
           {showAnyHint && (
             <p className="text-muted-foreground text-xs leading-snug">
               Selecting &apos;Any&apos; will show your class to all students
@@ -204,6 +272,7 @@ export default function CourseFormRow({
 
         <SelectField
           label="Curriculum"
+          tooltip="The curriculum you select you will use for your class materials. You can access these for free using our portal."
           id={`curr-${row.id}`}
           options={HOMESCHOOL_CURRICULUM_OPTIONS}
           placeholder="Select curriculum"
@@ -213,7 +282,10 @@ export default function CourseFormRow({
           className="gap-1.5"
           disabled={subjectsLoading}
         />
+        <div className="text-xs leading-snug text-muted-foreground">Read more about these curriculum options <Button className="text-xs leading-snug -mt-3" variant="link" onClick={() => {
+          window.open('https://www.google.com', '_blank');
+        }}>here</Button>.</div>
       </div>
-    </div>
+    </div >
   );
 }
