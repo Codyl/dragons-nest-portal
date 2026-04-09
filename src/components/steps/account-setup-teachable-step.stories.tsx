@@ -29,4 +29,5 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Reference for Cypress component coverage: `src/components/forms/account-setup.cy.tsx`. */
 export const Default: Story = {};

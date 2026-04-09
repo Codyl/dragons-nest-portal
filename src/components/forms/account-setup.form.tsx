@@ -1,13 +1,24 @@
 import { useForm, type ReactFormExtendedApi } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
-import { createContext, useContext, useEffect, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  type ReactNode,
+} from 'react';
 import { z } from 'zod';
 
 import UserServices from '@/api/services/user.services';
 import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
+import type { ExpectedBirthBand } from '@/lib/account-setup-flow';
+import {
+  birthBandValidationMessage,
+  birthDateIsoMatchesExpectedBand,
+  parseIsoDateOnlyLocal,
+} from '@/lib/account-setup-birth';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
-import { readSignupAccountTypeFromSession } from '@/utils/constants/signup.constants';
 import { newStudentRow } from '@/components/forms/signup-add-students.step';
 import {
   newCourseRow,
@@ -17,7 +28,8 @@ import {
 export type AccountSetupFormValues = {
   accountType: 'adult' | 'student';
   name: string;
-  age: string;
+  /** `YYYY-MM-DD` from date input; not prefilled from signup age gate. */
+  birthDate: string;
   state: string;
   zipCode: string;
   phoneNumber: string;
@@ -52,6 +64,7 @@ type AccountSetupFormContextValue = {
   stepIndex: number;
   totalSteps: number;
   submitOnboarding: () => Promise<void>;
+  expectedBirthBand: ExpectedBirthBand;
 };
 
 const AccountSetupFormContext = createContext<
@@ -76,119 +89,144 @@ function mapAvatarToEmoji(avatarId: string): string {
 function normalizeUsPhoneToE164(raw: string): string {
   const digits = raw.replace(/\D/g, '');
   if (digits.length === 10) return `+1${digits}`;
+
   if (digits.length === 11 && digits.startsWith('1')) return `+${digits}`;
+
   return raw.trim().startsWith('+') ? raw.trim() : `+${digits}`;
 }
 
-const accountSetupSchema = z
-  .object({
-    accountType: z.enum(['adult', 'student']),
-    name: z.string().min(1, 'Name is required'),
-    age: z
-      .string()
-      .min(1, 'Age is required')
-      .refine((v) => /^\d+$/.test(v) && Number(v) > 0, {
-        message: 'Enter a valid age',
-      }),
-    state: z.string().min(1, 'Select your state'),
-    zipCode: z
-      .string()
-      .min(1, 'ZIP code is required')
-      .regex(/^\d{5}$/, 'Enter a valid 5-digit ZIP'),
-    phoneNumber: z.string().min(1, 'Phone number is required'),
-    avatar: z.string().min(1, 'Choose an avatar'),
-    interests: z.array(z.string()),
-    shortTermGoal: z.string(),
-    longTermGoal: z.string(),
-    learningStyles: z.array(z.string()),
-    pendingStudents: z.array(
-      z.object({
-        id: z.string(),
-        displayName: z.string(),
-        age: z.string(),
-      }),
-    ),
-    teachableCourses: z.array(
-      z.object({
-        id: z.string(),
-        subjectId: z.string(),
-        grade: z.string(),
-        curriculum: z.string(),
-      }),
-    ),
-  })
-  .superRefine((data, ctx) => {
-    const digits = data.phoneNumber.replace(/\D/g, '');
-    if (digits.length < 10) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Enter a valid US phone number',
-        path: ['phoneNumber'],
-      });
-    }
-    if (data.accountType === 'student') {
-      if (data.interests.length < 1) {
+function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
+  return z
+    .object({
+      accountType: z.enum(['adult', 'student']),
+      name: z.string().min(1, 'Name is required'),
+      birthDate: z.string().min(1, 'Date of birth is required'),
+      state: z.string().min(1, 'Select your state'),
+      zipCode: z
+        .string()
+        .min(1, 'ZIP code is required')
+        .regex(/^\d{5}$/, 'Enter a valid 5-digit ZIP'),
+      phoneNumber: z.string().min(1, 'Phone number is required'),
+      avatar:
+        expectedBirthBand === 'adult'
+          ? z.string()
+          : z.string().min(1, 'Choose an avatar'),
+      interests: z.array(z.string()),
+      shortTermGoal: z.string(),
+      longTermGoal: z.string(),
+      learningStyles: z.array(z.string()),
+      pendingStudents: z.array(
+        z.object({
+          id: z.string(),
+          displayName: z.string(),
+          age: z.string(),
+        }),
+      ),
+      teachableCourses: z.array(
+        z.object({
+          id: z.string(),
+          subjectId: z.string(),
+          grade: z.string(),
+          curriculum: z.string(),
+        }),
+      ),
+    })
+    .superRefine((data, ctx) => {
+      const digits = data.phoneNumber.replace(/\D/g, '');
+      if (digits.length < 10) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Select at least one subject',
-          path: ['interests'],
+          message: 'Enter a valid US phone number',
+          path: ['phoneNumber'],
         });
       }
-    } else {
-      const validStudents = data.pendingStudents.every((s) => {
-        const n = Number.parseInt(s.age, 10);
-        return (
-          s.displayName.trim().length > 0 &&
-          Number.isFinite(n) &&
-          n >= 1 &&
-          n <= 120
+
+      if (!parseIsoDateOnlyLocal(data.birthDate)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Enter a valid date of birth',
+          path: ['birthDate'],
+        });
+        return;
+      }
+
+      if (!birthDateIsoMatchesExpectedBand(data.birthDate, expectedBirthBand)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: birthBandValidationMessage(expectedBirthBand),
+          path: ['birthDate'],
+        });
+      }
+
+      if (data.accountType === 'student') {
+        if (data.interests.length < 1) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Select at least one subject',
+            path: ['interests'],
+          });
+        }
+      } else {
+        const validStudents = data.pendingStudents.every((s) => {
+          const n = Number.parseInt(s.age, 10);
+          return (
+            s.displayName.trim().length > 0 &&
+            Number.isFinite(n) &&
+            n >= 1 &&
+            n <= 120
+          );
+        });
+        if (!validStudents || data.pendingStudents.length < 1) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Add at least one student with name and age',
+            path: ['pendingStudents'],
+          });
+        }
+
+        const coursesOk = data.teachableCourses.every(
+          (c) =>
+            c.subjectId.trim().length > 0 &&
+            c.grade.trim().length > 0 &&
+            c.curriculum.trim().length > 0,
         );
-      });
-      if (!validStudents || data.pendingStudents.length < 1) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Add at least one student with name and age',
-          path: ['pendingStudents'],
-        });
+        if (!coursesOk || data.teachableCourses.length < 1) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Add at least one complete course row',
+            path: ['teachableCourses'],
+          });
+        }
       }
-      const coursesOk = data.teachableCourses.every(
-        (c) =>
-          c.subjectId.trim().length > 0 &&
-          c.grade.trim().length > 0 &&
-          c.curriculum.trim().length > 0,
-      );
-      if (!coursesOk || data.teachableCourses.length < 1) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Add at least one complete course row',
-          path: ['teachableCourses'],
-        });
-      }
-    }
-  });
+    });
+}
 
 const AccountSetupForm = ({
   children,
   stepIndex,
   totalSteps,
+  expectedBirthBand,
+  initialFormAccountType,
 }: {
   children: ReactNode;
   stepIndex: number;
   totalSteps: number;
+  expectedBirthBand: ExpectedBirthBand;
+  initialFormAccountType: 'adult' | 'student';
 }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const accountType =
-    typeof window !== 'undefined'
-      ? readSignupAccountTypeFromSession()
-      : 'student';
+  const accountSetupSchema = useMemo(
+    () => buildAccountSetupSchema(expectedBirthBand),
+    [expectedBirthBand],
+  );
 
   const form = useForm({
     defaultValues: {
-      accountType,
+      accountType: initialFormAccountType,
       name: '',
-      age: '',
+      birthDate: '',
       state: '',
       zipCode: '',
       phoneNumber: '',
@@ -205,11 +243,15 @@ const AccountSetupForm = ({
     },
     onSubmit: async ({ value }) => {
       const phoneE164 = normalizeUsPhoneToE164(value.phoneNumber);
-      const avatarEmoji = mapAvatarToEmoji(value.avatar);
+      const avatarId =
+        value.avatar.trim().length > 0
+          ? value.avatar
+          : (AVATAR_OPTIONS[0]?.id ?? 'dragon');
+      const avatarEmoji = mapAvatarToEmoji(avatarId);
 
       await UserServices.submitAccountSetup({
         name: value.name,
-        age: Number(value.age),
+        birthDate: value.birthDate.trim(),
         avatar: avatarEmoji,
         interests: value.interests,
         shortTermGoal: value.shortTermGoal,
@@ -246,10 +288,9 @@ const AccountSetupForm = ({
   });
 
   useEffect(() => {
-    form.setFieldValue('accountType', readSignupAccountTypeFromSession());
-    // form instance is stable for the lifetime of the provider
+    form.setFieldValue('accountType', initialFormAccountType);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialFormAccountType]);
 
   const submitOnboarding = async () => {
     await form.handleSubmit();
@@ -257,7 +298,13 @@ const AccountSetupForm = ({
 
   return (
     <AccountSetupFormContext.Provider
-      value={{ form, stepIndex, totalSteps, submitOnboarding }}
+      value={{
+        form,
+        stepIndex,
+        totalSteps,
+        submitOnboarding,
+        expectedBirthBand,
+      }}
     >
       <form
         className="min-h-0"

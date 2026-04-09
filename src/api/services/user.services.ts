@@ -41,6 +41,7 @@ const UserServices = {
       passkeyCount?: number;
       firstLoggedInAt?: string | null;
       onboardingCompletedAt?: string | null;
+      accountStatus?: 'MANAGED' | 'INDEPENDENT' | 'ADULT' | null;
     };
   }> => {
     const response = await api.get('profile');
@@ -55,7 +56,8 @@ const UserServices = {
   },
   submitAccountSetup: async (json: {
     name: string;
-    age: number;
+    /** `YYYY-MM-DD` from date input */
+    birthDate: string;
     avatar: string;
     interests: string[];
     shortTermGoal: string;

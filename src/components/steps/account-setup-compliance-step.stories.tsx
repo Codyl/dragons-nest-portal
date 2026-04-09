@@ -18,10 +18,13 @@ const meta = {
   },
   tags: ['autodocs'],
   decorators: [
-    (Story) => (
+    (Story, context) => (
       <AccountSetupFormStoryWrapper
         stepIndex={0}
         totalSteps={3}
+        signupRole={
+          context.parameters.signupRole === 'adult' ? 'adult' : 'student'
+        }
       >
         <Story />
       </AccountSetupFormStoryWrapper>
@@ -37,6 +40,11 @@ type Story = StoryObj<typeof meta>;
 
 /** Primary story; same name as legacy composeStories export for Cypress. */
 export const ComplianceStep: Story = {};
+
+/** Adult onboarding: no avatar picker on compliance (default first avatar at submit). */
+export const AdultComplianceNoAvatar: Story = {
+  parameters: { signupRole: 'adult' },
+};
 
 export const Validation: Story = {
   play: async ({ canvasElement }) => {

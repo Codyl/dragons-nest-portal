@@ -4,8 +4,6 @@ import { userEvent, within } from 'storybook/test';
 import AccountSetupForm from './account-setup.form';
 import AccountSetupComplianceStep from '@/components/steps/account-setup-compliance-step';
 import AccountSetupInterestsStep from '@/components/steps/account-setup-interests-step';
-import AccountSetupAddStudentsStep from '@/components/steps/account-setup-add-students-step';
-import AccountSetupTeachableStep from '@/components/steps/account-setup-teachable-step';
 import {
   createMemoryHistory,
   createRootRoute,
@@ -14,6 +12,9 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+/** ~15–16 years before “today”; valid for teen13to17 band in Storybook/Cypress (2026-era). */
+export const STORY_TEEN_COMPLIANCE_BIRTH_DATE = '2010-06-01';
 
 function AccountSetupStudentFlow({
   initialStep = 0,
@@ -26,6 +27,8 @@ function AccountSetupStudentFlow({
     <AccountSetupForm
       stepIndex={step}
       totalSteps={totalSteps}
+      expectedBirthBand="teen13to17"
+      initialFormAccountType="student"
     >
       {step === 0 && <AccountSetupComplianceStep onNext={() => setStep(1)} />}
       {step === 1 && (
@@ -35,6 +38,19 @@ function AccountSetupStudentFlow({
           onNext={() => undefined}
         />
       )}
+    </AccountSetupForm>
+  );
+}
+
+function AccountSetupAdultComplianceFlow() {
+  return (
+    <AccountSetupForm
+      stepIndex={0}
+      totalSteps={3}
+      expectedBirthBand="adult"
+      initialFormAccountType="adult"
+    >
+      <AccountSetupComplianceStep onNext={() => {}} />
     </AccountSetupForm>
   );
 }
@@ -56,6 +72,7 @@ const formFlowMeta = {
           context.parameters.signupRole === 'adult' ? 'adult' : 'student';
         sessionStorage.setItem('signupRole', role);
       }
+
       const queryClient = new QueryClient({
         defaultOptions: {
           queries: { retry: false },
@@ -108,7 +125,10 @@ export const ComplianceToInterests: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('input-name'), 'Alex');
-    await userEvent.type(canvas.getByTestId('input-age'), '11');
+    await userEvent.type(
+      canvas.getByTestId('input-birth-date'),
+      STORY_TEEN_COMPLIANCE_BIRTH_DATE,
+    );
     await userEvent.selectOptions(canvas.getByTestId('input-state'), 'ca');
     await userEvent.type(canvas.getByTestId('input-zip'), '90210');
     await userEvent.type(canvas.getByTestId('input-phone'), '5551234567');
@@ -125,4 +145,10 @@ export const ComplianceValidation: Story = {
     await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
     await canvas.findByTestId('error-message-name');
   },
+};
+
+/** Compliance step with adult birth band (for Cypress: wrong teen date should error). */
+export const AdultComplianceStep: StoryObj<typeof formFlowMeta> = {
+  args: { initialStep: 0 },
+  render: () => <AccountSetupAdultComplianceFlow />,
 };

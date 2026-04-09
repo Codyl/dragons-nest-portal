@@ -15,30 +15,6 @@ const AccountSetupAddStudentsStep = ({
 }) => {
   const { form } = useAccountSetupForm();
 
-  const students = (form.getFieldValue('pendingStudents') as
-    | PendingStudentDraft[]
-    | undefined) ?? [newStudentRow()];
-
-  const setStudents = (next: PendingStudentDraft[]) => {
-    form.setFieldValue('pendingStudents', next);
-  };
-
-  const allValid = students.every((s) => {
-    const ageNum = Number.parseInt(s.age, 10);
-    return (
-      s.displayName.trim().length > 0 &&
-      Number.isFinite(ageNum) &&
-      ageNum >= 1 &&
-      ageNum <= 120
-    );
-  });
-
-  const tryContinue = () => {
-    if (!allValid) return;
-    void form.validateField('pendingStudents', 'change');
-    onNext();
-  };
-
   return (
     <AccountSetupCard
       stepIcon={
@@ -51,15 +27,45 @@ const AccountSetupAddStudentsStep = ({
       subtitle="Create a profile for each learner on your account. You can refine details later."
       footer={null}
     >
-      <SignupAddStudentsStep
-        students={students}
-        onChange={setStudents}
-        onFinish={tryContinue}
-        onBack={onBack}
-        isSubmitting={false}
-        primaryActionLabel="Continue"
-        hideHeader
-      />
+      <form.Field name="pendingStudents">
+        {(field) => {
+          const students =
+            (field.state.value as PendingStudentDraft[] | undefined) ??
+            [newStudentRow()];
+
+          const setStudents = (next: PendingStudentDraft[]) => {
+            field.handleChange(next);
+          };
+
+          const allValid = students.every((s) => {
+            const ageNum = Number.parseInt(s.age, 10);
+            return (
+              s.displayName.trim().length > 0 &&
+              Number.isFinite(ageNum) &&
+              ageNum >= 1 &&
+              ageNum <= 120
+            );
+          });
+
+          const tryContinue = () => {
+            if (!allValid) return;
+            void form.validateField('pendingStudents', 'change');
+            onNext();
+          };
+
+          return (
+            <SignupAddStudentsStep
+              students={students}
+              onChange={setStudents}
+              onFinish={tryContinue}
+              onBack={onBack}
+              isSubmitting={false}
+              primaryActionLabel="Continue"
+              hideHeader
+            />
+          );
+        }}
+      </form.Field>
     </AccountSetupCard>
   );
 };

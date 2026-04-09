@@ -30,7 +30,6 @@ const SignupAddStudentsStep = ({
   onFinish,
   onBack,
   isSubmitting,
-  primaryActionLabel = 'Continue',
   hideHeader = false,
 }: {
   students: PendingStudentDraft[];
@@ -166,11 +165,7 @@ const SignupAddStudentsStep = ({
         data-testid="finish-household-setup"
         onClick={onFinish}
       >
-        {isSubmitting ? (
-          <span data-testid="button-loading-indicator">Saving…</span>
-        ) : (
-          primaryActionLabel
-        )}
+        Continue
       </Button>
       <button
         type="button"

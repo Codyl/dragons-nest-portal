@@ -9,24 +9,17 @@ import AccountSetupCard from '@/components/cards/account-setup-card';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
 import { FieldError } from '@/components/ui/field';
 import { US_STATE_OPTIONS } from '@/lib/us-state-options';
-import { ageFromBirthMonthYear } from '@/lib/signup-age';
-import { readSignupBirthFromSession } from '@/utils/constants/signup.constants';
-import { useEffect, useMemo } from 'react';
+import {
+  birthBandValidationMessage,
+  birthDateIsoMatchesExpectedBand,
+  parseIsoDateOnlyLocal,
+} from '@/lib/account-setup-birth';
+import { normalizePhoneNumber } from '@/utils/helpers/input-normalization.helpers';
+import { formatPhoneNumber } from '@/utils/helpers/formatting.helpers';
+
 const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
-  const { form } = useAccountSetupForm();
-
-  const suggestedAge = useMemo(() => {
-    const { month, year } = readSignupBirthFromSession();
-    if (month == null || year == null) return '';
-    const a = ageFromBirthMonthYear(month, year);
-    return Number.isFinite(a) ? String(a) : '';
-  }, []);
-
-  useEffect(() => {
-    if (suggestedAge && !String(form.getFieldValue('age') ?? '').trim()) {
-      form.setFieldValue('age', suggestedAge);
-    }
-  }, [form, suggestedAge]);
+  const { form, expectedBirthBand } = useAccountSetupForm();
+  const showAvatarSelection = expectedBirthBand !== 'adult';
 
   const beigeInput =
     'border-stone-200 bg-[#f5f1eb] placeholder:text-stone-400 focus-visible:bg-white';
@@ -34,11 +27,11 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
   const tryContinue = async () => {
     const fields = [
       'name',
-      'age',
+      'birthDate',
       'state',
       'zipCode',
       'phoneNumber',
-      'avatar',
+      ...(showAvatarSelection ? (['avatar'] as const) : []),
     ] as const;
     await Promise.all(fields.map((f) => form.validateField(f, 'change')));
     for (const n of fields) {
@@ -86,21 +79,26 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               label="Preferred name"
               placeholder="How should we address you?"
               required
-              inputClassName={beigeInput}
               className="gap-1.5"
               data-testid="input-name"
             />
           )}
         </form.Field>
         <form.Field
-          name="age"
+          name="birthDate"
           validators={{
             onChange: ({ value }) => {
-              const v = String(value);
-              if (v.length === 0) return 'Age is required';
-              if (!/^\d+$/.test(v) || Number(v) <= 0) {
-                return 'Enter a valid age';
+              const v = String(value).trim();
+              if (v.length === 0) return 'Date of birth is required';
+
+              if (!parseIsoDateOnlyLocal(v)) {
+                return 'Enter a valid date of birth';
               }
+
+              if (!birthDateIsoMatchesExpectedBand(v, expectedBirthBand)) {
+                return birthBandValidationMessage(expectedBirthBand);
+              }
+
               return undefined;
             },
           }}
@@ -108,13 +106,11 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
           {(field) => (
             <InputField
               field={field}
-              label="Age"
-              placeholder="Your age in years"
-              inputMode="numeric"
+              label="Date of birth"
+              type="date"
               required
-              inputClassName={beigeInput}
               className="gap-1.5"
-              data-testid="input-age"
+              data-testid="input-birth-date"
             />
           )}
         </form.Field>
@@ -137,13 +133,12 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
                 placeholder="Select state"
                 selectClassName={cn(
                   'h-9 w-full rounded-md border px-3 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
-                  beigeInput,
                 )}
                 labelClassName="text-sm font-medium text-stone-900"
                 data-testid="input-state"
                 className="gap-1.5"
               />
-              {field.state.value && <Button variant="link" onClick={() => window.open(`https://hslda.org/legal/${US_STATE_OPTIONS.find(s => s.value === field.state.value)?.label.toLowerCase().replace(' ', '-')}`, '_blank')}>Learn more about the homeschool laws in {US_STATE_OPTIONS.find(s => s.value === field.state.value)?.label}</Button>}
+              {field.state.value && <Button type="button" variant="link" onClick={() => window.open(`https://hslda.org/legal/${US_STATE_OPTIONS.find(s => s.value === field.state.value)?.label.toLowerCase().replace(' ', '-')}`, '_blank')}>Learn more about the homeschool laws in {US_STATE_OPTIONS.find(s => s.value === field.state.value)?.label}</Button>}
             </div>
           )}
         </form.Field>
@@ -153,7 +148,9 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
             onChange: ({ value }) => {
               const v = String(value).trim();
               if (v.length === 0) return 'ZIP code is required';
+
               if (!/^\d{5}$/.test(v)) return 'Enter a valid 5-digit ZIP';
+
               return undefined;
             },
           }}
@@ -166,7 +163,6 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               inputMode="numeric"
               maxLength={5}
               required
-              inputClassName={beigeInput}
               className="gap-1.5"
               data-testid="input-zip"
             />
@@ -178,8 +174,10 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
             onChange: ({ value }) => {
               const v = String(value).trim();
               if (v.length === 0) return 'Phone number is required';
+
               const digits = v.replace(/\D/g, '');
               if (digits.length < 10) return 'Enter a valid US phone number';
+
               return undefined;
             },
           }}
@@ -189,72 +187,74 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               field={field}
               label="Mobile phone"
               placeholder="(555) 555-5555"
-              inputMode="tel"
-              autoComplete="tel"
-              required
-              inputClassName={beigeInput}
               className="gap-1.5"
               data-testid="input-phone"
+              normalize={normalizePhoneNumber}
+              format={formatPhoneNumber}
             />
           )}
         </form.Field>
-        <form.Field
-          name="avatar"
-          validators={{
-            onChange: ({ value }) =>
-              !value || String(value).length === 0
-                ? 'Choose an avatar'
-                : undefined,
-          }}
-        >
-          {(field) => (
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-stone-900">
-                Choose your avatar
-              </p>
-              <div
-                className="flex flex-wrap gap-2 sm:flex-nowrap sm:justify-between"
-                role="listbox"
-                aria-label="Avatar choices"
-              >
-                {AVATAR_OPTIONS.map((opt) => {
-                  const selected = field.state.value === opt.id;
-                  return (
-                    <button
-                      key={opt.id}
-                      type="button"
-                      role="option"
-                      aria-selected={selected}
-                      data-testid={`avatar-${opt.id}`}
-                      className={cn(
-                        'flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border-2 text-2xl transition-colors sm:h-16 sm:w-16',
-                        selected
-                          ? 'border-[#8b7355] bg-[#ebe6dc]'
-                          : 'border-stone-200 bg-white hover:border-stone-300',
-                      )}
-                      onClick={() => {
-                        field.handleChange(opt.id);
-                        field.handleBlur();
-                      }}
-                    >
-                      <span className="sr-only">{opt.label}</span>
-                      {opt.emoji}
-                    </button>
-                  );
-                })}
+        {showAvatarSelection && (
+          <form.Field
+            name="avatar"
+            validators={{
+              onChange: ({ value }) =>
+                !value || String(value).length === 0
+                  ? 'Choose an avatar'
+                  : undefined,
+            }}
+          >
+            {(field) => (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-stone-900">
+                  Choose your avatar
+                </p>
+                <div
+                  className="flex flex-wrap gap-2 sm:flex-nowrap sm:justify-between"
+                  role="listbox"
+                  aria-label="Avatar choices"
+                >
+                  {AVATAR_OPTIONS.map((opt) => {
+                    const selected = field.state.value === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        role="option"
+                        aria-selected={selected}
+                        data-testid={`avatar-${opt.id}`}
+                        className={cn(
+                          'flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border-2 text-2xl transition-colors sm:h-16 sm:w-16',
+                          selected
+                            ? 'border-[#8b7355] bg-[#ebe6dc]'
+                            : 'border-stone-200 bg-white hover:border-stone-300',
+                        )}
+                        onClick={() => {
+                          field.handleChange(opt.id);
+                          field.handleBlur();
+                        }}
+                      >
+                        <span className="sr-only">{opt.label}</span>
+                        {opt.emoji}
+                      </button>
+                    );
+                  })}
+                </div>
+                {field.state.meta.isTouched &&
+                  field.state.meta.errors.length > 0 && (
+                    <FieldError
+                      data-testid="error-message-avatar"
+                      errors={
+                        field.state.meta.errors.map((e: unknown) =>
+                          typeof e === 'string' ? { message: e } : e,
+                        ) as { message?: string }[]
+                      }
+                    />
+                  )}
               </div>
-              {field.state.meta.isTouched &&
-                field.state.meta.errors.length > 0 && (
-                  <FieldError
-                    data-testid="error-message-avatar"
-                    errors={field.state.meta.errors.map((e: unknown) =>
-                      typeof e === 'string' ? { message: e } : e,
-                    )}
-                  />
-                )}
-            </div>
-          )}
-        </form.Field>
+            )}
+          </form.Field>
+        )}
       </FieldGroup>
     </AccountSetupCard>
   );

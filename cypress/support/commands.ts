@@ -73,7 +73,10 @@ Cypress.Commands.add('completeAccountSetupIfShown', () => {
     }
 
     cy.get('input[name="name"]').type('Test User');
-    cy.get('input[name="age"]').type('10');
+    cy.get('input[name="birthDate"]').type('2010-06-01');
+    cy.get('[data-testid="input-state"]').select('ca');
+    cy.get('[data-testid="input-zip"]').type('90210');
+    cy.get('[data-testid="input-phone"]').type('5551234567');
     cy.get('[data-testid="avatar-dragon"]').click();
     cy.contains('button', 'Continue').click();
 

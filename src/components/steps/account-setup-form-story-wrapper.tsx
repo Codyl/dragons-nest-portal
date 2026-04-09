@@ -1,4 +1,5 @@
 import AccountSetupForm from '@/components/forms/account-setup.form';
+import type { ExpectedBirthBand } from '@/lib/account-setup-flow';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createMemoryHistory,
@@ -29,6 +30,10 @@ export function AccountSetupFormStoryWrapper({
     sessionStorage.setItem('signupRole', signupRole);
   }
 
+  const expectedBirthBand: ExpectedBirthBand =
+    signupRole === 'adult' ? 'adult' : 'teen13to17';
+  const initialFormAccountType = signupRole === 'adult' ? 'adult' : 'student';
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { retry: false },
@@ -41,6 +46,8 @@ export function AccountSetupFormStoryWrapper({
       <AccountSetupForm
         stepIndex={stepIndex}
         totalSteps={totalSteps}
+        expectedBirthBand={expectedBirthBand}
+        initialFormAccountType={initialFormAccountType}
       >
         {children}
       </AccountSetupForm>

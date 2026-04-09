@@ -4,10 +4,11 @@ import AccountSetupAddStudentsStep from '@/components/steps/account-setup-add-st
 import AccountSetupComplianceStep from '@/components/steps/account-setup-compliance-step';
 import AccountSetupInterestsStep from '@/components/steps/account-setup-interests-step';
 import AccountSetupTeachableStep from '@/components/steps/account-setup-teachable-step';
+import { resolveAccountSetupFlow } from '@/lib/account-setup-flow';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
-import { readSignupAccountTypeFromSession } from '@/utils/constants/signup.constants';
+import { readSignupBirthFromSession } from '@/utils/constants/signup.constants';
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export const Route = createFileRoute('/(private)/_private/account-setup')({
   loader: async () => {
@@ -17,7 +18,9 @@ export const Route = createFileRoute('/(private)/_private/account-setup')({
       throw redirect({ to: '/', replace: true });
     }
 
-    return null;
+    return {
+      accountStatus: res.data?.accountStatus ?? null,
+    };
   },
   head: () => ({
     meta: [
@@ -33,25 +36,35 @@ export const Route = createFileRoute('/(private)/_private/account-setup')({
 });
 
 function AccountSetup() {
-  const [accountType, setAccountType] = useState<'adult' | 'student'>(
-    'student',
-  );
+  const { accountStatus } = Route.useLoaderData();
   const [step, setStep] = useState(0);
 
-  useEffect(() => {
-    setAccountType(readSignupAccountTypeFromSession());
-  }, []);
+  const sessionBirth = useMemo(() => readSignupBirthFromSession(), []);
 
-  const totalSteps = accountType === 'adult' ? 3 : 2;
+  const resolved = useMemo(
+    () =>
+      resolveAccountSetupFlow({
+        accountStatus,
+        sessionMonth: sessionBirth.month,
+        sessionYear: sessionBirth.year,
+      }),
+    [accountStatus, sessionBirth.month, sessionBirth.year],
+  );
+
+  const { setupFlow, expectedBirthBand, formAccountType } = resolved;
+  const totalSteps = setupFlow === 'adult' ? 3 : 2;
+  console.log(setupFlow);
 
   return (
     <AccountSetupForm
       stepIndex={step}
       totalSteps={totalSteps}
+      expectedBirthBand={expectedBirthBand}
+      initialFormAccountType={formAccountType}
     >
       {step === 0 && <AccountSetupComplianceStep onNext={() => setStep(1)} />}
 
-      {accountType === 'student' && step === 1 && (
+      {setupFlow === 'teen' && step === 1 && (
         <AccountSetupInterestsStep
           isLastStep
           onBack={() => setStep(0)}
@@ -59,14 +72,14 @@ function AccountSetup() {
         />
       )}
 
-      {accountType === 'adult' && step === 1 && (
+      {setupFlow === 'adult' && step === 1 && (
         <AccountSetupAddStudentsStep
           onNext={() => setStep(2)}
           onBack={() => setStep(0)}
         />
       )}
 
-      {accountType === 'adult' && step === 2 && (
+      {setupFlow === 'adult' && step === 2 && (
         <AccountSetupTeachableStep onBack={() => setStep(1)} />
       )}
     </AccountSetupForm>

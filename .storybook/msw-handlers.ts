@@ -92,6 +92,8 @@ export const handlers = [
           hasPassword: true,
           hasPasskey: false,
           passkeyCount: 0,
+          firstLoggedInAt: null,
+          accountStatus: null as null,
         },
       },
       { status: 200 },
