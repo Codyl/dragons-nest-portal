@@ -90,8 +90,10 @@ const UserServices = {
       currentGrade: number;
     }[];
     teachableCourses?: {
+      className: string;
       subjectId: string;
-      grade: string;
+      matchesAllGrades: boolean;
+      grades: string[];
       curriculum: string;
     }[];
   }): Promise<{

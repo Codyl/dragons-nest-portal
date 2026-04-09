@@ -10,7 +10,7 @@ declare global {
       /** Mount a composed Storybook story - reuses story decorators and setup */
       mountStory: (
         story: React.ComponentType,
-        options?: MountOptions,
+        options?: MountOptions & { args?: Record<string, unknown> },
       ) => Chainable;
       /** Log in via auth API and set cookies for domain localhost (for flow tests) */
       loginViaApi: (username: string, password: string) => Chainable<void>;

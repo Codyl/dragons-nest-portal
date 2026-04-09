@@ -1,29 +1,14 @@
 import { useAccountSetupForm } from '@/components/forms/account-setup.form';
-import SelectField from '@/components/fields/select-field';
-import { Button } from '@/components/ui/button';
-import {
-  HOMESCHOOL_CURRICULUM_OPTIONS,
-  HOMESCHOOL_GRADE_OPTIONS,
-} from '@/lib/homeschool-options';
-import useSubjects from '@/hooks/use-subjects';
-import { BookOpen, Plus, X } from 'lucide-react';
 import AccountSetupCard from '@/components/cards/account-setup-card';
-
-export type TeachableCourseDraft = {
-  id: string;
-  subjectId: string;
-  grade: string;
-  curriculum: string;
-};
-
-export function newCourseRow(): TeachableCourseDraft {
-  return {
-    id: crypto.randomUUID(),
-    subjectId: '',
-    grade: '',
-    curriculum: '',
-  };
-}
+import CourseFormRow from '@/components/steps/course-form-row';
+import { Button } from '@/components/ui/button';
+import useSubjects from '@/hooks/use-subjects';
+import {
+  newCourseRow,
+  teachableCoursesFormIsSubmittable,
+  type TeachableCourseDraft,
+} from '@/lib/teachable-course-validation';
+import { BookOpen, Plus } from 'lucide-react';
 
 const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
   const { form, submitOnboarding } = useAccountSetupForm();
@@ -54,6 +39,7 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
 
         const removeRow = (id: string) => {
           if (rows.length <= 1) return;
+
           setRows(rows.filter((r) => r.id !== id));
         };
 
@@ -61,16 +47,13 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
           setRows([...rows, newCourseRow()]);
         };
 
-        const allValid = rows.every(
-          (r) =>
-            r.subjectId.trim().length > 0 &&
-            r.grade.trim().length > 0 &&
-            r.curriculum.trim().length > 0,
-        );
+        const canFinish = teachableCoursesFormIsSubmittable(rows);
 
         const tryFinish = () => {
-          if (!allValid) return;
+          if (!canFinish) return;
+
           void form.validateField('teachableCourses', 'change');
+
           void submitOnboarding();
         };
 
@@ -96,8 +79,9 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
                 </Button>
                 <Button
                   type="button"
-                  className="h-11 min-w-0 flex-1 rounded-xl bg-[#8b7355] text-base font-semibold text-white hover:bg-[#7a6549]"
+                  className="h-11 min-w-0 flex-1 rounded-xl bg-[#8b7355] text-base font-semibold text-white hover:bg-[#7a6549] disabled:opacity-60"
                   onClick={tryFinish}
+                  disabled={!canFinish}
                   data-testid="account-setup-teachable-continue"
                 >
                   Finish setup
@@ -110,55 +94,16 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
                 <p className="text-muted-foreground text-sm">Loading subjects…</p>
               )}
               {rows.map((r) => (
-                <div
+                <CourseFormRow
                   key={r.id}
-                  className="relative rounded-xl border border-stone-200 bg-white p-4 shadow-xs"
-                >
-                  {rows.length > 1 && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-sm"
-                      className="absolute top-2 right-2"
-                      aria-label="Remove course"
-                      onClick={() => removeRow(r.id)}
-                    >
-                      <X className="size-4" />
-                    </Button>
-                  )}
-                  <div className="grid gap-3 sm:grid-cols-1">
-                    <SelectField
-                      label="Subject"
-                      id={`subj-${r.id}`}
-                      options={subjectOptions}
-                      placeholder="Select subject"
-                      value={r.subjectId}
-                      onValueChange={(v) => updateRow(r.id, { subjectId: v })}
-                      selectClassName={beigeSelectClassName}
-                      className="gap-1.5"
-                    />
-                    <SelectField
-                      label="Grade"
-                      id={`grade-${r.id}`}
-                      options={HOMESCHOOL_GRADE_OPTIONS}
-                      placeholder="Select grade"
-                      value={r.grade}
-                      onValueChange={(v) => updateRow(r.id, { grade: v })}
-                      selectClassName={beigeSelectClassName}
-                      className="gap-1.5"
-                    />
-                    <SelectField
-                      label="Curriculum"
-                      id={`curr-${r.id}`}
-                      options={HOMESCHOOL_CURRICULUM_OPTIONS}
-                      placeholder="Select curriculum"
-                      value={r.curriculum}
-                      onValueChange={(v) => updateRow(r.id, { curriculum: v })}
-                      selectClassName={beigeSelectClassName}
-                      className="gap-1.5"
-                    />
-                  </div>
-                </div>
+                  row={r}
+                  subjectOptions={subjectOptions}
+                  subjectsLoading={isLoading}
+                  beigeSelectClassName={beigeSelectClassName}
+                  onChangePatch={(patch) => updateRow(r.id, patch)}
+                  showRemove={rows.length > 1}
+                  onRemove={() => removeRow(r.id)}
+                />
               ))}
               <button
                 type="button"

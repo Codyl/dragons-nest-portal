@@ -16,9 +16,11 @@ import type { ExpectedBirthBand } from '@/lib/account-setup-flow';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
 import { newStudentRow } from '@/lib/pending-student-draft';
 import {
+  draftGradesToApiPayload,
   newCourseRow,
+  teachableCoursesFormIsSubmittable,
   type TeachableCourseDraft,
-} from '@/components/steps/account-setup-teachable-step';
+} from '@/lib/teachable-course-validation';
 
 export type AccountSetupFormValues = {
   accountType: 'adult' | 'student';
@@ -136,8 +138,9 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
       teachableCourses: z.array(
         z.object({
           id: z.string(),
+          className: z.string(),
           subjectId: z.string(),
-          grade: z.string(),
+          grades: z.array(z.string()),
           curriculum: z.string(),
         }),
       ),
@@ -160,6 +163,7 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
             path: ['adultAgeConfirmed'],
           });
         }
+
         if (!data.adultGuardianDutyConfirmed) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -175,6 +179,7 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
             path: ['teenAgeConfirmed'],
           });
         }
+
         if (!data.teenPermissionConfirmed) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -190,6 +195,7 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
             path: ['under13ChildConfirmed'],
           });
         }
+
         if (!data.under13GuardianPermissionConfirmed) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -225,11 +231,8 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
           });
         }
 
-        const coursesOk = data.teachableCourses.every(
-          (c) =>
-            c.subjectId.trim().length > 0 &&
-            c.grade.trim().length > 0 &&
-            c.curriculum.trim().length > 0,
+        const coursesOk = teachableCoursesFormIsSubmittable(
+          data.teachableCourses,
         );
         if (!coursesOk || data.teachableCourses.length < 1) {
           ctx.addIssue({
@@ -324,11 +327,18 @@ const AccountSetupForm = ({
             : undefined,
         teachableCourses:
           value.accountType === 'adult'
-            ? value.teachableCourses.map((c) => ({
-                subjectId: c.subjectId,
-                grade: c.grade,
-                curriculum: c.curriculum,
-              }))
+            ? value.teachableCourses.map((c) => {
+                const { matchesAllGrades, grades } = draftGradesToApiPayload(
+                  c.grades,
+                );
+                return {
+                  className: c.className.trim(),
+                  subjectId: c.subjectId,
+                  matchesAllGrades,
+                  grades,
+                  curriculum: c.curriculum,
+                };
+              })
             : undefined,
       });
 

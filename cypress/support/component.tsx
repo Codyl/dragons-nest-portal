@@ -59,9 +59,19 @@ Cypress.Commands.add('mount', (component: ReactNode, options: MountOptions = {})
  * Mount a Storybook story via composeStories for reuse in Cypress tests.
  * Use: cy.mountStory(ComposedDefault) after importing { Default } from composeStories(stories)
  */
-Cypress.Commands.add('mountStory', (StoryComponent: React.ComponentType, options: MountOptions = {}) => {
-  return cy.mount(React.createElement(StoryComponent), options);
-});
+Cypress.Commands.add(
+  'mountStory',
+  (StoryComponent: React.ComponentType, options: MountOptions = {}) => {
+    const { args, ...mountOptions } = options as MountOptions & {
+      args?: Record<string, unknown>;
+    };
+    const el =
+      args !== undefined
+        ? React.createElement(StoryComponent, args)
+        : React.createElement(StoryComponent);
+    return cy.mount(el, mountOptions);
+  },
+);
 
 beforeEach(() => {
   cy.intercept('POST', '*', {

@@ -19,7 +19,6 @@ type SelectFieldSharedProps = {
   options: SelectFieldOption[];
   /** Placeholder option label; pass `null` to omit the empty option */
   placeholder?: string | null;
-  placeholderValue?: string;
   selectClassName?: string;
   className?: string;
   labelClassName?: string;
@@ -52,7 +51,6 @@ function SelectField(props: SelectFieldProps) {
     name: nameProp,
     options,
     placeholder = 'Select',
-    placeholderValue = '',
     selectClassName,
     className,
     labelClassName,
@@ -110,13 +108,16 @@ function SelectField(props: SelectFieldProps) {
       </FieldLabel>
       <Select
         name={selectName}
-        data-testid={selectTestId}
         value={value}
         disabled={disabled}
         aria-invalid={isInvalid || undefined}
         onValueChange={handleValueChange}
       >
-        <SelectTrigger className={cn(defaultSelectClassName, selectClassName)}>
+        <SelectTrigger
+          className={cn(defaultSelectClassName, selectClassName)}
+          data-testid={selectTestId}
+          onBlur={handleBlur}
+        >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
