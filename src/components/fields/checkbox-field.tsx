@@ -87,6 +87,13 @@ function CheckboxField(props: CheckboxFieldProps) {
           data-testid={checkboxTestId}
           className={checkboxClassName}
           aria-invalid={isInvalid || undefined}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleCheckedChange(!checked);
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
         />
         <FieldLabel
           htmlFor={id}
