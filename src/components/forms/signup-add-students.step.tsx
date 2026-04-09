@@ -190,24 +190,25 @@ const SignupAddStudentsStep = ({
         </GuardianDutyFormField>
       ) : null}
 
-      <Button
-        type="button"
-        className="w-full"
-        size="lg"
-        disabled={!allValid || isSubmitting}
-        data-testid="finish-household-setup"
-        onClick={onFinish}
-      >
-        Continue
-      </Button>
-      <button
-        type="button"
-        className="text-muted-foreground hover:text-foreground w-full text-center text-sm underline-offset-4 hover:underline"
-        data-testid="add-students-back"
-        onClick={onBack}
-      >
-        Back
-      </button>
+      <div className="flex gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 shrink-0 rounded-xl border-stone-300 bg-white px-5 font-medium text-stone-900 hover:bg-stone-50"
+          onClick={onBack}
+          data-testid="add-students-back"
+        >
+          Back
+        </Button>
+        <Button
+          type="button"
+          data-testid="finish-household-setup"
+          className="h-11 min-w-0 flex-1 rounded-xl bg-[#8b7355] text-base font-semibold text-white hover:bg-[#7a6549] disabled:opacity-60"
+          onClick={onFinish}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 };
