@@ -1,6 +1,8 @@
 import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { InfoIcon } from 'lucide-react';
 
 export type SelectFieldOption = {
   value: string;
@@ -25,6 +27,7 @@ type SelectFieldSharedProps = {
   required?: boolean;
   disabled?: boolean;
   'data-testid'?: string;
+  tooltip?: string;
 };
 
 type SelectFieldWithForm = SelectFieldSharedProps & {
@@ -57,6 +60,7 @@ function SelectField(props: SelectFieldProps) {
     required = false,
     disabled = false,
     'data-testid': dataTestIdProp,
+    tooltip,
   } = props;
 
   const isFormField = 'field' in props && props.field != null;
@@ -105,6 +109,14 @@ function SelectField(props: SelectFieldProps) {
       >
         {label}
         {required && <span className="text-destructive">*</span>}
+        {tooltip && (<TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <InfoIcon className="size-4" />
+            </TooltipTrigger>
+            <TooltipContent>{tooltip}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>)}
       </FieldLabel>
       <Select
         name={selectName}
