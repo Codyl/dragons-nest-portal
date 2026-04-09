@@ -48,7 +48,7 @@ const InputField = ({
         normalize={normalize}
         format={format}
         onBlur={field.handleBlur}
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={(e) => field.handleChange(normalize ? normalize(e.target.value) : e.target.value)}
         aria-invalid={isInvalid}
         placeholder={placeholder}
         autoComplete="off"

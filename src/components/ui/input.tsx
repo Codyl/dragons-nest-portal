@@ -2,7 +2,11 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
+function Input({ className, type, normalize, format, value, ...props }: React.ComponentProps<'input'> & {
+  normalize?: (value: string) => string;
+  format?: (value: string) => string;
+  value: string;
+}) {
   return (
     <input
       type={type}
@@ -14,6 +18,14 @@ function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
         className,
       )}
       {...props}
+      onChange={(e) => {
+        if (normalize) {
+          e.target.value = normalize(e.target.value);
+        }
+
+        props.onChange?.(e);
+      }}
+      value={format ? format(value) : value}
     />
   );
 }

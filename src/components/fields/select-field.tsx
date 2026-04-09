@@ -1,4 +1,5 @@
 import { Field, FieldError, FieldLabel } from '../ui/field';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { cn } from '@/lib/utils';
 
 export type SelectFieldOption = {
@@ -107,30 +108,29 @@ function SelectField(props: SelectFieldProps) {
         {label}
         {required && <span className="text-destructive">*</span>}
       </FieldLabel>
-      <select
-        id={id}
+      <Select
         name={selectName}
         data-testid={selectTestId}
-        className={cn(defaultSelectClassName, selectClassName)}
         value={value}
         disabled={disabled}
         aria-invalid={isInvalid || undefined}
-        onBlur={handleBlur}
-        onChange={(e) => handleValueChange(e.target.value)}
+        onValueChange={handleValueChange}
       >
-        {placeholder !== null && (
-          <option value={placeholderValue}>{placeholder}</option>
-        )}
-        {options.map((opt) => (
-          <option
-            key={opt.value}
-            value={opt.value}
-            disabled={opt.disabled}
-          >
-            {opt.label}
-          </option>
-        ))}
-      </select>
+        <SelectTrigger className={cn(defaultSelectClassName, selectClassName)}>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((opt) => (
+            <SelectItem
+              key={opt.value}
+              value={opt.value}
+              disabled={opt.disabled}
+            >
+              {opt.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       {isFormField && isInvalid && (
         <FieldError
           data-testid={`error-message-${field!.name}`}
