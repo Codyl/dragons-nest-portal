@@ -16,6 +16,19 @@ export const HOMESCHOOL_GRADE_OPTIONS: { value: string; label: string }[] = [
   { value: '12', label: '12th' },
 ];
 
+/** Ordinals 0–13 aligned with backend `HomeschoolGrade` order (same labels as above). */
+export const HOMESCHOOL_GRADE_ORDINAL_OPTIONS: {
+  value: string;
+  label: string;
+}[] = HOMESCHOOL_GRADE_OPTIONS.map((opt, i) => ({
+  value: String(i),
+  label: opt.label,
+}));
+
+export function homeschoolOrdinalLabel(ordinal: number): string {
+  return HOMESCHOOL_GRADE_OPTIONS[ordinal]?.label ?? 'Grade';
+}
+
 /** Mirrors `HomeschoolCurriculum` in nest-app. */
 export const HOMESCHOOL_CURRICULUM_OPTIONS: { value: string; label: string }[] =
   [

@@ -9,29 +9,27 @@ import AccountSetupCard from '@/components/cards/account-setup-card';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
 import { FieldError } from '@/components/ui/field';
 import { US_STATE_OPTIONS } from '@/lib/us-state-options';
-import {
-  birthBandValidationMessage,
-  birthDateIsoMatchesExpectedBand,
-  parseIsoDateOnlyLocal,
-} from '@/lib/account-setup-birth';
 import { normalizePhoneNumber } from '@/utils/helpers/input-normalization.helpers';
 import { formatPhoneNumber } from '@/utils/helpers/formatting.helpers';
+import { Field, FieldLabel } from '@/components/ui/field';
+import { Checkbox } from '../ui/checkbox';
 
 const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
   const { form, expectedBirthBand } = useAccountSetupForm();
   const showAvatarSelection = expectedBirthBand !== 'adult';
 
-  const beigeInput =
-    'border-stone-200 bg-[#f5f1eb] placeholder:text-stone-400 focus-visible:bg-white';
-
   const tryContinue = async () => {
     const fields = [
       'name',
-      'birthDate',
       'state',
       'zipCode',
       'phoneNumber',
       ...(showAvatarSelection ? (['avatar'] as const) : []),
+      ...(expectedBirthBand === 'adult'
+        ? (['adultAgeConfirmed'] as const)
+        : expectedBirthBand === 'teen13to17'
+          ? (['teenAgeConfirmed', 'teenPermissionConfirmed'] as const)
+          : (['under13ChildConfirmed', 'under13GuardianPermissionConfirmed'] as const)),
     ] as const;
     await Promise.all(fields.map((f) => form.validateField(f, 'change')));
     for (const n of fields) {
@@ -84,36 +82,169 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
             />
           )}
         </form.Field>
-        <form.Field
-          name="birthDate"
-          validators={{
-            onChange: ({ value }) => {
-              const v = String(value).trim();
-              if (v.length === 0) return 'Date of birth is required';
 
-              if (!parseIsoDateOnlyLocal(v)) {
-                return 'Enter a valid date of birth';
-              }
+        {expectedBirthBand === 'teen13to17' && (
+          <>
+            <form.Field
+              name="teenAgeConfirmed"
+              validators={{
+                onChange: ({ value }) =>
+                  !value
+                    ? 'Confirm that you are between 13 and 17'
+                    : undefined,
+              }}
+            >
+              {(field) => (
+                <Field>
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="teen-age"
+                      checked={field.state.value}
+                      onCheckedChange={(checked: boolean) =>
+                        field.handleChange(checked)
+                      }
+                      data-testid="checkbox-teen-age"
+                    />
+                    <FieldLabel
+                      htmlFor="teen-age"
+                      className="text-sm leading-snug font-normal"
+                    >
+                      I am between 13 and 17 years old.
+                    </FieldLabel>
+                  </div>
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <FieldError
+                        data-testid="error-message-teenAgeConfirmed"
+                        errors={field.state.meta.errors.map((e: unknown) =>
+                          typeof e === 'string' ? { message: e } : e,
+                        ) as { message?: string }[]}
+                      />
+                    )}
+                </Field>
+              )}
+            </form.Field>
+            <form.Field
+              name="teenPermissionConfirmed"
+              validators={{
+                onChange: ({ value }) =>
+                  !value ? 'Confirm parent or guardian permission' : undefined,
+              }}
+            >
+              {(field) => (
+                <Field>
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="teen-permission"
+                      checked={field.state.value}
+                      onCheckedChange={(checked: boolean) =>
+                        field.handleChange(checked)
+                      }
+                      data-testid="checkbox-teen-permission"
+                    />
+                    <FieldLabel
+                      htmlFor="teen-permission"
+                      className="text-sm leading-snug font-normal"
+                    >
+                      I verify that I have my parent or guardian&apos;s
+                      permission to create this account.
+                    </FieldLabel>
+                  </div>
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <FieldError
+                        data-testid="error-message-teenPermissionConfirmed"
+                        errors={field.state.meta.errors.map((e: unknown) =>
+                          typeof e === 'string' ? { message: e } : e,
+                        ) as { message?: string }[]}
+                      />
+                    )}
+                </Field>
+              )}
+            </form.Field>
+          </>
+        )}
 
-              if (!birthDateIsoMatchesExpectedBand(v, expectedBirthBand)) {
-                return birthBandValidationMessage(expectedBirthBand);
-              }
+        {expectedBirthBand === 'under13' && (
+          <>
+            <form.Field
+              name="under13ChildConfirmed"
+              validators={{
+                onChange: ({ value }) =>
+                  !value ? 'Confirm your age for this account' : undefined,
+              }}
+            >
+              {(field) => (
+                <Field>
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="under13-age"
+                      checked={field.state.value}
+                      onCheckedChange={(checked: boolean) =>
+                        field.handleChange(checked)
+                      }
+                      data-testid="checkbox-under13-age"
+                    />
+                    <FieldLabel
+                      htmlFor="under13-age"
+                      className="text-sm leading-snug font-normal"
+                    >
+                      I am under 13 years old.
+                    </FieldLabel>
+                  </div>
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <FieldError
+                        data-testid="error-message-under13ChildConfirmed"
+                        errors={field.state.meta.errors.map((e: unknown) =>
+                          typeof e === 'string' ? { message: e } : e,
+                        ) as { message?: string }[]}
+                      />
+                    )}
+                </Field>
+              )}
+            </form.Field>
+            <form.Field
+              name="under13GuardianPermissionConfirmed"
+              validators={{
+                onChange: ({ value }) =>
+                  !value ? 'Confirm you have guardian permission' : undefined,
+              }}
+            >
+              {(field) => (
+                <Field>
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="under13-guardian"
+                      checked={field.state.value}
+                      onCheckedChange={(checked: boolean) =>
+                        field.handleChange(checked)
+                      }
+                      data-testid="checkbox-under13-guardian"
+                    />
+                    <FieldLabel
+                      htmlFor="under13-guardian"
+                      className="text-sm leading-snug font-normal"
+                    >
+                      I verify that my parent or guardian is helping me create
+                      this account and I have their permission.
+                    </FieldLabel>
+                  </div>
+                  {field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0 && (
+                      <FieldError
+                        data-testid="error-message-under13GuardianPermissionConfirmed"
+                        errors={field.state.meta.errors.map((e: unknown) =>
+                          typeof e === 'string' ? { message: e } : e,
+                        ) as { message?: string }[]}
+                      />
+                    )}
+                </Field>
+              )}
+            </form.Field>
+          </>
+        )}
 
-              return undefined;
-            },
-          }}
-        >
-          {(field) => (
-            <InputField
-              field={field}
-              label="Date of birth"
-              type="date"
-              required
-              className="gap-1.5"
-              data-testid="input-birth-date"
-            />
-          )}
-        </form.Field>
         <form.Field
           name="state"
           validators={{
@@ -138,7 +269,24 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
                 data-testid="input-state"
                 className="gap-1.5"
               />
-              {field.state.value && <Button type="button" variant="link" onClick={() => window.open(`https://hslda.org/legal/${US_STATE_OPTIONS.find(s => s.value === field.state.value)?.label.toLowerCase().replace(' ', '-')}`, '_blank')}>Learn more about the homeschool laws in {US_STATE_OPTIONS.find(s => s.value === field.state.value)?.label}</Button>}
+              {field.state.value && (
+                <Button
+                  type="button"
+                  variant="link"
+                  onClick={() =>
+                    window.open(
+                      `https://hslda.org/legal/${US_STATE_OPTIONS.find((s) => s.value === field.state.value)?.label.toLowerCase().replace(' ', '-')}`,
+                      '_blank',
+                    )
+                  }
+                >
+                  Learn more about the homeschool laws in{' '}
+                  {
+                    US_STATE_OPTIONS.find((s) => s.value === field.state.value)
+                      ?.label
+                  }
+                </Button>
+              )}
             </div>
           )}
         </form.Field>
@@ -252,6 +400,46 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
                     />
                   )}
               </div>
+            )}
+          </form.Field>
+        )}
+
+        {expectedBirthBand === 'adult' && (
+          <form.Field
+            name="adultAgeConfirmed"
+            validators={{
+              onChange: ({ value }) =>
+                !value ? 'Confirm that you are 18 or older' : undefined,
+            }}
+          >
+            {(field) => (
+              <Field>
+                <div className="flex items-start gap-3">
+                  <Checkbox
+                    id="adult-age"
+                    checked={field.state.value}
+                    onCheckedChange={(checked: boolean) =>
+                      field.handleChange(checked)
+                    }
+                    data-testid="checkbox-adult-age"
+                  />
+                  <FieldLabel
+                    htmlFor="adult-age"
+                    className="text-sm leading-snug font-normal"
+                  >
+                    I am 18 or older.
+                  </FieldLabel>
+                </div>
+                {field.state.meta.isTouched &&
+                  field.state.meta.errors.length > 0 && (
+                    <FieldError
+                      data-testid="error-message-adultAgeConfirmed"
+                      errors={field.state.meta.errors.map((e: unknown) =>
+                        typeof e === 'string' ? { message: e } : e,
+                      ) as { message?: string }[]}
+                    />
+                  )}
+              </Field>
             )}
           </form.Field>
         )}

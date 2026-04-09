@@ -13,9 +13,6 @@ import {
 } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-/** ~15–16 years before “today”; valid for teen13to17 band in Storybook/Cypress (2026-era). */
-export const STORY_TEEN_COMPLIANCE_BIRTH_DATE = '2010-06-01';
-
 function AccountSetupStudentFlow({
   initialStep = 0,
 }: {
@@ -125,10 +122,8 @@ export const ComplianceToInterests: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('input-name'), 'Alex');
-    await userEvent.type(
-      canvas.getByTestId('input-birth-date'),
-      STORY_TEEN_COMPLIANCE_BIRTH_DATE,
-    );
+    await userEvent.click(canvas.getByTestId('checkbox-teen-age'));
+    await userEvent.click(canvas.getByTestId('checkbox-teen-permission'));
     await userEvent.selectOptions(canvas.getByTestId('input-state'), 'ca');
     await userEvent.type(canvas.getByTestId('input-zip'), '90210');
     await userEvent.type(canvas.getByTestId('input-phone'), '5551234567');

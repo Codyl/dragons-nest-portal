@@ -9,6 +9,35 @@ export type PasskeyListItem = {
   lastUsedAt: string | null;
 };
 
+export type HouseholdStudentProfile = {
+  studentDraftId: string;
+  displayName: string;
+  currentGrade: number;
+  lastPromotionYear: number;
+};
+
+export type ProfileUserData = {
+  email?: string;
+  family_name?: string;
+  middle_name?: string;
+  given_name?: string;
+  phone_number?: string;
+  emailMfaEnabled?: boolean;
+  smsMfaEnabled?: boolean;
+  softwareTokenMfaEnabled?: boolean;
+  preferredMfa?: string;
+  loginMethods?: string[];
+  hasPassword?: boolean;
+  hasPasskey?: boolean;
+  passkeyCount?: number;
+  firstLoggedInAt?: string | null;
+  onboardingCompletedAt?: string | null;
+  accountStatus?: 'MANAGED' | 'INDEPENDENT' | 'ADULT' | null;
+  accountType?: string | null;
+  ageBandAtRegistration?: string | null;
+  householdStudents?: HouseholdStudentProfile[];
+};
+
 export type KnownDevice = {
   DeviceKey: string;
   DeviceName: string;
@@ -25,24 +54,7 @@ export type KnownDevice = {
 const UserServices = {
   getUser: async (): Promise<{
     message: string;
-    data: {
-      email?: string;
-      family_name?: string;
-      middle_name?: string;
-      given_name?: string;
-      phone_number?: string;
-      emailMfaEnabled?: boolean;
-      smsMfaEnabled?: boolean;
-      softwareTokenMfaEnabled?: boolean;
-      preferredMfa?: string;
-      loginMethods?: string[];
-      hasPassword?: boolean;
-      hasPasskey?: boolean;
-      passkeyCount?: number;
-      firstLoggedInAt?: string | null;
-      onboardingCompletedAt?: string | null;
-      accountStatus?: 'MANAGED' | 'INDEPENDENT' | 'ADULT' | null;
-    };
+    data: ProfileUserData;
   }> => {
     const response = await api.get('profile');
     return response.json();
@@ -56,8 +68,13 @@ const UserServices = {
   },
   submitAccountSetup: async (json: {
     name: string;
-    /** `YYYY-MM-DD` from date input */
-    birthDate: string;
+    onboardingExpectedBand: 'adult' | 'teen13to17' | 'under13';
+    adultAgeConfirmed?: boolean;
+    adultGuardianDutyConfirmed?: boolean;
+    teenAgeConfirmed?: boolean;
+    teenPermissionConfirmed?: boolean;
+    under13ChildConfirmed?: boolean;
+    under13GuardianPermissionConfirmed?: boolean;
     avatar: string;
     interests: string[];
     shortTermGoal: string;
@@ -67,7 +84,11 @@ const UserServices = {
     state: string;
     zipCode: string;
     phoneNumber: string;
-    pendingStudents?: { displayName: string; age: number }[];
+    pendingStudents?: {
+      studentDraftId: string;
+      displayName: string;
+      currentGrade: number;
+    }[];
     teachableCourses?: {
       subjectId: string;
       grade: string;
@@ -80,6 +101,18 @@ const UserServices = {
     const response = await api.post('profile/account-setup', {
       json,
     });
+    return response.json();
+  },
+  promoteHouseholdStudent: async (
+    studentDraftId: string,
+  ): Promise<{
+    message: string;
+    data: HouseholdStudentProfile;
+  }> => {
+    const response = await api.patch(
+      `profile/household-students/${encodeURIComponent(studentDraftId)}/promote`,
+      { json: {} },
+    );
     return response.json();
   },
   updateUserSettings: async (json: {

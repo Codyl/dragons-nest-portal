@@ -3,9 +3,6 @@ import * as stories from './account-setup.form.stories';
 
 const { ComplianceStep, AdultComplianceStep } = composeStories(stories);
 
-/** Matches `STORY_TEEN_COMPLIANCE_BIRTH_DATE` in account-setup.form.stories (teen band). */
-const TEEN_COMPLIANCE_BIRTH_DATE = '2010-06-01';
-
 describe('AccountSetupForm', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/subjects', [
@@ -31,7 +28,7 @@ describe('AccountSetupForm', () => {
   it('should render compliance step', () => {
     cy.mountStory(ComplianceStep);
     cy.get('[data-testid="input-name"]').should('exist');
-    cy.get('[data-testid="input-birth-date"]').should('exist');
+    cy.get('[data-testid="checkbox-teen-age"]').should('exist');
     cy.get('[data-testid="input-state"]').should('exist');
   });
 
@@ -44,7 +41,8 @@ describe('AccountSetupForm', () => {
   it('should advance to interests after valid compliance step', () => {
     cy.mountStory(ComplianceStep);
     cy.get('[data-testid="input-name"]').type('Alex');
-    cy.get('[data-testid="input-birth-date"]').type(TEEN_COMPLIANCE_BIRTH_DATE);
+    cy.get('[data-testid="checkbox-teen-age"]').check({ force: true });
+    cy.get('[data-testid="checkbox-teen-permission"]').check({ force: true });
     cy.get('[data-testid="input-state"]').select('ca');
     cy.get('[data-testid="input-zip"]').type('90210');
     cy.get('[data-testid="input-phone"]').type('5551234567');
@@ -56,7 +54,8 @@ describe('AccountSetupForm', () => {
   it('should toggle interest selection', () => {
     cy.mountStory(ComplianceStep);
     cy.get('[data-testid="input-name"]').type('Test');
-    cy.get('[data-testid="input-birth-date"]').type(TEEN_COMPLIANCE_BIRTH_DATE);
+    cy.get('[data-testid="checkbox-teen-age"]').check({ force: true });
+    cy.get('[data-testid="checkbox-teen-permission"]').check({ force: true });
     cy.get('[data-testid="input-state"]').select('ny');
     cy.get('[data-testid="input-zip"]').type('10001');
     cy.get('[data-testid="input-phone"]').type('5559876543');
@@ -73,7 +72,8 @@ describe('AccountSetupForm', () => {
   it('should load interests from subjects api', () => {
     cy.mountStory(ComplianceStep);
     cy.get('[data-testid="input-name"]').type('Test');
-    cy.get('[data-testid="input-birth-date"]').type(TEEN_COMPLIANCE_BIRTH_DATE);
+    cy.get('[data-testid="checkbox-teen-age"]').check({ force: true });
+    cy.get('[data-testid="checkbox-teen-permission"]').check({ force: true });
     cy.get('[data-testid="input-state"]').select('tx');
     cy.get('[data-testid="input-zip"]').type('73301');
     cy.get('[data-testid="input-phone"]').type('5551112222');
@@ -86,7 +86,8 @@ describe('AccountSetupForm', () => {
   it('should show interest validation when none selected', () => {
     cy.mountStory(ComplianceStep);
     cy.get('[data-testid="input-name"]').type('Test');
-    cy.get('[data-testid="input-birth-date"]').type(TEEN_COMPLIANCE_BIRTH_DATE);
+    cy.get('[data-testid="checkbox-teen-age"]').check({ force: true });
+    cy.get('[data-testid="checkbox-teen-permission"]').check({ force: true });
     cy.get('[data-testid="input-state"]').select('fl');
     cy.get('[data-testid="input-zip"]').type('33101');
     cy.get('[data-testid="input-phone"]').type('5554443333');
@@ -99,15 +100,17 @@ describe('AccountSetupForm', () => {
     );
   });
 
-  it('blocks continue on adult flow when birth date is not 18+', () => {
+  /** Reference: teen `ComplianceStep` — adult path requires both age attestations. */
+  it('blocks continue on adult flow when attestations are unchecked', () => {
     cy.mountStory(AdultComplianceStep);
     cy.get('[data-testid="input-name"]').type('Pat');
-    cy.get('[data-testid="input-birth-date"]').type(TEEN_COMPLIANCE_BIRTH_DATE);
     cy.get('[data-testid="input-state"]').select('ca');
     cy.get('[data-testid="input-zip"]').type('90210');
     cy.get('[data-testid="input-phone"]').type('5551234567');
     cy.get('[data-testid="avatar-owl"]').should('not.exist');
     cy.contains('button', 'Continue').click();
-    cy.get('[data-testid="error-message-birthDate"]').should('be.visible');
+    cy.get('[data-testid="error-message-adultAgeConfirmed"]').should(
+      'be.visible',
+    );
   });
 });

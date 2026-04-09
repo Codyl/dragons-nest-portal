@@ -38,18 +38,27 @@ const AccountSetupAddStudentsStep = ({
           };
 
           const allValid = students.every((s) => {
-            const ageNum = Number.parseInt(s.age, 10);
+            const g = Number.parseInt(s.currentGradeOrdinal, 10);
             return (
               s.displayName.trim().length > 0 &&
-              Number.isFinite(ageNum) &&
-              ageNum >= 1 &&
-              ageNum <= 120
+              Number.isFinite(g) &&
+              g >= 0 &&
+              g <= 13
             );
           });
 
-          const tryContinue = () => {
+          const tryContinue = async () => {
             if (!allValid) return;
-            void form.validateField('pendingStudents', 'change');
+            await form.validateField('pendingStudents', 'change');
+            await form.validateField('adultGuardianDutyConfirmed', 'change');
+            form.setFieldMeta('adultGuardianDutyConfirmed', (prev) => ({
+              ...prev,
+              isTouched: true,
+            }));
+            const guardianErrors =
+              form.getFieldMeta('adultGuardianDutyConfirmed')?.errors
+                ?.length ?? 0;
+            if (guardianErrors > 0) return;
             onNext();
           };
 
@@ -62,6 +71,7 @@ const AccountSetupAddStudentsStep = ({
               isSubmitting={false}
               primaryActionLabel="Continue"
               hideHeader
+              showAdultGuardianAttestation
             />
           );
         }}

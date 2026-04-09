@@ -13,13 +13,8 @@ import { z } from 'zod';
 import UserServices from '@/api/services/user.services';
 import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
 import type { ExpectedBirthBand } from '@/lib/account-setup-flow';
-import {
-  birthBandValidationMessage,
-  birthDateIsoMatchesExpectedBand,
-  parseIsoDateOnlyLocal,
-} from '@/lib/account-setup-birth';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
-import { newStudentRow } from '@/components/forms/signup-add-students.step';
+import { newStudentRow } from '@/lib/pending-student-draft';
 import {
   newCourseRow,
   type TeachableCourseDraft,
@@ -28,8 +23,6 @@ import {
 export type AccountSetupFormValues = {
   accountType: 'adult' | 'student';
   name: string;
-  /** `YYYY-MM-DD` from date input; not prefilled from signup age gate. */
-  birthDate: string;
   state: string;
   zipCode: string;
   phoneNumber: string;
@@ -38,6 +31,12 @@ export type AccountSetupFormValues = {
   shortTermGoal: string;
   longTermGoal: string;
   learningStyles: string[];
+  adultAgeConfirmed: boolean;
+  adultGuardianDutyConfirmed: boolean;
+  teenAgeConfirmed: boolean;
+  teenPermissionConfirmed: boolean;
+  under13ChildConfirmed: boolean;
+  under13GuardianPermissionConfirmed: boolean;
   pendingStudents: ReturnType<typeof newStudentRow>[];
   teachableCourses: TeachableCourseDraft[];
 };
@@ -81,6 +80,12 @@ export function useAccountSetupForm() {
   return ctx;
 }
 
+/** For optional UI (e.g. add-students) that only exists inside account setup when wrapped. */
+// eslint-disable-next-line react-refresh/only-export-components
+export function useOptionalAccountSetupForm() {
+  return useContext(AccountSetupFormContext);
+}
+
 function mapAvatarToEmoji(avatarId: string): string {
   const found = AVATAR_OPTIONS.find((a) => a.id === avatarId);
   return found?.emoji ?? avatarId;
@@ -100,7 +105,6 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
     .object({
       accountType: z.enum(['adult', 'student']),
       name: z.string().min(1, 'Name is required'),
-      birthDate: z.string().min(1, 'Date of birth is required'),
       state: z.string().min(1, 'Select your state'),
       zipCode: z
         .string()
@@ -115,11 +119,18 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
       shortTermGoal: z.string(),
       longTermGoal: z.string(),
       learningStyles: z.array(z.string()),
+      adultAgeConfirmed: z.boolean(),
+      adultGuardianDutyConfirmed: z.boolean(),
+      teenAgeConfirmed: z.boolean(),
+      teenPermissionConfirmed: z.boolean(),
+      under13ChildConfirmed: z.boolean(),
+      under13GuardianPermissionConfirmed: z.boolean(),
       pendingStudents: z.array(
         z.object({
           id: z.string(),
+          studentDraftId: z.string(),
           displayName: z.string(),
-          age: z.string(),
+          currentGradeOrdinal: z.string(),
         }),
       ),
       teachableCourses: z.array(
@@ -141,21 +152,51 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
         });
       }
 
-      if (!parseIsoDateOnlyLocal(data.birthDate)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Enter a valid date of birth',
-          path: ['birthDate'],
-        });
-        return;
-      }
-
-      if (!birthDateIsoMatchesExpectedBand(data.birthDate, expectedBirthBand)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: birthBandValidationMessage(expectedBirthBand),
-          path: ['birthDate'],
-        });
+      if (expectedBirthBand === 'adult') {
+        if (!data.adultAgeConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Confirm that you are 18 or older',
+            path: ['adultAgeConfirmed'],
+          });
+        }
+        if (!data.adultGuardianDutyConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Confirm guardian responsibility for this account',
+            path: ['adultGuardianDutyConfirmed'],
+          });
+        }
+      } else if (expectedBirthBand === 'teen13to17') {
+        if (!data.teenAgeConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Confirm that you are between 13 and 17',
+            path: ['teenAgeConfirmed'],
+          });
+        }
+        if (!data.teenPermissionConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Confirm parent or guardian permission',
+            path: ['teenPermissionConfirmed'],
+          });
+        }
+      } else {
+        if (!data.under13ChildConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Confirm your age band for this account',
+            path: ['under13ChildConfirmed'],
+          });
+        }
+        if (!data.under13GuardianPermissionConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Confirm you have guardian permission',
+            path: ['under13GuardianPermissionConfirmed'],
+          });
+        }
       }
 
       if (data.accountType === 'student') {
@@ -168,18 +209,18 @@ function buildAccountSetupSchema(expectedBirthBand: ExpectedBirthBand) {
         }
       } else {
         const validStudents = data.pendingStudents.every((s) => {
-          const n = Number.parseInt(s.age, 10);
+          const g = Number.parseInt(s.currentGradeOrdinal, 10);
           return (
             s.displayName.trim().length > 0 &&
-            Number.isFinite(n) &&
-            n >= 1 &&
-            n <= 120
+            Number.isFinite(g) &&
+            g >= 0 &&
+            g <= 13
           );
         });
         if (!validStudents || data.pendingStudents.length < 1) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'Add at least one student with name and age',
+            message: 'Add at least one student with name and grade',
             path: ['pendingStudents'],
           });
         }
@@ -226,7 +267,6 @@ const AccountSetupForm = ({
     defaultValues: {
       accountType: initialFormAccountType,
       name: '',
-      birthDate: '',
       state: '',
       zipCode: '',
       phoneNumber: '',
@@ -235,6 +275,12 @@ const AccountSetupForm = ({
       shortTermGoal: '',
       longTermGoal: '',
       learningStyles: [] as string[],
+      adultAgeConfirmed: false,
+      adultGuardianDutyConfirmed: false,
+      teenAgeConfirmed: false,
+      teenPermissionConfirmed: false,
+      under13ChildConfirmed: false,
+      under13GuardianPermissionConfirmed: false,
       pendingStudents: [newStudentRow()],
       teachableCourses: [newCourseRow()] as TeachableCourseDraft[],
     } as AccountSetupFormValues,
@@ -251,7 +297,14 @@ const AccountSetupForm = ({
 
       await UserServices.submitAccountSetup({
         name: value.name,
-        birthDate: value.birthDate.trim(),
+        onboardingExpectedBand: expectedBirthBand,
+        adultAgeConfirmed: value.adultAgeConfirmed,
+        adultGuardianDutyConfirmed: value.adultGuardianDutyConfirmed,
+        teenAgeConfirmed: value.teenAgeConfirmed,
+        teenPermissionConfirmed: value.teenPermissionConfirmed,
+        under13ChildConfirmed: value.under13ChildConfirmed,
+        under13GuardianPermissionConfirmed:
+          value.under13GuardianPermissionConfirmed,
         avatar: avatarEmoji,
         interests: value.interests,
         shortTermGoal: value.shortTermGoal,
@@ -264,8 +317,9 @@ const AccountSetupForm = ({
         pendingStudents:
           value.accountType === 'adult'
             ? value.pendingStudents.map((s) => ({
+                studentDraftId: s.studentDraftId,
                 displayName: s.displayName.trim(),
-                age: Number.parseInt(s.age, 10),
+                currentGrade: Number.parseInt(s.currentGradeOrdinal, 10),
               }))
             : undefined,
         teachableCourses:

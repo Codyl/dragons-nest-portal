@@ -1,4 +1,5 @@
 import type { RouterContext } from '@/App';
+import PromotionNudgeBanner from '@/components/banners/promotion-nudge.banner';
 import { PrivateAppSidebar } from '@/components/private-app-sidebar';
 import { SettingsShellSidebar } from '@/components/settings-shell-sidebar';
 import {
@@ -52,6 +53,7 @@ function RouteComponent() {
           <SidebarTrigger className="-ml-1" />
         </header>
         <div className="container mx-auto w-full flex-1 overflow-auto p-4">
+          <PromotionNudgeBanner />
           <Outlet />
         </div>
       </SidebarInset>

@@ -1,27 +1,24 @@
 import { useCallback } from 'react';
 import { Plus, X } from 'lucide-react';
+import { useOptionalAccountSetupForm } from '@/components/forms/account-setup.form';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Field, FieldLabel } from '../ui/field';
+import { Field, FieldError, FieldLabel } from '../ui/field';
+import { Checkbox } from '../ui/checkbox';
+import SelectField from '../fields/select-field';
+import { HOMESCHOOL_GRADE_ORDINAL_OPTIONS } from '@/lib/homeschool-options';
+import {
+  newStudentRow,
+  type PendingStudentDraft,
+} from '@/lib/pending-student-draft';
 
-export type PendingStudentDraft = {
-  id: string;
-  displayName: string;
-  age: string;
-};
+export type { PendingStudentDraft } from '@/lib/pending-student-draft';
+export { newStudentRow } from '@/lib/pending-student-draft';
 
 function nameInitial(displayName: string): string {
   const t = displayName.trim();
   if (!t) return '?';
   return t.charAt(0).toUpperCase();
-}
-
-function newStudentRow(): PendingStudentDraft {
-  return {
-    id: crypto.randomUUID(),
-    displayName: '',
-    age: '',
-  };
 }
 
 const SignupAddStudentsStep = ({
@@ -31,6 +28,7 @@ const SignupAddStudentsStep = ({
   onBack,
   isSubmitting,
   hideHeader = false,
+  showAdultGuardianAttestation = false,
 }: {
   students: PendingStudentDraft[];
   onChange: (next: PendingStudentDraft[]) => void;
@@ -41,7 +39,10 @@ const SignupAddStudentsStep = ({
   primaryActionLabel?: string;
   /** When true, omit the title and intro (e.g. when wrapped in AccountSetupCard). */
   hideHeader?: boolean;
+  /** Parent/guardian duty attestation (account-setup adult flow only; requires form context). */
+  showAdultGuardianAttestation?: boolean;
 }) => {
+  const accountSetupCtx = useOptionalAccountSetupForm();
   const updateRow = useCallback(
     (id: string, patch: Partial<PendingStudentDraft>) => {
       onChange(students.map((s) => (s.id === id ? { ...s, ...patch } : s)));
@@ -59,14 +60,19 @@ const SignupAddStudentsStep = ({
   };
 
   const allValid = students.every((s) => {
-    const ageNum = Number.parseInt(s.age, 10);
+    const g = Number.parseInt(s.currentGradeOrdinal, 10);
     return (
       s.displayName.trim().length > 0 &&
-      Number.isFinite(ageNum) &&
-      ageNum >= 1 &&
-      ageNum <= 120
+      Number.isFinite(g) &&
+      g >= 0 &&
+      g <= 13
     );
   });
+
+  const GuardianDutyFormField =
+    showAdultGuardianAttestation && accountSetupCtx
+      ? accountSetupCtx.form.Field
+      : null;
 
   return (
     <div className="space-y-4">
@@ -127,20 +133,26 @@ const SignupAddStudentsStep = ({
                     }
                   />
                 </Field>
-                <Field>
-                  <FieldLabel htmlFor={`age-${s.id}`}>Student age</FieldLabel>
-                  <Input
-                    id={`age-${s.id}`}
-                    data-testid={`student-age-${s.id}`}
-                    type="number"
-                    min={1}
-                    max={120}
-                    inputMode="numeric"
-                    value={s.age}
-                    placeholder="Age"
-                    onChange={(e) => updateRow(s.id, { age: e.target.value })}
-                  />
-                </Field>
+                <SelectField
+                  label="Current grade"
+                  id={`grade-${s.id}`}
+                  data-testid={`student-grade-${s.id}`}
+                  className="gap-1.5"
+                  placeholder="Select grade"
+                  options={HOMESCHOOL_GRADE_ORDINAL_OPTIONS}
+                  field={{
+                    name: `grade-${s.id}`,
+                    state: {
+                      value: s.currentGradeOrdinal,
+                      meta: { errors: [], isTouched: false },
+                    },
+                    handleChange: (v: unknown) =>
+                      updateRow(s.id, {
+                        currentGradeOrdinal: String(v ?? ''),
+                      }),
+                    handleBlur: () => undefined,
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -156,6 +168,49 @@ const SignupAddStudentsStep = ({
           Add another student
         </button>
       </div>
+
+      {GuardianDutyFormField ? (
+        <GuardianDutyFormField
+          name="adultGuardianDutyConfirmed"
+          validators={{
+            onChange: ({ value }) =>
+              !value
+                ? 'Confirm guardian responsibility for this account'
+                : undefined,
+          }}
+        >
+          {(field) => (
+            <Field>
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="adult-guardian"
+                  checked={field.state.value}
+                  onCheckedChange={(checked: boolean) =>
+                    field.handleChange(checked)
+                  }
+                  data-testid="checkbox-adult-guardian"
+                />
+                <FieldLabel
+                  htmlFor="adult-guardian"
+                  className="text-sm leading-snug font-normal"
+                >
+                  I verify that I am a Parent/Guardian and/or have permission
+                  to add these children and will manage this account.
+                </FieldLabel>
+              </div>
+              {field.state.meta.isTouched &&
+                field.state.meta.errors.length > 0 && (
+                  <FieldError
+                    data-testid="error-message-adultGuardianDutyConfirmed"
+                    errors={field.state.meta.errors.map((e: unknown) =>
+                      typeof e === 'string' ? { message: e } : e,
+                    ) as { message?: string }[]}
+                  />
+                )}
+            </Field>
+          )}
+        </GuardianDutyFormField>
+      ) : null}
 
       <Button
         type="button"
@@ -179,5 +234,4 @@ const SignupAddStudentsStep = ({
   );
 };
 
-export { newStudentRow };
 export default SignupAddStudentsStep;
