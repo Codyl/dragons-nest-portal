@@ -186,6 +186,15 @@ describe('AccountSetupTeachableStep', () => {
       .should('not.exist');
   });
 
+  it('caps max students at 20 (props, user interaction)', () => {
+    cy.mountStory(Default);
+    cy.get('[data-testid^="max-students-"]')
+      .first()
+      .clear()
+      .type('25');
+    cy.get('[data-testid^="max-students-"]').first().should('have.value', '20');
+  });
+
   it('shows loading message while subjects are pending (loading state)', () => {
     cy.intercept('GET', '**/subjects', (req) => {
       req.on('response', (res) => {

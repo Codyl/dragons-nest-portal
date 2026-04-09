@@ -3,6 +3,7 @@ import AccountSetupForm from '@/components/forms/account-setup.form';
 import AccountSetupAddStudentsStep from '@/components/steps/account-setup-add-students-step';
 import AccountSetupComplianceStep from '@/components/steps/account-setup-compliance-step';
 import AccountSetupInterestsStep from '@/components/steps/account-setup-interests-step';
+import AccountSetupAvailabilityStep from '@/components/steps/account-setup-availability-step';
 import AccountSetupTeachableStep from '@/components/steps/account-setup-teachable-step';
 import { resolveAccountSetupFlow } from '@/lib/account-setup-flow';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
@@ -52,8 +53,7 @@ function AccountSetup() {
   );
 
   const { setupFlow, expectedBirthBand, formAccountType } = resolved;
-  const totalSteps = setupFlow === 'adult' ? 3 : 2;
-  console.log(setupFlow);
+  const totalSteps = setupFlow === 'adult' ? 4 : 3;
 
   return (
     <AccountSetupForm
@@ -66,9 +66,17 @@ function AccountSetup() {
 
       {setupFlow === 'teen' && step === 1 && (
         <AccountSetupInterestsStep
-          isLastStep
           onBack={() => setStep(0)}
+          onNext={() => setStep(2)}
+        />
+      )}
+
+      {setupFlow === 'teen' && step === 2 && (
+        <AccountSetupAvailabilityStep
+          variant="teen"
+          onBack={() => setStep(1)}
           onNext={() => undefined}
+          isLastStep
         />
       )}
 
@@ -80,7 +88,16 @@ function AccountSetup() {
       )}
 
       {setupFlow === 'adult' && step === 2 && (
-        <AccountSetupTeachableStep onBack={() => setStep(1)} />
+        <AccountSetupAvailabilityStep
+          variant="parent"
+          onBack={() => setStep(1)}
+          onNext={() => setStep(3)}
+          isLastStep={false}
+        />
+      )}
+
+      {setupFlow === 'adult' && step === 3 && (
+        <AccountSetupTeachableStep onBack={() => setStep(2)} />
       )}
     </AccountSetupForm>
   );

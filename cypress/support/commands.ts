@@ -75,7 +75,8 @@ Cypress.Commands.add('completeAccountSetupIfShown', () => {
     cy.get('input[name="name"]').type('Test User');
     cy.get('[data-testid="checkbox-teen-age"]').check({ force: true });
     cy.get('[data-testid="checkbox-teen-permission"]').check({ force: true });
-    cy.get('[data-testid="input-state"]').select('ca');
+    cy.get('[data-testid="input-state"]').click();
+    cy.get('[data-slot="select-item"]').contains('California').click();
     cy.get('[data-testid="input-zip"]').type('90210');
     cy.get('[data-testid="input-phone"]').type('5551234567');
     cy.get('[data-testid="avatar-dragon"]').click();
@@ -84,7 +85,7 @@ Cypress.Commands.add('completeAccountSetupIfShown', () => {
     cy.get('[data-testid="interest-reading"]').click();
     cy.contains('button', 'Continue').click();
 
-    cy.contains('button', 'Continue').click();
+    cy.get('[data-testid="account-setup-availability-continue"]').click();
 
     cy.url({ timeout: 15000 }).should('include', '/welcome');
   });

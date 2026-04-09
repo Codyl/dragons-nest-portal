@@ -14,7 +14,7 @@ const meta = {
     (Story) => (
       <AccountSetupFormStoryWrapper
         stepIndex={1}
-        totalSteps={2}
+        totalSteps={3}
       >
         <Story />
       </AccountSetupFormStoryWrapper>

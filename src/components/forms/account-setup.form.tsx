@@ -26,6 +26,12 @@ import {
   teachableCoursesFormIsSubmittable,
   type TeachableCourseDraft,
 } from '@/lib/teachable-course-validation';
+import type { AccountAvailabilityPreset } from '@/lib/weekly-availability';
+import {
+  buildDefaultWeeklyAvailability,
+  validateWeeklyAvailabilityDraft,
+  weeklyAvailabilityToApiPayload,
+} from '@/lib/weekly-availability';
 
 export type AccountSetupFormValues = {
   accountType: 'adult' | 'student';
@@ -46,6 +52,8 @@ export type AccountSetupFormValues = {
   under13GuardianPermissionConfirmed: boolean;
   pendingStudents: ReturnType<typeof newStudentRow>[];
   teachableCourses: TeachableCourseDraft[];
+  availabilityPreset: AccountAvailabilityPreset;
+  weeklyAvailability: ReturnType<typeof buildDefaultWeeklyAvailability>;
 };
 
 /** Validator generics are widened so Zod `validators.onSubmit` matches the context type. */
@@ -150,8 +158,37 @@ function buildAccountSetupSchema(
           subjectId: z.string(),
           grades: z.array(z.string()),
           curriculum: z.string(),
+          maxStudents: z.number().int().min(1).max(20),
         }),
       ),
+      availabilityPreset: z.enum([
+        'anytime',
+        'school_hours',
+        'after_school',
+        'custom',
+      ]),
+      weeklyAvailability: z
+        .array(
+          z.object({
+            day: z.enum([
+              'monday',
+              'tuesday',
+              'wednesday',
+              'thursday',
+              'friday',
+              'saturday',
+              'sunday',
+            ]),
+            slots: z.array(
+              z.object({
+                id: z.string(),
+                start: z.string(),
+                end: z.string(),
+              }),
+            ),
+          }),
+        )
+        .length(7),
     })
     .superRefine((data, ctx) => {
       const digits = data.phoneNumber.replace(/\D/g, '');
@@ -211,6 +248,15 @@ function buildAccountSetupSchema(
             path: ['under13GuardianPermissionConfirmed'],
           });
         }
+      }
+
+      const availMsg = validateWeeklyAvailabilityDraft(data.weeklyAvailability);
+      if (availMsg) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: availMsg,
+          path: ['weeklyAvailability'],
+        });
       }
 
       if (data.accountType === 'student') {
@@ -309,6 +355,8 @@ const AccountSetupForm = ({
       under13GuardianPermissionConfirmed: false,
       pendingStudents: [newStudentRow()],
       teachableCourses: [newCourseRow()] as TeachableCourseDraft[],
+      availabilityPreset: 'anytime',
+      weeklyAvailability: buildDefaultWeeklyAvailability(),
     } as AccountSetupFormValues,
     validators: {
       onSubmit: accountSetupSchema,
@@ -340,6 +388,9 @@ const AccountSetupForm = ({
         state: value.state,
         zipCode: value.zipCode,
         phoneNumber: phoneE164,
+        weeklyAvailability: weeklyAvailabilityToApiPayload(
+          value.weeklyAvailability,
+        ),
         pendingStudents:
           value.accountType === 'adult'
             ? value.pendingStudents.map((s) => ({
@@ -373,6 +424,7 @@ const AccountSetupForm = ({
                     matchesAllGrades,
                     grades,
                     curriculum: c.curriculum,
+                    maxStudents: c.maxStudents,
                   };
                 })
             : undefined,

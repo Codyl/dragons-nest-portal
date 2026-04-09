@@ -270,6 +270,38 @@ export default function CourseFormRow({
           )}
         </Field>
 
+        <Field className="gap-1.5">
+          <FieldLabel htmlFor={`max-students-${row.id}`}>
+            Max students
+          </FieldLabel>
+          <Input
+            id={`max-students-${row.id}`}
+            type="number"
+            min={1}
+            max={20}
+            inputMode="numeric"
+            data-testid={`max-students-${row.id}`}
+            value={String(Number.isFinite(row.maxStudents) ? row.maxStudents : 1)}
+            className={cn(beigeInputClassName)}
+            onChange={(e) => {
+              const raw = e.target.value;
+              if (raw === '') {
+                onChangePatch({ maxStudents: 1 });
+                return;
+              }
+              const n = Number.parseInt(raw, 10);
+              if (!Number.isFinite(n)) return;
+              onChangePatch({
+                maxStudents: Math.min(20, Math.max(1, n)),
+              });
+            }}
+            disabled={subjectsLoading}
+          />
+          <p className="text-muted-foreground text-xs leading-snug">
+            Maximum concurrent students for this course (1–20).
+          </p>
+        </Field>
+
         <SelectField
           label="Curriculum"
           tooltip="The curriculum you select you will use for your class materials. You can access these for free using our portal."

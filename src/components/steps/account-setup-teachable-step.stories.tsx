@@ -13,8 +13,8 @@ const meta = {
   decorators: [
     (Story) => (
       <AccountSetupFormStoryWrapper
-        stepIndex={2}
-        totalSteps={3}
+        stepIndex={3}
+        totalSteps={4}
         signupRole="adult"
       >
         <Story />

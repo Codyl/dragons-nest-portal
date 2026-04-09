@@ -35,6 +35,8 @@ export type TeachableCourseDraft = {
   /** Homeschool grade values from `HOMESCHOOL_GRADE_OPTIONS`, or exclusively `['ANY']` when subject is enrichment. */
   grades: string[];
   curriculum: string;
+  /** Cap 20 per product rules */
+  maxStudents: number;
 };
 
 export function newCourseRow(): TeachableCourseDraft {
@@ -44,6 +46,7 @@ export function newCourseRow(): TeachableCourseDraft {
     subjectId: '',
     grades: [],
     curriculum: '',
+    maxStudents: 1,
   };
 }
 
@@ -167,6 +170,14 @@ export function rowIsComplete(
     return false;
   }
 
+  if (
+    !Number.isFinite(row.maxStudents) ||
+    row.maxStudents < 1 ||
+    row.maxStudents > 20
+  ) {
+    return false;
+  }
+
   const subject = getSubject(row.subjectId);
   if (!subject) return false;
 
@@ -185,7 +196,7 @@ export function rowIsComplete(
 export function teachableCoursesFormIsSubmittable(
   rows: Pick<
     TeachableCourseDraft,
-    'className' | 'subjectId' | 'grades' | 'curriculum'
+    'className' | 'subjectId' | 'grades' | 'curriculum' | 'maxStudents'
   >[],
   getSubject: GetTeachableSubject,
 ): boolean {

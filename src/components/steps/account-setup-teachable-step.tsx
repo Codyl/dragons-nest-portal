@@ -101,7 +101,7 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
                     disabled={!canFinish}
                     data-testid="account-setup-teachable-continue"
                   >
-                    Finish setup
+                    Next
                   </Button>
                 </div>
                 {!canFinish && (

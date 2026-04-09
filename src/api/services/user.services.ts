@@ -84,6 +84,10 @@ const UserServices = {
     state: string;
     zipCode: string;
     phoneNumber: string;
+    weeklyAvailability: {
+      day: string;
+      slots: { start: string; end: string }[];
+    }[];
     pendingStudents?: {
       studentDraftId: string;
       displayName: string;
@@ -95,6 +99,7 @@ const UserServices = {
       matchesAllGrades: boolean;
       grades: string[];
       curriculum: string;
+      maxStudents: number;
     }[];
   }): Promise<{
     message: string;

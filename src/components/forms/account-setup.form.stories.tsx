@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { userEvent, within } from 'storybook/test';
 import AccountSetupForm from './account-setup.form';
+import AccountSetupAvailabilityStep from '@/components/steps/account-setup-availability-step';
 import AccountSetupComplianceStep from '@/components/steps/account-setup-compliance-step';
 import AccountSetupInterestsStep from '@/components/steps/account-setup-interests-step';
 import {
@@ -19,7 +20,7 @@ function AccountSetupStudentFlow({
   initialStep?: number;
 }) {
   const [step, setStep] = useState(initialStep);
-  const totalSteps = 2;
+  const totalSteps = 3;
   return (
     <AccountSetupForm
       stepIndex={step}
@@ -30,9 +31,16 @@ function AccountSetupStudentFlow({
       {step === 0 && <AccountSetupComplianceStep onNext={() => setStep(1)} />}
       {step === 1 && (
         <AccountSetupInterestsStep
-          isLastStep
           onBack={() => setStep(0)}
+          onNext={() => setStep(2)}
+        />
+      )}
+      {step === 2 && (
+        <AccountSetupAvailabilityStep
+          variant="teen"
+          onBack={() => setStep(1)}
           onNext={() => undefined}
+          isLastStep
         />
       )}
     </AccountSetupForm>
@@ -43,7 +51,7 @@ function AccountSetupAdultComplianceFlow() {
   return (
     <AccountSetupForm
       stepIndex={0}
-      totalSteps={3}
+      totalSteps={4}
       expectedBirthBand="adult"
       initialFormAccountType="adult"
     >
@@ -124,7 +132,8 @@ export const ComplianceToInterests: Story = {
     await userEvent.type(canvas.getByTestId('input-name'), 'Alex');
     await userEvent.click(canvas.getByTestId('checkbox-teen-age'));
     await userEvent.click(canvas.getByTestId('checkbox-teen-permission'));
-    await userEvent.selectOptions(canvas.getByTestId('input-state'), 'ca');
+    await userEvent.click(canvas.getByTestId('input-state'));
+    await userEvent.click(await canvas.findByRole('option', { name: 'California' }));
     await userEvent.type(canvas.getByTestId('input-zip'), '90210');
     await userEvent.type(canvas.getByTestId('input-phone'), '5551234567');
     await userEvent.click(canvas.getByTestId('avatar-owl'));
