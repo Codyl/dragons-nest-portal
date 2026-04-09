@@ -1,18 +1,16 @@
 import { useAccountSetupForm } from '@/components/forms/account-setup.form';
+import CheckboxField from '@/components/fields/checkbox-field';
 import InputField from '@/components/fields/input-field';
 import SelectField from '@/components/fields/select-field';
 import { Button } from '@/components/ui/button';
-import { FieldGroup } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
 import { MapPin } from 'lucide-react';
 import AccountSetupCard from '@/components/cards/account-setup-card';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
-import { FieldError } from '@/components/ui/field';
+import { FieldError, FieldGroup } from '@/components/ui/field';
 import { US_STATE_OPTIONS } from '@/lib/us-state-options';
 import { normalizePhoneNumber } from '@/utils/helpers/input-normalization.helpers';
 import { formatPhoneNumber } from '@/utils/helpers/formatting.helpers';
-import { Field, FieldLabel } from '@/components/ui/field';
-import { Checkbox } from '../ui/checkbox';
 
 const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
   const { form, expectedBirthBand } = useAccountSetupForm();
@@ -95,33 +93,12 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               }}
             >
               {(field) => (
-                <Field>
-                  <div className="flex items-start gap-3">
-                    <Checkbox
-                      id="teen-age"
-                      checked={field.state.value}
-                      onCheckedChange={(checked: boolean) =>
-                        field.handleChange(checked)
-                      }
-                      data-testid="checkbox-teen-age"
-                    />
-                    <FieldLabel
-                      htmlFor="teen-age"
-                      className="text-sm leading-snug font-normal"
-                    >
-                      I am between 13 and 17 years old.
-                    </FieldLabel>
-                  </div>
-                  {field.state.meta.isTouched &&
-                    field.state.meta.errors.length > 0 && (
-                      <FieldError
-                        data-testid="error-message-teenAgeConfirmed"
-                        errors={field.state.meta.errors.map((e: unknown) =>
-                          typeof e === 'string' ? { message: e } : e,
-                        ) as { message?: string }[]}
-                      />
-                    )}
-                </Field>
+                <CheckboxField
+                  field={field}
+                  id="teen-age"
+                  label="I am between 13 and 17 years old."
+                  data-testid="checkbox-teen-age"
+                />
               )}
             </form.Field>
             <form.Field
@@ -132,34 +109,17 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               }}
             >
               {(field) => (
-                <Field>
-                  <div className="flex items-start gap-3">
-                    <Checkbox
-                      id="teen-permission"
-                      checked={field.state.value}
-                      onCheckedChange={(checked: boolean) =>
-                        field.handleChange(checked)
-                      }
-                      data-testid="checkbox-teen-permission"
-                    />
-                    <FieldLabel
-                      htmlFor="teen-permission"
-                      className="text-sm leading-snug font-normal"
-                    >
+                <CheckboxField
+                  field={field}
+                  id="teen-permission"
+                  label={
+                    <>
                       I verify that I have my parent or guardian&apos;s
                       permission to create this account.
-                    </FieldLabel>
-                  </div>
-                  {field.state.meta.isTouched &&
-                    field.state.meta.errors.length > 0 && (
-                      <FieldError
-                        data-testid="error-message-teenPermissionConfirmed"
-                        errors={field.state.meta.errors.map((e: unknown) =>
-                          typeof e === 'string' ? { message: e } : e,
-                        ) as { message?: string }[]}
-                      />
-                    )}
-                </Field>
+                    </>
+                  }
+                  data-testid="checkbox-teen-permission"
+                />
               )}
             </form.Field>
           </>
@@ -175,33 +135,12 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               }}
             >
               {(field) => (
-                <Field>
-                  <div className="flex items-start gap-3">
-                    <Checkbox
-                      id="under13-age"
-                      checked={field.state.value}
-                      onCheckedChange={(checked: boolean) =>
-                        field.handleChange(checked)
-                      }
-                      data-testid="checkbox-under13-age"
-                    />
-                    <FieldLabel
-                      htmlFor="under13-age"
-                      className="text-sm leading-snug font-normal"
-                    >
-                      I am under 13 years old.
-                    </FieldLabel>
-                  </div>
-                  {field.state.meta.isTouched &&
-                    field.state.meta.errors.length > 0 && (
-                      <FieldError
-                        data-testid="error-message-under13ChildConfirmed"
-                        errors={field.state.meta.errors.map((e: unknown) =>
-                          typeof e === 'string' ? { message: e } : e,
-                        ) as { message?: string }[]}
-                      />
-                    )}
-                </Field>
+                <CheckboxField
+                  field={field}
+                  id="under13-age"
+                  label="I am under 13 years old."
+                  data-testid="checkbox-under13-age"
+                />
               )}
             </form.Field>
             <form.Field
@@ -212,34 +151,12 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               }}
             >
               {(field) => (
-                <Field>
-                  <div className="flex items-start gap-3">
-                    <Checkbox
-                      id="under13-guardian"
-                      checked={field.state.value}
-                      onCheckedChange={(checked: boolean) =>
-                        field.handleChange(checked)
-                      }
-                      data-testid="checkbox-under13-guardian"
-                    />
-                    <FieldLabel
-                      htmlFor="under13-guardian"
-                      className="text-sm leading-snug font-normal"
-                    >
-                      I verify that my parent or guardian is helping me create
-                      this account and I have their permission.
-                    </FieldLabel>
-                  </div>
-                  {field.state.meta.isTouched &&
-                    field.state.meta.errors.length > 0 && (
-                      <FieldError
-                        data-testid="error-message-under13GuardianPermissionConfirmed"
-                        errors={field.state.meta.errors.map((e: unknown) =>
-                          typeof e === 'string' ? { message: e } : e,
-                        ) as { message?: string }[]}
-                      />
-                    )}
-                </Field>
+                <CheckboxField
+                  field={field}
+                  id="under13-guardian"
+                  label="I verify that my parent or guardian is helping me create this account and I have their permission."
+                  data-testid="checkbox-under13-guardian"
+                />
               )}
             </form.Field>
           </>
@@ -413,33 +330,12 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
             }}
           >
             {(field) => (
-              <Field>
-                <div className="flex items-start gap-3">
-                  <Checkbox
-                    id="adult-age"
-                    checked={field.state.value}
-                    onCheckedChange={(checked: boolean) =>
-                      field.handleChange(checked)
-                    }
-                    data-testid="checkbox-adult-age"
-                  />
-                  <FieldLabel
-                    htmlFor="adult-age"
-                    className="text-sm leading-snug font-normal"
-                  >
-                    I am 18 or older.
-                  </FieldLabel>
-                </div>
-                {field.state.meta.isTouched &&
-                  field.state.meta.errors.length > 0 && (
-                    <FieldError
-                      data-testid="error-message-adultAgeConfirmed"
-                      errors={field.state.meta.errors.map((e: unknown) =>
-                        typeof e === 'string' ? { message: e } : e,
-                      ) as { message?: string }[]}
-                    />
-                  )}
-              </Field>
+              <CheckboxField
+                field={field}
+                id="adult-age"
+                label="I am 18 or older."
+                data-testid="checkbox-adult-age"
+              />
             )}
           </form.Field>
         )}

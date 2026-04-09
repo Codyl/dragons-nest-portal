@@ -3,8 +3,8 @@ import { Plus, X } from 'lucide-react';
 import { useOptionalAccountSetupForm } from '@/components/forms/account-setup.form';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Field, FieldError, FieldLabel } from '../ui/field';
-import { Checkbox } from '../ui/checkbox';
+import { Field, FieldLabel } from '../ui/field';
+import CheckboxField from '../fields/checkbox-field';
 import SelectField from '../fields/select-field';
 import { HOMESCHOOL_GRADE_ORDINAL_OPTIONS } from '@/lib/homeschool-options';
 import {
@@ -180,34 +180,12 @@ const SignupAddStudentsStep = ({
           }}
         >
           {(field) => (
-            <Field>
-              <div className="flex items-start gap-3">
-                <Checkbox
-                  id="adult-guardian"
-                  checked={field.state.value}
-                  onCheckedChange={(checked: boolean) =>
-                    field.handleChange(checked)
-                  }
-                  data-testid="checkbox-adult-guardian"
-                />
-                <FieldLabel
-                  htmlFor="adult-guardian"
-                  className="text-sm leading-snug font-normal"
-                >
-                  I verify that I am a Parent/Guardian and/or have permission
-                  to add these children and will manage this account.
-                </FieldLabel>
-              </div>
-              {field.state.meta.isTouched &&
-                field.state.meta.errors.length > 0 && (
-                  <FieldError
-                    data-testid="error-message-adultGuardianDutyConfirmed"
-                    errors={field.state.meta.errors.map((e: unknown) =>
-                      typeof e === 'string' ? { message: e } : e,
-                    ) as { message?: string }[]}
-                  />
-                )}
-            </Field>
+            <CheckboxField
+              field={field}
+              id="adult-guardian"
+              label="I verify that I am a Parent/Guardian and/or have permission to add these children and will manage this account."
+              data-testid="checkbox-adult-guardian"
+            />
           )}
         </GuardianDutyFormField>
       ) : null}
