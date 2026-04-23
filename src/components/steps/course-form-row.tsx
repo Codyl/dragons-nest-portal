@@ -268,6 +268,12 @@ export default function CourseFormRow({
               regardless of age.
             </p>
           )}
+          {gradeValue && (
+            // TODO: get the number of teachers covering this subject and grade from the API
+            <p className="text-muted-foreground text-xs leading-snug">
+              There are currently 10 teachers offering to teach this subject and grade at your zip code.
+            </p>
+          )}
         </Field>
 
         <Field className="gap-1.5">
