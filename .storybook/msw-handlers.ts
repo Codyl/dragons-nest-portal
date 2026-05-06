@@ -23,6 +23,7 @@ const matchAuthResendCode = pathMatch('/auth/confirm-signup/resend-code');
 const matchAuthMfa = pathMatch('/auth/mfa');
 const matchAuthAnswerOtp = pathMatch('/auth/answer-otp');
 const matchSubjects = pathMatch('/subjects');
+const matchTeachableCoursesPatch = pathMatch('/profile/teachable-courses');
 const matchAuthMfaGenerateSecret = pathMatch(
   '/auth/mfa/generate-authenticator-secret',
 );
@@ -134,6 +135,36 @@ export const handlers = [
         message: 'Account setup saved',
         data: {
           onboardingCompletedAt: new Date().toISOString(),
+        },
+      },
+      { status: 200 },
+    );
+  }),
+  // Append teachable course (teaching subjects / add-course sheet)
+  http.patch(matchTeachableCoursesPatch, async ({ request }) => {
+    const body = (await request.json()) as {
+      className: string;
+      subjectId: string;
+      matchesAllGrades: boolean;
+      grades: string[];
+      curriculum: string;
+      maxStudents: number;
+    };
+    return HttpResponse.json(
+      {
+        message: 'Course added',
+        data: {
+          teachableCourses: [
+            {
+              className: body.className,
+              subjectId: body.subjectId,
+              matchesAllGrades: body.matchesAllGrades,
+              grades: body.grades,
+              curriculum: body.curriculum,
+              maxStudents: body.maxStudents,
+              activeEnrollmentCount: 0,
+            },
+          ],
         },
       },
       { status: 200 },

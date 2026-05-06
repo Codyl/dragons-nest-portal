@@ -9,6 +9,12 @@ import {
   HOMESCHOOL_GRADE_OPTIONS,
 } from '@/lib/homeschool-options';
 import {
+  TEACHABLE_GRADE_OPTIONS_WITH_ANY,
+  teachableGradeSelectStyles,
+  teachableGradeSelectTheme,
+  type TeachableGradeOption,
+} from '@/lib/teachable-grade-react-select';
+import {
   ANY_GRADE_VALUE,
   getMaxConsecutiveGradesForSubject,
   homeschoolGradeOptionsWithinSpanLimit,
@@ -21,77 +27,7 @@ import {
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
-import Select, {
-  type MultiValue,
-  type StylesConfig,
-  type ThemeConfig,
-} from 'react-select';
-
-type GradeOption = { value: string; label: string };
-
-const GRADE_OPTIONS_WITH_ANY: GradeOption[] = [
-  ...HOMESCHOOL_GRADE_OPTIONS,
-  { value: ANY_GRADE_VALUE, label: 'Any' },
-];
-
-const gradeSelectTheme: ThemeConfig = (theme) => ({
-  ...theme,
-  borderRadius: 6,
-  colors: {
-    ...theme.colors,
-    primary: '#8b7355',
-    primary25: '#ebe4d9',
-    primary50: '#e7ddd0',
-    neutral20: '#e7e5e4',
-    neutral30: '#d6d3d1',
-  },
-});
-
-const gradeSelectStyles: StylesConfig<GradeOption, true> = {
-  control: (base, state) => ({
-    ...base,
-    minHeight: 36,
-    backgroundColor: '#f5f1eb',
-    borderColor: state.isFocused ? '#a89878' : '#e7e5e4',
-    boxShadow: state.isFocused ? '0 0 0 3px rgba(139, 115, 85, 0.2)' : 'none',
-    '&:hover': { borderColor: '#a89878' },
-  }),
-  menu: (base) => ({
-    ...base,
-    backgroundColor: '#faf8f5',
-    border: '1px solid #e7e5e4',
-    boxShadow:
-      '0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07)',
-  }),
-  option: (base, state) => ({
-    ...base,
-    cursor: 'pointer',
-    backgroundColor: state.isSelected
-      ? '#8b7355'
-      : state.isFocused
-        ? '#ebe4d9'
-        : 'transparent',
-    color: state.isSelected ? '#fff' : '#1c1917',
-  }),
-  multiValue: (base) => ({
-    ...base,
-    backgroundColor: '#e7ddd0',
-    borderRadius: 4,
-  }),
-  multiValueLabel: (base) => ({
-    ...base,
-    color: '#44403c',
-    fontSize: '0.875rem',
-  }),
-  multiValueRemove: (base) => ({
-    ...base,
-    color: '#57534e',
-    ':hover': { backgroundColor: '#d6d3d1', color: '#1c1917' },
-  }),
-  placeholder: (base) => ({ ...base, color: '#78716c', fontSize: '0.875rem' }),
-  input: (base) => ({ ...base, fontSize: '0.875rem' }),
-  singleValue: (base) => ({ ...base, fontSize: '0.875rem' }),
-};
+import Select, { type MultiValue } from 'react-select';
 
 export type CourseFormRowProps = {
   row: TeachableCourseDraft;
@@ -123,16 +59,16 @@ export default function CourseFormRow({
     ? getMaxConsecutiveGradesForSubject(selectedSubject)
     : null;
 
-  const gradeOptions = useMemo((): GradeOption[] => {
+  const gradeOptions = useMemo((): TeachableGradeOption[] => {
     if (!subjectResolved) return [];
 
-    if (allowAnyGrade) return GRADE_OPTIONS_WITH_ANY;
+    if (allowAnyGrade) return TEACHABLE_GRADE_OPTIONS_WITH_ANY;
 
     const limited = homeschoolGradeOptionsWithinSpanLimit(row.grades, spanLimit);
     const byValue = new Map(
       HOMESCHOOL_GRADE_OPTIONS.map((o) => [o.value, o] as const),
     );
-    const out: GradeOption[] = [...limited];
+    const out: TeachableGradeOption[] = [...limited];
     for (const g of row.grades) {
       if (g === ANY_GRADE_VALUE) continue;
 
@@ -145,10 +81,10 @@ export default function CourseFormRow({
     return out;
   }, [subjectResolved, allowAnyGrade, row.grades, spanLimit]);
 
-  const gradeValue: MultiValue<GradeOption> = useMemo(() => {
+  const gradeValue: MultiValue<TeachableGradeOption> = useMemo(() => {
     return row.grades
       .map((v) => gradeOptions.find((o) => o.value === v))
-      .filter(Boolean) as GradeOption[];
+      .filter(Boolean) as TeachableGradeOption[];
   }, [row.grades, gradeOptions]);
 
   const showAnyHint =
@@ -227,7 +163,7 @@ export default function CourseFormRow({
         <Field className="gap-1.5">
           <FieldLabel htmlFor={`grade-select-${row.id}`}>Grade</FieldLabel>
           <div data-testid={`select-grade-${row.id}`}>
-            <Select<GradeOption, true>
+            <Select<TeachableGradeOption, true>
               inputId={`grade-select-${row.id}`}
               instanceId={`grade-select-${row.id}`}
               isMulti
@@ -240,9 +176,9 @@ export default function CourseFormRow({
               closeMenuOnSelect={false}
               hideSelectedOptions={false}
               classNamePrefix="teachable-grade"
-              theme={gradeSelectTheme}
-              styles={gradeSelectStyles}
-              onChange={(next: MultiValue<GradeOption>) => {
+              theme={teachableGradeSelectTheme}
+              styles={teachableGradeSelectStyles}
+              onChange={(next: MultiValue<TeachableGradeOption>) => {
                 const nextVals = (next ?? []).map((o) => o.value);
                 const reconciled = reconcileGradesAfterMultiSelect(
                   row.grades,

@@ -16,6 +16,16 @@ export type HouseholdStudentProfile = {
   lastPromotionYear: number;
 };
 
+export type TeachableCourseWithEnrollment = {
+  className: string;
+  subjectId: string;
+  matchesAllGrades: boolean;
+  grades: string[];
+  curriculum: string;
+  maxStudents: number;
+  activeEnrollmentCount: number;
+};
+
 export type ProfileUserData = {
   email?: string;
   family_name?: string;
@@ -36,6 +46,7 @@ export type ProfileUserData = {
   accountType?: string | null;
   ageBandAtRegistration?: string | null;
   householdStudents?: HouseholdStudentProfile[];
+  teachableCourses?: TeachableCourseWithEnrollment[];
 };
 
 export type KnownDevice = {
@@ -243,6 +254,29 @@ const UserServices = {
     const response = await api.delete('profile/webauthn/credentials', {
       json: { credentialId },
     });
+    return response.json();
+  },
+  addTeachableCourse: async (json: {
+    className: string;
+    subjectId: string;
+    matchesAllGrades: boolean;
+    grades: string[];
+    curriculum: string;
+    maxStudents: number;
+  }): Promise<{
+    message: string;
+    data: { teachableCourses: TeachableCourseWithEnrollment[] };
+  }> => {
+    const response = await api.patch('profile/teachable-courses', { json });
+    return response.json();
+  },
+  removeTeachableCourse: async (
+    index: number,
+  ): Promise<{
+    message: string;
+    data: { teachableCourses: TeachableCourseWithEnrollment[] };
+  }> => {
+    const response = await api.delete(`profile/teachable-courses/${index}`);
     return response.json();
   },
 };

@@ -2,6 +2,7 @@ import { Link, useRouterState } from '@tanstack/react-router';
 import {
   ArrowLeft,
   Bell,
+  BookOpen,
   CreditCard,
   Shield,
   User,
@@ -28,6 +29,11 @@ const settingsNav = [
   { to: '/settings/security', label: 'Security', icon: Shield },
   { to: '/settings/billing', label: 'Billing', icon: CreditCard },
   { to: '/settings/notifications', label: 'Notifications', icon: Bell },
+  {
+    to: '/settings/teaching-subjects',
+    label: 'Teaching Subjects',
+    icon: BookOpen,
+  },
 ] as const;
 
 export function SettingsShellSidebar() {

@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
+import { cn } from '@/lib/utils';
 
 const InputField = ({
   field,
@@ -43,7 +45,7 @@ const InputField = ({
         data-testid={`input-${field.name}`}
         name={field.name}
         type={type}
-        className={inputClassName}
+        className={clsx(inputClassName, 'bg-white')}
         value={field.state.value}
         normalize={normalize}
         format={format}

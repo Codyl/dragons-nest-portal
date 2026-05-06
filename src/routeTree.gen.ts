@@ -24,7 +24,6 @@ import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(priv
 import { Route as privatePrivateComplianceRouteImport } from './routes/(private)/_private.compliance'
 import { Route as privatePrivateClassRequestsRouteImport } from './routes/(private)/_private.class-requests'
 import { Route as privatePrivateAccountSetupRouteImport } from './routes/(private)/_private.account-setup'
-import { Route as privatePrivateAccountSettingsRouteImport } from './routes/(private)/_private.account-settings'
 import { Route as authAuthVerifyUsernameRouteImport } from './routes/(auth)/_auth.verify-username'
 import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup'
 import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth.reset-password'
@@ -32,6 +31,7 @@ import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
 import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
 import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
 import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery'
+import { Route as privatePrivateSettingsTeachingSubjectsRouteImport } from './routes/(private)/_private.settings.teaching-subjects'
 import { Route as privatePrivateSettingsSecurityRouteImport } from './routes/(private)/_private.settings.security'
 import { Route as privatePrivateSettingsProfileRouteImport } from './routes/(private)/_private.settings.profile'
 import { Route as privatePrivateSettingsNotificationsRouteImport } from './routes/(private)/_private.settings.notifications'
@@ -120,12 +120,6 @@ const privatePrivateAccountSetupRoute =
     path: '/account-setup',
     getParentRoute: () => privatePrivateRoute,
   } as any)
-const privatePrivateAccountSettingsRoute =
-  privatePrivateAccountSettingsRouteImport.update({
-    id: '/account-settings',
-    path: '/account-settings',
-    getParentRoute: () => privatePrivateRoute,
-  } as any)
 const authAuthVerifyUsernameRoute = authAuthVerifyUsernameRouteImport.update({
   id: '/verify-username',
   path: '/verify-username',
@@ -161,6 +155,12 @@ const authAuthAccountRecoveryRoute = authAuthAccountRecoveryRouteImport.update({
   path: '/account-recovery',
   getParentRoute: () => authAuthRoute,
 } as any)
+const privatePrivateSettingsTeachingSubjectsRoute =
+  privatePrivateSettingsTeachingSubjectsRouteImport.update({
+    id: '/teaching-subjects',
+    path: '/teaching-subjects',
+    getParentRoute: () => privatePrivateSettingsRoute,
+  } as any)
 const privatePrivateSettingsSecurityRoute =
   privatePrivateSettingsSecurityRouteImport.update({
     id: '/security',
@@ -213,7 +213,6 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof authAuthResetPasswordRoute
   '/signup': typeof authAuthSignupRoute
   '/verify-username': typeof authAuthVerifyUsernameRoute
-  '/account-settings': typeof privatePrivateAccountSettingsRoute
   '/account-setup': typeof privatePrivateAccountSetupRoute
   '/class-requests': typeof privatePrivateClassRequestsRoute
   '/compliance': typeof privatePrivateComplianceRoute
@@ -232,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
   '/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/settings/security': typeof privatePrivateSettingsSecurityRoute
+  '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
 }
 export interface FileRoutesByTo {
   '/maintenance': typeof MaintenanceRoute
@@ -243,7 +243,6 @@ export interface FileRoutesByTo {
   '/reset-password': typeof authAuthResetPasswordRoute
   '/signup': typeof authAuthSignupRoute
   '/verify-username': typeof authAuthVerifyUsernameRoute
-  '/account-settings': typeof privatePrivateAccountSettingsRoute
   '/account-setup': typeof privatePrivateAccountSetupRoute
   '/class-requests': typeof privatePrivateClassRequestsRoute
   '/compliance': typeof privatePrivateComplianceRoute
@@ -262,6 +261,7 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
   '/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/settings/security': typeof privatePrivateSettingsSecurityRoute
+  '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -276,7 +276,6 @@ export interface FileRoutesById {
   '/(auth)/_auth/reset-password': typeof authAuthResetPasswordRoute
   '/(auth)/_auth/signup': typeof authAuthSignupRoute
   '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute
-  '/(private)/_private/account-settings': typeof privatePrivateAccountSettingsRoute
   '/(private)/_private/account-setup': typeof privatePrivateAccountSetupRoute
   '/(private)/_private/class-requests': typeof privatePrivateClassRequestsRoute
   '/(private)/_private/compliance': typeof privatePrivateComplianceRoute
@@ -295,6 +294,7 @@ export interface FileRoutesById {
   '/(private)/_private/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
   '/(private)/_private/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/(private)/_private/settings/security': typeof privatePrivateSettingsSecurityRoute
+  '/(private)/_private/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -308,7 +308,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/verify-username'
-    | '/account-settings'
     | '/account-setup'
     | '/class-requests'
     | '/compliance'
@@ -327,6 +326,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/profile'
     | '/settings/security'
+    | '/settings/teaching-subjects'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/maintenance'
@@ -338,7 +338,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/verify-username'
-    | '/account-settings'
     | '/account-setup'
     | '/class-requests'
     | '/compliance'
@@ -357,6 +356,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/profile'
     | '/settings/security'
+    | '/settings/teaching-subjects'
   id:
     | '__root__'
     | '/maintenance'
@@ -370,7 +370,6 @@ export interface FileRouteTypes {
     | '/(auth)/_auth/reset-password'
     | '/(auth)/_auth/signup'
     | '/(auth)/_auth/verify-username'
-    | '/(private)/_private/account-settings'
     | '/(private)/_private/account-setup'
     | '/(private)/_private/class-requests'
     | '/(private)/_private/compliance'
@@ -389,6 +388,7 @@ export interface FileRouteTypes {
     | '/(private)/_private/settings/notifications'
     | '/(private)/_private/settings/profile'
     | '/(private)/_private/settings/security'
+    | '/(private)/_private/settings/teaching-subjects'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -506,13 +506,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privatePrivateAccountSetupRouteImport
       parentRoute: typeof privatePrivateRoute
     }
-    '/(private)/_private/account-settings': {
-      id: '/(private)/_private/account-settings'
-      path: '/account-settings'
-      fullPath: '/account-settings'
-      preLoaderRoute: typeof privatePrivateAccountSettingsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
     '/(auth)/_auth/verify-username': {
       id: '/(auth)/_auth/verify-username'
       path: '/verify-username'
@@ -561,6 +554,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/account-recovery'
       preLoaderRoute: typeof authAuthAccountRecoveryRouteImport
       parentRoute: typeof authAuthRoute
+    }
+    '/(private)/_private/settings/teaching-subjects': {
+      id: '/(private)/_private/settings/teaching-subjects'
+      path: '/teaching-subjects'
+      fullPath: '/settings/teaching-subjects'
+      preLoaderRoute: typeof privatePrivateSettingsTeachingSubjectsRouteImport
+      parentRoute: typeof privatePrivateSettingsRoute
     }
     '/(private)/_private/settings/security': {
       id: '/(private)/_private/settings/security'
@@ -659,6 +659,7 @@ interface privatePrivateSettingsRouteChildren {
   privatePrivateSettingsNotificationsRoute: typeof privatePrivateSettingsNotificationsRoute
   privatePrivateSettingsProfileRoute: typeof privatePrivateSettingsProfileRoute
   privatePrivateSettingsSecurityRoute: typeof privatePrivateSettingsSecurityRoute
+  privatePrivateSettingsTeachingSubjectsRoute: typeof privatePrivateSettingsTeachingSubjectsRoute
 }
 
 const privatePrivateSettingsRouteChildren: privatePrivateSettingsRouteChildren =
@@ -669,6 +670,8 @@ const privatePrivateSettingsRouteChildren: privatePrivateSettingsRouteChildren =
       privatePrivateSettingsNotificationsRoute,
     privatePrivateSettingsProfileRoute: privatePrivateSettingsProfileRoute,
     privatePrivateSettingsSecurityRoute: privatePrivateSettingsSecurityRoute,
+    privatePrivateSettingsTeachingSubjectsRoute:
+      privatePrivateSettingsTeachingSubjectsRoute,
   }
 
 const privatePrivateSettingsRouteWithChildren =
@@ -677,7 +680,6 @@ const privatePrivateSettingsRouteWithChildren =
   )
 
 interface privatePrivateRouteChildren {
-  privatePrivateAccountSettingsRoute: typeof privatePrivateAccountSettingsRoute
   privatePrivateAccountSetupRoute: typeof privatePrivateAccountSetupRoute
   privatePrivateClassRequestsRoute: typeof privatePrivateClassRequestsRoute
   privatePrivateComplianceRoute: typeof privatePrivateComplianceRoute
@@ -692,7 +694,6 @@ interface privatePrivateRouteChildren {
 }
 
 const privatePrivateRouteChildren: privatePrivateRouteChildren = {
-  privatePrivateAccountSettingsRoute: privatePrivateAccountSettingsRoute,
   privatePrivateAccountSetupRoute: privatePrivateAccountSetupRoute,
   privatePrivateClassRequestsRoute: privatePrivateClassRequestsRoute,
   privatePrivateComplianceRoute: privatePrivateComplianceRoute,
