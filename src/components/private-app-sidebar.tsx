@@ -1,5 +1,16 @@
 import { Link, useRouterState } from '@tanstack/react-router';
-import { ChevronsUpDown, Home, LogOut, Settings } from 'lucide-react';
+import {
+  ArrowLeft,
+  BookOpen,
+  Calendar,
+  ChevronsUpDown,
+  ClipboardCheck,
+  GraduationCap,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  Users,
+} from 'lucide-react';
 
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useLogout from '@/hooks/use-logout';
@@ -24,8 +35,20 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import { StudentSelector } from '@/components/student-selector';
+import { useStudent } from '@/contexts/student-context';
 
-const navItems = [{ to: '/', label: 'Home', icon: Home }] as const;
+const studentNavTabs = [
+  { to: '/curriculum' as string, label: 'Curriculum', icon: BookOpen },
+  { to: '/compliance' as string, label: 'Compliance', icon: ClipboardCheck },
+];
+
+const parentNavTabs = [
+  { to: '/' as string, label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/class-requests' as string, label: 'Class Requests', icon: Users },
+  { to: '/schedule' as string, label: 'Schedule', icon: Calendar },
+  { to: '/my-subjects' as string, label: 'My Subjects', icon: GraduationCap },
+];
 
 function profileLabel(data: {
   given_name?: string;
@@ -70,6 +93,8 @@ export function PrivateAppSidebar() {
   const user = userRes?.data;
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
+  const { activeStudent, students, setActiveStudent, isLoading } = useStudent();
+
   const displayName = user ? profileLabel(user) : '…';
   const email = user?.email ?? '';
   const initialsStr = user ? initials(user) : '…';
@@ -94,34 +119,78 @@ export function PrivateAppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>App</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map(({ to, label, icon: Icon }) => (
-                <SidebarMenuItem key={to}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={
-                      to === '/'
-                        ? pathname === '/'
-                        : pathname === to || pathname.startsWith(`${to}/`)
-                    }
-                    tooltip={label}
-                  >
-                    <Link to={to}>
-                      <Icon />
-                      <span>{label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {activeStudent !== null ? (
+          <SidebarGroup>
+            <SidebarGroupLabel>
+              <button
+                type="button"
+                onClick={() => setActiveStudent(null)}
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Back to my view"
+              >
+                <ArrowLeft className="size-3" />
+                Back to my view
+              </button>
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {studentNavTabs.map(({ to, label, icon: Icon }) => (
+                  <SidebarMenuItem key={to}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={
+                        pathname === to || pathname.startsWith(`${to}/`)
+                      }
+                      tooltip={label}
+                    >
+                      <Link to={to}>
+                        <Icon />
+                        <span>{label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ) : (
+          <SidebarGroup>
+            <SidebarGroupLabel>App</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {parentNavTabs.map(({ to, label, icon: Icon }) => (
+                  <SidebarMenuItem key={to}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={
+                        to === '/'
+                          ? pathname === '/'
+                          : pathname === to || pathname.startsWith(`${to}/`)
+                      }
+                      tooltip={label}
+                    >
+                      <Link to={to}>
+                        <Icon />
+                        <span>{label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <StudentSelector
+              students={students}
+              activeStudent={activeStudent}
+              onSelect={setActiveStudent}
+              isLoading={isLoading}
+            />
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <Popover>
               <PopoverTrigger asChild>

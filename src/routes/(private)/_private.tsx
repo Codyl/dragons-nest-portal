@@ -7,6 +7,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { StudentProvider } from '@/contexts/student-context';
 import {
   createFileRoute,
   Outlet,
@@ -46,17 +47,19 @@ function RouteComponent() {
   }
 
   return (
-    <SidebarProvider>
-      {isSettingsShell ? <SettingsShellSidebar /> : <PrivateAppSidebar />}
-      <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-        </header>
-        <div className="container mx-auto w-full flex-1 overflow-auto p-4">
-          <PromotionNudgeBanner />
-          <Outlet />
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+    <StudentProvider>
+      <SidebarProvider>
+        {isSettingsShell ? <SettingsShellSidebar /> : <PrivateAppSidebar />}
+        <SidebarInset>
+          <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+          </header>
+          <div className="container mx-auto w-full flex-1 overflow-auto p-4">
+            <PromotionNudgeBanner />
+            <Outlet />
+          </div>
+        </SidebarInset>
+      </SidebarProvider>
+    </StudentProvider>
   );
 }
