@@ -16,7 +16,6 @@ import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
 import { Route as privatePrivateIndexRouteImport } from './routes/(private)/_private.index'
 import { Route as privatePrivateWelcomeRouteImport } from './routes/(private)/_private.welcome'
 import { Route as privatePrivateSettingsRouteImport } from './routes/(private)/_private.settings'
-import { Route as privatePrivateSecuritySettingsRouteImport } from './routes/(private)/_private.security-settings'
 import { Route as privatePrivateScheduleRouteImport } from './routes/(private)/_private.schedule'
 import { Route as privatePrivateMySubjectsRouteImport } from './routes/(private)/_private.my-subjects'
 import { Route as privatePrivateCurriculumRouteImport } from './routes/(private)/_private.curriculum'
@@ -73,12 +72,6 @@ const privatePrivateSettingsRoute = privatePrivateSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => privatePrivateRoute,
 } as any)
-const privatePrivateSecuritySettingsRoute =
-  privatePrivateSecuritySettingsRouteImport.update({
-    id: '/security-settings',
-    path: '/security-settings',
-    getParentRoute: () => privatePrivateRoute,
-  } as any)
 const privatePrivateScheduleRoute = privatePrivateScheduleRouteImport.update({
   id: '/schedule',
   path: '/schedule',
@@ -220,7 +213,6 @@ export interface FileRoutesByFullPath {
   '/curriculum': typeof privatePrivateCurriculumRoute
   '/my-subjects': typeof privatePrivateMySubjectsRoute
   '/schedule': typeof privatePrivateScheduleRoute
-  '/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/settings': typeof privatePrivateSettingsRouteWithChildren
   '/welcome': typeof privatePrivateWelcomeRoute
   '/': typeof privatePrivateIndexRoute
@@ -250,7 +242,6 @@ export interface FileRoutesByTo {
   '/curriculum': typeof privatePrivateCurriculumRoute
   '/my-subjects': typeof privatePrivateMySubjectsRoute
   '/schedule': typeof privatePrivateScheduleRoute
-  '/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/settings': typeof privatePrivateSettingsRouteWithChildren
   '/welcome': typeof privatePrivateWelcomeRoute
   '/': typeof privatePrivateIndexRoute
@@ -283,7 +274,6 @@ export interface FileRoutesById {
   '/(private)/_private/curriculum': typeof privatePrivateCurriculumRoute
   '/(private)/_private/my-subjects': typeof privatePrivateMySubjectsRoute
   '/(private)/_private/schedule': typeof privatePrivateScheduleRoute
-  '/(private)/_private/security-settings': typeof privatePrivateSecuritySettingsRoute
   '/(private)/_private/settings': typeof privatePrivateSettingsRouteWithChildren
   '/(private)/_private/welcome': typeof privatePrivateWelcomeRoute
   '/(private)/_private/': typeof privatePrivateIndexRoute
@@ -315,7 +305,6 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/my-subjects'
     | '/schedule'
-    | '/security-settings'
     | '/settings'
     | '/welcome'
     | '/'
@@ -345,7 +334,6 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/my-subjects'
     | '/schedule'
-    | '/security-settings'
     | '/settings'
     | '/welcome'
     | '/'
@@ -377,7 +365,6 @@ export interface FileRouteTypes {
     | '/(private)/_private/curriculum'
     | '/(private)/_private/my-subjects'
     | '/(private)/_private/schedule'
-    | '/(private)/_private/security-settings'
     | '/(private)/_private/settings'
     | '/(private)/_private/welcome'
     | '/(private)/_private/'
@@ -448,13 +435,6 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof privatePrivateSettingsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
-    '/(private)/_private/security-settings': {
-      id: '/(private)/_private/security-settings'
-      path: '/security-settings'
-      fullPath: '/security-settings'
-      preLoaderRoute: typeof privatePrivateSecuritySettingsRouteImport
       parentRoute: typeof privatePrivateRoute
     }
     '/(private)/_private/schedule': {
@@ -687,7 +667,6 @@ interface privatePrivateRouteChildren {
   privatePrivateCurriculumRoute: typeof privatePrivateCurriculumRoute
   privatePrivateMySubjectsRoute: typeof privatePrivateMySubjectsRoute
   privatePrivateScheduleRoute: typeof privatePrivateScheduleRoute
-  privatePrivateSecuritySettingsRoute: typeof privatePrivateSecuritySettingsRoute
   privatePrivateSettingsRoute: typeof privatePrivateSettingsRouteWithChildren
   privatePrivateWelcomeRoute: typeof privatePrivateWelcomeRoute
   privatePrivateIndexRoute: typeof privatePrivateIndexRoute
@@ -701,7 +680,6 @@ const privatePrivateRouteChildren: privatePrivateRouteChildren = {
   privatePrivateCurriculumRoute: privatePrivateCurriculumRoute,
   privatePrivateMySubjectsRoute: privatePrivateMySubjectsRoute,
   privatePrivateScheduleRoute: privatePrivateScheduleRoute,
-  privatePrivateSecuritySettingsRoute: privatePrivateSecuritySettingsRoute,
   privatePrivateSettingsRoute: privatePrivateSettingsRouteWithChildren,
   privatePrivateWelcomeRoute: privatePrivateWelcomeRoute,
   privatePrivateIndexRoute: privatePrivateIndexRoute,
