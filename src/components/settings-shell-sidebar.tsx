@@ -7,6 +7,7 @@ import {
   Shield,
   User,
   UserCircle,
+  Users,
 } from 'lucide-react';
 
 import {
@@ -33,6 +34,11 @@ const settingsNav = [
     to: '/settings/teaching-subjects',
     label: 'Teaching Subjects',
     icon: BookOpen,
+  },
+  {
+    to: '/settings/child-accounts',
+    label: 'Child Accounts',
+    icon: Users,
   },
 ] as const;
 

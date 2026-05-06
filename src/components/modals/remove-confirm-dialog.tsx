@@ -13,6 +13,10 @@ type RemoveConfirmDialogProps = {
   onConfirm: () => void;
   onCancel: () => void;
   isPending: boolean;
+  /** Defaults to course-removal copy when omitted. */
+  title?: string;
+  description?: string;
+  confirmLabel?: string;
 };
 
 const RemoveConfirmDialog = ({
@@ -20,6 +24,9 @@ const RemoveConfirmDialog = ({
   onConfirm,
   onCancel,
   isPending,
+  title = 'Remove Course',
+  description = 'Are you sure you want to remove this course? This action cannot be undone.',
+  confirmLabel = 'Remove',
 }: RemoveConfirmDialogProps) => {
   return (
     <Dialog
@@ -30,11 +37,8 @@ const RemoveConfirmDialog = ({
     >
       <DialogContent showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle>Remove Course</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to remove this course? This action cannot be
-            undone.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button
@@ -49,7 +53,7 @@ const RemoveConfirmDialog = ({
             onClick={onConfirm}
             disabled={isPending}
           >
-            Remove
+            {confirmLabel}
           </Button>
         </DialogFooter>
       </DialogContent>

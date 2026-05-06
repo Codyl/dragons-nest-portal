@@ -34,6 +34,7 @@ import { Route as privatePrivateSettingsTeachingSubjectsRouteImport } from './ro
 import { Route as privatePrivateSettingsSecurityRouteImport } from './routes/(private)/_private.settings.security'
 import { Route as privatePrivateSettingsProfileRouteImport } from './routes/(private)/_private.settings.profile'
 import { Route as privatePrivateSettingsNotificationsRouteImport } from './routes/(private)/_private.settings.notifications'
+import { Route as privatePrivateSettingsChildAccountsRouteImport } from './routes/(private)/_private.settings.child-accounts'
 import { Route as privatePrivateSettingsBillingRouteImport } from './routes/(private)/_private.settings.billing'
 import { Route as privatePrivateSettingsAccountRouteImport } from './routes/(private)/_private.settings.account'
 import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
@@ -172,6 +173,12 @@ const privatePrivateSettingsNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => privatePrivateSettingsRoute,
   } as any)
+const privatePrivateSettingsChildAccountsRoute =
+  privatePrivateSettingsChildAccountsRouteImport.update({
+    id: '/child-accounts',
+    path: '/child-accounts',
+    getParentRoute: () => privatePrivateSettingsRoute,
+  } as any)
 const privatePrivateSettingsBillingRoute =
   privatePrivateSettingsBillingRouteImport.update({
     id: '/billing',
@@ -220,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
   '/settings/account': typeof privatePrivateSettingsAccountRoute
   '/settings/billing': typeof privatePrivateSettingsBillingRoute
+  '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
   '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
   '/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/settings/security': typeof privatePrivateSettingsSecurityRoute
@@ -249,6 +257,7 @@ export interface FileRoutesByTo {
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
   '/settings/account': typeof privatePrivateSettingsAccountRoute
   '/settings/billing': typeof privatePrivateSettingsBillingRoute
+  '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
   '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
   '/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/settings/security': typeof privatePrivateSettingsSecurityRoute
@@ -281,6 +290,7 @@ export interface FileRoutesById {
   '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
   '/(private)/_private/settings/account': typeof privatePrivateSettingsAccountRoute
   '/(private)/_private/settings/billing': typeof privatePrivateSettingsBillingRoute
+  '/(private)/_private/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
   '/(private)/_private/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
   '/(private)/_private/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/(private)/_private/settings/security': typeof privatePrivateSettingsSecurityRoute
@@ -312,6 +322,7 @@ export interface FileRouteTypes {
     | '/mfa/verify-code'
     | '/settings/account'
     | '/settings/billing'
+    | '/settings/child-accounts'
     | '/settings/notifications'
     | '/settings/profile'
     | '/settings/security'
@@ -341,6 +352,7 @@ export interface FileRouteTypes {
     | '/mfa/verify-code'
     | '/settings/account'
     | '/settings/billing'
+    | '/settings/child-accounts'
     | '/settings/notifications'
     | '/settings/profile'
     | '/settings/security'
@@ -372,6 +384,7 @@ export interface FileRouteTypes {
     | '/(auth)/mfa/_mfa/verify-code'
     | '/(private)/_private/settings/account'
     | '/(private)/_private/settings/billing'
+    | '/(private)/_private/settings/child-accounts'
     | '/(private)/_private/settings/notifications'
     | '/(private)/_private/settings/profile'
     | '/(private)/_private/settings/security'
@@ -563,6 +576,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privatePrivateSettingsNotificationsRouteImport
       parentRoute: typeof privatePrivateSettingsRoute
     }
+    '/(private)/_private/settings/child-accounts': {
+      id: '/(private)/_private/settings/child-accounts'
+      path: '/child-accounts'
+      fullPath: '/settings/child-accounts'
+      preLoaderRoute: typeof privatePrivateSettingsChildAccountsRouteImport
+      parentRoute: typeof privatePrivateSettingsRoute
+    }
     '/(private)/_private/settings/billing': {
       id: '/(private)/_private/settings/billing'
       path: '/billing'
@@ -636,6 +656,7 @@ const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
 interface privatePrivateSettingsRouteChildren {
   privatePrivateSettingsAccountRoute: typeof privatePrivateSettingsAccountRoute
   privatePrivateSettingsBillingRoute: typeof privatePrivateSettingsBillingRoute
+  privatePrivateSettingsChildAccountsRoute: typeof privatePrivateSettingsChildAccountsRoute
   privatePrivateSettingsNotificationsRoute: typeof privatePrivateSettingsNotificationsRoute
   privatePrivateSettingsProfileRoute: typeof privatePrivateSettingsProfileRoute
   privatePrivateSettingsSecurityRoute: typeof privatePrivateSettingsSecurityRoute
@@ -646,6 +667,8 @@ const privatePrivateSettingsRouteChildren: privatePrivateSettingsRouteChildren =
   {
     privatePrivateSettingsAccountRoute: privatePrivateSettingsAccountRoute,
     privatePrivateSettingsBillingRoute: privatePrivateSettingsBillingRoute,
+    privatePrivateSettingsChildAccountsRoute:
+      privatePrivateSettingsChildAccountsRoute,
     privatePrivateSettingsNotificationsRoute:
       privatePrivateSettingsNotificationsRoute,
     privatePrivateSettingsProfileRoute: privatePrivateSettingsProfileRoute,

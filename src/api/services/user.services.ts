@@ -14,7 +14,11 @@ export type HouseholdStudentProfile = {
   displayName: string;
   currentGrade: number;
   lastPromotionYear: number;
+  archivedAt?: string | null;
 };
+
+/** Full list of drafts including archived rows (from `householdStudentDraftsAll`). */
+export type HouseholdStudentDraftAll = HouseholdStudentProfile;
 
 export type TeachableCourseWithEnrollment = {
   className: string;
@@ -46,6 +50,7 @@ export type ProfileUserData = {
   accountType?: string | null;
   ageBandAtRegistration?: string | null;
   householdStudents?: HouseholdStudentProfile[];
+  householdStudentDraftsAll?: HouseholdStudentDraftAll[];
   teachableCourses?: TeachableCourseWithEnrollment[];
 };
 
@@ -277,6 +282,40 @@ const UserServices = {
     data: { teachableCourses: TeachableCourseWithEnrollment[] };
   }> => {
     const response = await api.delete(`profile/teachable-courses/${index}`);
+    return response.json();
+  },
+  addHouseholdStudent: async (json: {
+    displayName: string;
+    currentGrade: number;
+  }): Promise<{
+    message: string;
+    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+  }> => {
+    const response = await api.post('profile/household-students', { json });
+    return response.json();
+  },
+  archiveHouseholdStudent: async (
+    studentDraftId: string,
+  ): Promise<{
+    message: string;
+    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+  }> => {
+    const response = await api.patch(
+      `profile/household-students/${encodeURIComponent(studentDraftId)}/archive`,
+      { json: {} },
+    );
+    return response.json();
+  },
+  restoreHouseholdStudent: async (
+    studentDraftId: string,
+  ): Promise<{
+    message: string;
+    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+  }> => {
+    const response = await api.patch(
+      `profile/household-students/${encodeURIComponent(studentDraftId)}/restore`,
+      { json: {} },
+    );
     return response.json();
   },
 };
