@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 
@@ -10,7 +10,7 @@ const useDeleteUser = (): UseMutationResult<
   const router = useRouter();
 
   return useMutation({
-    mutationFn: UserServices.deleteUser,
+    mutationFn: ProfileServices.deleteUser,
     onSuccess: () => {
       sessionStorage.clear();
       localStorage.clear();

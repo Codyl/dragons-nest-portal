@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
 const useChangePassword = (): UseMutationResult<
@@ -7,7 +7,7 @@ const useChangePassword = (): UseMutationResult<
   { currentPassword: string; newPassword: string }
 > => {
   return useMutation({
-    mutationFn: UserServices.changePassword,
+    mutationFn: ProfileServices.changePassword,
   });
 };
 

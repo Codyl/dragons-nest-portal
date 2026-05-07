@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 
 const useAuth = (): {
   isLoading: boolean;
@@ -11,7 +11,7 @@ const useAuth = (): {
     queryKey: ['auth-status'],
     queryFn: async () => {
       try {
-        await UserServices.getUser();
+        await ProfileServices.getProfile();
         return { isAuthenticated: true };
       } catch {
         return { isAuthenticated: false };

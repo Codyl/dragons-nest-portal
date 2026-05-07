@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { HouseholdStudentDraftAll } from '@/api/services/user.services';
+import type { HouseholdStudentDraftAll } from '@/api/services/profile.services';
 import ChildAccountsPage from './child-accounts.page';
 
 vi.mock('@/hooks/use-logged-in-user');
@@ -104,11 +104,11 @@ function arbitraryDraft(): fc.Arbitrary<HouseholdStudentDraftAll> {
       lastPromotionYear: fc.integer({ min: 2020, max: 2030 }),
       archivedAt: archived
         ? fc
-            .integer({
-              min: Date.UTC(2020, 0, 1),
-              max: Date.UTC(2030, 0, 1),
-            })
-            .map((ms) => new Date(ms).toISOString())
+          .integer({
+            min: Date.UTC(2020, 0, 1),
+            max: Date.UTC(2030, 0, 1),
+          })
+          .map((ms) => new Date(ms).toISOString())
         : fc.constant(null as string | null),
     }),
   );

@@ -3,9 +3,9 @@ import {
   useQueryClient,
   type UseMutationResult,
 } from '@tanstack/react-query';
-import UserServices, {
+import ProfileServices, {
   type HouseholdStudentDraftAll,
-} from '@/api/services/user.services';
+} from '@/api/services/profile.services';
 
 const useArchiveHouseholdStudent = (): UseMutationResult<
   {
@@ -18,7 +18,7 @@ const useArchiveHouseholdStudent = (): UseMutationResult<
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: UserServices.archiveHouseholdStudent,
+    mutationFn: ProfileServices.archiveHouseholdStudent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },

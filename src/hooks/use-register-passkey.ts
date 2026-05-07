@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import { passkeysQueryKey } from '@/hooks/use-passkeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { startRegistration } from '@simplewebauthn/browser';
@@ -9,12 +9,12 @@ const useRegisterPasskey = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const { data } = await UserServices.getWebAuthnRegistrationOptions();
+      const { data } = await ProfileServices.getWebAuthnRegistrationOptions();
       const credential = await startRegistration({
         optionsJSON:
           data.credentialCreationOptions as PublicKeyCredentialCreationOptionsJSON,
       });
-      await UserServices.completeWebAuthnRegistration(
+      await ProfileServices.completeWebAuthnRegistration(
         credential as unknown as Record<string, unknown>,
       );
     },

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { HouseholdStudentDraftAll } from '@/api/services/user.services';
+import type { HouseholdStudentDraftAll } from '@/api/services/profile.services';
 import StudentDraftCard from '@/components/cards/student-draft-card';
 import AddStudentSheet from '@/components/sections/add-student-sheet';
 import RemoveConfirmDialog from '@/components/modals/remove-confirm-dialog';

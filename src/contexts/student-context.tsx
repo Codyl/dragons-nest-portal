@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import type { HouseholdStudentProfile } from '@/api/services/user.services';
+import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import { resolveActiveStudent } from '@/lib/student-storage';
 

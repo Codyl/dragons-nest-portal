@@ -1,8 +1,12 @@
 /** Maps stored grade index (0–13) to display label for household students. */
 export function gradeLabel(grade: number): string {
   if (grade === 0) return 'Kindergarten';
-  if (grade >= 1 && grade <= 12) return `Grade ${grade}`;
-  if (grade === 13) return 'Grade 13 / Post-Secondary';
+
+  if (grade >= 1 && grade <= 12)
+    return `${grade}${grade === 1 ? 'st' : grade === 2 ? 'nd' : grade === 3 ? 'rd' : 'th'} Grade`;
+
+  if (grade === 13) return 'Post-Secondary';
+
   return String(grade);
 }
 

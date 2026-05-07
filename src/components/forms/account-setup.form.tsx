@@ -12,7 +12,7 @@ import {
 } from 'react';
 import { z } from 'zod';
 
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
 import useSubjects from '@/hooks/use-subjects';
 import type { ExpectedBirthBand } from '@/lib/account-setup-flow';
@@ -369,7 +369,7 @@ const AccountSetupForm = ({
           : (AVATAR_OPTIONS[0]?.id ?? 'dragon');
       const avatarEmoji = mapAvatarToEmoji(avatarId);
 
-      await UserServices.submitAccountSetup({
+      await ProfileServices.submitAccountSetup({
         name: value.name,
         onboardingExpectedBand: expectedBirthBand,
         adultAgeConfirmed: value.adultAgeConfirmed,
@@ -394,39 +394,39 @@ const AccountSetupForm = ({
         pendingStudents:
           value.accountType === 'adult'
             ? value.pendingStudents.map((s) => ({
-                studentDraftId: s.studentDraftId,
-                displayName: s.displayName.trim(),
-                currentGrade: Number.parseInt(s.currentGradeOrdinal, 10),
-              }))
+              studentDraftId: s.studentDraftId,
+              displayName: s.displayName.trim(),
+              currentGrade: Number.parseInt(s.currentGradeOrdinal, 10),
+            }))
             : undefined,
         teachableCourses:
           value.accountType === 'adult'
             ? value.teachableCourses
-                .filter((c) =>
-                  rowIsComplete(c, (subjectId) => {
-                    const s = subjectsRef.current.find((x) => x._id === subjectId);
-                    if (!s) return undefined;
+              .filter((c) =>
+                rowIsComplete(c, (subjectId) => {
+                  const s = subjectsRef.current.find((x) => x._id === subjectId);
+                  if (!s) return undefined;
 
-                    return {
-                      slug: s.slug,
-                      name: s.name,
-                      isEnrichment: s.isEnrichment,
-                    };
-                  }),
-                )
-                .map((c) => {
-                  const { matchesAllGrades, grades } = draftGradesToApiPayload(
-                    c.grades,
-                  );
                   return {
-                    className: c.className.trim(),
-                    subjectId: c.subjectId,
-                    matchesAllGrades,
-                    grades,
-                    curriculum: c.curriculum,
-                    maxStudents: c.maxStudents,
+                    slug: s.slug,
+                    name: s.name,
+                    isEnrichment: s.isEnrichment,
                   };
-                })
+                }),
+              )
+              .map((c) => {
+                const { matchesAllGrades, grades } = draftGradesToApiPayload(
+                  c.grades,
+                );
+                return {
+                  className: c.className.trim(),
+                  subjectId: c.subjectId,
+                  matchesAllGrades,
+                  grades,
+                  curriculum: c.curriculum,
+                  maxStudents: c.maxStudents,
+                };
+              })
             : undefined,
       });
 

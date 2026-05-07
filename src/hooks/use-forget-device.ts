@@ -3,7 +3,7 @@ import {
   useQueryClient,
   type UseMutationResult,
 } from '@tanstack/react-query';
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 
 const useForgetDevice = (): UseMutationResult<
   {
@@ -16,7 +16,7 @@ const useForgetDevice = (): UseMutationResult<
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: UserServices.forgetDevice,
+    mutationFn: ProfileServices.forgetDevice,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['known-devices'] });
     },

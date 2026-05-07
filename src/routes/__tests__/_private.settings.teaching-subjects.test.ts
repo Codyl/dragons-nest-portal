@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { isRedirect, redirect } from '@tanstack/react-router';
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 
 vi.mock('@/api/services/user.services', () => ({
   default: {
@@ -20,7 +20,7 @@ vi.mock('@/api/services/user.services', () => ({
  */
 async function beforeLoad(): Promise<void> {
   try {
-    const response = await UserServices.getUser();
+    const response = await ProfileServices.getProfile();
     const { accountType, ageBandAtRegistration } = response.data;
 
     if (accountType !== 'adult' || ageBandAtRegistration !== 'ADULT_18_PLUS') {
@@ -32,7 +32,7 @@ async function beforeLoad(): Promise<void> {
   }
 }
 
-const mockGetUser = vi.mocked(UserServices.getUser);
+const mockGetUser = vi.mocked(ProfileServices.getProfile);
 
 // ---------------------------------------------------------------------------
 // Tests

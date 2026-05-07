@@ -1,4 +1,4 @@
-import type { PasskeyListItem } from '@/api/services/user.services';
+import type { PasskeyListItem } from '@/api/services/profile.services';
 import { useDeletePasskey, usePasskeysList } from '@/hooks/use-passkeys';
 import useRegisterPasskey from '@/hooks/use-register-passkey';
 import { PasskeyProviderIcon } from '@/components/passkeys/passkey-provider-icon';

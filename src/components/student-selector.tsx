@@ -1,6 +1,6 @@
 import { UserRound, X } from 'lucide-react';
 
-import type { HouseholdStudentProfile } from '@/api/services/user.services';
+import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,

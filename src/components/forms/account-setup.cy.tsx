@@ -14,7 +14,7 @@ describe('AccountSetupForm', () => {
       {
         _id: 'topic-music',
         name: 'Music',
-        icon: 'music',
+        icon: '🎵',
         color: '#f8d9c4',
         slug: 'music',
         isEnrichment: true,
@@ -22,7 +22,7 @@ describe('AccountSetupForm', () => {
       {
         _id: 'topic-science',
         name: 'Science',
-        icon: 'flask',
+        icon: '🧪',
         color: '#d8e8ff',
         slug: 'science',
         isEnrichment: false,

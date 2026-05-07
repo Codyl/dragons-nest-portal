@@ -1,4 +1,4 @@
-import type { PasskeyListItem } from '@/api/services/user.services';
+import type { PasskeyListItem } from '@/api/services/profile.services';
 import { passkeysQueryKey } from '@/hooks/use-passkeys';
 import type { ReactElement } from 'react';
 import PasskeySettingsSection from './passkey-settings.section';

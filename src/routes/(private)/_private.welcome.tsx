@@ -1,5 +1,5 @@
 import WelcomePage from '@/components/pages/welcome-page';
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const Route = createFileRoute('/(private)/_private/welcome')({
   loader: async () => {
-    const res = await UserServices.getUser();
+    const res = await ProfileServices.getProfile();
 
     if (!profileNeedsWelcome(res.data ?? {})) {
       throw redirect({ to: '/', replace: true });
@@ -47,7 +47,7 @@ function WelcomeRoute() {
   const { displayName } = Route.useLoaderData();
 
   const { mutate: completeWelcome, isPending } = useMutation({
-    mutationFn: () => UserServices.recordFirstLogin(),
+    mutationFn: () => ProfileServices.recordFirstLogin(),
     onSuccess: () => {
       if (typeof window !== 'undefined') {
         sessionStorage.removeItem(ACCOUNT_SETUP_SESSION_KEY);

@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import AccountSetupForm from '@/components/forms/account-setup.form';
 import AccountSetupAddStudentsStep from '@/components/steps/account-setup-add-students-step';
 import AccountSetupComplianceStep from '@/components/steps/account-setup-compliance-step';
@@ -13,7 +13,7 @@ import { useMemo, useState } from 'react';
 
 export const Route = createFileRoute('/(private)/_private/account-setup')({
   loader: async () => {
-    const res = await UserServices.getUser();
+    const res = await ProfileServices.getProfile();
 
     if (!profileNeedsWelcome(res.data ?? {})) {
       throw redirect({ to: '/', replace: true });

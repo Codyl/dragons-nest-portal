@@ -107,7 +107,7 @@ export const handlers = [
         {
           _id: 't-music',
           name: 'Music',
-          icon: 'music',
+          icon: '🎵',
           color: '#f8d9c4',
           slug: 'music',
           isEnrichment: true,
@@ -115,7 +115,7 @@ export const handlers = [
         {
           _id: 't-science',
           name: 'Science',
-          icon: 'flask',
+          icon: '🧪',
           color: '#d8e8ff',
           slug: 'science',
           isEnrichment: false,

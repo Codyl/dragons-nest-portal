@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import { homeschoolOrdinalLabel } from '@/lib/homeschool-options';
 import { Button } from '@/components/ui/button';
@@ -35,7 +35,7 @@ const PromotionNudgeBanner = () => {
   }, [isAugust, user, dismissedIds, calendarYear]);
 
   const promote = useMutation({
-    mutationFn: (id: string) => UserServices.promoteHouseholdStudent(id),
+    mutationFn: (id: string) => ProfileServices.promoteHouseholdStudent(id),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },

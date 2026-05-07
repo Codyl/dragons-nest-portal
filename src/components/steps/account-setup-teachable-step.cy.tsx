@@ -7,7 +7,7 @@ const subjectsPayload = [
   {
     _id: 'topic-math',
     name: 'Math',
-    icon: 'calculator',
+    icon: '🧮',
     color: '#d8e8ff',
     slug: 'math',
     isEnrichment: false,
@@ -15,7 +15,7 @@ const subjectsPayload = [
   {
     _id: 'topic-reading',
     name: 'Reading',
-    icon: 'book-open',
+    icon: '📖',
     color: '#f8d9c4',
     slug: 'reading',
     isEnrichment: false,
@@ -23,7 +23,7 @@ const subjectsPayload = [
   {
     _id: 'topic-music',
     name: 'Music',
-    icon: 'music',
+    icon: '🎵',
     color: '#eee',
     slug: 'music',
     isEnrichment: true,

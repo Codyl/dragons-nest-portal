@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import {
   useMutation,
   useQueryClient,
@@ -12,7 +12,7 @@ const useCreatePassword = (): UseMutationResult<
 > => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: UserServices.createPassword,
+    mutationFn: ProfileServices.createPassword,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },

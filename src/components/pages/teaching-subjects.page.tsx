@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useSubjects from '@/hooks/use-subjects';
 import useRemoveTeachableCourse from '@/hooks/use-remove-teachable-course';
-import type { TeachableCourseWithEnrollment } from '@/api/services/user.services';
+import type { TeachableCourseWithEnrollment } from '@/api/services/profile.services';
 
 const TeachingSubjectsPage = () => {
   const [addSheetOpen, setAddSheetOpen] = useState(false);

@@ -1,4 +1,6 @@
-import UserServices, { type ProfileUserData } from '@/api/services/user.services';
+import ProfileServices, {
+  type ProfileUserData,
+} from '@/api/services/profile.services';
 import { useQuery } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 
@@ -11,7 +13,7 @@ const useLoggedInUser = (): UseQueryResult<
 > => {
   return useQuery({
     queryKey: ['user', 'me'],
-    queryFn: UserServices.getUser,
+    queryFn: ProfileServices.getProfile,
   });
 };
 

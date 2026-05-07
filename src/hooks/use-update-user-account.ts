@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import {
   useMutation,
   type UseMutationOptions,
@@ -35,7 +35,7 @@ const useUpdateUserSettings = (
   }
 > => {
   return useMutation({
-    mutationFn: UserServices.updateUserSettings,
+    mutationFn: ProfileServices.updateUserSettings,
     ...options,
   });
 };

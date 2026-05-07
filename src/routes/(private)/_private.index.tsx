@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import NewDeviceModal from '@/components/modals/new-device.modal';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import { profileNeedsWelcome } from '@/lib/profile-needs-welcome';
@@ -6,7 +6,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/(private)/_private/')({
   loader: async () => {
-    const res = await UserServices.getUser();
+    const res = await ProfileServices.getProfile();
 
     if (profileNeedsWelcome(res.data ?? {})) {
       throw redirect({ to: '/account-setup', replace: true });

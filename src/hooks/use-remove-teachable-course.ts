@@ -3,9 +3,9 @@ import {
   useQueryClient,
   type UseMutationResult,
 } from '@tanstack/react-query';
-import UserServices, {
+import ProfileServices, {
   type TeachableCourseWithEnrollment,
-} from '@/api/services/user.services';
+} from '@/api/services/profile.services';
 
 const useRemoveTeachableCourse = (): UseMutationResult<
   {
@@ -18,7 +18,7 @@ const useRemoveTeachableCourse = (): UseMutationResult<
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: UserServices.removeTeachableCourse,
+    mutationFn: ProfileServices.removeTeachableCourse,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },

@@ -1,4 +1,6 @@
-import UserServices, { type KnownDevice } from '@/api/services/user.services';
+import ProfileServices, {
+  type KnownDevice,
+} from '@/api/services/profile.services';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 
 const useKnownDevices = (): UseQueryResult<
@@ -10,7 +12,7 @@ const useKnownDevices = (): UseQueryResult<
 > => {
   return useQuery({
     queryKey: ['known-devices'],
-    queryFn: UserServices.getKnownDevices,
+    queryFn: ProfileServices.getKnownDevices,
     staleTime: 1000 * 60 * 60 * 24,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: false,

@@ -1,4 +1,4 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
 const useUpdateMFAPreference = (): UseMutationResult<
@@ -15,7 +15,7 @@ const useUpdateMFAPreference = (): UseMutationResult<
   }
 > => {
   return useMutation({
-    mutationFn: UserServices.setUserMFAPreference,
+    mutationFn: ProfileServices.setUserMFAPreference,
   });
 };
 

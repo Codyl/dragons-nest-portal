@@ -5,7 +5,7 @@ import { formatDate } from '@/utils/helpers/formatting.helpers';
 import ActionPopover from '../popovers/action-popover';
 import { useState } from 'react';
 import DeviceDetailsModal from '../modals/device-details.modal';
-import type { KnownDevice } from '@/api/services/user.services';
+import type { KnownDevice } from '@/api/services/profile.services';
 import { forgetDevice } from 'aws-amplify/auth';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -87,7 +87,7 @@ const UserDeviceSettingsSection = ({ className }: { className?: string }) => {
           <UserDevice
             key={device.DeviceKey}
             device={device}
-            onClick={() => {}}
+            onClick={() => { }}
             buttonText="Forget Device"
           />
         ))}

@@ -1,7 +1,7 @@
 import * as fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { findStudentById, resolveActiveStudent } from './student-storage';
-import type { HouseholdStudentProfile } from '@/api/services/user.services';
+import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 
 // ---------------------------------------------------------------------------
 // Helpers

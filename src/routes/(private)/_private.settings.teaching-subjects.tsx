@@ -1,13 +1,13 @@
 import { createFileRoute, redirect, isRedirect } from '@tanstack/react-router';
 import TeachingSubjectsPage from '@/components/pages/teaching-subjects.page';
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 
 export const Route = createFileRoute(
   '/(private)/_private/settings/teaching-subjects',
 )({
   beforeLoad: async () => {
     try {
-      const response = await UserServices.getUser();
+      const response = await ProfileServices.getProfile();
       const { accountType, ageBandAtRegistration } = response.data;
 
       if (

@@ -1,5 +1,5 @@
 import type { Subject } from '@/api/services/subjects.services';
-import type { TeachableCourseWithEnrollment } from '@/api/services/user.services';
+import type { TeachableCourseWithEnrollment } from '@/api/services/profile.services';
 import { Button } from '@/components/ui/button';
 import {
   Card,

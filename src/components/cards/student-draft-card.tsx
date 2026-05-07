@@ -1,4 +1,4 @@
-import type { HouseholdStudentDraftAll } from '@/api/services/user.services';
+import type { HouseholdStudentDraftAll } from '@/api/services/profile.services';
 import { Button } from '@/components/ui/button';
 import {
   Card,

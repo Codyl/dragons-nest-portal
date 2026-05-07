@@ -1,7 +1,7 @@
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { formatDate } from '@/utils/helpers/formatting.helpers';
-import type { KnownDevice } from '@/api/services/user.services';
+import type { KnownDevice } from '@/api/services/profile.services';
 
 const DeviceDetailsModal = ({
   show,

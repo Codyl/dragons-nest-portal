@@ -1,4 +1,4 @@
-import type { HouseholdStudentProfile } from '@/api/services/user.services';
+import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 
 /**
  * Returns the first student whose `studentDraftId` matches `id`, or `null`.

@@ -1,11 +1,11 @@
-import UserServices from '@/api/services/user.services';
+import ProfileServices from '@/api/services/profile.services';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useUnlinkGoogle = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => UserServices.unlinkGoogle(),
+    mutationFn: () => ProfileServices.unlinkGoogle(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },

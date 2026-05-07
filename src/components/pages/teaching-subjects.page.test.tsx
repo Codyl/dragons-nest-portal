@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Subject } from '@/api/services/subjects.services';
-import type { TeachableCourseWithEnrollment } from '@/api/services/user.services';
+import type { TeachableCourseWithEnrollment } from '@/api/services/profile.services';
 import { HOMESCHOOL_CURRICULUM_OPTIONS } from '@/lib/homeschool-options';
 import TeachingSubjectsPage from './teaching-subjects.page';
 
