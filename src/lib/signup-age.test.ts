@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { ageFromBirthMonthYear, isUnder18, isUnder13 } from './signup-age';
 
 describe('ageFromBirthMonthYear', () => {

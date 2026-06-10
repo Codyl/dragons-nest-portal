@@ -1,5 +1,6 @@
 import { fetchAuthSession, fetchDevices } from 'aws-amplify/auth';
 import { api } from '../api.config';
+
 export type PasskeyListItem = {
   credentialId: string;
   displayName: string;
@@ -10,14 +11,14 @@ export type PasskeyListItem = {
 };
 
 export type HouseholdStudentProfile = {
-  studentDraftId: string;
+  studentId: string;
   displayName: string;
   currentGrade: number;
   lastPromotionYear: number;
   archivedAt?: string | null;
 };
 
-/** Full list of drafts including archived rows (from `householdStudentDraftsAll`). */
+/** Full list of drafts including archived rows (from `managedAccountsViewAll`). */
 export type HouseholdStudentDraftAll = HouseholdStudentProfile;
 
 export type TeachableCourseWithEnrollment = {
@@ -31,6 +32,7 @@ export type TeachableCourseWithEnrollment = {
 };
 
 export type ProfileUserData = {
+  _id?: string;
   email?: string;
   family_name?: string;
   middle_name?: string;
@@ -51,7 +53,7 @@ export type ProfileUserData = {
   accountType?: string | null;
   ageBandAtRegistration?: string | null;
   householdStudents?: HouseholdStudentProfile[];
-  householdStudentDraftsAll?: HouseholdStudentDraftAll[];
+  managedAccountsViewAll?: HouseholdStudentDraftAll[];
   teachableCourses?: TeachableCourseWithEnrollment[];
 };
 
@@ -66,6 +68,13 @@ export type KnownDevice = {
   Region: string;
   Country: string;
   isCurrentDevice: boolean;
+};
+
+export type StudentEnrolledClass = {
+  subjectId: string | null;
+  curriculumId: string | null;
+  hoursCompleted: number;
+  createdAt: string | null;
 };
 
 const ProfileServices = {
@@ -106,7 +115,7 @@ const ProfileServices = {
       slots: { start: string; end: string }[];
     }[];
     pendingStudents?: {
-      studentDraftId: string;
+      studentId: string;
       displayName: string;
       currentGrade: number;
     }[];
@@ -128,13 +137,13 @@ const ProfileServices = {
     return response.json();
   },
   promoteHouseholdStudent: async (
-    studentDraftId: string,
+    studentId: string,
   ): Promise<{
     message: string;
     data: HouseholdStudentProfile;
   }> => {
     const response = await api.patch(
-      `profile/household-students/${encodeURIComponent(studentDraftId)}/promote`,
+      `profile/household-students/${encodeURIComponent(studentId)}/promote`,
       { json: {} },
     );
     return response.json();
@@ -290,32 +299,43 @@ const ProfileServices = {
     currentGrade: number;
   }): Promise<{
     message: string;
-    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: HouseholdStudentDraftAll[] };
   }> => {
     const response = await api.post('profile/household-students', { json });
     return response.json();
   },
   archiveHouseholdStudent: async (
-    studentDraftId: string,
+    studentId: string,
   ): Promise<{
     message: string;
-    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: HouseholdStudentDraftAll[] };
   }> => {
     const response = await api.patch(
-      `profile/household-students/${encodeURIComponent(studentDraftId)}/archive`,
+      `profile/household-students/${encodeURIComponent(studentId)}/archive`,
       { json: {} },
     );
     return response.json();
   },
   restoreHouseholdStudent: async (
-    studentDraftId: string,
+    studentId: string,
   ): Promise<{
     message: string;
-    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: HouseholdStudentDraftAll[] };
   }> => {
     const response = await api.patch(
-      `profile/household-students/${encodeURIComponent(studentDraftId)}/restore`,
+      `profile/household-students/${encodeURIComponent(studentId)}/restore`,
       { json: {} },
+    );
+    return response.json();
+  },
+  getStudentClasses: async (
+    studentId: string,
+  ): Promise<{
+    message: string;
+    data: StudentEnrolledClass[];
+  }> => {
+    const response = await api.get(
+      `profile/household-students/${encodeURIComponent(studentId)}/classes`,
     );
     return response.json();
   },

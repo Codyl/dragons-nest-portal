@@ -29,7 +29,7 @@ const PromotionNudgeBanner = () => {
         (s) =>
           s.lastPromotionYear < calendarYear &&
           s.currentGrade < 13 &&
-          !dismissedIds[s.studentDraftId],
+          !dismissedIds[s.studentId],
       ) ?? null
     );
   }, [isAugust, user, dismissedIds, calendarYear]);
@@ -63,7 +63,7 @@ const PromotionNudgeBanner = () => {
           size="sm"
           disabled={promote.isPending}
           data-testid="promotion-nudge-confirm"
-          onClick={() => promote.mutate(candidate.studentDraftId)}
+          onClick={() => promote.mutate(candidate.studentId)}
         >
           Yes, promote
         </Button>
@@ -76,7 +76,7 @@ const PromotionNudgeBanner = () => {
           onClick={() =>
             setDismissedIds((d) => ({
               ...d,
-              [candidate.studentDraftId]: true,
+              [candidate.studentId]: true,
             }))
           }
         >

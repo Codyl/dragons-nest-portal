@@ -4,7 +4,7 @@ import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import { resolveActiveStudent } from '@/lib/student-storage';
 
-const STORAGE_KEY = 'activeStudentDraftId';
+const STORAGE_KEY = 'activestudentId';
 
 export interface StudentContextValue {
   /** The currently selected student, or null if none is selected. */
@@ -67,13 +67,13 @@ export function StudentProvider({ children }: { children: React.ReactNode }) {
   const setActiveStudent = React.useCallback(
     (student: HouseholdStudentProfile | null) => {
       // Invalidate student-scoped queries for the previous student
-      const previousStudentDraftId = activeStudent?.studentDraftId;
+      const previousstudentId = activeStudent?.studentId;
       if (
-        previousStudentDraftId &&
-        student?.studentDraftId !== previousStudentDraftId
+        previousstudentId &&
+        student?.studentId !== previousstudentId
       ) {
         void queryClient.invalidateQueries({
-          queryKey: ['student', previousStudentDraftId],
+          queryKey: ['student', previousstudentId],
         });
       }
 
@@ -81,7 +81,7 @@ export function StudentProvider({ children }: { children: React.ReactNode }) {
 
       try {
         if (student) {
-          localStorage.setItem(STORAGE_KEY, student.studentDraftId);
+          localStorage.setItem(STORAGE_KEY, student.studentId);
         } else {
           localStorage.removeItem(STORAGE_KEY);
         }

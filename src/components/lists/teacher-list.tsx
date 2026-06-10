@@ -6,6 +6,7 @@ const TeacherList = ({ state, grade, subjectId }: { state: string; grade: string
   if (getTeachersQuery.isLoading) {
     return <div>Loading...</div>;
   }
+  
   if (getTeachersQuery.isError) {
     return <div>Error: {getTeachersQuery.error.message}</div>;
   }

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { resolveAccountSetupFlow } from './account-setup-flow';
 
 describe('resolveAccountSetupFlow', () => {

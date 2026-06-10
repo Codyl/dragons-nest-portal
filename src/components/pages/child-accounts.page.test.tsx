@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
 import type { HouseholdStudentDraftAll } from '@/api/services/profile.services';
 import ChildAccountsPage from './child-accounts.page';
 
@@ -62,7 +62,7 @@ function setupMocks(
     data:
       isLoading || isError
         ? undefined
-        : { message: 'ok', data: { householdStudentDraftsAll: drafts } },
+        : { message: 'ok', data: { managedAccountsViewAll: drafts } },
     refetch: vi.fn(),
     isPending: isLoading,
     isFetching: isLoading,
@@ -98,7 +98,7 @@ function setupMocks(
 function arbitraryDraft(): fc.Arbitrary<HouseholdStudentDraftAll> {
   return fc.tuple(fc.uuid(), fc.boolean()).chain(([id, archived]) =>
     fc.record({
-      studentDraftId: fc.constant(id),
+      studentId: fc.constant(id),
       displayName: fc.string({ minLength: 1, maxLength: 40 }),
       currentGrade: fc.integer({ min: 0, max: 13 }),
       lastPromotionYear: fc.integer({ min: 2020, max: 2030 }),
@@ -143,13 +143,13 @@ describe('ChildAccountsPage', () => {
     setupMocks({
       drafts: [
         {
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'One',
           currentGrade: 1,
           lastPromotionYear: 2025,
         },
         {
-          studentDraftId: 'b',
+          studentId: 'b',
           displayName: 'Two',
           currentGrade: 2,
           lastPromotionYear: 2025,
@@ -164,7 +164,7 @@ describe('ChildAccountsPage', () => {
     setupMocks({
       drafts: [
         {
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'One',
           currentGrade: 1,
           lastPromotionYear: 2025,
@@ -179,13 +179,13 @@ describe('ChildAccountsPage', () => {
     setupMocks({
       drafts: [
         {
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'Active',
           currentGrade: 1,
           lastPromotionYear: 2025,
         },
         {
-          studentDraftId: 'b',
+          studentId: 'b',
           displayName: 'Gone',
           currentGrade: 2,
           lastPromotionYear: 2024,
@@ -277,7 +277,7 @@ describe('ChildAccountsPage archive flow', () => {
     setupMocks({
       drafts: [
         {
-          studentDraftId: 'x1',
+          studentId: 'x1',
           displayName: 'Kid',
           currentGrade: 3,
           lastPromotionYear: 2025,

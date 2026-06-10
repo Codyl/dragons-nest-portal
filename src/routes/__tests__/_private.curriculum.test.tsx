@@ -2,34 +2,29 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { ComplianceLaws } from '@/api/services/compliance.services';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type {
   HouseholdStudentProfile,
-  ProfileUserData,
+  StudentEnrolledClass,
 } from '@/api/services/profile.services';
 import type { Subject } from '@/api/services/subjects.services';
 import { StudentContext } from '@/contexts/student-context';
-import useComplianceLaws from '@/hooks/use-compliance-laws';
-import useLoggedInUser from '@/hooks/use-logged-in-user';
+import useStudentClasses from '@/hooks/use-student-classes';
 import useSubjects from '@/hooks/use-subjects';
 import {
   CurriculumRoute,
-  deriveRequiredSubjects,
+  resolveEnrolledSubjects,
 } from '../(private)/_private.curriculum';
 
-vi.mock('@/hooks/use-logged-in-user', () => ({
-  default: vi.fn(),
-}));
-vi.mock('@/hooks/use-compliance-laws', () => ({
+vi.mock('@/hooks/use-student-classes', () => ({
   default: vi.fn(),
 }));
 vi.mock('@/hooks/use-subjects', () => ({
   default: vi.fn(),
 }));
 
-const useLoggedInUserMock = vi.mocked(useLoggedInUser);
-const useComplianceLawsMock = vi.mocked(useComplianceLaws);
+const useStudentClassesMock = vi.mocked(useStudentClasses);
 const useSubjectsMock = vi.mocked(useSubjects);
 
 const subjectFixture: Subject = {
@@ -41,44 +36,42 @@ const subjectFixture: Subject = {
   isEnrichment: false,
 };
 
-const userFixture: { message: string; data: ProfileUserData } = {
-  message: 'ok',
-  data: { state: 'tx' },
+const classesFixture: StudentEnrolledClass[] = [
+  { subjectId: 'subject-1', curriculumId: null, hoursCompleted: 0, createdAt: null },
+];
+
+const activeStudentFixture: HouseholdStudentProfile = {
+  studentId: 'student-1',
+  displayName: 'Taylor',
+  currentGrade: 5,
+  lastPromotionYear: 2025,
 };
 
-const complianceFixture: ComplianceLaws = {
-  _id: 'law-1',
-  state: 'tx',
-  abbreviation: 'TX',
-  subjectsRequiredTopicIds: ['subject-1'],
-};
-
-function renderRoute(activeStudent: HouseholdStudentProfile | null = null) {
+function renderRoute(activeStudent: HouseholdStudentProfile | null = activeStudentFixture) {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
   return render(
-    <StudentContext.Provider
-      value={{
-        activeStudent,
-        setActiveStudent: vi.fn(),
-        students: [],
-        isLoading: false,
-      }}
-    >
-      <CurriculumRoute />
-    </StudentContext.Provider>,
+    <QueryClientProvider client={queryClient}>
+      <StudentContext.Provider
+        value={{
+          activeStudent,
+          setActiveStudent: vi.fn(),
+          students: [],
+          isLoading: false,
+        }}
+      >
+        <CurriculumRoute />
+      </StudentContext.Provider>
+    </QueryClientProvider>,
   );
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
 
-  useLoggedInUserMock.mockReturnValue({
-    data: userFixture,
-    isLoading: false,
-    error: null,
-  } as never);
-
-  useComplianceLawsMock.mockReturnValue({
-    data: complianceFixture,
+  useStudentClassesMock.mockReturnValue({
+    data: { message: 'ok', data: classesFixture },
     isLoading: false,
     error: null,
     refetch: vi.fn(),
@@ -97,36 +90,38 @@ afterEach(() => {
 });
 
 describe('CurriculumRoute', () => {
-  it('shows loading indicator while profile query is loading', () => {
-    useLoggedInUserMock.mockReturnValueOnce({ isLoading: true } as never);
-    renderRoute();
-    expect(screen.getByTestId('curriculum-loading')).toBeTruthy();
+  it('shows no-student message when no active student is selected', () => {
+    renderRoute(null);
+    expect(screen.getByTestId('curriculum-no-student')).toBeTruthy();
   });
 
-  it('shows loading indicator while compliance query is loading', () => {
-    useComplianceLawsMock.mockReturnValueOnce({ isLoading: true } as never);
-    renderRoute();
-    expect(screen.getByTestId('curriculum-loading')).toBeTruthy();
-  });
-
-  it('shows error banner with retry when profile fetch fails', async () => {
-    useLoggedInUserMock.mockReturnValueOnce({
-      isLoading: false,
-      error: new Error('profile failed'),
+  it('shows loading indicator while classes query is loading', () => {
+    useStudentClassesMock.mockReturnValueOnce({
+      isLoading: true,
+      error: null,
     } as never);
     renderRoute();
-    expect(screen.getByTestId('curriculum-error')).toBeTruthy();
-    expect(screen.getByRole('button', { name: /retry/i })).toBeTruthy();
+    expect(screen.getByTestId('curriculum-loading')).toBeTruthy();
   });
 
-  it('shows error banner with retry when compliance fetch fails', () => {
-    useComplianceLawsMock.mockReturnValueOnce({
+  it('shows loading indicator while subjects query is loading', () => {
+    useSubjectsMock.mockReturnValueOnce({
+      isLoading: true,
+      error: null,
+    } as never);
+    renderRoute();
+    expect(screen.getByTestId('curriculum-loading')).toBeTruthy();
+  });
+
+  it('shows error banner with retry when classes fetch fails', () => {
+    useStudentClassesMock.mockReturnValueOnce({
       isLoading: false,
-      error: new Error('compliance failed'),
+      error: new Error('classes failed'),
       refetch: vi.fn(),
     } as never);
     renderRoute();
     expect(screen.getByTestId('curriculum-error')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /retry/i })).toBeTruthy();
   });
 
   it('shows error banner with retry when subjects fetch fails', () => {
@@ -139,25 +134,9 @@ describe('CurriculumRoute', () => {
     expect(screen.getByTestId('curriculum-error')).toBeTruthy();
   });
 
-  it('shows profile-completion prompt when profile state is null', () => {
-    useLoggedInUserMock.mockReturnValueOnce({
-      data: { message: 'ok', data: { state: null } },
-      isLoading: false,
-      error: null,
-    } as never);
-    useComplianceLawsMock.mockReturnValueOnce({
-      data: undefined,
-      isLoading: false,
-      error: null,
-      refetch: vi.fn(),
-    } as never);
-    renderRoute();
-    expect(screen.getByTestId('curriculum-missing-state')).toBeTruthy();
-  });
-
-  it('shows empty-state message when subjectsRequiredTopicIds is empty', () => {
-    useComplianceLawsMock.mockReturnValueOnce({
-      data: { ...complianceFixture, subjectsRequiredTopicIds: [] },
+  it('shows empty-state message when student has no classes', () => {
+    useStudentClassesMock.mockReturnValueOnce({
+      data: { message: 'ok', data: [] },
       isLoading: false,
       error: null,
       refetch: vi.fn(),
@@ -166,7 +145,7 @@ describe('CurriculumRoute', () => {
     expect(screen.getByTestId('curriculum-empty')).toBeTruthy();
   });
 
-  it('renders one SubjectCard per required subject', () => {
+  it('renders one SubjectCard per enrolled subject', () => {
     useSubjectsMock.mockReturnValueOnce({
       data: [
         subjectFixture,
@@ -176,10 +155,13 @@ describe('CurriculumRoute', () => {
       error: null,
       refetch: vi.fn(),
     } as never);
-    useComplianceLawsMock.mockReturnValueOnce({
+    useStudentClassesMock.mockReturnValueOnce({
       data: {
-        ...complianceFixture,
-        subjectsRequiredTopicIds: ['subject-1', 'subject-2'],
+        message: 'ok',
+        data: [
+          { subjectId: 'subject-1', curriculumId: null, hoursCompleted: 0, createdAt: null },
+          { subjectId: 'subject-2', curriculumId: null, hoursCompleted: 0, createdAt: null },
+        ],
       },
       isLoading: false,
       error: null,
@@ -191,12 +173,7 @@ describe('CurriculumRoute', () => {
   });
 
   it('shows active student label when activeStudent is set', () => {
-    renderRoute({
-      studentDraftId: 'student-1',
-      displayName: 'Taylor',
-      currentGrade: 5,
-      lastPromotionYear: 2025,
-    });
+    renderRoute(activeStudentFixture);
     expect(screen.getByTestId('active-student-label').textContent).toContain(
       'Viewing curriculum for Taylor',
     );
@@ -207,13 +184,13 @@ describe('CurriculumRoute', () => {
     expect(screen.queryByTestId('active-student-label')).toBeNull();
   });
 
-  it('retry action calls compliance and subjects refetch', async () => {
-    const complianceRefetch = vi.fn();
+  it('retry action calls classes and subjects refetch', async () => {
+    const classesRefetch = vi.fn();
     const subjectsRefetch = vi.fn();
-    useComplianceLawsMock.mockReturnValueOnce({
+    useStudentClassesMock.mockReturnValueOnce({
       isLoading: false,
       error: new Error('failed'),
-      refetch: complianceRefetch,
+      refetch: classesRefetch,
     } as never);
     useSubjectsMock.mockReturnValueOnce({
       isLoading: false,
@@ -223,7 +200,7 @@ describe('CurriculumRoute', () => {
 
     renderRoute();
     await userEvent.click(screen.getByRole('button', { name: /retry/i }));
-    expect(complianceRefetch).toHaveBeenCalled();
+    expect(classesRefetch).toHaveBeenCalled();
     expect(subjectsRefetch).toHaveBeenCalled();
   });
 });
@@ -245,68 +222,39 @@ function arbitrarySubject(): fc.Arbitrary<Subject> {
   });
 }
 
-function arbitraryStudent(): fc.Arbitrary<HouseholdStudentProfile | null> {
-  return fc.oneof(
-    fc.constant(null),
-    fc.record({
-      studentDraftId: fc.uuid(),
-      displayName: fc.string({ minLength: 1, maxLength: 30 }),
-      currentGrade: fc.integer({ min: 0, max: 12 }),
-      lastPromotionYear: fc.integer({ min: 1990, max: 2100 }),
-      archivedAt: fc.option(fc.string(), { nil: undefined }),
-    }),
-  );
+function arbitraryEnrolledClass(): fc.Arbitrary<StudentEnrolledClass> {
+  return fc.record({
+    subjectId: fc.oneof(fc.string({ minLength: 1, maxLength: 20 }), fc.constant(null)),
+    curriculumId: fc.oneof(fc.string({ minLength: 1, maxLength: 24 }), fc.constant(null)),
+    hoursCompleted: fc.nat({ max: 1000 }),
+    createdAt: fc.oneof(fc.date().map((d) => d.toISOString()), fc.constant(null)),
+  });
 }
 
-describe('Property 1: Required subjects list matches subjectsRequiredTopicIds', () => {
-  it('only includes catalog subjects whose ids are required', () => {
-    // Feature: curriculum-page, Property 1: Required subjects list matches subjectsRequiredTopicIds
+describe('Property 1: Enrolled subjects list matches addedClasses subjectIds', () => {
+  it('only includes catalog subjects whose ids appear in addedClasses', () => {
+    // Feature: curriculum-page, Property 1: Enrolled subjects list matches addedClasses subjectIds
     fc.assert(
       fc.property(
-        fc.array(fc.string(), { maxLength: 20 }),
+        fc.array(arbitraryEnrolledClass(), { maxLength: 20 }),
         fc.array(arbitrarySubject(), { maxLength: 30 }),
-        (subjectsRequiredTopicIds, catalog) => {
-          const requiredSubjects = deriveRequiredSubjects(
-            catalog,
-            subjectsRequiredTopicIds,
+        (enrolledClasses, catalog) => {
+          const enrolledSubjects = resolveEnrolledSubjects(catalog, enrolledClasses);
+          const enrolledSubjectIds = new Set(
+            enrolledClasses
+              .map((c) => c.subjectId)
+              .filter((id): id is string => id !== null),
           );
           const expectedCount = catalog.filter((subject) =>
-            subjectsRequiredTopicIds.includes(subject._id),
+            enrolledSubjectIds.has(subject._id),
           ).length;
 
           return (
-            requiredSubjects.length === expectedCount &&
-            requiredSubjects.every((subject) =>
-              subjectsRequiredTopicIds.includes(subject._id),
+            enrolledSubjects.length === expectedCount &&
+            enrolledSubjects.every((subject) =>
+              enrolledSubjectIds.has(subject._id),
             )
           );
-        },
-      ),
-      { numRuns: 100 },
-    );
-  });
-});
-
-describe('Property 4: Required subjects are invariant under active student change', () => {
-  it('derives the same required subject set regardless of active student', () => {
-    // Feature: curriculum-page, Property 4: Required subjects are invariant under active student change
-    fc.assert(
-      fc.property(
-        fc.array(fc.string(), { maxLength: 20 }),
-        fc.array(arbitrarySubject(), { maxLength: 30 }),
-        arbitraryStudent(),
-        arbitraryStudent(),
-        (subjectsRequiredTopicIds, catalog, _studentA, _studentB) => {
-          const requiredForA = deriveRequiredSubjects(
-            catalog,
-            subjectsRequiredTopicIds,
-          );
-          const requiredForB = deriveRequiredSubjects(
-            catalog,
-            subjectsRequiredTopicIds,
-          );
-
-          return JSON.stringify(requiredForA) === JSON.stringify(requiredForB);
         },
       ),
       { numRuns: 100 },

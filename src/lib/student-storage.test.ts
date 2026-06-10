@@ -1,5 +1,5 @@
 import * as fc from 'fast-check';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { findStudentById, resolveActiveStudent } from './student-storage';
 import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 
@@ -8,11 +8,11 @@ import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 // ---------------------------------------------------------------------------
 
 function makeStudent(
-  studentDraftId: string,
+  studentId: string,
   displayName = 'Test Student',
 ): HouseholdStudentProfile {
   return {
-    studentDraftId,
+    studentId,
     displayName,
     currentGrade: 5,
     lastPromotionYear: 2023,
@@ -106,19 +106,19 @@ describe('resolveActiveStudent', () => {
 // Arbitraries
 // ---------------------------------------------------------------------------
 
-const arbitraryStudentDraftId = fc.string({ minLength: 1, maxLength: 36 });
+const arbitrarystudentId = fc.string({ minLength: 1, maxLength: 36 });
 
 const arbitraryStudent: fc.Arbitrary<HouseholdStudentProfile> = fc.record({
-  studentDraftId: arbitraryStudentDraftId,
+  studentId: arbitrarystudentId,
   displayName: fc.string({ minLength: 1, maxLength: 50 }),
   currentGrade: fc.integer({ min: 0, max: 12 }),
   lastPromotionYear: fc.integer({ min: 2000, max: 2030 }),
 });
 
-/** Generates a non-empty list of students with unique studentDraftIds. */
+/** Generates a non-empty list of students with unique studentIds. */
 const arbitraryUniqueStudentList: fc.Arbitrary<HouseholdStudentProfile[]> =
   fc.uniqueArray(arbitraryStudent, {
-    selector: (s) => s.studentDraftId,
+    selector: (s) => s.studentId,
     minLength: 1,
     maxLength: 10,
   });
@@ -137,8 +137,8 @@ describe('Property 1: localStorage persistence round-trip', () => {
         (students, rawIndex) => {
           const index = rawIndex % students.length;
           const student = students[index]!;
-          const result = findStudentById(students, student.studentDraftId);
-          return result?.studentDraftId === student.studentDraftId;
+          const result = findStudentById(students, student.studentId);
+          return result?.studentId === student.studentId;
         },
       ),
       { numRuns: 100 },
@@ -159,7 +159,7 @@ describe('Property 2: Stale localStorage ID is cleaned up', () => {
         fc.string({ minLength: 1, maxLength: 36 }),
         (students, staleId) => {
           // Only test ids that are genuinely absent from the list
-          fc.pre(!students.some((s) => s.studentDraftId === staleId));
+          fc.pre(!students.some((s) => s.studentId === staleId));
           return resolveActiveStudent(students, staleId) === null;
         },
       ),
@@ -178,8 +178,8 @@ describe('Property 12: students array mirrors householdStudents from query', () 
     fc.assert(
       fc.property(arbitraryUniqueStudentList, (students) => {
         return students.every((student) => {
-          const result = resolveActiveStudent(students, student.studentDraftId);
-          return result?.studentDraftId === student.studentDraftId;
+          const result = resolveActiveStudent(students, student.studentId);
+          return result?.studentId === student.studentId;
         });
       }),
       { numRuns: 100 },

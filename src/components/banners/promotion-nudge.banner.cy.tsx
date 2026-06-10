@@ -7,7 +7,7 @@ const staleQuery = {
     accountType: 'adult' as const,
     householdStudents: [
       {
-        studentDraftId: '00000000-0000-4000-8000-000000000001',
+        studentId: '00000000-0000-4000-8000-000000000001',
         displayName: 'Jamie',
         currentGrade: 5,
         lastPromotionYear: 2024,

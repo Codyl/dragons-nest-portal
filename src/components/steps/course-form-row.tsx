@@ -231,8 +231,10 @@ export default function CourseFormRow({
                 onChangePatch({ maxStudents: 1 });
                 return;
               }
+
               const n = Number.parseInt(raw, 10);
               if (!Number.isFinite(n)) return;
+              
               onChangePatch({
                 maxStudents: Math.min(20, Math.max(1, n)),
               });

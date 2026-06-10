@@ -24,7 +24,7 @@ const meta = {
           accountType: 'adult',
           householdStudents: [
             {
-              studentDraftId: '00000000-0000-4000-8000-000000000001',
+              studentId: '00000000-0000-4000-8000-000000000001',
               displayName: 'Jamie',
               currentGrade: 5,
               lastPromotionYear: 2024,

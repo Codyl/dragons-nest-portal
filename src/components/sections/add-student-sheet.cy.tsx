@@ -15,9 +15,9 @@ describe('AddStudentSheet', () => {
       body: {
         message: 'ok',
         data: {
-          householdStudentDrafts: [
+          managedAccountsView: [
             {
-              studentDraftId: 'new-id',
+              studentId: 'new-id',
               displayName: 'Test',
               currentGrade: 0,
               lastPromotionYear: 2026,

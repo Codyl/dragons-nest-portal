@@ -1,7 +1,7 @@
 import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 
 /**
- * Returns the first student whose `studentDraftId` matches `id`, or `null`.
+ * Returns the first student whose `studentId` matches `id`, or `null`.
  * Pure function — no side effects, no localStorage access.
  */
 export function findStudentById(
@@ -10,7 +10,7 @@ export function findStudentById(
 ): HouseholdStudentProfile | null {
   if (!id) return null;
 
-  return students.find((s) => s.studentDraftId === id) ?? null;
+  return students.find((s) => s.studentId === id) ?? null;
 }
 
 /**

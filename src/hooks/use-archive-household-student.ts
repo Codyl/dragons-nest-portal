@@ -10,7 +10,7 @@ import ProfileServices, {
 const useArchiveHouseholdStudent = (): UseMutationResult<
   {
     message: string;
-    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: HouseholdStudentDraftAll[] };
   },
   Error,
   string

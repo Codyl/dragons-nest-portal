@@ -28,7 +28,7 @@ function AccountRecoveryMagicLink() {
       },
     );
     // Run once for this token while route is mounted.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   if (!token) {

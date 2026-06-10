@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test';
 import { useQuery } from '@tanstack/react-query';
 import useComplianceLaws from './use-compliance-laws';
 

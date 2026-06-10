@@ -37,7 +37,7 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
     setDisplayName('');
     setGradeValue('');
     mutation.reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- only when sheet opens
+    // oxlint-disable-next-line react-hooks/exhaustive-deps -- only when sheet opens
   }, [open]);
 
   const trimmedName = displayName.trim();

@@ -125,14 +125,14 @@ export function StudentSelector({
   // Requirements 2.3, 2.4, 2.5 — normal select with students
   return (
     <Select
-      value={activeStudent?.studentDraftId ?? ''}
+      value={activeStudent?.studentId ?? ''}
       onValueChange={(value) => {
         if (value === '__my_view__') {
           onSelect(null);
           return;
         }
 
-        const student = students.find((s) => s.studentDraftId === value);
+        const student = students.find((s) => s.studentId === value);
         if (student) {
           onSelect(student);
         }
@@ -155,8 +155,8 @@ export function StudentSelector({
         {/* Requirements 2.2 — render an option for each student */}
         {students.map((student) => (
           <SelectItem
-            key={student.studentDraftId}
-            value={student.studentDraftId}
+            key={student.studentId}
+            value={student.studentId}
           >
             {student.displayName}
           </SelectItem>

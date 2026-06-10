@@ -1,6 +1,6 @@
 export type PendingStudentDraft = {
   id: string;
-  studentDraftId: string;
+  studentId: string;
   displayName: string;
   currentGradeOrdinal: string;
 };
@@ -8,7 +8,7 @@ export type PendingStudentDraft = {
 export function newStudentRow(): PendingStudentDraft {
   return {
     id: crypto.randomUUID(),
-    studentDraftId: crypto.randomUUID(),
+    studentId: crypto.randomUUID(),
     displayName: '',
     currentGradeOrdinal: '',
   };

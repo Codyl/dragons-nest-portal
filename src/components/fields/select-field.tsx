@@ -31,7 +31,7 @@ type SelectFieldSharedProps = {
 };
 
 type SelectFieldWithForm = SelectFieldSharedProps & {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line @typescript-eslint/no-explicit-any
   field: any;
   value?: never;
   onValueChange?: never;

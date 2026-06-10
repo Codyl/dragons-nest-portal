@@ -46,7 +46,7 @@ const SignupAdultStudentForm = ({
     isPending,
   } = useMutation({
     mutationFn: AuthServices.initiateSignup,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (data: any, variables: any) => {
       if (data.data.Session) {
         sessionStorage.setItem('session', data.data.Session);

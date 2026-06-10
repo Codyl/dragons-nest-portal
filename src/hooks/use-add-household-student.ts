@@ -10,7 +10,7 @@ import ProfileServices, {
 const useAddHouseholdStudent = (): UseMutationResult<
   {
     message: string;
-    data: { householdStudentDrafts: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: HouseholdStudentDraftAll[] };
   },
   Error,
   { displayName: string; currentGrade: number }

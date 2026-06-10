@@ -11,8 +11,8 @@ import { gradeLabel } from '@/lib/grade-label';
 
 export type StudentDraftCardProps = {
   draft: HouseholdStudentDraftAll;
-  onArchive?: (studentDraftId: string) => void;
-  onRestore?: (studentDraftId: string) => void;
+  onArchive?: (studentId: string) => void;
+  onRestore?: (studentId: string) => void;
   isArchiving?: boolean;
   isRestoring?: boolean;
 };
@@ -56,7 +56,7 @@ export function StudentDraftCard({
             size="sm"
             disabled={isArchiving}
             data-testid="student-draft-archive"
-            onClick={() => onArchive(draft.studentDraftId)}
+            onClick={() => onArchive(draft.studentId)}
           >
             Archive
           </Button>
@@ -68,7 +68,7 @@ export function StudentDraftCard({
             size="sm"
             disabled={isRestoring}
             data-testid="student-draft-restore"
-            onClick={() => onRestore(draft.studentDraftId)}
+            onClick={() => onRestore(draft.studentId)}
           >
             Restore
           </Button>

@@ -46,9 +46,6 @@ const refreshAccessToken = async (): Promise<boolean> => {
 export const api = ky.create({
   prefixUrl: import.meta.env.VITE_API_URL,
   credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json',
-  },
   hooks: {
     beforeRetry: [
       async ({ request, error, retryCount }) => {

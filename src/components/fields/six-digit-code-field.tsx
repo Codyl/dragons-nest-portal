@@ -19,7 +19,7 @@ const SixDigitCodeField = ({
   onSubmit,
   ...props
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line @typescript-eslint/no-explicit-any
   field: any;
   label: string;
   className?: string;

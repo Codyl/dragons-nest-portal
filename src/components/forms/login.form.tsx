@@ -51,7 +51,7 @@ const LoginForm = ({ className }: { className?: string }) => {
         deviceName: friendlyName,
       };
       login(variables, {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // oxlint-disable-next-line @typescript-eslint/no-explicit-any
         onSuccess: (data: any) => {
           if (data.data?.Session) {
             sessionStorage.setItem('session', data.data.Session);

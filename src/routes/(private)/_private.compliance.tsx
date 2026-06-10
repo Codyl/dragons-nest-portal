@@ -20,7 +20,7 @@ function ComplianceRoute() {
         </p>
       )}
       {/* Future: fetch compliance data using query key:
-          ['student', activeStudent.studentDraftId, 'compliance'] */}
+          ['student', activeStudent.studentId, 'compliance'] */}
       <div className="mt-6 grid gap-4">
         <section>
           <h3 className="font-semibold">Hours Tracking</h3>

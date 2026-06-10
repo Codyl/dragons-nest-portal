@@ -18,7 +18,7 @@ const ChildAccountsPage = () => {
   const restoreMutation = useRestoreHouseholdStudent();
 
   const allDrafts: HouseholdStudentDraftAll[] =
-    profileQuery.data?.data?.householdStudentDraftsAll ?? [];
+    profileQuery.data?.data?.managedAccountsViewAll ?? [];
   const activeDrafts = allDrafts.filter((d) => !d.archivedAt);
   const archivedDrafts = allDrafts.filter((d) => Boolean(d.archivedAt));
 
@@ -45,9 +45,9 @@ const ChildAccountsPage = () => {
     setArchivingId(null);
   };
 
-  const handleRestore = (studentDraftId: string) => {
+  const handleRestore = (studentId: string) => {
     setActionError(null);
-    restoreMutation.mutate(studentDraftId, {
+    restoreMutation.mutate(studentId, {
       onError: (err) => {
         setActionError(
           err.message ?? 'Failed to restore student. Please try again.',
@@ -130,7 +130,7 @@ const ChildAccountsPage = () => {
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {activeDrafts.map((draft) => (
                   <StudentDraftCard
-                    key={draft.studentDraftId}
+                    key={draft.studentId}
                     draft={draft}
                     onArchive={(id) => {
                       setActionError(null);
@@ -138,7 +138,7 @@ const ChildAccountsPage = () => {
                     }}
                     isArchiving={
                       archiveMutation.isPending &&
-                      archiveMutation.variables === draft.studentDraftId
+                      archiveMutation.variables === draft.studentId
                     }
                   />
                 ))}
@@ -160,12 +160,12 @@ const ChildAccountsPage = () => {
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 opacity-90">
                 {archivedDrafts.map((draft) => (
                   <StudentDraftCard
-                    key={draft.studentDraftId}
+                    key={draft.studentId}
                     draft={draft}
                     onRestore={handleRestore}
                     isRestoring={
                       restoreMutation.isPending &&
-                      restoreMutation.variables === draft.studentDraftId
+                      restoreMutation.variables === draft.studentId
                     }
                   />
                 ))}

@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 export const Active: Story = {
   args: {
     draft: {
-      studentDraftId: 'draft-1',
+      studentId: 'draft-1',
       displayName: 'Jordan',
       currentGrade: 7,
       lastPromotionYear: 2025,
@@ -30,7 +30,7 @@ export const Active: Story = {
 export const Archived: Story = {
   args: {
     draft: {
-      studentDraftId: 'draft-2',
+      studentId: 'draft-2',
       displayName: 'River',
       currentGrade: 10,
       lastPromotionYear: 2024,

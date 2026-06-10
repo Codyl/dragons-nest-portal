@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 import type { Subject } from '@/api/services/subjects.services';
+import type { StudentEnrolledClass } from '@/api/services/profile.services';
 import SubjectCard from '@/components/cards/subject-card';
 import { useStudent } from '@/contexts/student-context';
-import useComplianceLaws from '@/hooks/use-compliance-laws';
-import useLoggedInUser from '@/hooks/use-logged-in-user';
+import useStudentClasses from '@/hooks/use-student-classes';
 import useSubjects from '@/hooks/use-subjects';
 import { Button } from '@/components/ui/button';
 
@@ -14,41 +14,46 @@ export const Route = createFileRoute('/(private)/_private/curriculum')({
   component: CurriculumRoute,
 });
 
-export function deriveRequiredSubjects(
+/**
+ * Given the student's enrolled classes and the full subjects catalog,
+ * returns the Subject objects that match the enrolled class subjectIds.
+ */
+export function resolveEnrolledSubjects(
   subjects: Subject[],
-  subjectsRequiredTopicIds: string[],
+  enrolledClasses: StudentEnrolledClass[],
 ): Subject[] {
-  return subjects.filter((subject) =>
-    subjectsRequiredTopicIds.includes(subject._id),
+  const enrolledSubjectIds = new Set(
+    enrolledClasses
+      .map((c) => c.subjectId)
+      .filter((id): id is string => id !== null),
   );
+  return subjects.filter((subject) => enrolledSubjectIds.has(subject._id));
 }
 
 export function CurriculumRoute() {
-  const { data: userResult, isLoading: isUserLoading, error: userError } =
-    useLoggedInUser();
-  const profileData = userResult?.data;
+  const { activeStudent } = useStudent();
 
   const {
-    data: complianceLaws,
-    isLoading: isComplianceLoading,
-    error: complianceError,
-    refetch: refetchCompliance,
-  } = useComplianceLaws(profileData?.address?.state);
+    data: classesResult,
+    isLoading: isClassesLoading,
+    error: classesError,
+    refetch: refetchClasses,
+  } = useStudentClasses(activeStudent?.studentId);
+
   const {
     data: subjects = [],
     isLoading: isSubjectsLoading,
     error: subjectsError,
     refetch: refetchSubjects,
   } = useSubjects();
-  const { activeStudent } = useStudent();
 
-  const isLoading = isUserLoading || isComplianceLoading || isSubjectsLoading;
-  const error = userError ?? complianceError ?? subjectsError;
-  const requiredSubjectIds = complianceLaws?.subjectsRequiredTopicIds ?? [];
-  const requiredSubjects = deriveRequiredSubjects(subjects, requiredSubjectIds);
+  const isLoading = isClassesLoading || isSubjectsLoading;
+  const error = classesError ?? subjectsError;
+  const enrolledClasses = classesResult?.data ?? [];
+  const enrolledSubjects = resolveEnrolledSubjects(subjects, enrolledClasses);
 
   const handleRetry = () => {
-    void refetchCompliance();
+    void refetchClasses();
     void refetchSubjects();
   };
 
@@ -61,11 +66,17 @@ export function CurriculumRoute() {
         </p>
       )}
 
-      {isLoading ? (
+      {!activeStudent ? (
+        <p data-testid="curriculum-no-student">
+          Select a student to view their curriculum.
+        </p>
+      ) : null}
+
+      {activeStudent && isLoading ? (
         <p data-testid="curriculum-loading">Loading curriculum...</p>
       ) : null}
 
-      {!isLoading && error ? (
+      {activeStudent && !isLoading && error ? (
         <div
           className="rounded-md border border-destructive/40 bg-destructive/5 p-3"
           data-testid="curriculum-error"
@@ -80,21 +91,15 @@ export function CurriculumRoute() {
         </div>
       ) : null}
 
-      {!isLoading && !error && !profileData?.address?.state ? (
-        <p data-testid="curriculum-missing-state">
-          Add your state in your profile to view required curriculum subjects.
-        </p>
-      ) : null}
-
-      {!isLoading && !error && profileData?.address?.state && requiredSubjects.length === 0 ? (
+      {activeStudent && !isLoading && !error && enrolledSubjects.length === 0 ? (
         <p data-testid="curriculum-empty">
-          No required subjects are currently defined for your state.
+          No classes have been added for this student yet.
         </p>
       ) : null}
 
-      {!isLoading && !error && requiredSubjects.length > 0 ? (
+      {activeStudent && !isLoading && !error && enrolledSubjects.length > 0 ? (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {requiredSubjects.map((subject) => (
+          {enrolledSubjects.map((subject) => (
             <SubjectCard key={subject._id} subject={subject} />
           ))}
         </div>

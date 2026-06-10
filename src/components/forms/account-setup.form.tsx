@@ -57,7 +57,7 @@ export type AccountSetupFormValues = {
 };
 
 /** Validator generics are widened so Zod `validators.onSubmit` matches the context type. */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable @typescript-eslint/no-explicit-any */
 type AccountSetupFormInstance = ReactFormExtendedApi<
   AccountSetupFormValues,
   any,
@@ -85,7 +85,7 @@ const AccountSetupFormContext = createContext<
   AccountSetupFormContextValue | undefined
 >(undefined);
 
-// eslint-disable-next-line react-refresh/only-export-components -- hook used by step components outside this module
+// oxlint-disable-next-line react-refresh/only-export-components -- hook used by step components outside this module
 export function useAccountSetupForm() {
   const ctx = useContext(AccountSetupFormContext);
   if (!ctx) {
@@ -96,7 +96,7 @@ export function useAccountSetupForm() {
 }
 
 /** For optional UI (e.g. add-students) that only exists inside account setup when wrapped. */
-// eslint-disable-next-line react-refresh/only-export-components
+// oxlint-disable-next-line react-refresh/only-export-components
 export function useOptionalAccountSetupForm() {
   return useContext(AccountSetupFormContext);
 }
@@ -146,7 +146,7 @@ function buildAccountSetupSchema(
       pendingStudents: z.array(
         z.object({
           id: z.string(),
-          studentDraftId: z.string(),
+          studentId: z.string(),
           displayName: z.string(),
           currentGradeOrdinal: z.string(),
         }),
@@ -394,7 +394,7 @@ const AccountSetupForm = ({
         pendingStudents:
           value.accountType === 'adult'
             ? value.pendingStudents.map((s) => ({
-              studentDraftId: s.studentDraftId,
+              studentId: s.studentId,
               displayName: s.displayName.trim(),
               currentGrade: Number.parseInt(s.currentGradeOrdinal, 10),
             }))
@@ -441,7 +441,7 @@ const AccountSetupForm = ({
 
   useEffect(() => {
     form.setFieldValue('accountType', initialFormAccountType);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [initialFormAccountType]);
 
   const submitOnboarding = async () => {

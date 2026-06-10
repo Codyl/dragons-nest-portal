@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
 import StudentDraftCard from './student-draft-card';
 
 afterEach(() => {
@@ -13,7 +13,7 @@ describe('StudentDraftCard', () => {
     render(
       <StudentDraftCard
         draft={{
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -30,7 +30,7 @@ describe('StudentDraftCard', () => {
     render(
       <StudentDraftCard
         draft={{
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -46,7 +46,7 @@ describe('StudentDraftCard', () => {
     render(
       <StudentDraftCard
         draft={{
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -63,7 +63,7 @@ describe('StudentDraftCard', () => {
     render(
       <StudentDraftCard
         draft={{
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -82,7 +82,7 @@ describe('StudentDraftCard', () => {
     render(
       <StudentDraftCard
         draft={{
-          studentDraftId: 'a',
+          studentId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -103,7 +103,7 @@ describe('StudentDraftCard', () => {
     render(
       <StudentDraftCard
         draft={{
-          studentDraftId: 'sid-1',
+          studentId: 'sid-1',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,

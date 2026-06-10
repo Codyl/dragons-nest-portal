@@ -35,8 +35,8 @@ export interface User {
   linkedStudents?: string[];
   addedClasses?: unknown[];
   ageBandAtRegistration?: unknown | null;
-  householdStudentDrafts?: {
-    studentDraftId: string;
+  managedAccountsView?: {
+    studentId: string;
     displayName: string;
     currentGrade: number;
     lastPromotionYear: number;
