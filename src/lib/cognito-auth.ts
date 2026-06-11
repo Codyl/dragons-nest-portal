@@ -64,13 +64,22 @@ function mapSignInStepToChallengeName(signInStep: string): string {
   return map[signInStep] ?? signInStep;
 }
 
-/** Extract JWT strings from Amplify session (v6 tokens have .toString() for raw JWT). */
+/**
+ * Extract JWT strings from Amplify session.
+ *
+ * NOTE: Amplify v6 does NOT expose the raw refresh token via `fetchAuthSession`.
+ * Its `AuthTokens` type only contains `accessToken` and `idToken` (see
+ * `@aws-amplify/core/.../singleton/Auth/types.d.ts`). The refresh token is held
+ * inside Amplify's token provider storage and is rotated transparently when
+ * `fetchAuthSession({ forceRefresh: true })` is called. Do not try to pull a
+ * `refreshToken` field off the session here, it will always be undefined and
+ * leads to a missing REFRESH_TOKEN cookie on the backend.
+ */
 function tokensFromSession(
   session: Awaited<ReturnType<typeof fetchAuthSession>>,
 ): {
   AccessToken?: string;
   IdToken?: string;
-  RefreshToken?: string;
 } {
   const t = session.tokens;
   if (!t) return {};
@@ -86,14 +95,13 @@ function tokensFromSession(
   return {
     AccessToken: toJwt(t.accessToken),
     IdToken: toJwt(t.idToken),
-    RefreshToken: toJwt((t as { refreshToken?: unknown }).refreshToken),
   };
 }
 
 export type SignInWithCognitoResult =
   | {
       success: true;
-      tokens: { AccessToken?: string; IdToken?: string; RefreshToken?: string };
+      tokens: { AccessToken?: string; IdToken?: string };
     }
   | {
       success: false;
@@ -167,7 +175,6 @@ export async function confirmSignInAndGetTokens(
 ): Promise<{
   AccessToken?: string;
   IdToken?: string;
-  RefreshToken?: string;
 }> {
   const { nextStep } = await confirmSignIn({ challengeResponse });
   if (nextStep.signInStep !== 'DONE') {
@@ -176,4 +183,32 @@ export async function confirmSignInAndGetTokens(
 
   const session = await fetchAuthSession();
   return tokensFromSession(session);
+}
+
+/**
+ * Force-refresh the Cognito session using Amplify's internally-stored refresh
+ * token, returning the new short-lived JWTs. Returns null if Amplify is not
+ * configured or no active session is available (e.g. user signed out, refresh
+ * token revoked).
+ *
+ * Pair this with `/auth/set-session` to replace the HttpOnly access/id cookies
+ * after refresh. The backend `/auth/refresh-token` route only works when a
+ * REFRESH_TOKEN cookie was issued (Google, signup, or backend SRP flows); it
+ * does not work after an Amplify SRP login because Amplify v6 keeps the
+ * refresh token in its own storage and never hands it to the backend.
+ */
+export async function refreshCognitoSession(): Promise<{
+  AccessToken?: string;
+  IdToken?: string;
+} | null> {
+  if (!isCognitoAuthConfigured()) return null;
+
+  try {
+    const session = await fetchAuthSession({ forceRefresh: true });
+    const tokens = tokensFromSession(session);
+    if (!tokens.AccessToken) return null;
+    return tokens;
+  } catch {
+    return null;
+  }
 }

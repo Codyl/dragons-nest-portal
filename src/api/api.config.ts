@@ -1,9 +1,23 @@
 import ky, { HTTPError } from 'ky';
+import { refreshCognitoSession } from '@/lib/cognito-auth';
 
 // Track if we're currently refreshing to prevent infinite loops
 let isRefreshing = false;
 let refreshPromise: Promise<void> | null = null;
 
+/**
+ * Refresh the session and re-sync the HttpOnly auth cookies.
+ *
+ * Two flows are supported, in order:
+ * 1. Amplify-managed refresh: when login was performed via browser SRP
+ *    (`signInWithCognito`), the refresh token lives inside Amplify's storage,
+ *    NOT in a cookie. We ask Amplify to refresh and then post the new
+ *    AccessToken / IdToken to `/auth/set-session` so the backend updates the
+ *    HttpOnly cookies.
+ * 2. Cookie-based refresh: for flows that do issue a REFRESH_TOKEN cookie
+ *    (backend signup, Google SSO, backend SRP), fall back to
+ *    `/auth/refresh-token` which reads the cookie server-side.
+ */
 const refreshAccessToken = async (): Promise<boolean> => {
   // If already refreshing, wait for the existing refresh to complete
   if (isRefreshing && refreshPromise) {
@@ -18,6 +32,28 @@ const refreshAccessToken = async (): Promise<boolean> => {
     try {
       const { unauthenticatedApi } =
         await import('./api.unauthenticated.config');
+
+      // 1. Try Amplify-managed refresh first (covers Amplify SRP logins).
+      const amplifyTokens = await refreshCognitoSession();
+      if (amplifyTokens?.AccessToken) {
+        const setSessionRes = await unauthenticatedApi.post(
+          'auth/set-session',
+          {
+            json: {
+              AccessToken: amplifyTokens.AccessToken,
+              IdToken: amplifyTokens.IdToken,
+            },
+            throwHttpErrors: false,
+            credentials: 'include',
+          },
+        );
+        if (setSessionRes.ok) {
+          refreshSuccess = true;
+          return;
+        }
+      }
+
+      // 2. Fall back to the cookie-backed refresh endpoint.
       const response = await unauthenticatedApi.post('auth/refresh-token', {
         json: {},
         throwHttpErrors: false,
@@ -55,7 +91,10 @@ export const api = ky.create({
           error.response.status === 401 &&
           retryCount < 2
         ) {
-          if (request.url.includes('auth/refresh-token')) {
+          if (
+            request.url.includes('auth/refresh-token') ||
+            request.url.includes('auth/set-session')
+          ) {
             return;
           }
 
