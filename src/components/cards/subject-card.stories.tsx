@@ -16,13 +16,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    subject: {
-      _id: 'subject-001',
-      name: 'Mathematics',
-      icon: '📐',
-      color: '#4A90D9',
-      slug: 'mathematics',
-      isEnrichment: false,
-    },
+    subjectId: 'subject-001',
+    subjectName: 'Mathematics',
+    mascotUrl: 'https://example.com/math-mascot.png',
+    teacherName: 'John Smith',
+  },
+};
+
+export const WithoutMascot: Story = {
+  args: {
+    subjectId: 'subject-002',
+    subjectName: 'Language Arts',
+    teacherName: 'Jane Doe',
   },
 };

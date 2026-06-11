@@ -7,7 +7,8 @@ export type Subject = {
   color: string;
   slug: string;
   isEnrichment: boolean;
-  links?: string[]
+  mascot?: string;
+  links?: string[];
 };
 
 const SubjectsServices = {

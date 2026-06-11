@@ -13,13 +13,13 @@ describe('gradeLabel', () => {
     expect(gradeLabel(0)).toBe('Kindergarten');
   });
 
-  it('maps 1 and 12 to Grade N', () => {
-    expect(gradeLabel(1)).toBe('Grade 1');
-    expect(gradeLabel(12)).toBe('Grade 12');
+  it('maps 1 and 12 to ordinal Grade', () => {
+    expect(gradeLabel(1)).toBe('1st Grade');
+    expect(gradeLabel(12)).toBe('12th Grade');
   });
 
   it('maps 13 to post-secondary label', () => {
-    expect(gradeLabel(13)).toBe('Grade 13 / Post-Secondary');
+    expect(gradeLabel(13)).toBe('Post-Secondary');
   });
 
   // Feature: child-accounts-settings, Property 3: gradeLabel round-trip

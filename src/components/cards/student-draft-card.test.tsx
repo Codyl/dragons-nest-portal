@@ -22,7 +22,7 @@ describe('StudentDraftCard', () => {
       />,
     );
     expect(screen.getByText('Taylor')).toBeTruthy();
-    expect(screen.getByText('Grade 5')).toBeTruthy();
+    expect(screen.getByText('5th Grade')).toBeTruthy();
     expect(screen.getByText('2025')).toBeTruthy();
   });
 
