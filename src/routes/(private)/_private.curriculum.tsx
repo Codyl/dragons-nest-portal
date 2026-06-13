@@ -31,7 +31,11 @@ export function resolveTeacherName(
   profile: ProfileUserData,
 ): string {
   const enrolledClass = enrolledClasses.find((c) => c.subjectId === subjectId);
-  if (enrolledClass && 'teacherName' in enrolledClass && enrolledClass.teacherName) {
+  if (
+    enrolledClass &&
+    'teacherName' in enrolledClass &&
+    enrolledClass.teacherName
+  ) {
     return enrolledClass.teacherName as string;
   }
   const parentName =
@@ -157,23 +161,26 @@ export function CurriculumRoute() {
         </p>
       )}
 
-      {!isLoading && !error && !isMissingState && requiredSubjects.length > 0 && (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {requiredSubjects.map((subject) => (
-            <SubjectCard
-              key={subject._id}
-              subjectId={subject._id}
-              subjectName={subject.name}
-              mascotUrl={subject.mascot}
-              teacherName={resolveTeacherName(
-                subject._id,
-                enrolledClasses,
-                profile!,
-              )}
-            />
-          ))}
-        </div>
-      )}
+      {!isLoading &&
+        !error &&
+        !isMissingState &&
+        requiredSubjects.length > 0 && (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {requiredSubjects.map((subject) => (
+              <SubjectCard
+                key={subject._id}
+                subjectId={subject._id}
+                subjectName={subject.name}
+                mascotUrl={subject.mascot}
+                teacherName={resolveTeacherName(
+                  subject._id,
+                  enrolledClasses,
+                  profile!,
+                )}
+              />
+            ))}
+          </div>
+        )}
     </div>
   );
 }

@@ -1,12 +1,20 @@
-import TeacherCard from "../cards/teacher-card";
-import useGetTeachers from "@/hooks/use-get-teachers";
+import TeacherCard from '../cards/teacher-card';
+import useGetTeachers from '@/hooks/use-get-teachers';
 
-const TeacherList = ({ state, grade, subjectId }: { state: string; grade: string; subjectId: string }) => {
+const TeacherList = ({
+  state,
+  grade,
+  subjectId,
+}: {
+  state: string;
+  grade: string;
+  subjectId: string;
+}) => {
   const getTeachersQuery = useGetTeachers({ state, grade, subjectId });
   if (getTeachersQuery.isLoading) {
     return <div>Loading...</div>;
   }
-  
+
   if (getTeachersQuery.isError) {
     return <div>Error: {getTeachersQuery.error.message}</div>;
   }

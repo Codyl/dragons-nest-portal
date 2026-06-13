@@ -31,7 +31,10 @@ export const coreMath: Subject = {
   isEnrichment: false,
 };
 
-export const defaultAddCourseSheetSubjects: Subject[] = [enrichmentArt, coreMath];
+export const defaultAddCourseSheetSubjects: Subject[] = [
+  enrichmentArt,
+  coreMath,
+];
 
 /** Open-state wrapper for Storybook interaction tests and Cypress `composeStories`. */
 export function AddCourseSheetHarness({

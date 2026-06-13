@@ -74,11 +74,7 @@ const ChangePasswordForm = ({
         <form.Field
           name="newPassword"
           children={(field) => (
-            <InputField
-              field={field}
-              label="New password"
-              type="password"
-            />
+            <InputField field={field} label="New password" type="password" />
           )}
         />
         <form.Field
@@ -93,10 +89,7 @@ const ChangePasswordForm = ({
         />
       </FieldGroup>
       {error && (
-        <p
-          className="text-destructive"
-          data-testid="error-message"
-        >
+        <p className="text-destructive" data-testid="error-message">
           {error.message}
         </p>
       )}

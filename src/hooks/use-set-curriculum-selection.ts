@@ -1,10 +1,18 @@
-import { useMutation, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationResult,
+} from '@tanstack/react-query';
 import CurriculumServices from '@/api/services/curriculum.services';
 
 const useSetCurriculumSelection = (params: {
   subjectId: string;
   studentId: string | null;
-}): UseMutationResult<{ message: string; data: unknown }, Error, { curriculumItemId: string }> => {
+}): UseMutationResult<
+  { message: string; data: unknown },
+  Error,
+  { curriculumItemId: string }
+> => {
   const queryClient = useQueryClient();
 
   return useMutation({

@@ -133,10 +133,7 @@ describe('MFAGenerateSecretForm', () => {
       },
     });
     cy.mount(
-      <MFAGenerateSecretForm
-        source="settings"
-        userEmail="user@example.com"
-      />,
+      <MFAGenerateSecretForm source="settings" userEmail="user@example.com" />,
     );
     cy.get('[data-testid="six-digit-code-code"]').should('exist');
     cy.get('button[type="submit"]').should('exist');

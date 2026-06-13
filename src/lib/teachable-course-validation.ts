@@ -203,9 +203,7 @@ export function teachableCoursesFormIsSubmittable(
   const allRowsEmpty = rows.every((r) => !rowHasAnyFieldStarted(r));
   if (allRowsEmpty) return true;
 
-  const hasAtLeastOneComplete = rows.some((r) =>
-    rowIsComplete(r, getSubject),
-  );
+  const hasAtLeastOneComplete = rows.some((r) => rowIsComplete(r, getSubject));
   const noPartialRows = rows.every(
     (r) => !rowHasAnyFieldStarted(r) || rowIsComplete(r, getSubject),
   );

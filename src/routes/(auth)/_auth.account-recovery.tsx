@@ -40,10 +40,7 @@ function AccountRecovery() {
           </p>
           <p>
             Support phone:{' '}
-            <a
-              href="tel:+18664857839"
-              className="text-primary hover:underline"
-            >
+            <a href="tel:+18664857839" className="text-primary hover:underline">
               +18664857839
             </a>
           </p>

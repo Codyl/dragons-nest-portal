@@ -76,10 +76,7 @@ const TOTPSettings = ({ className }: { className?: string }) => {
         source="settings"
         userEmail={userEmail}
       />
-      <AlertDialog
-        open={showRemoveConfirm}
-        onOpenChange={setShowRemoveConfirm}
-      >
+      <AlertDialog open={showRemoveConfirm} onOpenChange={setShowRemoveConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Remove Authenticator App MFA?</AlertDialogTitle>

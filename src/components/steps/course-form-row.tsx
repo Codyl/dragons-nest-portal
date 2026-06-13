@@ -64,7 +64,10 @@ export default function CourseFormRow({
 
     if (allowAnyGrade) return TEACHABLE_GRADE_OPTIONS_WITH_ANY;
 
-    const limited = homeschoolGradeOptionsWithinSpanLimit(row.grades, spanLimit);
+    const limited = homeschoolGradeOptionsWithinSpanLimit(
+      row.grades,
+      spanLimit,
+    );
     const byValue = new Map(
       HOMESCHOOL_GRADE_OPTIONS.map((o) => [o.value, o] as const),
     );
@@ -207,7 +210,8 @@ export default function CourseFormRow({
           {gradeValue && (
             // TODO: get the number of teachers covering this subject and grade from the API
             <p className="text-muted-foreground text-xs leading-snug">
-              There are currently 10 teachers offering to teach this subject and grade at your zip code.
+              There are currently 10 teachers offering to teach this subject and
+              grade at your zip code.
             </p>
           )}
         </Field>
@@ -223,7 +227,9 @@ export default function CourseFormRow({
             max={20}
             inputMode="numeric"
             data-testid={`max-students-${row.id}`}
-            value={String(Number.isFinite(row.maxStudents) ? row.maxStudents : 1)}
+            value={String(
+              Number.isFinite(row.maxStudents) ? row.maxStudents : 1,
+            )}
             className={cn(beigeInputClassName)}
             onChange={(e) => {
               const raw = e.target.value;
@@ -234,7 +240,7 @@ export default function CourseFormRow({
 
               const n = Number.parseInt(raw, 10);
               if (!Number.isFinite(n)) return;
-              
+
               onChangePatch({
                 maxStudents: Math.min(20, Math.max(1, n)),
               });
@@ -258,10 +264,20 @@ export default function CourseFormRow({
           className="gap-1.5"
           disabled={subjectsLoading}
         />
-        <div className="text-xs leading-snug text-muted-foreground">Read more about these curriculum options <Button className="text-xs leading-snug -mt-3" variant="link" onClick={() => {
-          window.open('https://www.google.com', '_blank');
-        }}>here</Button>.</div>
+        <div className="text-xs leading-snug text-muted-foreground">
+          Read more about these curriculum options{' '}
+          <Button
+            className="text-xs leading-snug -mt-3"
+            variant="link"
+            onClick={() => {
+              window.open('https://www.google.com', '_blank');
+            }}
+          >
+            here
+          </Button>
+          .
+        </div>
       </div>
-    </div >
+    </div>
   );
 }

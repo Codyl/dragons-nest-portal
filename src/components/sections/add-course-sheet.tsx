@@ -16,7 +16,10 @@ import {
 } from '@/components/ui/sheet';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import useAddTeachableCourse from '@/hooks/use-add-teachable-course';
-import { HOMESCHOOL_CURRICULUM_OPTIONS, HOMESCHOOL_GRADE_OPTIONS } from '@/lib/homeschool-options';
+import {
+  HOMESCHOOL_CURRICULUM_OPTIONS,
+  HOMESCHOOL_GRADE_OPTIONS,
+} from '@/lib/homeschool-options';
 import {
   TEACHABLE_GRADE_OPTIONS_WITH_ANY,
   teachableGradeSelectStyles,
@@ -204,10 +207,7 @@ const AddCourseSheet = ({
 
   return (
     <TooltipProvider>
-      <Sheet
-        open={open}
-        onOpenChange={handleOpenChange}
-      >
+      <Sheet open={open} onOpenChange={handleOpenChange}>
         <SheetContent side="right">
           <SheetHeader>
             <SheetTitle>Add Course</SheetTitle>

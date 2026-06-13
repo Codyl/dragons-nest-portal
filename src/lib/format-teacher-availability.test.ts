@@ -9,7 +9,13 @@ import {
 describe('formatTeacherAvailabilitySummary', () => {
   it('collapses Mon–Fri with identical slots to M–F start–end', () => {
     const slot = { start: '9:00am', end: '3:00pm' };
-    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as const;
+    const days = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+    ] as const;
     const availability = days.map((day) => ({ day, slots: [slot] }));
     expect(formatTeacherAvailabilitySummary(availability)).toEqual([
       'M–F 9:00am–3:00pm',

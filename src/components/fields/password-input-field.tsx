@@ -23,14 +23,8 @@ const PasswordInputField = ({
   const isInvalid = !field.state.meta.isValid && field.state.meta.isTouched;
 
   return (
-    <Field
-      data-invalid={isInvalid}
-      className={className}
-    >
-      <FieldLabel
-        htmlFor={field.name}
-        data-testid={`label-${field.name}`}
-      >
+    <Field data-invalid={isInvalid} className={className}>
+      <FieldLabel htmlFor={field.name} data-testid={`label-${field.name}`}>
         {label}
       </FieldLabel>
       <div className="relative">

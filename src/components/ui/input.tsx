@@ -2,7 +2,14 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-function Input({ className, type, normalize, format, value, ...props }: React.ComponentProps<'input'> & {
+function Input({
+  className,
+  type,
+  normalize,
+  format,
+  value,
+  ...props
+}: React.ComponentProps<'input'> & {
   normalize?: (value: string) => string;
   format?: (value: string) => string;
   value: string;

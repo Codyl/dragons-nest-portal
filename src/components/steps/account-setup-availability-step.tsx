@@ -14,7 +14,14 @@ import {
   WEEKDAY_KEYS,
   WEEKDAY_LABELS,
 } from '@/lib/weekly-availability';
-import { BusFront, CalendarClock, CloudSun, Plus, School, Trash2 } from 'lucide-react';
+import {
+  BusFront,
+  CalendarClock,
+  CloudSun,
+  Plus,
+  School,
+  Trash2,
+} from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 const TIME_OPTIONS = buildTimeSelectOptions();
@@ -24,15 +31,17 @@ const PRESETS: {
   label: string;
   icon: typeof CloudSun;
 }[] = [
-    { id: 'anytime', label: 'Anytime', icon: CloudSun },
-    { id: 'school_hours', label: 'School hours', icon: School },
-    { id: 'after_school', label: 'After school', icon: BusFront },
-  ];
+  { id: 'anytime', label: 'Anytime', icon: CloudSun },
+  { id: 'school_hours', label: 'School hours', icon: School },
+  { id: 'after_school', label: 'After school', icon: BusFront },
+];
 
 function setWeeklyAvailability(
   prev: DayAvailabilityDraft[],
   day: (typeof WEEKDAY_KEYS)[number],
-  updater: (slots: DayAvailabilityDraft['slots']) => DayAvailabilityDraft['slots'],
+  updater: (
+    slots: DayAvailabilityDraft['slots'],
+  ) => DayAvailabilityDraft['slots'],
 ): DayAvailabilityDraft[] {
   return prev.map((row) =>
     row.day === day ? { ...row, slots: updater(row.slots) } : row,
@@ -54,9 +63,7 @@ const AccountSetupAvailabilityStep = ({
   const [localError, setLocalError] = useState<string | null>(null);
 
   const title =
-    variant === 'parent'
-      ? 'Contact availability'
-      : 'Class availability';
+    variant === 'parent' ? 'Contact availability' : 'Class availability';
   const subtitle =
     variant === 'parent'
       ? 'When teachers or students can reach you. You can change this later in settings.'
@@ -102,12 +109,7 @@ const AccountSetupAvailabilityStep = ({
 
   return (
     <AccountSetupCard
-      stepIcon={
-        <CalendarClock
-          className="mx-auto h-9 w-9"
-          strokeWidth={1.5}
-        />
-      }
+      stepIcon={<CalendarClock className="mx-auto h-9 w-9" strokeWidth={1.5} />}
       title={title}
       subtitle={subtitle}
       footer={
@@ -235,11 +237,9 @@ const AccountSetupAvailabilityStep = ({
                                 onClick={() => {
                                   markCustom();
                                   field.handleChange(
-                                    setWeeklyAvailability(
-                                      days,
-                                      dayKey,
-                                      () => [newAvailabilitySlot()],
-                                    ),
+                                    setWeeklyAvailability(days, dayKey, () => [
+                                      newAvailabilitySlot(),
+                                    ]),
                                   );
                                 }}
                               >
@@ -280,10 +280,7 @@ const AccountSetupAvailabilityStep = ({
                                       }}
                                     >
                                       {TIME_OPTIONS.map((o) => (
-                                        <option
-                                          key={o.value}
-                                          value={o.value}
-                                        >
+                                        <option key={o.value} value={o.value}>
                                           {o.label}
                                         </option>
                                       ))}
@@ -312,10 +309,7 @@ const AccountSetupAvailabilityStep = ({
                                       }}
                                     >
                                       {TIME_OPTIONS.map((o) => (
-                                        <option
-                                          key={o.value}
-                                          value={o.value}
-                                        >
+                                        <option key={o.value} value={o.value}>
                                           {o.label}
                                         </option>
                                       ))}
@@ -335,7 +329,9 @@ const AccountSetupAvailabilityStep = ({
                                               days,
                                               dayKey,
                                               (s) =>
-                                                s.filter((_, i) => i !== slotIdx),
+                                                s.filter(
+                                                  (_, i) => i !== slotIdx,
+                                                ),
                                             ),
                                           );
                                         }}

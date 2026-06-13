@@ -394,39 +394,41 @@ const AccountSetupForm = ({
         pendingStudents:
           value.accountType === 'adult'
             ? value.pendingStudents.map((s) => ({
-              studentId: s.studentId,
-              displayName: s.displayName.trim(),
-              currentGrade: Number.parseInt(s.currentGradeOrdinal, 10),
-            }))
+                studentId: s.studentId,
+                displayName: s.displayName.trim(),
+                currentGrade: Number.parseInt(s.currentGradeOrdinal, 10),
+              }))
             : undefined,
         teachableCourses:
           value.accountType === 'adult'
             ? value.teachableCourses
-              .filter((c) =>
-                rowIsComplete(c, (subjectId) => {
-                  const s = subjectsRef.current.find((x) => x._id === subjectId);
-                  if (!s) return undefined;
+                .filter((c) =>
+                  rowIsComplete(c, (subjectId) => {
+                    const s = subjectsRef.current.find(
+                      (x) => x._id === subjectId,
+                    );
+                    if (!s) return undefined;
 
+                    return {
+                      slug: s.slug,
+                      name: s.name,
+                      isEnrichment: s.isEnrichment,
+                    };
+                  }),
+                )
+                .map((c) => {
+                  const { matchesAllGrades, grades } = draftGradesToApiPayload(
+                    c.grades,
+                  );
                   return {
-                    slug: s.slug,
-                    name: s.name,
-                    isEnrichment: s.isEnrichment,
+                    className: c.className.trim(),
+                    subjectId: c.subjectId,
+                    matchesAllGrades,
+                    grades,
+                    curriculum: c.curriculum,
+                    maxStudents: c.maxStudents,
                   };
-                }),
-              )
-              .map((c) => {
-                const { matchesAllGrades, grades } = draftGradesToApiPayload(
-                  c.grades,
-                );
-                return {
-                  className: c.className.trim(),
-                  subjectId: c.subjectId,
-                  matchesAllGrades,
-                  grades,
-                  curriculum: c.curriculum,
-                  maxStudents: c.maxStudents,
-                };
-              })
+                })
             : undefined,
       });
 

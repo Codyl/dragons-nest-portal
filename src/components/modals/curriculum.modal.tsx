@@ -16,13 +16,17 @@ type CurriculumModalProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-const CurriculumModal = ({ subject, open, onOpenChange }: CurriculumModalProps) => {
+const CurriculumModal = ({
+  subject,
+  open,
+  onOpenChange,
+}: CurriculumModalProps) => {
   const { data: profileData } = useLoggedInUser();
   const { activeStudent } = useStudent();
 
   const studentId = activeStudent?.studentId ?? null;
   const householdId = profileData?.data?._id ?? '';
-console.log(profileData)
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex flex-col max-h-[80vh]">

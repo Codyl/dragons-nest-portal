@@ -78,15 +78,9 @@ const ChildAccountsPage = () => {
       )}
 
       {profileQuery.isLoading && (
-        <div
-          aria-label="Loading students"
-          className="flex flex-col gap-4"
-        >
+        <div aria-label="Loading students" className="flex flex-col gap-4">
           {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-40 rounded-lg bg-muted animate-pulse"
-            />
+            <div key={i} className="h-40 rounded-lg bg-muted animate-pulse" />
           ))}
         </div>
       )}
@@ -175,10 +169,7 @@ const ChildAccountsPage = () => {
         </>
       )}
 
-      <AddStudentSheet
-        open={addSheetOpen}
-        onOpenChange={setAddSheetOpen}
-      />
+      <AddStudentSheet open={addSheetOpen} onOpenChange={setAddSheetOpen} />
 
       <RemoveConfirmDialog
         open={confirmArchiveOpen}

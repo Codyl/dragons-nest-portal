@@ -12,7 +12,11 @@ type CurriculumListProps = {
   householdId: string;
 };
 
-const CurriculumList = ({ subjectId, studentId, householdId }: CurriculumListProps) => {
+const CurriculumList = ({
+  subjectId,
+  studentId,
+  householdId,
+}: CurriculumListProps) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const { data, isLoading, isError, refetch } = useCurriculumItems({
@@ -21,7 +25,10 @@ const CurriculumList = ({ subjectId, studentId, householdId }: CurriculumListPro
     householdId,
   });
 
-  const { data: selectionData } = useCurriculumSelection({ subjectId, studentId });
+  const { data: selectionData } = useCurriculumSelection({
+    subjectId,
+    studentId,
+  });
 
   const selectMutation = useSetCurriculumSelection({ subjectId, studentId });
 
@@ -59,7 +66,9 @@ const CurriculumList = ({ subjectId, studentId, householdId }: CurriculumListPro
   if (isError) {
     return (
       <div className="flex flex-col items-center gap-3 p-4 text-center">
-        <p className="text-sm text-destructive">Failed to load curriculum materials.</p>
+        <p className="text-sm text-destructive">
+          Failed to load curriculum materials.
+        </p>
         <Button variant="outline" size="sm" onClick={() => refetch()}>
           Retry
         </Button>
@@ -86,7 +95,7 @@ const CurriculumList = ({ subjectId, studentId, householdId }: CurriculumListPro
             'flex items-center justify-between gap-4 px-4 py-3 cursor-pointer rounded-md transition-colors',
             selectedItemId === item._id
               ? 'ring-2 ring-accent bg-accent/10'
-              : 'hover:bg-muted/50'
+              : 'hover:bg-muted/50',
           )}
           onClick={() => handleSelect(item._id)}
           onDoubleClick={() => handlePreview(item._id)}

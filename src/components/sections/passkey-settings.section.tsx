@@ -19,11 +19,7 @@ import { KeyRound, Loader2, Plus, X } from 'lucide-react';
 import { useState } from 'react';
 
 const PasskeyMark = ({ className }: { className?: string }) => (
-  <KeyRound
-    className={cn('shrink-0', className)}
-    aria-hidden
-    strokeWidth={2}
-  />
+  <KeyRound className={cn('shrink-0', className)} aria-hidden strokeWidth={2} />
 );
 
 function PasskeySettingsRow({
@@ -107,10 +103,7 @@ const PasskeySettingsSection = ({ className }: { className?: string }) => {
               className="flex items-center gap-2 py-8 text-muted-foreground"
               data-testid="passkeys-loading"
             >
-              <Loader2
-                className="size-5 animate-spin"
-                aria-hidden
-              />
+              <Loader2 className="size-5 animate-spin" aria-hidden />
               Loading passkeys…
             </div>
           )}
@@ -184,10 +177,7 @@ const PasskeySettingsSection = ({ className }: { className?: string }) => {
                     {registerPasskey.isPending
                       ? 'Creating passkey…'
                       : 'Create a new passkey'}
-                    <Plus
-                      className="size-4"
-                      aria-hidden
-                    />
+                    <Plus className="size-4" aria-hidden />
                   </Button>
                   {registerPasskey.isSuccess && (
                     <p

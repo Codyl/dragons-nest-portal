@@ -10,10 +10,7 @@ const ActionPopover = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="link"
-          size="icon"
-        >
+        <Button variant="link" size="icon">
           <EllipsisVertical className="size-4" />
         </Button>
       </PopoverTrigger>

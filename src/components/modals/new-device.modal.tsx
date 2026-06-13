@@ -55,10 +55,7 @@ const NewDeviceModal = () => {
   };
 
   return (
-    <Dialog
-      open={show}
-      onOpenChange={handleOpenChange}
-    >
+    <Dialog open={show} onOpenChange={handleOpenChange}>
       <DialogContent>
         <h2>Would you like to remember this device?</h2>
         <p>

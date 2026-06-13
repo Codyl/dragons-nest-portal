@@ -100,17 +100,11 @@ export function PrivateAppSidebar() {
   const initialsStr = user ? initials(user) : '…';
 
   return (
-    <Sidebar
-      collapsible="icon"
-      variant="inset"
-    >
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              size="lg"
-            >
+            <SidebarMenuButton asChild size="lg">
               <Link to="/">
                 <span className="truncate font-semibold">Cody Lillywhite</span>
               </Link>
@@ -199,10 +193,7 @@ export function PrivateAppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                   tooltip={displayName}
                 >
-                  <Avatar
-                    className="size-8 rounded-lg"
-                    size="sm"
-                  >
+                  <Avatar className="size-8 rounded-lg" size="sm">
                     <AvatarFallback className="rounded-lg text-xs">
                       {initialsStr}
                     </AvatarFallback>
@@ -232,10 +223,7 @@ export function PrivateAppSidebar() {
                     <Settings className="mr-2 size-4 opacity-70" />
                     Settings
                   </Link>
-                  <Link
-                    to="/settings/security"
-                    className={popoverLinkClass}
-                  >
+                  <Link to="/settings/security" className={popoverLinkClass}>
                     Security
                   </Link>
                   <Separator className="my-1" />

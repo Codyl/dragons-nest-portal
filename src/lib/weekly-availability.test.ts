@@ -35,9 +35,9 @@ describe('weekly-availability', () => {
   });
 
   it('validateWeeklyAvailabilityDraft: accepts defaults', () => {
-    expect(validateWeeklyAvailabilityDraft(buildDefaultWeeklyAvailability())).toBe(
-      null,
-    );
+    expect(
+      validateWeeklyAvailabilityDraft(buildDefaultWeeklyAvailability()),
+    ).toBe(null);
   });
 
   it('weeklyAvailabilityToApiPayload strips ids', () => {

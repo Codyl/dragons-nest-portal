@@ -62,10 +62,7 @@ const SignupAddStudentsStep = ({
   const allValid = students.every((s) => {
     const g = Number.parseInt(s.currentGradeOrdinal, 10);
     return (
-      s.displayName.trim().length > 0 &&
-      Number.isFinite(g) &&
-      g >= 0 &&
-      g <= 13
+      s.displayName.trim().length > 0 && Number.isFinite(g) && g >= 0 && g <= 13
     );
   });
 

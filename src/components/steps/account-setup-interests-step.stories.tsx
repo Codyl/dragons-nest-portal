@@ -12,10 +12,7 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <AccountSetupFormStoryWrapper
-        stepIndex={1}
-        totalSteps={3}
-      >
+      <AccountSetupFormStoryWrapper stepIndex={1} totalSteps={3}>
         <Story />
       </AccountSetupFormStoryWrapper>
     ),

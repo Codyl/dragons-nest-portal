@@ -62,7 +62,9 @@ describe('AddCourseSheet', () => {
       args: { subjects: [enrichmentArt] },
     });
 
-    cy.get('[data-testid=input-add-course-classname]').type('Intro to Watercolor');
+    cy.get('[data-testid=input-add-course-classname]').type(
+      'Intro to Watercolor',
+    );
 
     cy.get('[data-testid=add-course-subject]').click();
     cy.get('[role=option]').contains('Art').click();

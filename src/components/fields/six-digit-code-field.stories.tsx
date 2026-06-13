@@ -67,10 +67,7 @@ export const Default: Story = {
 
 export const WithValue: Story = {
   render: () => (
-    <InteractiveWrapper
-      initialValue="123"
-      label="Verification code"
-    />
+    <InteractiveWrapper initialValue="123" label="Verification code" />
   ),
 };
 
@@ -87,19 +84,9 @@ export const Invalid: Story = {
 };
 
 export const Required: Story = {
-  render: () => (
-    <InteractiveWrapper
-      label="Verification code"
-      required
-    />
-  ),
+  render: () => <InteractiveWrapper label="Verification code" required />,
 };
 
 export const AutoSubmitOnComplete: Story = {
-  render: () => (
-    <InteractiveWrapper
-      label="Verification code"
-      withOnSubmit
-    />
-  ),
+  render: () => <InteractiveWrapper label="Verification code" withOnSubmit />,
 };

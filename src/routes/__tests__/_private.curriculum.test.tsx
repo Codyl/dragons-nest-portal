@@ -2,7 +2,14 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vite-plus/test';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type {
   HouseholdStudentProfile,
@@ -37,7 +44,12 @@ const subjectFixture: Subject = {
 };
 
 const classesFixture: StudentEnrolledClass[] = [
-  { subjectId: 'subject-1', curriculumId: null, hoursCompleted: 0, createdAt: null },
+  {
+    subjectId: 'subject-1',
+    curriculumId: null,
+    hoursCompleted: 0,
+    createdAt: null,
+  },
 ];
 
 const activeStudentFixture: HouseholdStudentProfile = {
@@ -47,7 +59,9 @@ const activeStudentFixture: HouseholdStudentProfile = {
   lastPromotionYear: 2025,
 };
 
-function renderRoute(activeStudent: HouseholdStudentProfile | null = activeStudentFixture) {
+function renderRoute(
+  activeStudent: HouseholdStudentProfile | null = activeStudentFixture,
+) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
@@ -159,8 +173,18 @@ describe('CurriculumRoute', () => {
       data: {
         message: 'ok',
         data: [
-          { subjectId: 'subject-1', curriculumId: null, hoursCompleted: 0, createdAt: null },
-          { subjectId: 'subject-2', curriculumId: null, hoursCompleted: 0, createdAt: null },
+          {
+            subjectId: 'subject-1',
+            curriculumId: null,
+            hoursCompleted: 0,
+            createdAt: null,
+          },
+          {
+            subjectId: 'subject-2',
+            curriculumId: null,
+            hoursCompleted: 0,
+            createdAt: null,
+          },
         ],
       },
       isLoading: false,
@@ -216,7 +240,10 @@ function arbitrarySubject(): fc.Arbitrary<Subject> {
         fc.integer({ min: 0, max: 255 }),
         fc.integer({ min: 0, max: 255 }),
       )
-      .map(([r, g, b]) => `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`),
+      .map(
+        ([r, g, b]) =>
+          `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`,
+      ),
     slug: fc.string({ minLength: 1, maxLength: 20 }),
     isEnrichment: fc.boolean(),
   });
@@ -224,10 +251,19 @@ function arbitrarySubject(): fc.Arbitrary<Subject> {
 
 function arbitraryEnrolledClass(): fc.Arbitrary<StudentEnrolledClass> {
   return fc.record({
-    subjectId: fc.oneof(fc.string({ minLength: 1, maxLength: 20 }), fc.constant(null)),
-    curriculumId: fc.oneof(fc.string({ minLength: 1, maxLength: 24 }), fc.constant(null)),
+    subjectId: fc.oneof(
+      fc.string({ minLength: 1, maxLength: 20 }),
+      fc.constant(null),
+    ),
+    curriculumId: fc.oneof(
+      fc.string({ minLength: 1, maxLength: 24 }),
+      fc.constant(null),
+    ),
     hoursCompleted: fc.nat({ max: 1000 }),
-    createdAt: fc.oneof(fc.date().map((d) => d.toISOString()), fc.constant(null)),
+    createdAt: fc.oneof(
+      fc.date().map((d) => d.toISOString()),
+      fc.constant(null),
+    ),
   });
 }
 
@@ -239,7 +275,10 @@ describe('Property 1: Enrolled subjects list matches addedClasses subjectIds', (
         fc.array(arbitraryEnrolledClass(), { maxLength: 20 }),
         fc.array(arbitrarySubject(), { maxLength: 30 }),
         (enrolledClasses, catalog) => {
-          const enrolledSubjects = resolveEnrolledSubjects(catalog, enrolledClasses);
+          const enrolledSubjects = resolveEnrolledSubjects(
+            catalog,
+            enrolledClasses,
+          );
           const enrolledSubjectIds = new Set(
             enrolledClasses
               .map((c) => c.subjectId)

@@ -57,7 +57,9 @@ describe('AccountSetupAvailabilityStep', () => {
     );
     cy.get('[data-testid="availability-add-monday"]').click();
     cy.get('[data-testid="availability-start-monday-0"]').should('exist');
-    cy.get('[data-testid="availability-unavailable-monday"]').should('not.exist');
+    cy.get('[data-testid="availability-unavailable-monday"]').should(
+      'not.exist',
+    );
   });
 
   it('shows validation when all slots removed (edge case)', () => {

@@ -36,19 +36,11 @@ const ConfirmResetCodeForm = ({
         <form.Field
           name="code"
           children={(field) => (
-            <InputField
-              field={field}
-              label="Code"
-              type="text"
-              autoFocus
-            />
+            <InputField field={field} label="Code" type="text" autoFocus />
           )}
         />
       </FieldGroup>
-      <Button
-        type="submit"
-        className="w-full mt-2"
-      >
+      <Button type="submit" className="w-full mt-2">
         Confirm
       </Button>
     </form>

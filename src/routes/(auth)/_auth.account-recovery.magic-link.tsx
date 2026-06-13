@@ -38,10 +38,7 @@ function AccountRecoveryMagicLink() {
         description="This recovery link is missing a required token."
       >
         <div className="text-center text-sm">
-          <Link
-            to="/account-recovery"
-            className="text-primary hover:underline"
-          >
+          <Link to="/account-recovery" className="text-primary hover:underline">
             Back to account recovery
           </Link>
         </div>
@@ -59,10 +56,7 @@ function AccountRecoveryMagicLink() {
           <p className="text-muted-foreground">Please wait...</p>
         )}
         {consumeMutation.isError && (
-          <p
-            className="text-destructive"
-            data-testid="recovery-link-error"
-          >
+          <p className="text-destructive" data-testid="recovery-link-error">
             {consumeMutation.error.message}
           </p>
         )}
@@ -74,10 +68,7 @@ function AccountRecoveryMagicLink() {
             >
               Request another recovery link
             </Link>
-            <Link
-              to="/signup"
-              className="text-primary hover:underline block"
-            >
+            <Link to="/signup" className="text-primary hover:underline block">
               Create a new account
             </Link>
           </div>

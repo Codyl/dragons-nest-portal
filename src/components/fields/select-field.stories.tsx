@@ -26,7 +26,9 @@ function ControlledDemo({
         value={value}
         onValueChange={setValue}
       />
-      <p className="text-muted-foreground text-xs">Value: {value || '(empty)'}</p>
+      <p className="text-muted-foreground text-xs">
+        Value: {value || '(empty)'}
+      </p>
     </div>
   );
 }
@@ -63,10 +65,7 @@ function FormConnectedDemo() {
           />
         )}
       </form.Field>
-      <button
-        type="submit"
-        className="text-sm underline"
-      >
+      <button type="submit" className="text-sm underline">
         Submit
       </button>
     </form>

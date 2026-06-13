@@ -27,7 +27,10 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
         ? (['adultAgeConfirmed'] as const)
         : expectedBirthBand === 'teen13to17'
           ? (['teenAgeConfirmed', 'teenPermissionConfirmed'] as const)
-          : (['under13ChildConfirmed', 'under13GuardianPermissionConfirmed'] as const)),
+          : ([
+              'under13ChildConfirmed',
+              'under13GuardianPermissionConfirmed',
+            ] as const)),
     ] as const;
     await Promise.all(fields.map((f) => form.validateField(f, 'change')));
     for (const n of fields) {
@@ -41,12 +44,7 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
 
   return (
     <AccountSetupCard
-      stepIcon={
-        <MapPin
-          className="mx-auto h-9 w-9"
-          strokeWidth={1.5}
-        />
-      }
+      stepIcon={<MapPin className="mx-auto h-9 w-9" strokeWidth={1.5} />}
       title="Location & account security"
       subtitle="We use this for state rules, to find instructors near you, and to add a phone number for account recovery."
       footer={
@@ -87,9 +85,7 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
               name="teenAgeConfirmed"
               validators={{
                 onChange: ({ value }) =>
-                  !value
-                    ? 'Confirm that you are between 13 and 17'
-                    : undefined,
+                  !value ? 'Confirm that you are between 13 and 17' : undefined,
               }}
             >
               {(field) => (
@@ -192,7 +188,11 @@ const AccountSetupComplianceStep = ({ onNext }: { onNext: () => void }) => {
                   variant="link"
                   onClick={() =>
                     window.open(
-                      `https://hslda.org/legal/${US_STATE_OPTIONS.find((s) => s.value === field.state.value)?.label.toLowerCase().replace(' ', '-')}`,
+                      `https://hslda.org/legal/${US_STATE_OPTIONS.find(
+                        (s) => s.value === field.state.value,
+                      )
+                        ?.label.toLowerCase()
+                        .replace(' ', '-')}`,
                       '_blank',
                     )
                   }

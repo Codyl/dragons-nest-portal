@@ -50,12 +50,7 @@ const AccountSetupInterestsStep = ({
 
   return (
     <AccountSetupCard
-      stepIcon={
-        <Sprout
-          className="mx-auto h-9 w-9"
-          strokeWidth={1.5}
-        />
-      }
+      stepIcon={<Sprout className="mx-auto h-9 w-9" strokeWidth={1.5} />}
       title="What interests you?"
       subtitle="Select all subjects you'd like to explore"
       footer={

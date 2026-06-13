@@ -176,10 +176,7 @@ const LoginForm = ({ className }: { className?: string }) => {
           Sign In
         </Button>
         {error && (
-          <p
-            className="text-destructive mt-2"
-            data-testid="error-message"
-          >
+          <p className="text-destructive mt-2" data-testid="error-message">
             {error.message}
           </p>
         )}

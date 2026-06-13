@@ -126,7 +126,11 @@ describe('SelectField', () => {
   });
 
   it('does not show error when form field is valid (error state)', () => {
-    const field = createFormField({ value: 'x', isValid: true, isTouched: true });
+    const field = createFormField({
+      value: 'x',
+      isValid: true,
+      isTouched: true,
+    });
     cy.mount(
       <SelectField
         field={field}
@@ -155,12 +159,7 @@ describe('SelectField', () => {
   });
 
   it('omits placeholder option when placeholder is null (edge case)', () => {
-    cy.mount(
-      <ControlledWrapper
-        placeholder={null}
-        initialValue="x"
-      />,
-    );
+    cy.mount(<ControlledWrapper placeholder={null} initialValue="x" />);
     cy.get('[data-testid=cy-select]').within(() => {
       cy.get('option').should('have.length', 2);
     });

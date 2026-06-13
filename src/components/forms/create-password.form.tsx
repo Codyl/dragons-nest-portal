@@ -78,10 +78,7 @@ const CreatePasswordForm = () => {
         />
       </FieldGroup>
       {error && (
-        <p
-          className="text-destructive mt-2"
-          data-testid="error-message"
-        >
+        <p className="text-destructive mt-2" data-testid="error-message">
           {error.message}
         </p>
       )}
@@ -94,10 +91,7 @@ const CreatePasswordForm = () => {
         Create password
       </Button>
       <div className="text-center text-sm">
-        <Link
-          to="/settings/security"
-          className="text-primary hover:underline"
-        >
+        <Link to="/settings/security" className="text-primary hover:underline">
           Back to security settings
         </Link>
       </div>

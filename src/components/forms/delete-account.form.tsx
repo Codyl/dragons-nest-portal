@@ -103,10 +103,7 @@ const DeleteAccountForm = () => {
           irreversible. Sign in with Google to confirm.
         </p>
         {error && (
-          <div
-            className="text-destructive"
-            data-testid="error-message"
-          >
+          <div className="text-destructive" data-testid="error-message">
             {error.message}
           </div>
         )}
@@ -186,10 +183,7 @@ const DeleteAccountForm = () => {
         />
       ) : null}
       {error && (
-        <div
-          className="text-destructive mt-2"
-          data-testid="error-message"
-        >
+        <div className="text-destructive mt-2" data-testid="error-message">
           {error.message}
         </div>
       )}

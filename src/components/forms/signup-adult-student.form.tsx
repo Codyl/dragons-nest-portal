@@ -100,22 +100,13 @@ const SignupAdultStudentForm = ({
         <form.Field
           name="email"
           children={(field) => (
-            <InputField
-              field={field}
-              label="Email"
-              type="text"
-              autoFocus
-            />
+            <InputField field={field} label="Email" type="text" autoFocus />
           )}
         />
         <form.Field
           name="password"
           children={(field) => (
-            <InputField
-              field={field}
-              label="Password"
-              type="password"
-            />
+            <InputField field={field} label="Password" type="password" />
           )}
         />
         <form.Field
@@ -130,12 +121,7 @@ const SignupAdultStudentForm = ({
         />
       </FieldGroup>
       {error && <div className="text-sm text-destructive">{error.message}</div>}
-      <Button
-        type="submit"
-        className="w-full"
-        size="lg"
-        disabled={isPending}
-      >
+      <Button type="submit" className="w-full" size="lg" disabled={isPending}>
         {isPending ? (
           <span data-testid="button-loading-indicator">Creating account…</span>
         ) : (

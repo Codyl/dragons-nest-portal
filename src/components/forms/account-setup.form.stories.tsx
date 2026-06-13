@@ -133,7 +133,9 @@ export const ComplianceToInterests: Story = {
     await userEvent.click(canvas.getByTestId('checkbox-teen-age'));
     await userEvent.click(canvas.getByTestId('checkbox-teen-permission'));
     await userEvent.click(canvas.getByTestId('input-state'));
-    await userEvent.click(await canvas.findByRole('option', { name: 'California' }));
+    await userEvent.click(
+      await canvas.findByRole('option', { name: 'California' }),
+    );
     await userEvent.type(canvas.getByTestId('input-zip'), '90210');
     await userEvent.type(canvas.getByTestId('input-phone'), '5551234567');
     await userEvent.click(canvas.getByTestId('avatar-owl'));

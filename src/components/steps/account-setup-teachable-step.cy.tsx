@@ -104,10 +104,12 @@ describe('AccountSetupTeachableStep', () => {
       .click();
     cy.get('.teachable-grade__menu').contains('Kindergarten').click();
 
-    cy.get('[data-testid^="select-subj-"]').first().should('contain.text', 'Math');
+    cy.get('[data-testid^="select-subj-"]')
+      .first()
+      .should('contain.text', 'Math');
   });
 
-  it("shows Any-grade hint when Any is selected on enrichment subject (rendering, user interaction)", () => {
+  it('shows Any-grade hint when Any is selected on enrichment subject (rendering, user interaction)', () => {
     cy.mountStory(Default);
     cy.get('[data-testid^="select-subj-"]').first().click();
     cy.get('[data-slot="select-item"]').contains('Music').click();
@@ -188,10 +190,7 @@ describe('AccountSetupTeachableStep', () => {
 
   it('caps max students at 20 (props, user interaction)', () => {
     cy.mountStory(Default);
-    cy.get('[data-testid^="max-students-"]')
-      .first()
-      .clear()
-      .type('25');
+    cy.get('[data-testid^="max-students-"]').first().clear().type('25');
     cy.get('[data-testid^="max-students-"]').first().should('have.value', '20');
   });
 

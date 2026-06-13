@@ -1,5 +1,11 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
@@ -104,11 +110,11 @@ function arbitraryDraft(): fc.Arbitrary<HouseholdStudentDraftAll> {
       lastPromotionYear: fc.integer({ min: 2020, max: 2030 }),
       archivedAt: archived
         ? fc
-          .integer({
-            min: Date.UTC(2020, 0, 1),
-            max: Date.UTC(2030, 0, 1),
-          })
-          .map((ms) => new Date(ms).toISOString())
+            .integer({
+              min: Date.UTC(2020, 0, 1),
+              max: Date.UTC(2030, 0, 1),
+            })
+            .map((ms) => new Date(ms).toISOString())
         : fc.constant(null as string | null),
     }),
   );
@@ -238,7 +244,9 @@ describe('Property 2: Active/archived split', () => {
           const { unmount, container } = render(<ChildAccountsPage />);
 
           const activeCount = drafts.filter((d) => !d.archivedAt).length;
-          const archivedCount = drafts.filter((d) => Boolean(d.archivedAt)).length;
+          const archivedCount = drafts.filter((d) =>
+            Boolean(d.archivedAt),
+          ).length;
 
           const activeSection = container
             .querySelector('#active-students-heading')
@@ -290,14 +298,10 @@ describe('ChildAccountsPage archive flow', () => {
 
     await userEvent.click(screen.getByTestId('student-draft-archive'));
 
-    expect(
-      screen.getByText(/archive this student/i),
-    ).toBeTruthy();
+    expect(screen.getByText(/archive this student/i)).toBeTruthy();
 
     const dialog = screen.getByRole('dialog');
-    fireEvent.click(
-      within(dialog).getByRole('button', { name: /^archive$/i }),
-    );
+    fireEvent.click(within(dialog).getByRole('button', { name: /^archive$/i }));
 
     expect(archiveMutate).toHaveBeenCalled();
   });

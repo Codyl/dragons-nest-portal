@@ -125,34 +125,20 @@ const MFAGenerateSecretForm = ({
         <form.Field
           name="code"
           children={(field) => (
-            <SixDigitCodeField
-              field={field}
-              label="Code"
-              autoFocus
-            />
+            <SixDigitCodeField field={field} label="Code" autoFocus />
           )}
         />
-        <Button
-          type="submit"
-          disabled={isPending}
-          isPending={isPending}
-        >
+        <Button type="submit" disabled={isPending} isPending={isPending}>
           Continue
         </Button>
       </form>
       {error?.message && (
-        <p
-          className="text-destructive"
-          data-testid="error-message"
-        >
+        <p className="text-destructive" data-testid="error-message">
           {error.message}
         </p>
       )}
       {connectAuthenticatorError?.message && (
-        <p
-          className="text-destructive"
-          data-testid="error-message"
-        >
+        <p className="text-destructive" data-testid="error-message">
           {connectAuthenticatorError.message}
         </p>
       )}

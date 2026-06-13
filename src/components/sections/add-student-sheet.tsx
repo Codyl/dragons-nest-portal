@@ -73,14 +73,8 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
   };
 
   return (
-    <Sheet
-      open={open}
-      onOpenChange={onOpenChange}
-    >
-      <SheetContent
-        side="right"
-        className="flex flex-col gap-4 sm:max-w-md"
-      >
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="right" className="flex flex-col gap-4 sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Add Student</SheetTitle>
           <SheetDescription>
@@ -113,7 +107,9 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
               }
             />
             {trimmedName.length === 0 && displayName.length > 0 && (
-              <p className="text-sm text-destructive">Display name is required</p>
+              <p className="text-sm text-destructive">
+                Display name is required
+              </p>
             )}
             {nameTooLong && (
               <p className="text-sm text-destructive">
@@ -135,10 +131,7 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
           />
 
           {mutation.isError && (
-            <p
-              role="alert"
-              className="text-sm text-destructive"
-            >
+            <p role="alert" className="text-sm text-destructive">
               {mutation.error.message ||
                 'Could not add student. Please try again.'}
             </p>

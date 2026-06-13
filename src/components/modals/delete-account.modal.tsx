@@ -11,10 +11,7 @@ const DeleteAccountModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="destructive"
-          className="w-min"
-        >
+        <Button variant="destructive" className="w-min">
           Delete Account
         </Button>
       </DialogTrigger>

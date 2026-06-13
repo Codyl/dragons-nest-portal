@@ -33,10 +33,7 @@ const AccountSetupCard = ({
             className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#6d8567] text-white shadow-sm"
             aria-hidden
           >
-            <Flame
-              className="h-7 w-7"
-              strokeWidth={1.75}
-            />
+            <Flame className="h-7 w-7" strokeWidth={1.75} />
           </div>
           <h1 className="text-xl font-bold tracking-tight text-stone-900 sm:text-2xl">
             Welcome to Dragon&apos;s Nest
@@ -65,10 +62,7 @@ const AccountSetupCard = ({
         </div>
 
         <div className="mt-8 flex flex-col items-center text-center">
-          <div
-            className="mb-3 text-[#8b7355]"
-            aria-hidden
-          >
+          <div className="mb-3 text-[#8b7355]" aria-hidden>
             {stepIcon}
           </div>
           <h2 className="text-lg font-bold text-stone-900 sm:text-xl">

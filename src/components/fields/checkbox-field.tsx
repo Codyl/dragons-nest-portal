@@ -29,7 +29,9 @@ type CheckboxFieldControlled = CheckboxFieldBase & {
   onBlur?: () => void;
 };
 
-export type CheckboxFieldProps = CheckboxFieldWithForm | CheckboxFieldControlled;
+export type CheckboxFieldProps =
+  | CheckboxFieldWithForm
+  | CheckboxFieldControlled;
 
 function CheckboxField(props: CheckboxFieldProps) {
   const {
@@ -64,19 +66,15 @@ function CheckboxField(props: CheckboxFieldProps) {
   };
 
   const isInvalid =
-    isFormField &&
-    !field!.state.meta.isValid &&
-    field!.state.meta.isTouched;
+    isFormField && !field!.state.meta.isValid && field!.state.meta.isTouched;
 
   const labelTestId = isFormField ? `label-${field!.name}` : `label-${id}`;
   const checkboxTestId =
-    dataTestIdProp ?? (isFormField ? `checkbox-${field!.name}` : `checkbox-${id}`);
+    dataTestIdProp ??
+    (isFormField ? `checkbox-${field!.name}` : `checkbox-${id}`);
 
   return (
-    <Field
-      data-invalid={isInvalid || undefined}
-      className={className}
-    >
+    <Field data-invalid={isInvalid || undefined} className={className}>
       <div className="flex items-start gap-3">
         <Checkbox
           id={id}

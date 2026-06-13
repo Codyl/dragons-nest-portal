@@ -13,9 +13,7 @@ const PromotionNudgeBanner = () => {
   const queryClient = useQueryClient();
   const { data, isPending } = useLoggedInUser();
   const user = data?.data;
-  const [dismissedIds, setDismissedIds] = useState<Record<string, boolean>>(
-    {},
-  );
+  const [dismissedIds, setDismissedIds] = useState<Record<string, boolean>>({});
 
   const now = new Date();
   const isAugust = now.getMonth() === 7;
@@ -53,9 +51,8 @@ const PromotionNudgeBanner = () => {
       data-testid="promotion-nudge-banner"
     >
       <p className="text-foreground min-w-0 flex-1">
-        A new school year is here! Is{' '}
-        <strong>{candidate.displayName}</strong> moving up to{' '}
-        <strong>{nextLabel}</strong>?
+        A new school year is here! Is <strong>{candidate.displayName}</strong>{' '}
+        moving up to <strong>{nextLabel}</strong>?
       </p>
       <div className="flex shrink-0 items-center gap-2">
         <Button

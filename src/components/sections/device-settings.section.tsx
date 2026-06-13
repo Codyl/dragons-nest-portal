@@ -87,7 +87,7 @@ const UserDeviceSettingsSection = ({ className }: { className?: string }) => {
           <UserDevice
             key={device.DeviceKey}
             device={device}
-            onClick={() => { }}
+            onClick={() => {}}
             buttonText="Forget Device"
           />
         ))}

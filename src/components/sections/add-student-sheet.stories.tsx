@@ -19,13 +19,7 @@ export function AddStudentSheetHarness({
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
-  return (
-    <AddStudentSheet
-      {...rest}
-      open={open}
-      onOpenChange={setOpen}
-    />
-  );
+  return <AddStudentSheet {...rest} open={open} onOpenChange={setOpen} />;
 }
 
 const meta = {

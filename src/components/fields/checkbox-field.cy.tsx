@@ -37,7 +37,11 @@ describe('CheckboxField', () => {
     };
   };
 
-  function ControlledWrapper({ initialChecked = false }: { initialChecked?: boolean }) {
+  function ControlledWrapper({
+    initialChecked = false,
+  }: {
+    initialChecked?: boolean;
+  }) {
     const [checked, setChecked] = useState(initialChecked);
     return (
       <CheckboxField
@@ -87,13 +91,7 @@ describe('CheckboxField', () => {
       isTouched: true,
       errors: [{ message: 'Required' }],
     });
-    cy.mount(
-      <CheckboxField
-        field={field}
-        id="f-agree"
-        label="I agree"
-      />,
-    );
+    cy.mount(<CheckboxField field={field} id="f-agree" label="I agree" />);
     cy.get('[data-testid=error-message-agree]').should(
       'contain.text',
       'Required',
@@ -106,25 +104,17 @@ describe('CheckboxField', () => {
       isValid: true,
       isTouched: true,
     });
-    cy.mount(
-      <CheckboxField
-        field={field}
-        id="f-ok"
-        label="I agree"
-      />,
-    );
+    cy.mount(<CheckboxField field={field} id="f-ok" label="I agree" />);
     cy.get('[data-testid=error-message-agree]').should('not.exist');
   });
 
   it('calls handleChange and handleBlur on interaction (form field)', () => {
-    const field = createFormField({ value: false, isValid: true, isTouched: false });
-    cy.mount(
-      <CheckboxField
-        field={field}
-        id="f-live"
-        label="Subscribe"
-      />,
-    );
+    const field = createFormField({
+      value: false,
+      isValid: true,
+      isTouched: false,
+    });
+    cy.mount(<CheckboxField field={field} id="f-live" label="Subscribe" />);
     cy.get('[data-testid=checkbox-agree]').click();
     cy.get('@handleChange').should('have.been.calledWith', true);
     cy.get('[data-testid=checkbox-agree]').blur();

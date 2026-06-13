@@ -1,6 +1,16 @@
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback } from '../ui/avatar';
 
-const ProfilePhoto = ({ src, givenName, familyName, email }: { src: string | null, givenName: string | null, familyName: string | null, email: string | null }) => {
+const ProfilePhoto = ({
+  src,
+  givenName,
+  familyName,
+  email,
+}: {
+  src: string | null;
+  givenName: string | null;
+  familyName: string | null;
+  email: string | null;
+}) => {
   function initials(data: {
     givenName?: string | null;
     familyName?: string | null;
@@ -17,12 +27,13 @@ const ProfilePhoto = ({ src, givenName, familyName, email }: { src: string | nul
 
     return '?';
   }
-  const initialsStr = initials({ givenName: givenName, familyName: familyName, email });
+  const initialsStr = initials({
+    givenName: givenName,
+    familyName: familyName,
+    email,
+  });
   return (
-    <Avatar
-      className="rounded-full"
-      size="lg"
-    >
+    <Avatar className="rounded-full" size="lg">
       <AvatarFallback className="rounded-lg text-xs">
         {initialsStr}
       </AvatarFallback>

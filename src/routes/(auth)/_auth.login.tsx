@@ -57,10 +57,7 @@ function Login() {
   }
 
   return (
-    <CommonCard
-      title="Login"
-      description={description}
-    >
+    <CommonCard title="Login" description={description}>
       <MFAAuthenticatorQRCodeModal
         show={showMfaSetupModal}
         setShow={setShowMfaSetupModal}

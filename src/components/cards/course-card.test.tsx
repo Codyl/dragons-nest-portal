@@ -305,7 +305,7 @@ describe('Property 2: Course card displays all required fields', () => {
               course={course}
               index={index}
               subjects={[subject]}
-              onRemove={() => { }}
+              onRemove={() => {}}
               isRemoving={false}
             />,
           );
@@ -376,7 +376,7 @@ describe('Property 6: Every course card has a Remove action and no Edit action',
                   course={course}
                   index={i}
                   subjects={subjects}
-                  onRemove={() => { }}
+                  onRemove={() => {}}
                   isRemoving={false}
                 />
               ))}

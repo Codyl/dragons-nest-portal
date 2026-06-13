@@ -13,10 +13,7 @@ const ChangePasswordModal = ({
   const router = useRouter();
 
   return (
-    <Dialog
-      open={show}
-      onOpenChange={setShow}
-    >
+    <Dialog open={show} onOpenChange={setShow}>
       <DialogTitle className="sr-only">Change Password</DialogTitle>
       <DialogContent>
         <ChangePasswordForm onPasswordChangeSuccess={() => setShow(false)} />

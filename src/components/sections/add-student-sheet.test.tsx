@@ -14,17 +14,14 @@ function renderWithQuery(ui: ReactElement) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   });
-  return render(<QueryClientProvider client={client}>{ui}</QueryClientProvider>);
+  return render(
+    <QueryClientProvider client={client}>{ui}</QueryClientProvider>,
+  );
 }
 
 describe('AddStudentSheet', () => {
   it('submit is disabled when fields empty', () => {
-    renderWithQuery(
-      <AddStudentSheet
-        open={true}
-        onOpenChange={vi.fn()}
-      />,
-    );
+    renderWithQuery(<AddStudentSheet open={true} onOpenChange={vi.fn()} />);
     const submit = screen.getByTestId(
       'add-student-submit',
     ) as HTMLButtonElement;
@@ -32,12 +29,7 @@ describe('AddStudentSheet', () => {
   });
 
   it('submit stays disabled when display name exceeds 100 characters', () => {
-    renderWithQuery(
-      <AddStudentSheet
-        open={true}
-        onOpenChange={vi.fn()}
-      />,
-    );
+    renderWithQuery(<AddStudentSheet open={true} onOpenChange={vi.fn()} />);
     fireEvent.change(screen.getByTestId('add-student-display-name'), {
       target: { value: 'x'.repeat(101) },
     });

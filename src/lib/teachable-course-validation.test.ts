@@ -21,9 +21,12 @@ const math = { slug: 'math', name: 'Math', isEnrichment: false };
 const science = { slug: 'science', name: 'Science', isEnrichment: false };
 const music = { slug: 'music', name: 'Music', isEnrichment: true };
 
-const getSubjectFixture = (
-  map: Record<string, TeachableSubjectLookup | undefined>,
-): GetTeachableSubject => (id: string) => map[id];
+const getSubjectFixture =
+  (
+    map: Record<string, TeachableSubjectLookup | undefined>,
+  ): GetTeachableSubject =>
+  (id: string) =>
+    map[id];
 
 const empty = (): TeachableCourseDraftLike => ({
   className: '',
@@ -151,7 +154,10 @@ describe('teachable-course-validation', () => {
   });
 
   it('rowGradeSpanViolationMessage: null when within limit or enrichment', () => {
-    const getS = getSubjectFixture({ 'topic-math': math, 'topic-music': music });
+    const getS = getSubjectFixture({
+      'topic-math': math,
+      'topic-music': music,
+    });
     expect(
       rowGradeSpanViolationMessage(
         { ...complete(), grades: ['9', '10'] },
@@ -177,7 +183,10 @@ describe('teachable-course-validation', () => {
   });
 
   it('rowIsComplete: ANY only for enrichment', () => {
-    const getS = getSubjectFixture({ 'topic-math': math, 'topic-music': music });
+    const getS = getSubjectFixture({
+      'topic-math': math,
+      'topic-music': music,
+    });
     expect(
       rowIsComplete(
         { ...complete(), subjectId: 'topic-music', grades: [ANY_GRADE_VALUE] },
@@ -185,10 +194,7 @@ describe('teachable-course-validation', () => {
       ),
     ).toBe(true);
     expect(
-      rowIsComplete(
-        { ...complete(), grades: [ANY_GRADE_VALUE] },
-        getS,
-      ),
+      rowIsComplete({ ...complete(), grades: [ANY_GRADE_VALUE] }, getS),
     ).toBe(false);
   });
 
@@ -202,9 +208,7 @@ describe('teachable-course-validation', () => {
   it('rowIsComplete: rejects maxStudents outside 1–20', () => {
     const getS = getSubjectFixture({ 'topic-math': math });
     expect(rowIsComplete({ ...complete(), maxStudents: 0 }, getS)).toBe(false);
-    expect(rowIsComplete({ ...complete(), maxStudents: 21 }, getS)).toBe(
-      false,
-    );
+    expect(rowIsComplete({ ...complete(), maxStudents: 21 }, getS)).toBe(false);
   });
 
   it('rowIsComplete: rejects grade span over limit for math', () => {
@@ -258,9 +262,9 @@ describe('teachable-course-validation', () => {
 
   it('teachableCoursesFormIsSubmittable: needs one complete row when any row started', () => {
     const getS = getSubjectFixture({ 'topic-math': math });
-    expect(
-      teachableCoursesFormIsSubmittable([empty(), complete()], getS),
-    ).toBe(true);
+    expect(teachableCoursesFormIsSubmittable([empty(), complete()], getS)).toBe(
+      true,
+    );
     expect(
       teachableCoursesFormIsSubmittable([{ ...empty(), className: 'X' }], getS),
     ).toBe(false);
@@ -301,7 +305,11 @@ describe('teachable-course-validation', () => {
       reconcileGradesAfterMultiSelect(['1'], [ANY_GRADE_VALUE, '1'], true),
     ).toEqual([ANY_GRADE_VALUE]);
     expect(
-      reconcileGradesAfterMultiSelect([ANY_GRADE_VALUE], [ANY_GRADE_VALUE, '1'], true),
+      reconcileGradesAfterMultiSelect(
+        [ANY_GRADE_VALUE],
+        [ANY_GRADE_VALUE, '1'],
+        true,
+      ),
     ).toEqual(['1']);
   });
 

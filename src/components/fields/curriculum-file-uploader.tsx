@@ -48,7 +48,11 @@ function CurriculumFileUploader({
   const [validationError, setValidationError] = useState<string | null>(null);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
-  const { mutate, isPending, error: mutationError } = useUploadCurriculumItem({
+  const {
+    mutate,
+    isPending,
+    error: mutationError,
+  } = useUploadCurriculumItem({
     subjectId,
     studentId,
     householdId,
@@ -95,7 +99,8 @@ function CurriculumFileUploader({
     inputRef.current?.click();
   };
 
-  const displayError = validationError ?? (mutationError ? mutationError.message : null);
+  const displayError =
+    validationError ?? (mutationError ? mutationError.message : null);
 
   return (
     <div className="flex flex-col gap-2 pt-2 border-t">

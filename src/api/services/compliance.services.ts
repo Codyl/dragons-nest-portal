@@ -9,9 +9,7 @@ export type ComplianceLaws = {
 
 const ComplianceServices = {
   getComplianceLaws: async (state: string): Promise<ComplianceLaws> => {
-    const response = await api.get(
-      `compliance/${encodeURIComponent(state)}`,
-    );
+    const response = await api.get(`compliance/${encodeURIComponent(state)}`);
     return response.json();
   },
 };

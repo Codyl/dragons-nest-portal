@@ -41,15 +41,18 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
   return (
     <form.Field name="teachableCourses">
       {(field) => {
-        const rows =
-          (field.state.value as TeachableCourseDraft[] | undefined) ??
-          [newCourseRow()];
+        const rows = (field.state.value as
+          | TeachableCourseDraft[]
+          | undefined) ?? [newCourseRow()];
 
         const setRows = (next: TeachableCourseDraft[]) => {
           field.handleChange(next);
         };
 
-        const updateRow = (id: string, patch: Partial<TeachableCourseDraft>) => {
+        const updateRow = (
+          id: string,
+          patch: Partial<TeachableCourseDraft>,
+        ) => {
           setRows(rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
         };
 
@@ -76,10 +79,7 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
         return (
           <AccountSetupCard
             stepIcon={
-              <BookOpen
-                className="mx-auto h-9 w-9"
-                strokeWidth={1.5}
-              />
+              <BookOpen className="mx-auto h-9 w-9" strokeWidth={1.5} />
             }
             title="Courses you can teach"
             subtitle="Add each subject you are willing to teach to get a 10% discount on your subscription. You can edit this later."
@@ -105,10 +105,10 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
                   </Button>
                 </div>
                 {!canFinish && (
-                  <div
-                    className="text-xs leading-snug text-destructive mt-2"
-                  >
-                    You have at least one course that is incomplete. Remove the course or finish adding the required information to continue.
+                  <div className="text-xs leading-snug text-destructive mt-2">
+                    You have at least one course that is incomplete. Remove the
+                    course or finish adding the required information to
+                    continue.
                   </div>
                 )}
               </div>
@@ -116,7 +116,9 @@ const AccountSetupTeachableStep = ({ onBack }: { onBack: () => void }) => {
           >
             <div className="space-y-4 text-left">
               {isLoading && (
-                <p className="text-muted-foreground text-sm">Loading subjects…</p>
+                <p className="text-muted-foreground text-sm">
+                  Loading subjects…
+                </p>
               )}
               {rows.map((r) => (
                 <CourseFormRow

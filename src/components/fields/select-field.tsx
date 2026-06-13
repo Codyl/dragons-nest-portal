@@ -1,7 +1,18 @@
 import { Field, FieldError, FieldLabel } from '../ui/field';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 import { cn } from '@/lib/utils';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 import { InfoIcon } from 'lucide-react';
 
 export type SelectFieldOption = {
@@ -66,9 +77,7 @@ function SelectField(props: SelectFieldProps) {
   const isFormField = 'field' in props && props.field != null;
   const field = isFormField ? props.field : null;
 
-  const value = isFormField
-    ? String(field!.state.value ?? '')
-    : props.value;
+  const value = isFormField ? String(field!.state.value ?? '') : props.value;
 
   const handleValueChange = (v: string) => {
     if (isFormField) {
@@ -87,9 +96,7 @@ function SelectField(props: SelectFieldProps) {
   };
 
   const isInvalid =
-    isFormField &&
-    !field!.state.meta.isValid &&
-    field!.state.meta.isTouched;
+    isFormField && !field!.state.meta.isValid && field!.state.meta.isTouched;
 
   const selectName = isFormField ? field!.name : (nameProp ?? id);
 
@@ -98,10 +105,7 @@ function SelectField(props: SelectFieldProps) {
     dataTestIdProp ?? (isFormField ? `select-${field!.name}` : `select-${id}`);
 
   return (
-    <Field
-      data-invalid={isInvalid || undefined}
-      className={className}
-    >
+    <Field data-invalid={isInvalid || undefined} className={className}>
       <FieldLabel
         htmlFor={id}
         data-testid={labelTestId}
@@ -109,14 +113,16 @@ function SelectField(props: SelectFieldProps) {
       >
         {label}
         {required && <span className="text-destructive">*</span>}
-        {tooltip && (<TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <InfoIcon className="size-4" />
-            </TooltipTrigger>
-            <TooltipContent>{tooltip}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>)}
+        {tooltip && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <InfoIcon className="size-4" />
+              </TooltipTrigger>
+              <TooltipContent>{tooltip}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </FieldLabel>
       <Select
         name={selectName}

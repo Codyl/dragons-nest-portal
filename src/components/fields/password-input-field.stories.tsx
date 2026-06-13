@@ -30,17 +30,9 @@ function PasswordFieldDemo({
     >
       <form.Field
         name="password"
-        children={(field) => (
-          <PasswordInputField
-            field={field}
-            label={label}
-          />
-        )}
+        children={(field) => <PasswordInputField field={field} label={label} />}
       />
-      <button
-        type="submit"
-        className="text-sm underline"
-      >
+      <button type="submit" className="text-sm underline">
         Submit (touch validation)
       </button>
     </form>

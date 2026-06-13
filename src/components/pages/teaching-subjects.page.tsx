@@ -79,15 +79,9 @@ const TeachingSubjectsPage = () => {
       )}
 
       {profileQuery.isLoading && (
-        <div
-          aria-label="Loading courses"
-          className="flex flex-col gap-4"
-        >
+        <div aria-label="Loading courses" className="flex flex-col gap-4">
           {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-40 rounded-lg bg-muted animate-pulse"
-            />
+            <div key={i} className="h-40 rounded-lg bg-muted animate-pulse" />
           ))}
         </div>
       )}

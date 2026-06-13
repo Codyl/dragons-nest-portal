@@ -13,10 +13,7 @@ const DeviceDetailsModal = ({
   deviceDetails: KnownDevice;
 }) => {
   return (
-    <Dialog
-      open={show}
-      onOpenChange={setShow}
-    >
+    <Dialog open={show} onOpenChange={setShow}>
       <DialogContent>
         <DialogTitle>
           {deviceDetails.DeviceName.split(' ')[0]}

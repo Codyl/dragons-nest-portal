@@ -54,23 +54,12 @@ describe('SixDigitCodeField', () => {
       },
       handleBlur: () => {},
     };
-    return (
-      <SixDigitCodeField
-        field={field}
-        label="Code"
-        onSubmit={onSubmit}
-      />
-    );
+    return <SixDigitCodeField field={field} label="Code" onSubmit={onSubmit} />;
   }
 
   it('should render six digit inputs and label', () => {
     const field = createField();
-    cy.mount(
-      <SixDigitCodeField
-        field={field}
-        label="Verification code"
-      />,
-    );
+    cy.mount(<SixDigitCodeField field={field} label="Verification code" />);
     cy.get('[data-testid=label-code]').should(
       'contain.text',
       'Verification code',
@@ -115,12 +104,7 @@ describe('SixDigitCodeField', () => {
       isTouched: true,
       errors: [{ message: 'Code must be 6 digits' }],
     });
-    cy.mount(
-      <SixDigitCodeField
-        field={field}
-        label="Code"
-      />,
-    );
+    cy.mount(<SixDigitCodeField field={field} label="Code" />);
     cy.get('[data-testid=error-message-code]').should(
       'contain.text',
       'Code must be 6 digits',
@@ -129,24 +113,13 @@ describe('SixDigitCodeField', () => {
 
   it('should not show error when valid', () => {
     const field = createField({ value: '123456', isValid: true });
-    cy.mount(
-      <SixDigitCodeField
-        field={field}
-        label="Code"
-      />,
-    );
+    cy.mount(<SixDigitCodeField field={field} label="Code" />);
     cy.get('[data-testid=error-message-code]').should('not.exist');
   });
 
   it('should render required asterisk when required', () => {
     const field = createField();
-    cy.mount(
-      <SixDigitCodeField
-        field={field}
-        label="Code"
-        required
-      />,
-    );
+    cy.mount(<SixDigitCodeField field={field} label="Code" required />);
     cy.get('[data-testid=label-code]')
       .find('.text-destructive')
       .should('exist');
@@ -196,12 +169,7 @@ describe('SixDigitCodeField', () => {
 
   it('should have hidden input with name for form submission', () => {
     const field = createField({ value: '123456' });
-    cy.mount(
-      <SixDigitCodeField
-        field={field}
-        label="Code"
-      />,
-    );
+    cy.mount(<SixDigitCodeField field={field} label="Code" />);
     cy.get('input[name="code"][type="hidden"]').should('have.value', '123456');
   });
 });

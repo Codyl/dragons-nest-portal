@@ -19,17 +19,11 @@ const AccountRecoveryForm = () => {
         recovery path is unavailable.
       </div>
       <div className="text-center text-sm space-y-2">
-        <Link
-          to="/login"
-          className="text-primary hover:underline"
-        >
+        <Link to="/login" className="text-primary hover:underline">
           Back to sign in
         </Link>
         <div>
-          <Link
-            to="/signup"
-            className="text-primary hover:underline"
-          >
+          <Link to="/signup" className="text-primary hover:underline">
             Create a new account
           </Link>
         </div>

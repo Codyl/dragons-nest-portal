@@ -89,10 +89,7 @@ const ResetPasswordForm = () => {
         />
       </FieldGroup>
       {error && (
-        <p
-          className="text-destructive mt-2"
-          data-testid="error-message"
-        >
+        <p className="text-destructive mt-2" data-testid="error-message">
           {error.message}
         </p>
       )}
@@ -105,10 +102,7 @@ const ResetPasswordForm = () => {
         Reset password
       </Button>
       <div className="text-center text-sm">
-        <Link
-          to="/login"
-          className="text-primary hover:underline"
-        >
+        <Link to="/login" className="text-primary hover:underline">
           Back to sign in
         </Link>
       </div>

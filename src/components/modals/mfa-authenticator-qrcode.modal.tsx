@@ -13,10 +13,7 @@ const MFAAuthenticatorQRCodeModal = ({
   userEmail?: string;
 }) => {
   return (
-    <Dialog
-      open={show}
-      onOpenChange={setShow}
-    >
+    <Dialog open={show} onOpenChange={setShow}>
       <DialogContent>
         <MFAGenerateSecretForm
           source={source}

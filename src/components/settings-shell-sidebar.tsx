@@ -46,17 +46,11 @@ export function SettingsShellSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <Sidebar
-      collapsible="icon"
-      variant="inset"
-    >
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              tooltip="Back to Dashboard"
-            >
+            <SidebarMenuButton asChild tooltip="Back to Dashboard">
               <Link to="/">
                 <ArrowLeft />
                 <span>Back to Dashboard</span>

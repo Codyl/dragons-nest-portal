@@ -27,10 +27,7 @@ const App = () => {
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <RouterProvider
-        router={router}
-        context={{ isLoading, checkAuth }}
-      />
+      <RouterProvider router={router} context={{ isLoading, checkAuth }} />
     </GoogleOAuthProvider>
   );
 };

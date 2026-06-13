@@ -77,10 +77,7 @@ export function StudentSelector({
               )}
             </button>
           </TooltipTrigger>
-          <TooltipContent
-            side="right"
-            align="center"
-          >
+          <TooltipContent side="right" align="center">
             {tooltipText}
           </TooltipContent>
         </Tooltip>
@@ -96,10 +93,7 @@ export function StudentSelector({
                 <X className="size-3" />
               </button>
             </TooltipTrigger>
-            <TooltipContent
-              side="right"
-              align="center"
-            >
+            <TooltipContent side="right" align="center">
               Back to my view
             </TooltipContent>
           </Tooltip>
@@ -154,10 +148,7 @@ export function StudentSelector({
         )}
         {/* Requirements 2.2 — render an option for each student */}
         {students.map((student) => (
-          <SelectItem
-            key={student.studentId}
-            value={student.studentId}
-          >
+          <SelectItem key={student.studentId} value={student.studentId}>
             {student.displayName}
           </SelectItem>
         ))}

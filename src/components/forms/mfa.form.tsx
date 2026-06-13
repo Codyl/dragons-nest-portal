@@ -78,10 +78,7 @@ const MFAForm = () => {
         />
       </FieldGroup>
       {error && (
-        <p
-          className="text-destructive mt-2"
-          data-testid="error-message"
-        >
+        <p className="text-destructive mt-2" data-testid="error-message">
           {error.message}
         </p>
       )}

@@ -46,7 +46,10 @@ const CurriculumServices = {
   getSelection: async (params: {
     subjectId: string;
     studentId: string;
-  }): Promise<{ message: string; data: { curriculumItemId: string } | null }> => {
+  }): Promise<{
+    message: string;
+    data: { curriculumItemId: string } | null;
+  }> => {
     const searchParams = new URLSearchParams({
       subjectId: params.subjectId,
       studentId: params.studentId,

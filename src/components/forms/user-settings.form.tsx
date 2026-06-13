@@ -70,40 +70,21 @@ const UserSettingsForm = () => {
         <form.Field
           name="email"
           children={(field) => (
-            <InputField
-              field={field}
-              label="Email"
-              required
-            />
+            <InputField field={field} label="Email" required />
           )}
         />
 
         <form.Field
           name="given_name"
-          children={(field) => (
-            <InputField
-              field={field}
-              label="First"
-            />
-          )}
+          children={(field) => <InputField field={field} label="First" />}
         />
         <form.Field
           name="family_name"
-          children={(field) => (
-            <InputField
-              field={field}
-              label="Last"
-            />
-          )}
+          children={(field) => <InputField field={field} label="Last" />}
         />
         <form.Field
           name="middle_name"
-          children={(field) => (
-            <InputField
-              field={field}
-              label="Middle"
-            />
-          )}
+          children={(field) => <InputField field={field} label="Middle" />}
         />
 
         <form.Field

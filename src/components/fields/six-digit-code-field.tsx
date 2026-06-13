@@ -111,14 +111,8 @@ const SixDigitCodeField = ({
   );
 
   return (
-    <Field
-      data-invalid={isInvalid}
-      className={className}
-    >
-      <FieldLabel
-        htmlFor={hiddenInputId}
-        data-testid={`label-${field.name}`}
-      >
+    <Field data-invalid={isInvalid} className={className}>
+      <FieldLabel htmlFor={hiddenInputId} data-testid={`label-${field.name}`}>
         {label}
         {required && <span className="text-destructive">*</span>}
       </FieldLabel>

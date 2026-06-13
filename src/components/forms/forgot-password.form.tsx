@@ -55,20 +55,13 @@ const ForgotPasswordForm = ({
         <form.Field
           name="username"
           children={(field) => (
-            <InputField
-              field={field}
-              label="Username or email"
-              autoFocus
-            />
+            <InputField field={field} label="Username or email" autoFocus />
           )}
         />
       </FieldGroup>
       <div className="space-y-3">
         {error && (
-          <p
-            className="text-destructive mt-2"
-            data-testid="error-message"
-          >
+          <p className="text-destructive mt-2" data-testid="error-message">
             {error.message}
           </p>
         )}
@@ -97,10 +90,7 @@ const ForgotPasswordForm = ({
             Back to security settings
           </Link>
         ) : (
-          <Link
-            to="/login"
-            className="text-primary hover:underline"
-          >
+          <Link to="/login" className="text-primary hover:underline">
             Back to sign in
           </Link>
         )}

@@ -8,306 +8,306 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as MaintenanceRouteImport } from './routes/maintenance'
-import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
-import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
-import { Route as privatePrivateIndexRouteImport } from './routes/(private)/_private.index'
-import { Route as privatePrivateWelcomeRouteImport } from './routes/(private)/_private.welcome'
-import { Route as privatePrivateSettingsRouteImport } from './routes/(private)/_private.settings'
-import { Route as privatePrivateScheduleRouteImport } from './routes/(private)/_private.schedule'
-import { Route as privatePrivateMySubjectsRouteImport } from './routes/(private)/_private.my-subjects'
-import { Route as privatePrivateCurriculumRouteImport } from './routes/(private)/_private.curriculum'
-import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(private)/_private.create-password'
-import { Route as privatePrivateComplianceRouteImport } from './routes/(private)/_private.compliance'
-import { Route as privatePrivateClassRequestsRouteImport } from './routes/(private)/_private.class-requests'
-import { Route as privatePrivateAccountSetupRouteImport } from './routes/(private)/_private.account-setup'
-import { Route as authAuthVerifyUsernameRouteImport } from './routes/(auth)/_auth.verify-username'
-import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup'
-import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth.reset-password'
-import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
-import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
-import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
-import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery'
-import { Route as privatePrivateSettingsTeachingSubjectsRouteImport } from './routes/(private)/_private.settings.teaching-subjects'
-import { Route as privatePrivateSettingsSecurityRouteImport } from './routes/(private)/_private.settings.security'
-import { Route as privatePrivateSettingsProfileRouteImport } from './routes/(private)/_private.settings.profile'
-import { Route as privatePrivateSettingsNotificationsRouteImport } from './routes/(private)/_private.settings.notifications'
-import { Route as privatePrivateSettingsChildAccountsRouteImport } from './routes/(private)/_private.settings.child-accounts'
-import { Route as privatePrivateSettingsBillingRouteImport } from './routes/(private)/_private.settings.billing'
-import { Route as privatePrivateSettingsAccountRouteImport } from './routes/(private)/_private.settings.account'
-import { Route as privatePrivateCurriculumSubjectIdRouteImport } from './routes/(private)/_private.curriculum.$subjectId'
-import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
-import { Route as authAuthAccountRecoveryMagicLinkRouteImport } from './routes/(auth)/_auth.account-recovery.magic-link'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service';
+import { Route as MaintenanceRouteImport } from './routes/maintenance';
+import { Route as privatePrivateRouteImport } from './routes/(private)/_private';
+import { Route as authAuthRouteImport } from './routes/(auth)/_auth';
+import { Route as privatePrivateIndexRouteImport } from './routes/(private)/_private.index';
+import { Route as privatePrivateWelcomeRouteImport } from './routes/(private)/_private.welcome';
+import { Route as privatePrivateSettingsRouteImport } from './routes/(private)/_private.settings';
+import { Route as privatePrivateScheduleRouteImport } from './routes/(private)/_private.schedule';
+import { Route as privatePrivateMySubjectsRouteImport } from './routes/(private)/_private.my-subjects';
+import { Route as privatePrivateCurriculumRouteImport } from './routes/(private)/_private.curriculum';
+import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(private)/_private.create-password';
+import { Route as privatePrivateComplianceRouteImport } from './routes/(private)/_private.compliance';
+import { Route as privatePrivateClassRequestsRouteImport } from './routes/(private)/_private.class-requests';
+import { Route as privatePrivateAccountSetupRouteImport } from './routes/(private)/_private.account-setup';
+import { Route as authAuthVerifyUsernameRouteImport } from './routes/(auth)/_auth.verify-username';
+import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup';
+import { Route as authAuthResetPasswordRouteImport } from './routes/(auth)/_auth.reset-password';
+import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login';
+import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password';
+import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup';
+import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery';
+import { Route as privatePrivateSettingsTeachingSubjectsRouteImport } from './routes/(private)/_private.settings.teaching-subjects';
+import { Route as privatePrivateSettingsSecurityRouteImport } from './routes/(private)/_private.settings.security';
+import { Route as privatePrivateSettingsProfileRouteImport } from './routes/(private)/_private.settings.profile';
+import { Route as privatePrivateSettingsNotificationsRouteImport } from './routes/(private)/_private.settings.notifications';
+import { Route as privatePrivateSettingsChildAccountsRouteImport } from './routes/(private)/_private.settings.child-accounts';
+import { Route as privatePrivateSettingsBillingRouteImport } from './routes/(private)/_private.settings.billing';
+import { Route as privatePrivateSettingsAccountRouteImport } from './routes/(private)/_private.settings.account';
+import { Route as privatePrivateCurriculumSubjectIdRouteImport } from './routes/(private)/_private.curriculum.$subjectId';
+import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code';
+import { Route as authAuthAccountRecoveryMagicLinkRouteImport } from './routes/(auth)/_auth.account-recovery.magic-link';
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MaintenanceRoute = MaintenanceRouteImport.update({
   id: '/maintenance',
   path: '/maintenance',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const privatePrivateRoute = privatePrivateRouteImport.update({
   id: '/(private)/_private',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const authAuthRoute = authAuthRouteImport.update({
   id: '/(auth)/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const privatePrivateIndexRoute = privatePrivateIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => privatePrivateRoute,
-} as any)
+} as any);
 const privatePrivateWelcomeRoute = privatePrivateWelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
   getParentRoute: () => privatePrivateRoute,
-} as any)
+} as any);
 const privatePrivateSettingsRoute = privatePrivateSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => privatePrivateRoute,
-} as any)
+} as any);
 const privatePrivateScheduleRoute = privatePrivateScheduleRouteImport.update({
   id: '/schedule',
   path: '/schedule',
   getParentRoute: () => privatePrivateRoute,
-} as any)
+} as any);
 const privatePrivateMySubjectsRoute =
   privatePrivateMySubjectsRouteImport.update({
     id: '/my-subjects',
     path: '/my-subjects',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const privatePrivateCurriculumRoute =
   privatePrivateCurriculumRouteImport.update({
     id: '/curriculum',
     path: '/curriculum',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const privatePrivateCreatePasswordRoute =
   privatePrivateCreatePasswordRouteImport.update({
     id: '/create-password',
     path: '/create-password',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const privatePrivateComplianceRoute =
   privatePrivateComplianceRouteImport.update({
     id: '/compliance',
     path: '/compliance',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const privatePrivateClassRequestsRoute =
   privatePrivateClassRequestsRouteImport.update({
     id: '/class-requests',
     path: '/class-requests',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const privatePrivateAccountSetupRoute =
   privatePrivateAccountSetupRouteImport.update({
     id: '/account-setup',
     path: '/account-setup',
     getParentRoute: () => privatePrivateRoute,
-  } as any)
+  } as any);
 const authAuthVerifyUsernameRoute = authAuthVerifyUsernameRouteImport.update({
   id: '/verify-username',
   path: '/verify-username',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthSignupRoute = authAuthSignupRouteImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthResetPasswordRoute = authAuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthLoginRoute = authAuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthForgotPasswordRoute = authAuthForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthConfirmSignupRoute = authAuthConfirmSignupRouteImport.update({
   id: '/confirm-signup',
   path: '/confirm-signup',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthAccountRecoveryRoute = authAuthAccountRecoveryRouteImport.update({
   id: '/account-recovery',
   path: '/account-recovery',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const privatePrivateSettingsTeachingSubjectsRoute =
   privatePrivateSettingsTeachingSubjectsRouteImport.update({
     id: '/teaching-subjects',
     path: '/teaching-subjects',
     getParentRoute: () => privatePrivateSettingsRoute,
-  } as any)
+  } as any);
 const privatePrivateSettingsSecurityRoute =
   privatePrivateSettingsSecurityRouteImport.update({
     id: '/security',
     path: '/security',
     getParentRoute: () => privatePrivateSettingsRoute,
-  } as any)
+  } as any);
 const privatePrivateSettingsProfileRoute =
   privatePrivateSettingsProfileRouteImport.update({
     id: '/profile',
     path: '/profile',
     getParentRoute: () => privatePrivateSettingsRoute,
-  } as any)
+  } as any);
 const privatePrivateSettingsNotificationsRoute =
   privatePrivateSettingsNotificationsRouteImport.update({
     id: '/notifications',
     path: '/notifications',
     getParentRoute: () => privatePrivateSettingsRoute,
-  } as any)
+  } as any);
 const privatePrivateSettingsChildAccountsRoute =
   privatePrivateSettingsChildAccountsRouteImport.update({
     id: '/child-accounts',
     path: '/child-accounts',
     getParentRoute: () => privatePrivateSettingsRoute,
-  } as any)
+  } as any);
 const privatePrivateSettingsBillingRoute =
   privatePrivateSettingsBillingRouteImport.update({
     id: '/billing',
     path: '/billing',
     getParentRoute: () => privatePrivateSettingsRoute,
-  } as any)
+  } as any);
 const privatePrivateSettingsAccountRoute =
   privatePrivateSettingsAccountRouteImport.update({
     id: '/account',
     path: '/account',
     getParentRoute: () => privatePrivateSettingsRoute,
-  } as any)
+  } as any);
 const privatePrivateCurriculumSubjectIdRoute =
   privatePrivateCurriculumSubjectIdRouteImport.update({
     id: '/$subjectId',
     path: '/$subjectId',
     getParentRoute: () => privatePrivateCurriculumRoute,
-  } as any)
+  } as any);
 const authMfaMfaVerifyCodeRoute = authMfaMfaVerifyCodeRouteImport.update({
   id: '/(auth)/mfa/_mfa/verify-code',
   path: '/mfa/verify-code',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const authAuthAccountRecoveryMagicLinkRoute =
   authAuthAccountRecoveryMagicLinkRouteImport.update({
     id: '/magic-link',
     path: '/magic-link',
     getParentRoute: () => authAuthAccountRecoveryRoute,
-  } as any)
+  } as any);
 
 export interface FileRoutesByFullPath {
-  '/maintenance': typeof MaintenanceRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
-  '/confirm-signup': typeof authAuthConfirmSignupRoute
-  '/forgot-password': typeof authAuthForgotPasswordRoute
-  '/login': typeof authAuthLoginRoute
-  '/reset-password': typeof authAuthResetPasswordRoute
-  '/signup': typeof authAuthSignupRoute
-  '/verify-username': typeof authAuthVerifyUsernameRoute
-  '/account-setup': typeof privatePrivateAccountSetupRoute
-  '/class-requests': typeof privatePrivateClassRequestsRoute
-  '/compliance': typeof privatePrivateComplianceRoute
-  '/create-password': typeof privatePrivateCreatePasswordRoute
-  '/curriculum': typeof privatePrivateCurriculumRouteWithChildren
-  '/my-subjects': typeof privatePrivateMySubjectsRoute
-  '/schedule': typeof privatePrivateScheduleRoute
-  '/settings': typeof privatePrivateSettingsRouteWithChildren
-  '/welcome': typeof privatePrivateWelcomeRoute
-  '/': typeof privatePrivateIndexRoute
-  '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
-  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
-  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute
-  '/settings/account': typeof privatePrivateSettingsAccountRoute
-  '/settings/billing': typeof privatePrivateSettingsBillingRoute
-  '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
-  '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
-  '/settings/profile': typeof privatePrivateSettingsProfileRoute
-  '/settings/security': typeof privatePrivateSettingsSecurityRoute
-  '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
+  '/maintenance': typeof MaintenanceRoute;
+  '/terms-of-service': typeof TermsOfServiceRoute;
+  '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren;
+  '/confirm-signup': typeof authAuthConfirmSignupRoute;
+  '/forgot-password': typeof authAuthForgotPasswordRoute;
+  '/login': typeof authAuthLoginRoute;
+  '/reset-password': typeof authAuthResetPasswordRoute;
+  '/signup': typeof authAuthSignupRoute;
+  '/verify-username': typeof authAuthVerifyUsernameRoute;
+  '/account-setup': typeof privatePrivateAccountSetupRoute;
+  '/class-requests': typeof privatePrivateClassRequestsRoute;
+  '/compliance': typeof privatePrivateComplianceRoute;
+  '/create-password': typeof privatePrivateCreatePasswordRoute;
+  '/curriculum': typeof privatePrivateCurriculumRouteWithChildren;
+  '/my-subjects': typeof privatePrivateMySubjectsRoute;
+  '/schedule': typeof privatePrivateScheduleRoute;
+  '/settings': typeof privatePrivateSettingsRouteWithChildren;
+  '/welcome': typeof privatePrivateWelcomeRoute;
+  '/': typeof privatePrivateIndexRoute;
+  '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute;
+  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute;
+  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute;
+  '/settings/account': typeof privatePrivateSettingsAccountRoute;
+  '/settings/billing': typeof privatePrivateSettingsBillingRoute;
+  '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute;
+  '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute;
+  '/settings/profile': typeof privatePrivateSettingsProfileRoute;
+  '/settings/security': typeof privatePrivateSettingsSecurityRoute;
+  '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute;
 }
 export interface FileRoutesByTo {
-  '/maintenance': typeof MaintenanceRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
-  '/confirm-signup': typeof authAuthConfirmSignupRoute
-  '/forgot-password': typeof authAuthForgotPasswordRoute
-  '/login': typeof authAuthLoginRoute
-  '/reset-password': typeof authAuthResetPasswordRoute
-  '/signup': typeof authAuthSignupRoute
-  '/verify-username': typeof authAuthVerifyUsernameRoute
-  '/account-setup': typeof privatePrivateAccountSetupRoute
-  '/class-requests': typeof privatePrivateClassRequestsRoute
-  '/compliance': typeof privatePrivateComplianceRoute
-  '/create-password': typeof privatePrivateCreatePasswordRoute
-  '/curriculum': typeof privatePrivateCurriculumRouteWithChildren
-  '/my-subjects': typeof privatePrivateMySubjectsRoute
-  '/schedule': typeof privatePrivateScheduleRoute
-  '/settings': typeof privatePrivateSettingsRouteWithChildren
-  '/welcome': typeof privatePrivateWelcomeRoute
-  '/': typeof privatePrivateIndexRoute
-  '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
-  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
-  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute
-  '/settings/account': typeof privatePrivateSettingsAccountRoute
-  '/settings/billing': typeof privatePrivateSettingsBillingRoute
-  '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
-  '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
-  '/settings/profile': typeof privatePrivateSettingsProfileRoute
-  '/settings/security': typeof privatePrivateSettingsSecurityRoute
-  '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
+  '/maintenance': typeof MaintenanceRoute;
+  '/terms-of-service': typeof TermsOfServiceRoute;
+  '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren;
+  '/confirm-signup': typeof authAuthConfirmSignupRoute;
+  '/forgot-password': typeof authAuthForgotPasswordRoute;
+  '/login': typeof authAuthLoginRoute;
+  '/reset-password': typeof authAuthResetPasswordRoute;
+  '/signup': typeof authAuthSignupRoute;
+  '/verify-username': typeof authAuthVerifyUsernameRoute;
+  '/account-setup': typeof privatePrivateAccountSetupRoute;
+  '/class-requests': typeof privatePrivateClassRequestsRoute;
+  '/compliance': typeof privatePrivateComplianceRoute;
+  '/create-password': typeof privatePrivateCreatePasswordRoute;
+  '/curriculum': typeof privatePrivateCurriculumRouteWithChildren;
+  '/my-subjects': typeof privatePrivateMySubjectsRoute;
+  '/schedule': typeof privatePrivateScheduleRoute;
+  '/settings': typeof privatePrivateSettingsRouteWithChildren;
+  '/welcome': typeof privatePrivateWelcomeRoute;
+  '/': typeof privatePrivateIndexRoute;
+  '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute;
+  '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute;
+  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute;
+  '/settings/account': typeof privatePrivateSettingsAccountRoute;
+  '/settings/billing': typeof privatePrivateSettingsBillingRoute;
+  '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute;
+  '/settings/notifications': typeof privatePrivateSettingsNotificationsRoute;
+  '/settings/profile': typeof privatePrivateSettingsProfileRoute;
+  '/settings/security': typeof privatePrivateSettingsSecurityRoute;
+  '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/maintenance': typeof MaintenanceRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
-  '/(auth)/_auth': typeof authAuthRouteWithChildren
-  '/(private)/_private': typeof privatePrivateRouteWithChildren
-  '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
-  '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute
-  '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute
-  '/(auth)/_auth/login': typeof authAuthLoginRoute
-  '/(auth)/_auth/reset-password': typeof authAuthResetPasswordRoute
-  '/(auth)/_auth/signup': typeof authAuthSignupRoute
-  '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute
-  '/(private)/_private/account-setup': typeof privatePrivateAccountSetupRoute
-  '/(private)/_private/class-requests': typeof privatePrivateClassRequestsRoute
-  '/(private)/_private/compliance': typeof privatePrivateComplianceRoute
-  '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute
-  '/(private)/_private/curriculum': typeof privatePrivateCurriculumRouteWithChildren
-  '/(private)/_private/my-subjects': typeof privatePrivateMySubjectsRoute
-  '/(private)/_private/schedule': typeof privatePrivateScheduleRoute
-  '/(private)/_private/settings': typeof privatePrivateSettingsRouteWithChildren
-  '/(private)/_private/welcome': typeof privatePrivateWelcomeRoute
-  '/(private)/_private/': typeof privatePrivateIndexRoute
-  '/(auth)/_auth/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
-  '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
-  '/(private)/_private/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute
-  '/(private)/_private/settings/account': typeof privatePrivateSettingsAccountRoute
-  '/(private)/_private/settings/billing': typeof privatePrivateSettingsBillingRoute
-  '/(private)/_private/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
-  '/(private)/_private/settings/notifications': typeof privatePrivateSettingsNotificationsRoute
-  '/(private)/_private/settings/profile': typeof privatePrivateSettingsProfileRoute
-  '/(private)/_private/settings/security': typeof privatePrivateSettingsSecurityRoute
-  '/(private)/_private/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
+  __root__: typeof rootRouteImport;
+  '/maintenance': typeof MaintenanceRoute;
+  '/terms-of-service': typeof TermsOfServiceRoute;
+  '/(auth)/_auth': typeof authAuthRouteWithChildren;
+  '/(private)/_private': typeof privatePrivateRouteWithChildren;
+  '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren;
+  '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute;
+  '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute;
+  '/(auth)/_auth/login': typeof authAuthLoginRoute;
+  '/(auth)/_auth/reset-password': typeof authAuthResetPasswordRoute;
+  '/(auth)/_auth/signup': typeof authAuthSignupRoute;
+  '/(auth)/_auth/verify-username': typeof authAuthVerifyUsernameRoute;
+  '/(private)/_private/account-setup': typeof privatePrivateAccountSetupRoute;
+  '/(private)/_private/class-requests': typeof privatePrivateClassRequestsRoute;
+  '/(private)/_private/compliance': typeof privatePrivateComplianceRoute;
+  '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute;
+  '/(private)/_private/curriculum': typeof privatePrivateCurriculumRouteWithChildren;
+  '/(private)/_private/my-subjects': typeof privatePrivateMySubjectsRoute;
+  '/(private)/_private/schedule': typeof privatePrivateScheduleRoute;
+  '/(private)/_private/settings': typeof privatePrivateSettingsRouteWithChildren;
+  '/(private)/_private/welcome': typeof privatePrivateWelcomeRoute;
+  '/(private)/_private/': typeof privatePrivateIndexRoute;
+  '/(auth)/_auth/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute;
+  '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute;
+  '/(private)/_private/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute;
+  '/(private)/_private/settings/account': typeof privatePrivateSettingsAccountRoute;
+  '/(private)/_private/settings/billing': typeof privatePrivateSettingsBillingRoute;
+  '/(private)/_private/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute;
+  '/(private)/_private/settings/notifications': typeof privatePrivateSettingsNotificationsRoute;
+  '/(private)/_private/settings/profile': typeof privatePrivateSettingsProfileRoute;
+  '/(private)/_private/settings/security': typeof privatePrivateSettingsSecurityRoute;
+  '/(private)/_private/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/maintenance'
     | '/terms-of-service'
@@ -337,8 +337,8 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/profile'
     | '/settings/security'
-    | '/settings/teaching-subjects'
-  fileRoutesByTo: FileRoutesByTo
+    | '/settings/teaching-subjects';
+  fileRoutesByTo: FileRoutesByTo;
   to:
     | '/maintenance'
     | '/terms-of-service'
@@ -368,7 +368,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/profile'
     | '/settings/security'
-    | '/settings/teaching-subjects'
+    | '/settings/teaching-subjects';
   id:
     | '__root__'
     | '/maintenance'
@@ -401,262 +401,262 @@ export interface FileRouteTypes {
     | '/(private)/_private/settings/notifications'
     | '/(private)/_private/settings/profile'
     | '/(private)/_private/settings/security'
-    | '/(private)/_private/settings/teaching-subjects'
-  fileRoutesById: FileRoutesById
+    | '/(private)/_private/settings/teaching-subjects';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  MaintenanceRoute: typeof MaintenanceRoute
-  TermsOfServiceRoute: typeof TermsOfServiceRoute
-  authAuthRoute: typeof authAuthRouteWithChildren
-  privatePrivateRoute: typeof privatePrivateRouteWithChildren
-  authMfaMfaVerifyCodeRoute: typeof authMfaMfaVerifyCodeRoute
+  MaintenanceRoute: typeof MaintenanceRoute;
+  TermsOfServiceRoute: typeof TermsOfServiceRoute;
+  authAuthRoute: typeof authAuthRouteWithChildren;
+  privatePrivateRoute: typeof privatePrivateRouteWithChildren;
+  authMfaMfaVerifyCodeRoute: typeof authMfaMfaVerifyCodeRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/terms-of-service': {
-      id: '/terms-of-service'
-      path: '/terms-of-service'
-      fullPath: '/terms-of-service'
-      preLoaderRoute: typeof TermsOfServiceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/terms-of-service';
+      path: '/terms-of-service';
+      fullPath: '/terms-of-service';
+      preLoaderRoute: typeof TermsOfServiceRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/maintenance': {
-      id: '/maintenance'
-      path: '/maintenance'
-      fullPath: '/maintenance'
-      preLoaderRoute: typeof MaintenanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/maintenance';
+      path: '/maintenance';
+      fullPath: '/maintenance';
+      preLoaderRoute: typeof MaintenanceRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(private)/_private': {
-      id: '/(private)/_private'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof privatePrivateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(private)/_private';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof privatePrivateRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(auth)/_auth': {
-      id: '/(auth)/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof authAuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(auth)/_auth';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof authAuthRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(private)/_private/': {
-      id: '/(private)/_private/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof privatePrivateIndexRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof privatePrivateIndexRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/welcome': {
-      id: '/(private)/_private/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof privatePrivateWelcomeRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/welcome';
+      path: '/welcome';
+      fullPath: '/welcome';
+      preLoaderRoute: typeof privatePrivateWelcomeRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/settings': {
-      id: '/(private)/_private/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof privatePrivateSettingsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/settings';
+      path: '/settings';
+      fullPath: '/settings';
+      preLoaderRoute: typeof privatePrivateSettingsRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/schedule': {
-      id: '/(private)/_private/schedule'
-      path: '/schedule'
-      fullPath: '/schedule'
-      preLoaderRoute: typeof privatePrivateScheduleRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/schedule';
+      path: '/schedule';
+      fullPath: '/schedule';
+      preLoaderRoute: typeof privatePrivateScheduleRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/my-subjects': {
-      id: '/(private)/_private/my-subjects'
-      path: '/my-subjects'
-      fullPath: '/my-subjects'
-      preLoaderRoute: typeof privatePrivateMySubjectsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/my-subjects';
+      path: '/my-subjects';
+      fullPath: '/my-subjects';
+      preLoaderRoute: typeof privatePrivateMySubjectsRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/curriculum': {
-      id: '/(private)/_private/curriculum'
-      path: '/curriculum'
-      fullPath: '/curriculum'
-      preLoaderRoute: typeof privatePrivateCurriculumRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/curriculum';
+      path: '/curriculum';
+      fullPath: '/curriculum';
+      preLoaderRoute: typeof privatePrivateCurriculumRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/create-password': {
-      id: '/(private)/_private/create-password'
-      path: '/create-password'
-      fullPath: '/create-password'
-      preLoaderRoute: typeof privatePrivateCreatePasswordRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/create-password';
+      path: '/create-password';
+      fullPath: '/create-password';
+      preLoaderRoute: typeof privatePrivateCreatePasswordRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/compliance': {
-      id: '/(private)/_private/compliance'
-      path: '/compliance'
-      fullPath: '/compliance'
-      preLoaderRoute: typeof privatePrivateComplianceRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/compliance';
+      path: '/compliance';
+      fullPath: '/compliance';
+      preLoaderRoute: typeof privatePrivateComplianceRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/class-requests': {
-      id: '/(private)/_private/class-requests'
-      path: '/class-requests'
-      fullPath: '/class-requests'
-      preLoaderRoute: typeof privatePrivateClassRequestsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/class-requests';
+      path: '/class-requests';
+      fullPath: '/class-requests';
+      preLoaderRoute: typeof privatePrivateClassRequestsRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(private)/_private/account-setup': {
-      id: '/(private)/_private/account-setup'
-      path: '/account-setup'
-      fullPath: '/account-setup'
-      preLoaderRoute: typeof privatePrivateAccountSetupRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
+      id: '/(private)/_private/account-setup';
+      path: '/account-setup';
+      fullPath: '/account-setup';
+      preLoaderRoute: typeof privatePrivateAccountSetupRouteImport;
+      parentRoute: typeof privatePrivateRoute;
+    };
     '/(auth)/_auth/verify-username': {
-      id: '/(auth)/_auth/verify-username'
-      path: '/verify-username'
-      fullPath: '/verify-username'
-      preLoaderRoute: typeof authAuthVerifyUsernameRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/verify-username';
+      path: '/verify-username';
+      fullPath: '/verify-username';
+      preLoaderRoute: typeof authAuthVerifyUsernameRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/signup': {
-      id: '/(auth)/_auth/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof authAuthSignupRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/signup';
+      path: '/signup';
+      fullPath: '/signup';
+      preLoaderRoute: typeof authAuthSignupRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/reset-password': {
-      id: '/(auth)/_auth/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof authAuthResetPasswordRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/reset-password';
+      path: '/reset-password';
+      fullPath: '/reset-password';
+      preLoaderRoute: typeof authAuthResetPasswordRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/login': {
-      id: '/(auth)/_auth/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authAuthLoginRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/login';
+      path: '/login';
+      fullPath: '/login';
+      preLoaderRoute: typeof authAuthLoginRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/forgot-password': {
-      id: '/(auth)/_auth/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof authAuthForgotPasswordRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/forgot-password';
+      path: '/forgot-password';
+      fullPath: '/forgot-password';
+      preLoaderRoute: typeof authAuthForgotPasswordRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/confirm-signup': {
-      id: '/(auth)/_auth/confirm-signup'
-      path: '/confirm-signup'
-      fullPath: '/confirm-signup'
-      preLoaderRoute: typeof authAuthConfirmSignupRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/confirm-signup';
+      path: '/confirm-signup';
+      fullPath: '/confirm-signup';
+      preLoaderRoute: typeof authAuthConfirmSignupRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/account-recovery': {
-      id: '/(auth)/_auth/account-recovery'
-      path: '/account-recovery'
-      fullPath: '/account-recovery'
-      preLoaderRoute: typeof authAuthAccountRecoveryRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/account-recovery';
+      path: '/account-recovery';
+      fullPath: '/account-recovery';
+      preLoaderRoute: typeof authAuthAccountRecoveryRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(private)/_private/settings/teaching-subjects': {
-      id: '/(private)/_private/settings/teaching-subjects'
-      path: '/teaching-subjects'
-      fullPath: '/settings/teaching-subjects'
-      preLoaderRoute: typeof privatePrivateSettingsTeachingSubjectsRouteImport
-      parentRoute: typeof privatePrivateSettingsRoute
-    }
+      id: '/(private)/_private/settings/teaching-subjects';
+      path: '/teaching-subjects';
+      fullPath: '/settings/teaching-subjects';
+      preLoaderRoute: typeof privatePrivateSettingsTeachingSubjectsRouteImport;
+      parentRoute: typeof privatePrivateSettingsRoute;
+    };
     '/(private)/_private/settings/security': {
-      id: '/(private)/_private/settings/security'
-      path: '/security'
-      fullPath: '/settings/security'
-      preLoaderRoute: typeof privatePrivateSettingsSecurityRouteImport
-      parentRoute: typeof privatePrivateSettingsRoute
-    }
+      id: '/(private)/_private/settings/security';
+      path: '/security';
+      fullPath: '/settings/security';
+      preLoaderRoute: typeof privatePrivateSettingsSecurityRouteImport;
+      parentRoute: typeof privatePrivateSettingsRoute;
+    };
     '/(private)/_private/settings/profile': {
-      id: '/(private)/_private/settings/profile'
-      path: '/profile'
-      fullPath: '/settings/profile'
-      preLoaderRoute: typeof privatePrivateSettingsProfileRouteImport
-      parentRoute: typeof privatePrivateSettingsRoute
-    }
+      id: '/(private)/_private/settings/profile';
+      path: '/profile';
+      fullPath: '/settings/profile';
+      preLoaderRoute: typeof privatePrivateSettingsProfileRouteImport;
+      parentRoute: typeof privatePrivateSettingsRoute;
+    };
     '/(private)/_private/settings/notifications': {
-      id: '/(private)/_private/settings/notifications'
-      path: '/notifications'
-      fullPath: '/settings/notifications'
-      preLoaderRoute: typeof privatePrivateSettingsNotificationsRouteImport
-      parentRoute: typeof privatePrivateSettingsRoute
-    }
+      id: '/(private)/_private/settings/notifications';
+      path: '/notifications';
+      fullPath: '/settings/notifications';
+      preLoaderRoute: typeof privatePrivateSettingsNotificationsRouteImport;
+      parentRoute: typeof privatePrivateSettingsRoute;
+    };
     '/(private)/_private/settings/child-accounts': {
-      id: '/(private)/_private/settings/child-accounts'
-      path: '/child-accounts'
-      fullPath: '/settings/child-accounts'
-      preLoaderRoute: typeof privatePrivateSettingsChildAccountsRouteImport
-      parentRoute: typeof privatePrivateSettingsRoute
-    }
+      id: '/(private)/_private/settings/child-accounts';
+      path: '/child-accounts';
+      fullPath: '/settings/child-accounts';
+      preLoaderRoute: typeof privatePrivateSettingsChildAccountsRouteImport;
+      parentRoute: typeof privatePrivateSettingsRoute;
+    };
     '/(private)/_private/settings/billing': {
-      id: '/(private)/_private/settings/billing'
-      path: '/billing'
-      fullPath: '/settings/billing'
-      preLoaderRoute: typeof privatePrivateSettingsBillingRouteImport
-      parentRoute: typeof privatePrivateSettingsRoute
-    }
+      id: '/(private)/_private/settings/billing';
+      path: '/billing';
+      fullPath: '/settings/billing';
+      preLoaderRoute: typeof privatePrivateSettingsBillingRouteImport;
+      parentRoute: typeof privatePrivateSettingsRoute;
+    };
     '/(private)/_private/settings/account': {
-      id: '/(private)/_private/settings/account'
-      path: '/account'
-      fullPath: '/settings/account'
-      preLoaderRoute: typeof privatePrivateSettingsAccountRouteImport
-      parentRoute: typeof privatePrivateSettingsRoute
-    }
+      id: '/(private)/_private/settings/account';
+      path: '/account';
+      fullPath: '/settings/account';
+      preLoaderRoute: typeof privatePrivateSettingsAccountRouteImport;
+      parentRoute: typeof privatePrivateSettingsRoute;
+    };
     '/(private)/_private/curriculum/$subjectId': {
-      id: '/(private)/_private/curriculum/$subjectId'
-      path: '/$subjectId'
-      fullPath: '/curriculum/$subjectId'
-      preLoaderRoute: typeof privatePrivateCurriculumSubjectIdRouteImport
-      parentRoute: typeof privatePrivateCurriculumRoute
-    }
+      id: '/(private)/_private/curriculum/$subjectId';
+      path: '/$subjectId';
+      fullPath: '/curriculum/$subjectId';
+      preLoaderRoute: typeof privatePrivateCurriculumSubjectIdRouteImport;
+      parentRoute: typeof privatePrivateCurriculumRoute;
+    };
     '/(auth)/mfa/_mfa/verify-code': {
-      id: '/(auth)/mfa/_mfa/verify-code'
-      path: '/mfa/verify-code'
-      fullPath: '/mfa/verify-code'
-      preLoaderRoute: typeof authMfaMfaVerifyCodeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(auth)/mfa/_mfa/verify-code';
+      path: '/mfa/verify-code';
+      fullPath: '/mfa/verify-code';
+      preLoaderRoute: typeof authMfaMfaVerifyCodeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(auth)/_auth/account-recovery/magic-link': {
-      id: '/(auth)/_auth/account-recovery/magic-link'
-      path: '/magic-link'
-      fullPath: '/account-recovery/magic-link'
-      preLoaderRoute: typeof authAuthAccountRecoveryMagicLinkRouteImport
-      parentRoute: typeof authAuthAccountRecoveryRoute
-    }
+      id: '/(auth)/_auth/account-recovery/magic-link';
+      path: '/magic-link';
+      fullPath: '/account-recovery/magic-link';
+      preLoaderRoute: typeof authAuthAccountRecoveryMagicLinkRouteImport;
+      parentRoute: typeof authAuthAccountRecoveryRoute;
+    };
   }
 }
 
 interface authAuthAccountRecoveryRouteChildren {
-  authAuthAccountRecoveryMagicLinkRoute: typeof authAuthAccountRecoveryMagicLinkRoute
+  authAuthAccountRecoveryMagicLinkRoute: typeof authAuthAccountRecoveryMagicLinkRoute;
 }
 
 const authAuthAccountRecoveryRouteChildren: authAuthAccountRecoveryRouteChildren =
   {
     authAuthAccountRecoveryMagicLinkRoute:
       authAuthAccountRecoveryMagicLinkRoute,
-  }
+  };
 
 const authAuthAccountRecoveryRouteWithChildren =
   authAuthAccountRecoveryRoute._addFileChildren(
     authAuthAccountRecoveryRouteChildren,
-  )
+  );
 
 interface authAuthRouteChildren {
-  authAuthAccountRecoveryRoute: typeof authAuthAccountRecoveryRouteWithChildren
-  authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute
-  authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute
-  authAuthLoginRoute: typeof authAuthLoginRoute
-  authAuthResetPasswordRoute: typeof authAuthResetPasswordRoute
-  authAuthSignupRoute: typeof authAuthSignupRoute
-  authAuthVerifyUsernameRoute: typeof authAuthVerifyUsernameRoute
+  authAuthAccountRecoveryRoute: typeof authAuthAccountRecoveryRouteWithChildren;
+  authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute;
+  authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute;
+  authAuthLoginRoute: typeof authAuthLoginRoute;
+  authAuthResetPasswordRoute: typeof authAuthResetPasswordRoute;
+  authAuthSignupRoute: typeof authAuthSignupRoute;
+  authAuthVerifyUsernameRoute: typeof authAuthVerifyUsernameRoute;
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
@@ -667,35 +667,35 @@ const authAuthRouteChildren: authAuthRouteChildren = {
   authAuthResetPasswordRoute: authAuthResetPasswordRoute,
   authAuthSignupRoute: authAuthSignupRoute,
   authAuthVerifyUsernameRoute: authAuthVerifyUsernameRoute,
-}
+};
 
 const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
   authAuthRouteChildren,
-)
+);
 
 interface privatePrivateCurriculumRouteChildren {
-  privatePrivateCurriculumSubjectIdRoute: typeof privatePrivateCurriculumSubjectIdRoute
+  privatePrivateCurriculumSubjectIdRoute: typeof privatePrivateCurriculumSubjectIdRoute;
 }
 
 const privatePrivateCurriculumRouteChildren: privatePrivateCurriculumRouteChildren =
   {
     privatePrivateCurriculumSubjectIdRoute:
       privatePrivateCurriculumSubjectIdRoute,
-  }
+  };
 
 const privatePrivateCurriculumRouteWithChildren =
   privatePrivateCurriculumRoute._addFileChildren(
     privatePrivateCurriculumRouteChildren,
-  )
+  );
 
 interface privatePrivateSettingsRouteChildren {
-  privatePrivateSettingsAccountRoute: typeof privatePrivateSettingsAccountRoute
-  privatePrivateSettingsBillingRoute: typeof privatePrivateSettingsBillingRoute
-  privatePrivateSettingsChildAccountsRoute: typeof privatePrivateSettingsChildAccountsRoute
-  privatePrivateSettingsNotificationsRoute: typeof privatePrivateSettingsNotificationsRoute
-  privatePrivateSettingsProfileRoute: typeof privatePrivateSettingsProfileRoute
-  privatePrivateSettingsSecurityRoute: typeof privatePrivateSettingsSecurityRoute
-  privatePrivateSettingsTeachingSubjectsRoute: typeof privatePrivateSettingsTeachingSubjectsRoute
+  privatePrivateSettingsAccountRoute: typeof privatePrivateSettingsAccountRoute;
+  privatePrivateSettingsBillingRoute: typeof privatePrivateSettingsBillingRoute;
+  privatePrivateSettingsChildAccountsRoute: typeof privatePrivateSettingsChildAccountsRoute;
+  privatePrivateSettingsNotificationsRoute: typeof privatePrivateSettingsNotificationsRoute;
+  privatePrivateSettingsProfileRoute: typeof privatePrivateSettingsProfileRoute;
+  privatePrivateSettingsSecurityRoute: typeof privatePrivateSettingsSecurityRoute;
+  privatePrivateSettingsTeachingSubjectsRoute: typeof privatePrivateSettingsTeachingSubjectsRoute;
 }
 
 const privatePrivateSettingsRouteChildren: privatePrivateSettingsRouteChildren =
@@ -710,24 +710,24 @@ const privatePrivateSettingsRouteChildren: privatePrivateSettingsRouteChildren =
     privatePrivateSettingsSecurityRoute: privatePrivateSettingsSecurityRoute,
     privatePrivateSettingsTeachingSubjectsRoute:
       privatePrivateSettingsTeachingSubjectsRoute,
-  }
+  };
 
 const privatePrivateSettingsRouteWithChildren =
   privatePrivateSettingsRoute._addFileChildren(
     privatePrivateSettingsRouteChildren,
-  )
+  );
 
 interface privatePrivateRouteChildren {
-  privatePrivateAccountSetupRoute: typeof privatePrivateAccountSetupRoute
-  privatePrivateClassRequestsRoute: typeof privatePrivateClassRequestsRoute
-  privatePrivateComplianceRoute: typeof privatePrivateComplianceRoute
-  privatePrivateCreatePasswordRoute: typeof privatePrivateCreatePasswordRoute
-  privatePrivateCurriculumRoute: typeof privatePrivateCurriculumRouteWithChildren
-  privatePrivateMySubjectsRoute: typeof privatePrivateMySubjectsRoute
-  privatePrivateScheduleRoute: typeof privatePrivateScheduleRoute
-  privatePrivateSettingsRoute: typeof privatePrivateSettingsRouteWithChildren
-  privatePrivateWelcomeRoute: typeof privatePrivateWelcomeRoute
-  privatePrivateIndexRoute: typeof privatePrivateIndexRoute
+  privatePrivateAccountSetupRoute: typeof privatePrivateAccountSetupRoute;
+  privatePrivateClassRequestsRoute: typeof privatePrivateClassRequestsRoute;
+  privatePrivateComplianceRoute: typeof privatePrivateComplianceRoute;
+  privatePrivateCreatePasswordRoute: typeof privatePrivateCreatePasswordRoute;
+  privatePrivateCurriculumRoute: typeof privatePrivateCurriculumRouteWithChildren;
+  privatePrivateMySubjectsRoute: typeof privatePrivateMySubjectsRoute;
+  privatePrivateScheduleRoute: typeof privatePrivateScheduleRoute;
+  privatePrivateSettingsRoute: typeof privatePrivateSettingsRouteWithChildren;
+  privatePrivateWelcomeRoute: typeof privatePrivateWelcomeRoute;
+  privatePrivateIndexRoute: typeof privatePrivateIndexRoute;
 }
 
 const privatePrivateRouteChildren: privatePrivateRouteChildren = {
@@ -741,11 +741,11 @@ const privatePrivateRouteChildren: privatePrivateRouteChildren = {
   privatePrivateSettingsRoute: privatePrivateSettingsRouteWithChildren,
   privatePrivateWelcomeRoute: privatePrivateWelcomeRoute,
   privatePrivateIndexRoute: privatePrivateIndexRoute,
-}
+};
 
 const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
   privatePrivateRouteChildren,
-)
+);
 
 const rootRouteChildren: RootRouteChildren = {
   MaintenanceRoute: MaintenanceRoute,
@@ -753,7 +753,7 @@ const rootRouteChildren: RootRouteChildren = {
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,
   authMfaMfaVerifyCodeRoute: authMfaMfaVerifyCodeRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

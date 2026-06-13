@@ -7,7 +7,11 @@ const useCurriculumItems = (params: {
   householdId: string;
 }) =>
   useQuery({
-    queryKey: ['curriculum', params.subjectId, params.studentId ?? params.householdId],
+    queryKey: [
+      'curriculum',
+      params.subjectId,
+      params.studentId ?? params.householdId,
+    ],
     queryFn: () => CurriculumServices.getCurriculumItems(params),
     enabled: !!params.householdId && !!params.subjectId,
   });

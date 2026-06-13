@@ -68,10 +68,7 @@ export function StudentProvider({ children }: { children: React.ReactNode }) {
     (student: HouseholdStudentProfile | null) => {
       // Invalidate student-scoped queries for the previous student
       const previousstudentId = activeStudent?.studentId;
-      if (
-        previousstudentId &&
-        student?.studentId !== previousstudentId
-      ) {
+      if (previousstudentId && student?.studentId !== previousstudentId) {
         void queryClient.invalidateQueries({
           queryKey: ['student', previousstudentId],
         });

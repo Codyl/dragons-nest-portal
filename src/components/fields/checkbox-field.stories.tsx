@@ -4,7 +4,11 @@ import { useState } from 'react';
 
 import CheckboxField from './checkbox-field';
 
-function ControlledDemo({ initialChecked = false }: { initialChecked?: boolean }) {
+function ControlledDemo({
+  initialChecked = false,
+}: {
+  initialChecked?: boolean;
+}) {
   const [checked, setChecked] = useState(initialChecked);
   return (
     <div className="w-96 space-y-2">
@@ -50,10 +54,7 @@ function FormConnectedDemo() {
           />
         )}
       </form.Field>
-      <button
-        type="submit"
-        className="text-sm underline"
-      >
+      <button type="submit" className="text-sm underline">
         Submit
       </button>
     </form>

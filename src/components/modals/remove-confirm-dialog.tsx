@@ -41,11 +41,7 @@ const RemoveConfirmDialog = ({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={onCancel}
-            disabled={isPending}
-          >
+          <Button variant="outline" onClick={onCancel} disabled={isPending}>
             Cancel
           </Button>
           <Button

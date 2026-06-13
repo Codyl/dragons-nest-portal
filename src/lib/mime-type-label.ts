@@ -1,7 +1,8 @@
 const MIME_LABELS: Record<string, string> = {
   'application/pdf': 'PDF',
   'application/msword': 'Word Document',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word Document',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+    'Word Document',
   'image/jpeg': 'JPEG Image',
   'image/png': 'PNG Image',
 };

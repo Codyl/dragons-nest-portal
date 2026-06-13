@@ -17,21 +17,16 @@ const AccountSetupAddStudentsStep = ({
 
   return (
     <AccountSetupCard
-      stepIcon={
-        <Users
-          className="mx-auto h-9 w-9"
-          strokeWidth={1.5}
-        />
-      }
+      stepIcon={<Users className="mx-auto h-9 w-9" strokeWidth={1.5} />}
       title="Add your students"
       subtitle="Create a profile for each learner on your account. You can refine details later."
       footer={null}
     >
       <form.Field name="pendingStudents">
         {(field) => {
-          const students =
-            (field.state.value as PendingStudentDraft[] | undefined) ??
-            [newStudentRow()];
+          const students = (field.state.value as
+            | PendingStudentDraft[]
+            | undefined) ?? [newStudentRow()];
 
           const setStudents = (next: PendingStudentDraft[]) => {
             field.handleChange(next);
@@ -56,8 +51,8 @@ const AccountSetupAddStudentsStep = ({
               isTouched: true,
             }));
             const guardianErrors =
-              form.getFieldMeta('adultGuardianDutyConfirmed')?.errors
-                ?.length ?? 0;
+              form.getFieldMeta('adultGuardianDutyConfirmed')?.errors?.length ??
+              0;
             if (guardianErrors > 0) return;
             onNext();
           };
