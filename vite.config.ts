@@ -8,7 +8,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite';
 // https://vite.dev/config/
 import { fileURLToPath } from 'node:url';
 
-const dirname =
+const __dirnameResolved =
   typeof __dirname !== 'undefined'
     ? __dirname
     : path.dirname(fileURLToPath(import.meta.url));
@@ -38,12 +38,11 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(__dirnameResolved, './src'),
     },
   },
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
-    environmentMatchGlobs: [['src/components/**/*.test.tsx', 'jsdom']],
   },
 });

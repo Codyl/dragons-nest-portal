@@ -12,7 +12,7 @@ const meta = {
 } satisfies Meta<typeof SixDigitCodeField>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SixDigitCodeField>;
 
 function InteractiveWrapper({
   initialValue = '',

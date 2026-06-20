@@ -53,7 +53,6 @@ const usePasskeyLogin = (options?: UsePasskeyLoginOptions) => {
       const cd = complete.data;
       if (cd.session) {
         sessionStorage.setItem('session', cd.session);
-        activeSession = cd.session;
       }
 
       if (cd.challengeName === 'SOFTWARE_TOKEN_MFA') {

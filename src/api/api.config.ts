@@ -122,10 +122,6 @@ export const api = ky.create({
           }
         }
 
-        if (error instanceof HTTPError && error.response.status === 500) {
-          throw new Error('Internal server error');
-        }
-
         throw error;
       },
     ],

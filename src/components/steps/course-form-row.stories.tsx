@@ -52,7 +52,7 @@ const meta = {
 } satisfies Meta<typeof CourseFormRow>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof CourseFormRow>;
 
 /** Reference for Cypress: `account-setup-teachable-step.cy.tsx`. */
 export const SingleRow: Story = {

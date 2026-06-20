@@ -12,7 +12,7 @@ const useRegisterPasskey = () => {
       const { data } = await ProfileServices.getWebAuthnRegistrationOptions();
       const credential = await startRegistration({
         optionsJSON:
-          data.credentialCreationOptions as PublicKeyCredentialCreationOptionsJSON,
+          data.credentialCreationOptions as unknown as PublicKeyCredentialCreationOptionsJSON,
       });
       await ProfileServices.completeWebAuthnRegistration(
         credential as unknown as Record<string, unknown>,

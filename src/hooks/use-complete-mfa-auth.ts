@@ -15,6 +15,10 @@ export type CompleteMFAMutationData = {
       AccessToken?: string;
       RefreshToken?: string;
       IdToken?: string;
+      NewDeviceMetadata?: {
+        DeviceKey?: string;
+        DeviceName?: string;
+      };
     };
   };
 };

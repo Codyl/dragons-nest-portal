@@ -28,14 +28,16 @@ export const unauthenticatedApi = ky.create({
       },
     ],
     afterResponse: [
-      async (request, options, response) => {
+      async (_request, _options, response) => {
         if (!response.ok) {
           // Ky doesn't automatically parse JSON on error responses
           // so we do it manually here
           try {
-            const data = await response.json();
+            const data = (await response.json()) as {
+              data?: { redirect?: boolean; message?: string };
+            };
 
-            if (data.data.redirect) {
+            if (data?.data?.redirect) {
               toast(data.data.message || 'Session expired');
               throw redirect({ to: '/login' });
             }

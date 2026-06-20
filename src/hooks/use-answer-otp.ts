@@ -1,4 +1,4 @@
-import AuthServices from '@/api/services/auth.services';
+import { unauthenticatedApi } from '@/api/api.unauthenticated.config';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
 const useAnswerOTP = (): UseMutationResult<
@@ -24,7 +24,12 @@ const useAnswerOTP = (): UseMutationResult<
   }
 > => {
   return useMutation({
-    mutationFn: AuthServices.answerOTP,
+    mutationFn: async (json) => {
+      const response = await unauthenticatedApi.post('auth/answer-otp', {
+        json,
+      });
+      return response.json();
+    },
   });
 };
 

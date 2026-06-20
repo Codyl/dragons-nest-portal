@@ -20,6 +20,21 @@ export const Route = createFileRoute('/(private)/_private/curriculum')({
 });
 
 /**
+ * Resolves catalog subjects that appear in the student's enrolled classes.
+ */
+export function resolveEnrolledSubjects(
+  catalog: Subject[],
+  enrolledClasses: StudentEnrolledClass[],
+): Subject[] {
+  const enrolledSubjectIds = new Set(
+    enrolledClasses
+      .map((c) => c.subjectId)
+      .filter((id): id is string => id !== null),
+  );
+  return catalog.filter((subject) => enrolledSubjectIds.has(subject._id));
+}
+
+/**
  * Resolves the teacher name for a given subject.
  * If the active student's enrolled classes include a class for this subject
  * with an assigned teacher, returns that teacher's name.

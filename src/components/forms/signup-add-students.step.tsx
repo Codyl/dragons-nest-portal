@@ -26,7 +26,6 @@ const SignupAddStudentsStep = ({
   onChange,
   onFinish,
   onBack,
-  isSubmitting,
   hideHeader = false,
   showAdultGuardianAttestation = false,
 }: {
@@ -34,7 +33,7 @@ const SignupAddStudentsStep = ({
   onChange: (next: PendingStudentDraft[]) => void;
   onFinish: () => void;
   onBack: () => void;
-  isSubmitting: boolean;
+  isSubmitting?: boolean;
   /** Label for the primary button (e.g. account onboarding vs legacy household signup). */
   primaryActionLabel?: string;
   /** When true, omit the title and intro (e.g. when wrapped in AccountSetupCard). */
@@ -58,13 +57,6 @@ const SignupAddStudentsStep = ({
   const addRow = () => {
     onChange([...students, newStudentRow()]);
   };
-
-  const allValid = students.every((s) => {
-    const g = Number.parseInt(s.currentGradeOrdinal, 10);
-    return (
-      s.displayName.trim().length > 0 && Number.isFinite(g) && g >= 0 && g <= 13
-    );
-  });
 
   const GuardianDutyFormField =
     showAdultGuardianAttestation && accountSetupCtx

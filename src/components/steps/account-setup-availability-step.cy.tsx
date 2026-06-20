@@ -1,7 +1,8 @@
 import { composeStories } from '@storybook/react-vite';
 import * as stories from './account-setup-availability-step.stories';
 
-const { TeenFinish, ParentNext } = composeStories(stories);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const { TeenFinish, ParentNext } = composeStories(stories as any) as any;
 
 /**
  * Reference test: `src/components/steps/account-setup-teachable-step.cy.tsx`.

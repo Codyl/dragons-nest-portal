@@ -76,7 +76,7 @@ const meta = {
 } satisfies Meta<typeof MFAGenerateSecretForm>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MFAGenerateSecretForm>;
 
 export const Default: Story = {
   parameters: {

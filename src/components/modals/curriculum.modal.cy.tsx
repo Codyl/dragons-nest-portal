@@ -63,7 +63,7 @@ function mountSubjectCard() {
   cy.mount(
     <QueryClientProvider client={queryClient}>
       <StudentProvider>
-        <SubjectCard subject={subject} />
+        <SubjectCard subjectId={subject._id} subjectName={subject.name} teacherName="Teacher" />
       </StudentProvider>
     </QueryClientProvider>,
   );

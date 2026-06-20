@@ -5,7 +5,6 @@ import {
   redirect,
   isRedirect,
 } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { runHealthCheck } from '@/hooks/use-health-check';
 import { Toaster } from '@/components/ui/sonner';
 

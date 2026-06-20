@@ -1,16 +1,12 @@
 import { Avatar, AvatarFallback } from '../ui/avatar';
 
-const ProfilePhoto = ({
-  src,
-  givenName,
-  familyName,
-  email,
-}: {
+const ProfilePhoto = (props: {
   src: string | null;
   givenName: string | null;
   familyName: string | null;
   email: string | null;
 }) => {
+  const { givenName, familyName, email } = props;
   function initials(data: {
     givenName?: string | null;
     familyName?: string | null;

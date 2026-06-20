@@ -72,7 +72,7 @@ const meta = {
 } satisfies Meta<typeof ForgotPasswordForm>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ForgotPasswordForm>;
 
 export const Default: Story = {
   parameters: {

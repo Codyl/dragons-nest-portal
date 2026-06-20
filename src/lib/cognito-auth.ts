@@ -144,15 +144,15 @@ export async function signInWithCognito(
     const totpSetupUri =
       'totpSetupDetails' in nextStep &&
       typeof (
-        nextStep as {
-          totpSetupDetails?: { getSetupUri?: () => { href: string } };
+        nextStep as unknown as {
+          totpSetupDetails?: { getSetupUri?: (...args: unknown[]) => { href: string } };
         }
       ).totpSetupDetails?.getSetupUri === 'function'
         ? (
-            nextStep as {
-              totpSetupDetails: { getSetupUri: () => { href: string } };
+            nextStep as unknown as {
+              totpSetupDetails: { getSetupUri: (appName: string) => { href: string } };
             }
-          ).totpSetupDetails.getSetupUri().href
+          ).totpSetupDetails.getSetupUri('CodyLillywhite').href
         : undefined;
 
     return {

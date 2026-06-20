@@ -12,7 +12,7 @@ const emailField = z.email('Please enter a valid email address');
 
 const passwordMismatch = {
   message: 'Passwords do not match',
-  path: ['confirmPassword'] as const,
+  path: ['confirmPassword'],
 };
 
 const emailPasswordShape = {
