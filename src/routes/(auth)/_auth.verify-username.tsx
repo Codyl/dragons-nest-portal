@@ -2,7 +2,8 @@ import VerifyUsernameForm from '@/components/forms/verify-username.form';
 import CommonCard from '@/components/cards/common-card';
 import useAuth from '@/hooks/use-auth';
 import { createFileRoute } from '@tanstack/react-router';
-import GoogleSSOSigninButton from '@/components/buttons/google-sso-signin.button';
+import { GoogleLogin } from '@react-oauth/google';
+import useGoogleSignin from '@/hooks/use-google-signin';
 
 export const Route = createFileRoute('/(auth)/_auth/verify-username')({
   head: () => ({
@@ -19,6 +20,7 @@ export const Route = createFileRoute('/(auth)/_auth/verify-username')({
 
 function RouteComponent() {
   useAuth();
+  const { signInWithGoogle } = useGoogleSignin();
 
   return (
     <CommonCard
@@ -27,7 +29,20 @@ function RouteComponent() {
     >
       <VerifyUsernameForm />
       <hr className="my-4" />
-      {!window.Cypress && <GoogleSSOSigninButton />}
+      {!window.Cypress && (<>
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            if (credentialResponse.credential) {
+              signInWithGoogle(credentialResponse.credential);
+            }
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+          useOneTap
+        />
+      </>)}
+      
     </CommonCard>
   );
 }
