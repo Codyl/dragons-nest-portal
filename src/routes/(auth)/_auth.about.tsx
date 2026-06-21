@@ -50,7 +50,7 @@ function RouteComponent() {
                 Start Your Nest
               </Link>
               <Link
-                to="/about"
+                to="/"
                 className="border-2 border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary/5 transition text-sm"
               >
                 View Curriculum
@@ -349,7 +349,7 @@ function RouteComponent() {
               Get Started for Free
             </Link>
             <Link
-              to="/about"
+              to="/"
               className="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl text-sm font-medium border border-white/20 transition"
             >
               Schedule a Tour

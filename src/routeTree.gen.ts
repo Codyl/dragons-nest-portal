@@ -31,6 +31,7 @@ import { Route as authAuthLoginRouteImport } from './routes/(auth)/_auth.login'
 import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_auth.forgot-password'
 import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
 import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery'
+import { Route as authAuthAboutRouteImport } from './routes/(auth)/_auth.about'
 import { Route as privatePrivateSettingsTeachingSubjectsRouteImport } from './routes/(private)/_private.settings.teaching-subjects'
 import { Route as privatePrivateSettingsSecurityRouteImport } from './routes/(private)/_private.settings.security'
 import { Route as privatePrivateSettingsProfileRouteImport } from './routes/(private)/_private.settings.profile'
@@ -156,6 +157,11 @@ const authAuthAccountRecoveryRoute = authAuthAccountRecoveryRouteImport.update({
   path: '/account-recovery',
   getParentRoute: () => authAuthRoute,
 } as any)
+const authAuthAboutRoute = authAuthAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => authAuthRoute,
+} as any)
 const privatePrivateSettingsTeachingSubjectsRoute =
   privatePrivateSettingsTeachingSubjectsRouteImport.update({
     id: '/teaching-subjects',
@@ -220,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/maintenance': typeof MaintenanceRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/about': typeof authAuthAboutRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -252,6 +259,7 @@ export interface FileRoutesByTo {
   '/maintenance': typeof MaintenanceRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/about': typeof authAuthAboutRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/confirm-signup': typeof authAuthConfirmSignupRoute
   '/forgot-password': typeof authAuthForgotPasswordRoute
@@ -287,6 +295,7 @@ export interface FileRoutesById {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
+  '/(auth)/_auth/about': typeof authAuthAboutRoute
   '/(auth)/_auth/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
   '/(auth)/_auth/confirm-signup': typeof authAuthConfirmSignupRoute
   '/(auth)/_auth/forgot-password': typeof authAuthForgotPasswordRoute
@@ -321,6 +330,7 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/about'
     | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
@@ -353,6 +363,7 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/about'
     | '/account-recovery'
     | '/confirm-signup'
     | '/forgot-password'
@@ -387,6 +398,7 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/(auth)/_auth'
     | '/(private)/_private'
+    | '/(auth)/_auth/about'
     | '/(auth)/_auth/account-recovery'
     | '/(auth)/_auth/confirm-signup'
     | '/(auth)/_auth/forgot-password'
@@ -581,6 +593,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthAccountRecoveryRouteImport
       parentRoute: typeof authAuthRoute
     }
+    '/(auth)/_auth/about': {
+      id: '/(auth)/_auth/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof authAuthAboutRouteImport
+      parentRoute: typeof authAuthRoute
+    }
     '/(private)/_private/settings/teaching-subjects': {
       id: '/(private)/_private/settings/teaching-subjects'
       path: '/teaching-subjects'
@@ -670,6 +689,7 @@ const authAuthAccountRecoveryRouteWithChildren =
   )
 
 interface authAuthRouteChildren {
+  authAuthAboutRoute: typeof authAuthAboutRoute
   authAuthAccountRecoveryRoute: typeof authAuthAccountRecoveryRouteWithChildren
   authAuthConfirmSignupRoute: typeof authAuthConfirmSignupRoute
   authAuthForgotPasswordRoute: typeof authAuthForgotPasswordRoute
@@ -680,6 +700,7 @@ interface authAuthRouteChildren {
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
+  authAuthAboutRoute: authAuthAboutRoute,
   authAuthAccountRecoveryRoute: authAuthAccountRecoveryRouteWithChildren,
   authAuthConfirmSignupRoute: authAuthConfirmSignupRoute,
   authAuthForgotPasswordRoute: authAuthForgotPasswordRoute,
@@ -769,7 +790,6 @@ const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   MaintenanceRoute: MaintenanceRoute,
-  PrivacyPolicyRoute: PrivacyPolicyRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,
