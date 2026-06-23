@@ -7,13 +7,15 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { StudentProvider } from '@/contexts/student-context';
+import { StudentProvider, useStudent } from '@/contexts/student-context';
 import {
   createFileRoute,
   Outlet,
   redirect,
+  useNavigate,
   useRouterState,
 } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
 export const Route = createFileRoute('/(private)/_private')({
   beforeLoad: async ({ context, location }) => {
@@ -48,6 +50,7 @@ function RouteComponent() {
 
   return (
     <StudentProvider>
+      <StudentRouteGuard pathname={pathname} />
       <SidebarProvider>
         {isSettingsShell ? <SettingsShellSidebar /> : <PrivateAppSidebar />}
         <SidebarInset>
@@ -62,4 +65,24 @@ function RouteComponent() {
       </SidebarProvider>
     </StudentProvider>
   );
+}
+
+/** ponytail: redirects to /curriculum when a student is active but the user is on a parent-only page */
+const studentRoutes = ['/curriculum', '/compliance'];
+
+function StudentRouteGuard({ pathname }: { pathname: string }) {
+  const { activeStudent } = useStudent();
+  const navigate = useNavigate();
+
+  const isOnStudentRoute = studentRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
+
+  useEffect(() => {
+    if (activeStudent && !isOnStudentRoute) {
+      navigate({ to: '/curriculum', replace: true });
+    }
+  }, [activeStudent, isOnStudentRoute, navigate]);
+
+  return null;
 }
