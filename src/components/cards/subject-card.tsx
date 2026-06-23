@@ -38,7 +38,7 @@ const SubjectCard = ({
 
       <div className="text-center">
         <h3 className="font-semibold leading-none">{subjectName}</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{teacherName}</p>
+        <p className="mt-2 text-sm text-muted-foreground">Teacher: {teacherName}</p>
       </div>
     </Link>
   );

@@ -23,13 +23,15 @@ const useAuth = (): {
 
   const ensureAuth = useCallback(async () => {
     try {
-      // Use refetch directly instead of ensureQueryData to avoid circular dependency
+      // if (data !== undefined) {
+      //   return data.isAuthenticated;
+      // }
       const session = await refetch();
       return session.data?.isAuthenticated ?? false;
     } catch (error: any) {
       return false;
     }
-  }, [refetch]);
+  }, [ refetch]);
 
   return {
     isLoading: isLoading,

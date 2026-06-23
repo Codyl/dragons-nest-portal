@@ -180,8 +180,6 @@ export function PrivateAppSidebar() {
           <SidebarMenuItem>
             <StudentSelector
               students={students}
-              activeStudent={activeStudent}
-              onSelect={setActiveStudent}
               isLoading={isLoading}
             />
           </SidebarMenuItem>

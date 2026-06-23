@@ -15,11 +15,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useSidebar } from '@/components/ui/sidebar';
+import { useStudent } from '@/contexts/student-context';
+import { useNavigate } from '@tanstack/react-router';
 
 interface StudentSelectorProps {
   students: HouseholdStudentProfile[];
-  activeStudent: HouseholdStudentProfile | null;
-  onSelect: (student: HouseholdStudentProfile | null) => void;
   isLoading?: boolean;
 }
 
@@ -38,11 +38,11 @@ function getInitials(displayName: string): string {
 
 export function StudentSelector({
   students,
-  activeStudent,
-  onSelect,
   isLoading = false,
 }: StudentSelectorProps) {
   const { state } = useSidebar();
+  const {activeStudent, setActiveStudent} = useStudent();
+  const navigate = useNavigate()
   const isCollapsed = state === 'collapsed';
 
   // Requirements 7.2 — show skeleton while loading
@@ -87,7 +87,7 @@ export function StudentSelector({
               <button
                 type="button"
                 aria-label="Back to my view"
-                onClick={() => onSelect(null)}
+                onClick={() => setActiveStudent(null)}
                 className="flex size-6 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
                 <X className="size-3" />
@@ -122,13 +122,15 @@ export function StudentSelector({
       value={activeStudent?.studentId ?? ''}
       onValueChange={(value) => {
         if (value === '__my_view__') {
-          onSelect(null);
+          setActiveStudent(null);
+          navigate({to: '/'})
           return;
         }
 
         const student = students.find((s) => s.studentId === value);
         if (student) {
-          onSelect(student);
+          setActiveStudent(student);
+          navigate({to: '/curriculum'})
         }
       }}
     >
