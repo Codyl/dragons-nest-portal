@@ -12,7 +12,7 @@ import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useComplianceLaws from '@/hooks/use-compliance-laws';
 import { Button } from '@/components/ui/button';
 
-export const Route = createFileRoute('/(private)/_private/curriculum')({
+export const Route = createFileRoute('/(private)/_private/curriculum/')({
   head: () => ({
     meta: [{ title: 'Curriculum | Cody Lillywhite' }],
   }),
