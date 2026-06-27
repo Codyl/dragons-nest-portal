@@ -1,4 +1,4 @@
-import { Link, useRouterState } from '@tanstack/react-router';
+import { Link, useRouter, useRouterState } from '@tanstack/react-router';
 import {
   ArrowLeft,
   Bell,
@@ -43,6 +43,7 @@ const settingsNav = [
 ] as const;
 
 export function SettingsShellSidebar() {
+  const router = useRouter()
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -50,11 +51,9 @@ export function SettingsShellSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip="Back to Dashboard">
-              <Link to="/">
+            <SidebarMenuButton onClick={() => router.history.back()} tooltip="Back to Dashboard">
                 <ArrowLeft />
                 <span>Back to Dashboard</span>
-              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
