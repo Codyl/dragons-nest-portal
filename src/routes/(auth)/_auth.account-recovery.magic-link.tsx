@@ -2,6 +2,7 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import CommonCard from '@/components/cards/common-card';
 import useConsumeRecoveryMagicLink from '@/hooks/use-consume-recovery-magic-link';
+import { markAuthenticated } from '@/lib/auth-session';
 
 export const Route = createFileRoute(
   '/(auth)/_auth/account-recovery/magic-link',
@@ -23,6 +24,7 @@ function AccountRecoveryMagicLink() {
       { token },
       {
         onSuccess: () => {
+          markAuthenticated();
           router.navigate({ to: '/' });
         },
       },

@@ -1,5 +1,5 @@
 import {
-  createRootRoute,
+  createRootRouteWithContext,
   HeadContent,
   Outlet,
   redirect,
@@ -34,7 +34,7 @@ const RootLayout = () => {
   );
 };
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<Record<string, never>>()({
   beforeLoad: async ({ location }) => {
     if (location.pathname === '/maintenance') return;
 

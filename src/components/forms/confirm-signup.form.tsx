@@ -8,6 +8,7 @@ import ResendSignupConfirmationCodeButton from '../buttons/resend-signup-confirm
 import { FieldGroup } from '../ui/field';
 import { useRouter } from '@tanstack/react-router';
 import { SIGNUP_COPPA_CONSENT_KEY } from '@/utils/constants/signup.constants';
+import { markAuthenticated } from '@/lib/auth-session';
 
 const ConfirmSignupForm = () => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const ConfirmSignupForm = () => {
 
       if (data.data.AuthenticationResult) {
         sessionStorage.removeItem(SIGNUP_COPPA_CONSENT_KEY);
+        markAuthenticated();
         router.navigate({ to: '/' });
       }
     },

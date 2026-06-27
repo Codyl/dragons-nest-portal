@@ -1,4 +1,3 @@
-import type { RouterContext } from '@/App';
 import PromotionNudgeBanner from '@/components/banners/promotion-nudge.banner';
 import { PrivateAppSidebar } from '@/components/private-app-sidebar';
 import { SettingsShellSidebar } from '@/components/settings-shell-sidebar';
@@ -8,6 +7,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { StudentProvider } from '@/contexts/student-context';
+import { isAuthenticated } from '@/lib/auth-session';
 import {
   createFileRoute,
   Outlet,
@@ -16,11 +16,8 @@ import {
 } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/(private)/_private')({
-  beforeLoad: async ({ context, location }) => {
-    const authContext = context as RouterContext;
-    const isAuthenticated = await authContext.checkAuth();
-
-    if (!isAuthenticated) {
+  beforeLoad: ({ location }) => {
+    if (!isAuthenticated()) {
       throw redirect({
         to: '/verify-username',
         search: {

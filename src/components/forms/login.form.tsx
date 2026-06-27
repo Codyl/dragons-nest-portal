@@ -14,6 +14,7 @@ import { useResendSignupConfirmationCode } from '@/hooks/use-resend-signup-confi
 import { useState } from 'react';
 import MFAAuthenticatorQRCodeModal from '../modals/mfa-authenticator-qrcode.modal';
 import { UAParser } from 'ua-parser-js';
+import { markAuthenticated } from '@/lib/auth-session';
 
 const LoginForm = ({ className }: { className?: string }) => {
   const router = useRouter();
@@ -93,6 +94,7 @@ const LoginForm = ({ className }: { className?: string }) => {
               );
             }
 
+            markAuthenticated();
             router.navigate({ to: '/' });
           }
         },

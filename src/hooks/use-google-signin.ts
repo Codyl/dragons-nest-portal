@@ -1,6 +1,7 @@
 import AuthServices from '@/api/services/auth.services';
 import { useRouter } from '@tanstack/react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { markAuthenticated } from '@/lib/auth-session';
 
 const useGoogleSignin = (): {
   signInWithGoogle: (credential: string) => void;
@@ -23,8 +24,8 @@ const useGoogleSignin = (): {
         'lastLoginProvider',
         data?.data?.loginProvider ?? 'google',
       );
-      // Backend sets auth cookies; invalidate so next checkAuth() refetches /profile
       queryClient.invalidateQueries({ queryKey: ['auth-status'] });
+      markAuthenticated();
       router.navigate({ to: '/' });
     },
   });

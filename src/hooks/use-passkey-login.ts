@@ -4,6 +4,7 @@ import { UAParser } from 'ua-parser-js';
 import { useRouter } from '@tanstack/react-router';
 import AuthServices from '@/api/services/auth.services';
 import { parseCredentialRequestOptionsFromCognito } from '@/utils/cognito-webauthn-challenge';
+import { markAuthenticated } from '@/lib/auth-session';
 
 export type UsePasskeyLoginOptions = {
   onMfaSetupRequired?: () => void;
@@ -28,6 +29,7 @@ const usePasskeyLogin = (options?: UsePasskeyLoginOptions) => {
       });
 
       if (begin.data.authenticationResult !== undefined) {
+        markAuthenticated();
         router.navigate({ to: '/' });
         return;
       }
@@ -71,6 +73,7 @@ const usePasskeyLogin = (options?: UsePasskeyLoginOptions) => {
       }
 
       if (!cd.challengeName) {
+        markAuthenticated();
         router.navigate({ to: '/' });
       }
     },

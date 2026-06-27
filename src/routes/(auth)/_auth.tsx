@@ -1,4 +1,3 @@
-import type { RouterContext } from '@/App';
 import {
   createFileRoute,
   Link,
@@ -6,13 +5,11 @@ import {
   redirect,
 } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
+import { isAuthenticated } from '@/lib/auth-session';
 
 export const Route = createFileRoute('/(auth)/_auth')({
   component: RouteComponent,
-  beforeLoad: async ({ context, location }) => {
-    const authContext = context as RouterContext;
-    const isAuthenticated = await authContext.checkAuth();
-
+  beforeLoad: ({ location }) => {
     const isForgotPasswordRoute = location.pathname === '/forgot-password';
     const isResetPasswordRoute = location.pathname === '/reset-password';
     const hasUsernameInSession =
@@ -23,7 +20,7 @@ export const Route = createFileRoute('/(auth)/_auth')({
     const allowedForAuthenticated =
       isForgotPasswordRoute || (isResetPasswordRoute && hasUsernameInSession);
 
-    if (isAuthenticated && !allowedForAuthenticated) {
+    if (isAuthenticated() && !allowedForAuthenticated) {
       throw redirect({ to: '/' });
     }
   },

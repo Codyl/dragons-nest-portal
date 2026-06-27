@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { Link, useRouter } from '@tanstack/react-router';
 import { FieldGroup } from '../ui/field';
 import useConfirmForgotPassword from '@/hooks/use-confirm-forgot-password';
+import { markAuthenticated } from '@/lib/auth-session';
 
 const ResetPasswordForm = () => {
   const router = useRouter();
@@ -48,6 +49,7 @@ const ResetPasswordForm = () => {
           onSuccess: (data) => {
             sessionStorage.clear();
             if (data.data.AuthenticationResult) {
+              markAuthenticated();
               router.navigate({ to: '/' });
             }
           },

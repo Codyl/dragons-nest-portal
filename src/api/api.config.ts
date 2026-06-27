@@ -1,5 +1,6 @@
 import ky, { HTTPError } from 'ky';
 import { refreshCognitoSession } from '@/lib/cognito-auth';
+import { clearAuthenticated } from '@/lib/auth-session';
 
 // Track if we're currently refreshing to prevent infinite loops
 let isRefreshing = false;
@@ -101,6 +102,8 @@ export const api = ky.create({
           const refreshSuccess = await refreshAccessToken();
 
           if (!refreshSuccess) {
+            clearAuthenticated();
+            window.location.href = '/verify-username';
             throw new Error('Token refresh failed');
           }
         }

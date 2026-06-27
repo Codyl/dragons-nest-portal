@@ -1,6 +1,5 @@
 import VerifyUsernameForm from '@/components/forms/verify-username.form';
 import CommonCard from '@/components/cards/common-card';
-import useAuth from '@/hooks/use-auth';
 import { createFileRoute } from '@tanstack/react-router';
 import { GoogleLogin } from '@react-oauth/google';
 import useGoogleSignin from '@/hooks/use-google-signin';
@@ -19,7 +18,6 @@ export const Route = createFileRoute('/(auth)/_auth/verify-username')({
 });
 
 function RouteComponent() {
-  useAuth();
   const { signInWithGoogle } = useGoogleSignin();
 
   return (

@@ -7,6 +7,7 @@ import { FieldGroup } from '../ui/field';
 import useCompleteMFAAuth, {
   type CompleteMFAMutationData,
 } from '@/hooks/use-complete-mfa-auth';
+import { markAuthenticated } from '@/lib/auth-session';
 
 const MFAForm = () => {
   const router = useRouter();
@@ -48,6 +49,7 @@ const MFAForm = () => {
                 );
               }
 
+              markAuthenticated();
               router.navigate({ to: '/' });
             }
           },
