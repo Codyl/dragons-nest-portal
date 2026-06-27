@@ -31,9 +31,14 @@ function RouteComponent() {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-white backdrop-blur supports-backdrop-filter:bg-white">
         <div className="container flex h-14 items-center justify-between px-4">
-          <Link to="/about" className="font-semibold">
-            Cody Lillywhite
-          </Link>
+          <div className="flex items-center">
+            <Link to="/about" className="font-semibold">
+              Cody Lillywhite
+            </Link>
+            <Button variant="link" className='ml-8' size="lg" asChild>
+              <Link to="/about">Product</Link>
+            </Button>
+          </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
               <Link to="/verify-username">Sign in</Link>
