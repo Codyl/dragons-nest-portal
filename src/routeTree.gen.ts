@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
 import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
@@ -19,7 +18,6 @@ import { Route as privatePrivateWelcomeRouteImport } from './routes/(private)/_p
 import { Route as privatePrivateSettingsRouteImport } from './routes/(private)/_private.settings'
 import { Route as privatePrivateScheduleRouteImport } from './routes/(private)/_private.schedule'
 import { Route as privatePrivateMySubjectsRouteImport } from './routes/(private)/_private.my-subjects'
-import { Route as privatePrivateCurriculumRouteImport } from './routes/(private)/_private.curriculum'
 import { Route as privatePrivateCreatePasswordRouteImport } from './routes/(private)/_private.create-password'
 import { Route as privatePrivateComplianceRouteImport } from './routes/(private)/_private.compliance'
 import { Route as privatePrivateClassRequestsRouteImport } from './routes/(private)/_private.class-requests'
@@ -32,6 +30,7 @@ import { Route as authAuthForgotPasswordRouteImport } from './routes/(auth)/_aut
 import { Route as authAuthConfirmSignupRouteImport } from './routes/(auth)/_auth.confirm-signup'
 import { Route as authAuthAccountRecoveryRouteImport } from './routes/(auth)/_auth.account-recovery'
 import { Route as authAuthAboutRouteImport } from './routes/(auth)/_auth.about'
+import { Route as privatePrivateCurriculumIndexRouteImport } from './routes/(private)/_private.curriculum.index'
 import { Route as privatePrivateSettingsTeachingSubjectsRouteImport } from './routes/(private)/_private.settings.teaching-subjects'
 import { Route as privatePrivateSettingsSecurityRouteImport } from './routes/(private)/_private.settings.security'
 import { Route as privatePrivateSettingsProfileRouteImport } from './routes/(private)/_private.settings.profile'
@@ -39,18 +38,14 @@ import { Route as privatePrivateSettingsNotificationsRouteImport } from './route
 import { Route as privatePrivateSettingsChildAccountsRouteImport } from './routes/(private)/_private.settings.child-accounts'
 import { Route as privatePrivateSettingsBillingRouteImport } from './routes/(private)/_private.settings.billing'
 import { Route as privatePrivateSettingsAccountRouteImport } from './routes/(private)/_private.settings.account'
-import { Route as privatePrivateCurriculumSubjectIdRouteImport } from './routes/(private)/_private.curriculum.$subjectId'
 import { Route as authMfaMfaVerifyCodeRouteImport } from './routes/(auth)/mfa/_mfa.verify-code'
 import { Route as authAuthAccountRecoveryMagicLinkRouteImport } from './routes/(auth)/_auth.account-recovery.magic-link'
+import { Route as privatePrivateCurriculumSubjectIdIndexRouteImport } from './routes/(private)/_private.curriculum.$subjectId.index'
+import { Route as privatePrivateCurriculumSubjectIdResourcesRouteImport } from './routes/(private)/_private.curriculum.$subjectId.resources'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MaintenanceRoute = MaintenanceRouteImport.update({
@@ -90,12 +85,6 @@ const privatePrivateMySubjectsRoute =
   privatePrivateMySubjectsRouteImport.update({
     id: '/my-subjects',
     path: '/my-subjects',
-    getParentRoute: () => privatePrivateRoute,
-  } as any)
-const privatePrivateCurriculumRoute =
-  privatePrivateCurriculumRouteImport.update({
-    id: '/curriculum',
-    path: '/curriculum',
     getParentRoute: () => privatePrivateRoute,
   } as any)
 const privatePrivateCreatePasswordRoute =
@@ -162,6 +151,12 @@ const authAuthAboutRoute = authAuthAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => authAuthRoute,
 } as any)
+const privatePrivateCurriculumIndexRoute =
+  privatePrivateCurriculumIndexRouteImport.update({
+    id: '/curriculum/',
+    path: '/curriculum/',
+    getParentRoute: () => privatePrivateRoute,
+  } as any)
 const privatePrivateSettingsTeachingSubjectsRoute =
   privatePrivateSettingsTeachingSubjectsRouteImport.update({
     id: '/teaching-subjects',
@@ -204,12 +199,6 @@ const privatePrivateSettingsAccountRoute =
     path: '/account',
     getParentRoute: () => privatePrivateSettingsRoute,
   } as any)
-const privatePrivateCurriculumSubjectIdRoute =
-  privatePrivateCurriculumSubjectIdRouteImport.update({
-    id: '/$subjectId',
-    path: '/$subjectId',
-    getParentRoute: () => privatePrivateCurriculumRoute,
-  } as any)
 const authMfaMfaVerifyCodeRoute = authMfaMfaVerifyCodeRouteImport.update({
   id: '/(auth)/mfa/_mfa/verify-code',
   path: '/mfa/verify-code',
@@ -221,10 +210,21 @@ const authAuthAccountRecoveryMagicLinkRoute =
     path: '/magic-link',
     getParentRoute: () => authAuthAccountRecoveryRoute,
   } as any)
+const privatePrivateCurriculumSubjectIdIndexRoute =
+  privatePrivateCurriculumSubjectIdIndexRouteImport.update({
+    id: '/curriculum/$subjectId/',
+    path: '/curriculum/$subjectId/',
+    getParentRoute: () => privatePrivateRoute,
+  } as any)
+const privatePrivateCurriculumSubjectIdResourcesRoute =
+  privatePrivateCurriculumSubjectIdResourcesRouteImport.update({
+    id: '/curriculum/$subjectId/resources',
+    path: '/curriculum/$subjectId/resources',
+    getParentRoute: () => privatePrivateRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/maintenance': typeof MaintenanceRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/about': typeof authAuthAboutRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
@@ -238,7 +238,6 @@ export interface FileRoutesByFullPath {
   '/class-requests': typeof privatePrivateClassRequestsRoute
   '/compliance': typeof privatePrivateComplianceRoute
   '/create-password': typeof privatePrivateCreatePasswordRoute
-  '/curriculum': typeof privatePrivateCurriculumRouteWithChildren
   '/my-subjects': typeof privatePrivateMySubjectsRoute
   '/schedule': typeof privatePrivateScheduleRoute
   '/settings': typeof privatePrivateSettingsRouteWithChildren
@@ -246,7 +245,6 @@ export interface FileRoutesByFullPath {
   '/': typeof privatePrivateIndexRoute
   '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
-  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute
   '/settings/account': typeof privatePrivateSettingsAccountRoute
   '/settings/billing': typeof privatePrivateSettingsBillingRoute
   '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
@@ -254,10 +252,12 @@ export interface FileRoutesByFullPath {
   '/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/settings/security': typeof privatePrivateSettingsSecurityRoute
   '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
+  '/curriculum': typeof privatePrivateCurriculumIndexRoute
+  '/curriculum/$subjectId/resources': typeof privatePrivateCurriculumSubjectIdResourcesRoute
+  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/maintenance': typeof MaintenanceRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/about': typeof authAuthAboutRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
@@ -271,7 +271,6 @@ export interface FileRoutesByTo {
   '/class-requests': typeof privatePrivateClassRequestsRoute
   '/compliance': typeof privatePrivateComplianceRoute
   '/create-password': typeof privatePrivateCreatePasswordRoute
-  '/curriculum': typeof privatePrivateCurriculumRouteWithChildren
   '/my-subjects': typeof privatePrivateMySubjectsRoute
   '/schedule': typeof privatePrivateScheduleRoute
   '/settings': typeof privatePrivateSettingsRouteWithChildren
@@ -279,7 +278,6 @@ export interface FileRoutesByTo {
   '/': typeof privatePrivateIndexRoute
   '/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
-  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute
   '/settings/account': typeof privatePrivateSettingsAccountRoute
   '/settings/billing': typeof privatePrivateSettingsBillingRoute
   '/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
@@ -287,11 +285,13 @@ export interface FileRoutesByTo {
   '/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/settings/security': typeof privatePrivateSettingsSecurityRoute
   '/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
+  '/curriculum': typeof privatePrivateCurriculumIndexRoute
+  '/curriculum/$subjectId/resources': typeof privatePrivateCurriculumSubjectIdResourcesRoute
+  '/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/maintenance': typeof MaintenanceRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
@@ -307,7 +307,6 @@ export interface FileRoutesById {
   '/(private)/_private/class-requests': typeof privatePrivateClassRequestsRoute
   '/(private)/_private/compliance': typeof privatePrivateComplianceRoute
   '/(private)/_private/create-password': typeof privatePrivateCreatePasswordRoute
-  '/(private)/_private/curriculum': typeof privatePrivateCurriculumRouteWithChildren
   '/(private)/_private/my-subjects': typeof privatePrivateMySubjectsRoute
   '/(private)/_private/schedule': typeof privatePrivateScheduleRoute
   '/(private)/_private/settings': typeof privatePrivateSettingsRouteWithChildren
@@ -315,7 +314,6 @@ export interface FileRoutesById {
   '/(private)/_private/': typeof privatePrivateIndexRoute
   '/(auth)/_auth/account-recovery/magic-link': typeof authAuthAccountRecoveryMagicLinkRoute
   '/(auth)/mfa/_mfa/verify-code': typeof authMfaMfaVerifyCodeRoute
-  '/(private)/_private/curriculum/$subjectId': typeof privatePrivateCurriculumSubjectIdRoute
   '/(private)/_private/settings/account': typeof privatePrivateSettingsAccountRoute
   '/(private)/_private/settings/billing': typeof privatePrivateSettingsBillingRoute
   '/(private)/_private/settings/child-accounts': typeof privatePrivateSettingsChildAccountsRoute
@@ -323,12 +321,14 @@ export interface FileRoutesById {
   '/(private)/_private/settings/profile': typeof privatePrivateSettingsProfileRoute
   '/(private)/_private/settings/security': typeof privatePrivateSettingsSecurityRoute
   '/(private)/_private/settings/teaching-subjects': typeof privatePrivateSettingsTeachingSubjectsRoute
+  '/(private)/_private/curriculum/': typeof privatePrivateCurriculumIndexRoute
+  '/(private)/_private/curriculum/$subjectId/resources': typeof privatePrivateCurriculumSubjectIdResourcesRoute
+  '/(private)/_private/curriculum/$subjectId/': typeof privatePrivateCurriculumSubjectIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/maintenance'
-    | '/privacy-policy'
     | '/terms-of-service'
     | '/about'
     | '/account-recovery'
@@ -342,7 +342,6 @@ export interface FileRouteTypes {
     | '/class-requests'
     | '/compliance'
     | '/create-password'
-    | '/curriculum'
     | '/my-subjects'
     | '/schedule'
     | '/settings'
@@ -350,7 +349,6 @@ export interface FileRouteTypes {
     | '/'
     | '/account-recovery/magic-link'
     | '/mfa/verify-code'
-    | '/curriculum/$subjectId'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/child-accounts'
@@ -358,10 +356,12 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/settings/security'
     | '/settings/teaching-subjects'
+    | '/curriculum'
+    | '/curriculum/$subjectId/resources'
+    | '/curriculum/$subjectId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/maintenance'
-    | '/privacy-policy'
     | '/terms-of-service'
     | '/about'
     | '/account-recovery'
@@ -375,7 +375,6 @@ export interface FileRouteTypes {
     | '/class-requests'
     | '/compliance'
     | '/create-password'
-    | '/curriculum'
     | '/my-subjects'
     | '/schedule'
     | '/settings'
@@ -383,7 +382,6 @@ export interface FileRouteTypes {
     | '/'
     | '/account-recovery/magic-link'
     | '/mfa/verify-code'
-    | '/curriculum/$subjectId'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/child-accounts'
@@ -391,10 +389,12 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/settings/security'
     | '/settings/teaching-subjects'
+    | '/curriculum'
+    | '/curriculum/$subjectId/resources'
+    | '/curriculum/$subjectId'
   id:
     | '__root__'
     | '/maintenance'
-    | '/privacy-policy'
     | '/terms-of-service'
     | '/(auth)/_auth'
     | '/(private)/_private'
@@ -410,7 +410,6 @@ export interface FileRouteTypes {
     | '/(private)/_private/class-requests'
     | '/(private)/_private/compliance'
     | '/(private)/_private/create-password'
-    | '/(private)/_private/curriculum'
     | '/(private)/_private/my-subjects'
     | '/(private)/_private/schedule'
     | '/(private)/_private/settings'
@@ -418,7 +417,6 @@ export interface FileRouteTypes {
     | '/(private)/_private/'
     | '/(auth)/_auth/account-recovery/magic-link'
     | '/(auth)/mfa/_mfa/verify-code'
-    | '/(private)/_private/curriculum/$subjectId'
     | '/(private)/_private/settings/account'
     | '/(private)/_private/settings/billing'
     | '/(private)/_private/settings/child-accounts'
@@ -426,11 +424,13 @@ export interface FileRouteTypes {
     | '/(private)/_private/settings/profile'
     | '/(private)/_private/settings/security'
     | '/(private)/_private/settings/teaching-subjects'
+    | '/(private)/_private/curriculum/'
+    | '/(private)/_private/curriculum/$subjectId/resources'
+    | '/(private)/_private/curriculum/$subjectId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   MaintenanceRoute: typeof MaintenanceRoute
-  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   authAuthRoute: typeof authAuthRouteWithChildren
   privatePrivateRoute: typeof privatePrivateRouteWithChildren
@@ -444,13 +444,6 @@ declare module '@tanstack/react-router' {
       path: '/terms-of-service'
       fullPath: '/terms-of-service'
       preLoaderRoute: typeof TermsOfServiceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/maintenance': {
@@ -507,13 +500,6 @@ declare module '@tanstack/react-router' {
       path: '/my-subjects'
       fullPath: '/my-subjects'
       preLoaderRoute: typeof privatePrivateMySubjectsRouteImport
-      parentRoute: typeof privatePrivateRoute
-    }
-    '/(private)/_private/curriculum': {
-      id: '/(private)/_private/curriculum'
-      path: '/curriculum'
-      fullPath: '/curriculum'
-      preLoaderRoute: typeof privatePrivateCurriculumRouteImport
       parentRoute: typeof privatePrivateRoute
     }
     '/(private)/_private/create-password': {
@@ -600,6 +586,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authAuthAboutRouteImport
       parentRoute: typeof authAuthRoute
     }
+    '/(private)/_private/curriculum/': {
+      id: '/(private)/_private/curriculum/'
+      path: '/curriculum'
+      fullPath: '/curriculum'
+      preLoaderRoute: typeof privatePrivateCurriculumIndexRouteImport
+      parentRoute: typeof privatePrivateRoute
+    }
     '/(private)/_private/settings/teaching-subjects': {
       id: '/(private)/_private/settings/teaching-subjects'
       path: '/teaching-subjects'
@@ -649,13 +642,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privatePrivateSettingsAccountRouteImport
       parentRoute: typeof privatePrivateSettingsRoute
     }
-    '/(private)/_private/curriculum/$subjectId': {
-      id: '/(private)/_private/curriculum/$subjectId'
-      path: '/$subjectId'
-      fullPath: '/curriculum/$subjectId'
-      preLoaderRoute: typeof privatePrivateCurriculumSubjectIdRouteImport
-      parentRoute: typeof privatePrivateCurriculumRoute
-    }
     '/(auth)/mfa/_mfa/verify-code': {
       id: '/(auth)/mfa/_mfa/verify-code'
       path: '/mfa/verify-code'
@@ -669,6 +655,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/account-recovery/magic-link'
       preLoaderRoute: typeof authAuthAccountRecoveryMagicLinkRouteImport
       parentRoute: typeof authAuthAccountRecoveryRoute
+    }
+    '/(private)/_private/curriculum/$subjectId/': {
+      id: '/(private)/_private/curriculum/$subjectId/'
+      path: '/curriculum/$subjectId'
+      fullPath: '/curriculum/$subjectId'
+      preLoaderRoute: typeof privatePrivateCurriculumSubjectIdIndexRouteImport
+      parentRoute: typeof privatePrivateRoute
+    }
+    '/(private)/_private/curriculum/$subjectId/resources': {
+      id: '/(private)/_private/curriculum/$subjectId/resources'
+      path: '/curriculum/$subjectId/resources'
+      fullPath: '/curriculum/$subjectId/resources'
+      preLoaderRoute: typeof privatePrivateCurriculumSubjectIdResourcesRouteImport
+      parentRoute: typeof privatePrivateRoute
     }
   }
 }
@@ -714,21 +714,6 @@ const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
   authAuthRouteChildren,
 )
 
-interface privatePrivateCurriculumRouteChildren {
-  privatePrivateCurriculumSubjectIdRoute: typeof privatePrivateCurriculumSubjectIdRoute
-}
-
-const privatePrivateCurriculumRouteChildren: privatePrivateCurriculumRouteChildren =
-  {
-    privatePrivateCurriculumSubjectIdRoute:
-      privatePrivateCurriculumSubjectIdRoute,
-  }
-
-const privatePrivateCurriculumRouteWithChildren =
-  privatePrivateCurriculumRoute._addFileChildren(
-    privatePrivateCurriculumRouteChildren,
-  )
-
 interface privatePrivateSettingsRouteChildren {
   privatePrivateSettingsAccountRoute: typeof privatePrivateSettingsAccountRoute
   privatePrivateSettingsBillingRoute: typeof privatePrivateSettingsBillingRoute
@@ -763,12 +748,14 @@ interface privatePrivateRouteChildren {
   privatePrivateClassRequestsRoute: typeof privatePrivateClassRequestsRoute
   privatePrivateComplianceRoute: typeof privatePrivateComplianceRoute
   privatePrivateCreatePasswordRoute: typeof privatePrivateCreatePasswordRoute
-  privatePrivateCurriculumRoute: typeof privatePrivateCurriculumRouteWithChildren
   privatePrivateMySubjectsRoute: typeof privatePrivateMySubjectsRoute
   privatePrivateScheduleRoute: typeof privatePrivateScheduleRoute
   privatePrivateSettingsRoute: typeof privatePrivateSettingsRouteWithChildren
   privatePrivateWelcomeRoute: typeof privatePrivateWelcomeRoute
   privatePrivateIndexRoute: typeof privatePrivateIndexRoute
+  privatePrivateCurriculumIndexRoute: typeof privatePrivateCurriculumIndexRoute
+  privatePrivateCurriculumSubjectIdResourcesRoute: typeof privatePrivateCurriculumSubjectIdResourcesRoute
+  privatePrivateCurriculumSubjectIdIndexRoute: typeof privatePrivateCurriculumSubjectIdIndexRoute
 }
 
 const privatePrivateRouteChildren: privatePrivateRouteChildren = {
@@ -776,12 +763,16 @@ const privatePrivateRouteChildren: privatePrivateRouteChildren = {
   privatePrivateClassRequestsRoute: privatePrivateClassRequestsRoute,
   privatePrivateComplianceRoute: privatePrivateComplianceRoute,
   privatePrivateCreatePasswordRoute: privatePrivateCreatePasswordRoute,
-  privatePrivateCurriculumRoute: privatePrivateCurriculumRouteWithChildren,
   privatePrivateMySubjectsRoute: privatePrivateMySubjectsRoute,
   privatePrivateScheduleRoute: privatePrivateScheduleRoute,
   privatePrivateSettingsRoute: privatePrivateSettingsRouteWithChildren,
   privatePrivateWelcomeRoute: privatePrivateWelcomeRoute,
   privatePrivateIndexRoute: privatePrivateIndexRoute,
+  privatePrivateCurriculumIndexRoute: privatePrivateCurriculumIndexRoute,
+  privatePrivateCurriculumSubjectIdResourcesRoute:
+    privatePrivateCurriculumSubjectIdResourcesRoute,
+  privatePrivateCurriculumSubjectIdIndexRoute:
+    privatePrivateCurriculumSubjectIdIndexRoute,
 }
 
 const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
