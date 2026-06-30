@@ -66,6 +66,11 @@ const CurriculumServices = {
     const response = await api.put('curriculum/selection', { json: params });
     return response.json();
   },
+
+  deleteCurriculumItem: async (id: string): Promise<{ message: string }> => {
+    const response = await api.delete(`curriculum/${id}`);
+    return response.json();
+  },
 };
 
 export default CurriculumServices;
