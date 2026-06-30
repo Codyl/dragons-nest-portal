@@ -343,6 +343,7 @@ function ActivitiesSection({
   const [conceptId, setConceptId] = useState('');
   const [difficulty, setDifficulty] = useState<'' | 'Easy' | 'Medium' | 'Hard'>('');
   const [timeSpentMinutes, setTimeSpentMinutes] = useState(30);
+  const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const activities = activitiesRes?.data ?? [];
@@ -377,6 +378,7 @@ function ActivitiesSection({
         conceptId,
         difficulty: difficulty as 'Easy' | 'Medium' | 'Hard',
         timeSpentMinutes,
+        ...(notes.trim() && { notes: notes.trim() }),
       },
       {
         onSuccess: () => {
@@ -385,6 +387,7 @@ function ActivitiesSection({
           setConceptId('');
           setDifficulty('');
           setTimeSpentMinutes(30);
+          setNotes('');
         },
         onError: (err) => {
           toast.error(
@@ -536,6 +539,19 @@ function ActivitiesSection({
               <p className="mt-1 text-xs text-destructive">{errors.timeSpentMinutes}</p>
             )}
           </div>
+          <div>
+            <label className="mb-1 flex items-center gap-1.5 text-xs text-muted-foreground" htmlFor="activity-notes">
+              Notes (optional)
+            </label>
+            <textarea
+              id="activity-notes"
+              className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
+              rows={2}
+              placeholder="Any notes about this session…"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </div>
           <Button type="submit" size="sm" disabled={createActivity.isPending}>
             {createActivity.isPending ? 'Saving…' : 'Save Activity'}
           </Button>
@@ -636,6 +652,9 @@ function ActivitiesSection({
                     <span>3h+</span>
                   </div>
                 </div>
+                {activity.notes && (
+                  <p className="text-sm text-muted-foreground italic">{activity.notes}</p>
+                )}
               </div>
             );
           })}

@@ -14,6 +14,7 @@ export type Activity = {
   conceptName: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   timeSpentMinutes: number;
+  notes?: string;
 };
 
 export type CreateActivityDto = {
@@ -23,6 +24,7 @@ export type CreateActivityDto = {
   conceptId: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   timeSpentMinutes: number;
+  notes?: string;
 };
 
 const ActivitiesServices = {
