@@ -8,12 +8,12 @@ import CheckboxField from '../fields/checkbox-field';
 import SelectField from '../fields/select-field';
 import { HOMESCHOOL_GRADE_ORDINAL_OPTIONS } from '@/lib/homeschool-options';
 import {
-  newStudentRow,
-  type PendingStudentDraft,
-} from '@/lib/pending-student-draft';
+  newManagedUserRow,
+  type PendingManagedUserDraft,
+} from '@/lib/pending-managed-user-draft';
 
-export type { PendingStudentDraft } from '@/lib/pending-student-draft';
-export { newStudentRow } from '@/lib/pending-student-draft';
+export type { PendingManagedUserDraft } from '@/lib/pending-managed-user-draft';
+export { newManagedUserRow } from '@/lib/pending-managed-user-draft';
 
 function nameInitial(displayName: string): string {
   const t = displayName.trim();
@@ -22,15 +22,15 @@ function nameInitial(displayName: string): string {
 }
 
 const SignupAddStudentsStep = ({
-  students,
+  managedUsers,
   onChange,
   onFinish,
   onBack,
   hideHeader = false,
   showAdultGuardianAttestation = false,
 }: {
-  students: PendingStudentDraft[];
-  onChange: (next: PendingStudentDraft[]) => void;
+  managedUsers: PendingManagedUserDraft[];
+  onChange: (next: PendingManagedUserDraft[]) => void;
   onFinish: () => void;
   onBack: () => void;
   isSubmitting?: boolean;
@@ -43,19 +43,19 @@ const SignupAddStudentsStep = ({
 }) => {
   const accountSetupCtx = useOptionalAccountSetupForm();
   const updateRow = useCallback(
-    (id: string, patch: Partial<PendingStudentDraft>) => {
-      onChange(students.map((s) => (s.id === id ? { ...s, ...patch } : s)));
+    (id: string, patch: Partial<PendingManagedUserDraft>) => {
+      onChange(managedUsers.map((s) => (s.id === id ? { ...s, ...patch } : s)));
     },
-    [students, onChange],
+    [managedUsers, onChange],
   );
 
   const removeRow = (id: string) => {
-    if (students.length <= 1) return;
-    onChange(students.filter((s) => s.id !== id));
+    if (managedUsers.length <= 1) return;
+    onChange(managedUsers.filter((s) => s.id !== id));
   };
 
   const addRow = () => {
-    onChange([...students, newStudentRow()]);
+    onChange([...managedUsers, newManagedUserRow()]);
   };
 
   const GuardianDutyFormField =
@@ -78,13 +78,13 @@ const SignupAddStudentsStep = ({
       )}
 
       <div className="max-h-[min(28rem,70vh)] space-y-4 overflow-y-auto pr-1">
-        {students.map((s) => (
+        {managedUsers.map((s) => (
           <div
             key={s.id}
             className="bg-card text-card-foreground relative rounded-xl border p-4 shadow-xs"
             data-testid={`student-card-${s.id}`}
           >
-            {students.length > 1 && (
+            {managedUsers.length > 1 && (
               <Button
                 type="button"
                 variant="ghost"
@@ -185,7 +185,7 @@ const SignupAddStudentsStep = ({
           variant="outline"
           className="h-11 shrink-0 rounded-xl border-stone-300 bg-white px-5 font-medium text-stone-900 hover:bg-stone-50"
           onClick={onBack}
-          data-testid="add-students-back"
+          data-testid="add-managedUsers-back"
         >
           Back
         </Button>

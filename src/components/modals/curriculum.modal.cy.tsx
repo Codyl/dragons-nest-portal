@@ -7,12 +7,12 @@
  *   POST /curriculum/upload (useUploadCurriculumItem) network calls.
  * - The profile GET /profile is already intercepted in the global beforeEach
  *   (cypress/support/component.tsx) and returns a household _id.
- * - StudentProvider is included so useStudent() resolves without throwing.
+ * - ManagedUserProvider is included so useManagedUser() resolves without throwing.
  * - SubjectCard is mounted directly so the Cog button interaction is tested
  *   end-to-end (Req 1.1).
  */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StudentProvider } from '@/contexts/student-context';
+import { ManagedUserProvider } from '@/contexts/managed-user-context';
 import SubjectCard from '@/components/cards/subject-card';
 import type { Subject } from '@/api/services/subjects.services';
 
@@ -62,9 +62,9 @@ function mountSubjectCard() {
 
   cy.mount(
     <QueryClientProvider client={queryClient}>
-      <StudentProvider>
+      <ManagedUserProvider>
         <SubjectCard subjectId={subject._id} subjectName={subject.name} teacherName="Teacher" />
-      </StudentProvider>
+      </ManagedUserProvider>
     </QueryClientProvider>,
   );
 }

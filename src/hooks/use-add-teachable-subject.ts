@@ -4,13 +4,13 @@ import {
   type UseMutationResult,
 } from '@tanstack/react-query';
 import ProfileServices, {
-  type TeachableCourseWithEnrollment,
+  type TeachableSubjectWithEnrollment,
 } from '@/api/services/profile.services';
 
-const useAddTeachableCourse = (): UseMutationResult<
+const useAddTeachableSubject = (): UseMutationResult<
   {
     message: string;
-    data: { teachableCourses: TeachableCourseWithEnrollment[] };
+    data: { teachableCourses: TeachableSubjectWithEnrollment[] };
   },
   Error,
   {
@@ -25,11 +25,11 @@ const useAddTeachableCourse = (): UseMutationResult<
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ProfileServices.addTeachableCourse,
+    mutationFn: ProfileServices.addTeachableSubject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },
   });
 };
 
-export default useAddTeachableCourse;
+export default useAddTeachableSubject;

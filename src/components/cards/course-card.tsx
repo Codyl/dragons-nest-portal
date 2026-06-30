@@ -1,5 +1,5 @@
 import type { Subject } from '@/api/services/subjects.services';
-import type { TeachableCourseWithEnrollment } from '@/api/services/profile.services';
+import type { TeachableSubjectWithEnrollment } from '@/api/services/profile.services';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,7 +11,7 @@ import {
 import { HOMESCHOOL_CURRICULUM_OPTIONS } from '@/lib/homeschool-options';
 
 type CourseCardProps = {
-  course: TeachableCourseWithEnrollment;
+  course: TeachableSubjectWithEnrollment;
   index: number;
   subjects: Subject[];
   onRemove: (index: number) => void;

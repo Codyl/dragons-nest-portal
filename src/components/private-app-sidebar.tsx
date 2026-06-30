@@ -36,7 +36,7 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { StudentSelector } from '@/components/student-selector';
-import { useStudent } from '@/contexts/student-context';
+import { useManagedUser } from '@/contexts/managed-user-context';
 
 const studentNavTabs = [
   { to: '/curriculum' as string, label: 'Curriculum', icon: BookOpen },
@@ -93,7 +93,7 @@ export function PrivateAppSidebar() {
   const user = userRes?.data;
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  const { activeStudent, students, setActiveStudent, isLoading } = useStudent();
+  const { activeManagedUser, managedUsers, setActiveManagedUser, isLoading } = useManagedUser();
 
   const displayName = user ? profileLabel(user) : '…';
   const email = user?.email ?? '';
@@ -113,12 +113,12 @@ export function PrivateAppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {activeStudent !== null ? (
+        {activeManagedUser !== null ? (
           <SidebarGroup>
             <SidebarGroupLabel>
               <button
                 type="button"
-                onClick={() => setActiveStudent(null)}
+                onClick={() => setActiveManagedUser(null)}
                 className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Back to my view"
               >
@@ -179,7 +179,7 @@ export function PrivateAppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <StudentSelector
-              students={students}
+              managedUsers={managedUsers}
               isLoading={isLoading}
             />
           </SidebarMenuItem>

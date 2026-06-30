@@ -1,6 +1,6 @@
 import { UserRound, X } from 'lucide-react';
 
-import type { HouseholdStudentProfile } from '@/api/services/profile.services';
+import type { ManagedUserProfile } from '@/api/services/profile.services';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,
@@ -15,11 +15,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useSidebar } from '@/components/ui/sidebar';
-import { useStudent } from '@/contexts/student-context';
+import { useManagedUser } from '@/contexts/managed-user-context';
 import { useNavigate } from '@tanstack/react-router';
 
 interface StudentSelectorProps {
-  students: HouseholdStudentProfile[];
+  managedUsers: ManagedUserProfile[];
   isLoading?: boolean;
 }
 
@@ -37,11 +37,11 @@ function getInitials(displayName: string): string {
 }
 
 export function StudentSelector({
-  students,
+  managedUsers,
   isLoading = false,
 }: StudentSelectorProps) {
   const { state } = useSidebar();
-  const {activeStudent, setActiveStudent} = useStudent();
+  const {activeManagedUser, setActiveManagedUser} = useManagedUser();
   const navigate = useNavigate()
   const isCollapsed = state === 'collapsed';
 
@@ -53,13 +53,13 @@ export function StudentSelector({
   // Collapsed sidebar mode — show initials or UserRound icon as tooltip trigger
   // Requirements 2.8
   if (isCollapsed) {
-    const triggerLabel = activeStudent
-      ? getInitials(activeStudent.displayName)
+    const triggerLabel = activeManagedUser
+      ? getInitials(activeManagedUser.displayName)
       : null;
 
-    const tooltipText = activeStudent
-      ? activeStudent.displayName
-      : 'Select a student';
+    const tooltipText = activeManagedUser
+      ? activeManagedUser.displayName
+      : 'Select a managedUser';
 
     return (
       <div className="flex items-center gap-1">
@@ -81,13 +81,13 @@ export function StudentSelector({
             {tooltipText}
           </TooltipContent>
         </Tooltip>
-        {activeStudent && (
+        {activeManagedUser && (
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 type="button"
                 aria-label="Back to my view"
-                onClick={() => setActiveStudent(null)}
+                onClick={() => setActiveManagedUser(null)}
                 className="flex size-6 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
                 <X className="size-3" />
@@ -102,12 +102,12 @@ export function StudentSelector({
     );
   }
 
-  // Requirements 2.6, 8.3 — no students available
-  if (students.length === 0) {
+  // Requirements 2.6, 8.3 — no managedUsers available
+  if (managedUsers.length === 0) {
     return (
       <Select disabled>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="No students available" />
+          <SelectValue placeholder="No managedUsers available" />
         </SelectTrigger>
         <SelectContent>
           {/* empty — disabled select has no options */}
@@ -116,42 +116,42 @@ export function StudentSelector({
     );
   }
 
-  // Requirements 2.3, 2.4, 2.5 — normal select with students
+  // Requirements 2.3, 2.4, 2.5 — normal select with managedUsers
   return (
     <Select
-      value={activeStudent?.studentId ?? ''}
+      value={activeManagedUser?.studentId ?? ''}
       onValueChange={(value) => {
         if (value === '__my_view__') {
-          setActiveStudent(null);
+          setActiveManagedUser(null);
           navigate({to: '/'})
           return;
         }
 
-        const student = students.find((s) => s.studentId === value);
-        if (student) {
-          setActiveStudent(student);
+        const managedUser = managedUsers.find((s) => s.studentId === value);
+        if (managedUser) {
+          setActiveManagedUser(managedUser);
           navigate({to: '/curriculum'})
         }
       }}
     >
       <SelectTrigger className="w-full">
-        {/* Requirements 2.4 — placeholder when no student selected */}
-        {/* Requirements 2.3 — show displayName when student is selected */}
-        <SelectValue placeholder="Select a student">
-          {activeStudent ? activeStudent.displayName : undefined}
+        {/* Requirements 2.4 — placeholder when no managedUser selected */}
+        {/* Requirements 2.3 — show displayName when managedUser is selected */}
+        <SelectValue placeholder="Select a managedUser">
+          {activeManagedUser ? activeManagedUser.displayName : undefined}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
         {/* Deselect option — returns to parent view */}
-        {activeStudent && (
+        {activeManagedUser && (
           <SelectItem value="__my_view__">
             <span className="text-muted-foreground">← My view</span>
           </SelectItem>
         )}
-        {/* Requirements 2.2 — render an option for each student */}
-        {students.map((student) => (
-          <SelectItem key={student.studentId} value={student.studentId}>
-            {student.displayName}
+        {/* Requirements 2.2 — render an option for each managedUser */}
+        {managedUsers.map((managedUser) => (
+          <SelectItem key={managedUser.studentId} value={managedUser.studentId}>
+            {managedUser.displayName}
           </SelectItem>
         ))}
       </SelectContent>

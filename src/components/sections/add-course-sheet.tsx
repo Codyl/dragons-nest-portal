@@ -15,7 +15,7 @@ import {
   SheetFooter,
 } from '@/components/ui/sheet';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import useAddTeachableCourse from '@/hooks/use-add-teachable-course';
+import useAddTeachableSubject from '@/hooks/use-add-teachable-subject';
 import {
   HOMESCHOOL_CURRICULUM_OPTIONS,
   HOMESCHOOL_GRADE_OPTIONS,
@@ -70,7 +70,7 @@ const AddCourseSheet = ({
   subjects,
 }: AddCourseSheetProps) => {
   const [form, setForm] = useState<FormState>(emptyForm());
-  const mutation = useAddTeachableCourse();
+  const mutation = useAddTeachableSubject();
 
   const selectedSubject = subjects.find((s) => s._id === form.subjectId);
   const subjectResolved = Boolean(

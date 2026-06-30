@@ -33,7 +33,7 @@ const PromotionNudgeBanner = () => {
   }, [isAugust, user, dismissedIds, calendarYear]);
 
   const promote = useMutation({
-    mutationFn: (id: string) => ProfileServices.promoteHouseholdStudent(id),
+    mutationFn: (id: string) => ProfileServices.promoteManagedUser(id),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },

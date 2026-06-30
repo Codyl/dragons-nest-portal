@@ -21,7 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useStudent } from '@/contexts/student-context';
+import { useManagedUser } from '@/contexts/managed-user-context';
 import useCurriculumItems from '@/hooks/use-curriculum-items';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useUploadCurriculumItem from '@/hooks/use-upload-curriculum-item';
@@ -50,11 +50,11 @@ const CurriculumModal = ({
   onOpenChange,
 }: CurriculumModalProps) => {
   const { data: profileData } = useLoggedInUser();
-  const { activeStudent } = useStudent();
+  const { activeManagedUser } = useManagedUser();
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const studentId = activeStudent?.studentId ?? null;
+  const studentId = activeManagedUser?.studentId ?? null;
   const householdId = profileData?.data?._id ?? '';
 
   const [dragOver, setDragOver] = useState(false);

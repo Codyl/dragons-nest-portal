@@ -1,8 +1,8 @@
 import { useAccountSetupForm } from '@/components/forms/account-setup.form';
 import SignupAddStudentsStep, {
-  newStudentRow,
+  newManagedUserRow,
 } from '@/components/forms/signup-add-students.step';
-import type { PendingStudentDraft } from '@/components/forms/signup-add-students.step';
+import type { PendingManagedUserDraft } from '@/components/forms/signup-add-students.step';
 import { Users } from 'lucide-react';
 import AccountSetupCard from '@/components/cards/account-setup-card';
 
@@ -24,15 +24,15 @@ const AccountSetupAddStudentsStep = ({
     >
       <form.Field name="pendingStudents">
         {(field) => {
-          const students = (field.state.value as
-            | PendingStudentDraft[]
-            | undefined) ?? [newStudentRow()];
+          const managedUsers = (field.state.value as
+            | PendingManagedUserDraft[]
+            | undefined) ?? [newManagedUserRow()];
 
-          const setStudents = (next: PendingStudentDraft[]) => {
+          const setManagedUsers = (next: PendingManagedUserDraft[]) => {
             field.handleChange(next);
           };
 
-          const allValid = students.every((s) => {
+          const allValid = managedUsers.every((s) => {
             const g = Number.parseInt(s.currentGradeOrdinal, 10);
             return (
               s.displayName.trim().length > 0 &&
@@ -59,8 +59,8 @@ const AccountSetupAddStudentsStep = ({
 
           return (
             <SignupAddStudentsStep
-              students={students}
-              onChange={setStudents}
+              managedUsers={managedUsers}
+              onChange={setManagedUsers}
               onFinish={tryContinue}
               onBack={onBack}
               isSubmitting={false}

@@ -10,8 +10,8 @@ export type PasskeyListItem = {
   lastUsedAt: string | null;
 };
 
-export type HouseholdStudentProfile = {
-  studentId: string;
+export type ManagedUserProfile = {
+  studentId: string; // ponytail: wire name kept for API compat; represents managedUserId
   displayName: string;
   currentGrade: number;
   lastPromotionYear: number;
@@ -19,15 +19,15 @@ export type HouseholdStudentProfile = {
 };
 
 /** Full list of drafts including archived rows (from `managedAccountsViewAll`). */
-export type HouseholdStudentDraftAll = HouseholdStudentProfile;
+export type ManagedUserDraftAll = ManagedUserProfile;
 
-export type TeachableCourseWithEnrollment = {
-  className: string;
+export type TeachableSubjectWithEnrollment = {
+  className: string; // ponytail: wire name kept for API compat; represents displayName
   subjectId: string;
   matchesAllGrades: boolean;
   grades: string[];
   curriculum: string;
-  maxStudents: number;
+  maxStudents: number; // ponytail: wire name kept; represents maxManagedUsers
   activeEnrollmentCount: number;
 };
 
@@ -52,9 +52,9 @@ export type ProfileUserData = {
   accountStatus?: 'MANAGED' | 'INDEPENDENT' | 'ADULT' | null;
   accountType?: string | null;
   ageBandAtRegistration?: string | null;
-  householdStudents?: HouseholdStudentProfile[];
-  managedAccountsViewAll?: HouseholdStudentDraftAll[];
-  teachableCourses?: TeachableCourseWithEnrollment[];
+  householdStudents?: ManagedUserProfile[];
+  managedAccountsViewAll?: ManagedUserDraftAll[];
+  teachableCourses?: TeachableSubjectWithEnrollment[];
 };
 
 export type KnownDevice = {
@@ -70,7 +70,7 @@ export type KnownDevice = {
   isCurrentDevice: boolean;
 };
 
-export type StudentEnrolledClass = {
+export type ManagedUserEnrolledSubject = {
   subjectId: string | null;
   curriculumId: string | null;
   hoursCompleted: number;
@@ -136,11 +136,11 @@ const ProfileServices = {
     });
     return response.json();
   },
-  promoteHouseholdStudent: async (
+  promoteManagedUser: async (
     studentId: string,
   ): Promise<{
     message: string;
-    data: HouseholdStudentProfile;
+    data: ManagedUserProfile;
   }> => {
     const response = await api.patch(
       `profile/household-students/${encodeURIComponent(studentId)}/promote`,
@@ -271,7 +271,7 @@ const ProfileServices = {
     });
     return response.json();
   },
-  addTeachableCourse: async (json: {
+  addTeachableSubject: async (json: {
     className: string;
     subjectId: string;
     matchesAllGrades: boolean;
@@ -280,35 +280,35 @@ const ProfileServices = {
     maxStudents: number;
   }): Promise<{
     message: string;
-    data: { teachableCourses: TeachableCourseWithEnrollment[] };
+    data: { teachableCourses: TeachableSubjectWithEnrollment[] };
   }> => {
     const response = await api.patch('profile/teachable-courses', { json });
     return response.json();
   },
-  removeTeachableCourse: async (
+  removeTeachableSubject: async (
     index: number,
   ): Promise<{
     message: string;
-    data: { teachableCourses: TeachableCourseWithEnrollment[] };
+    data: { teachableCourses: TeachableSubjectWithEnrollment[] };
   }> => {
     const response = await api.delete(`profile/teachable-courses/${index}`);
     return response.json();
   },
-  addHouseholdStudent: async (json: {
+  addManagedUser: async (json: {
     displayName: string;
     currentGrade: number;
   }): Promise<{
     message: string;
-    data: { managedAccountsView: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: ManagedUserDraftAll[] };
   }> => {
     const response = await api.post('profile/household-students', { json });
     return response.json();
   },
-  archiveHouseholdStudent: async (
+  archiveManagedUser: async (
     studentId: string,
   ): Promise<{
     message: string;
-    data: { managedAccountsView: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: ManagedUserDraftAll[] };
   }> => {
     const response = await api.patch(
       `profile/household-students/${encodeURIComponent(studentId)}/archive`,
@@ -316,11 +316,11 @@ const ProfileServices = {
     );
     return response.json();
   },
-  restoreHouseholdStudent: async (
+  restoreManagedUser: async (
     studentId: string,
   ): Promise<{
     message: string;
-    data: { managedAccountsView: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: ManagedUserDraftAll[] };
   }> => {
     const response = await api.patch(
       `profile/household-students/${encodeURIComponent(studentId)}/restore`,
@@ -328,18 +328,18 @@ const ProfileServices = {
     );
     return response.json();
   },
-  getStudentClasses: async (
+  getManagedUserSubjects: async (
     studentId: string,
   ): Promise<{
     message: string;
-    data: StudentEnrolledClass[];
+    data: ManagedUserEnrolledSubject[];
   }> => {
     const response = await api.get(
       `profile/household-students/${encodeURIComponent(studentId)}/classes`,
     );
     return response.json();
   },
-  addSubjectToStudent: async (
+  addSubjectToManagedUser: async (
     studentId: string,
     subjectId: string,
   ): Promise<{

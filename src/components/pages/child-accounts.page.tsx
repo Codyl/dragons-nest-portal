@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import type { HouseholdStudentDraftAll } from '@/api/services/profile.services';
+import type { ManagedUserDraftAll } from '@/api/services/profile.services';
 import StudentDraftCard from '@/components/cards/student-draft-card';
 import AddStudentSheet from '@/components/sections/add-student-sheet';
 import RemoveConfirmDialog from '@/components/modals/remove-confirm-dialog';
 import { Button } from '@/components/ui/button';
-import useArchiveHouseholdStudent from '@/hooks/use-archive-household-student';
+import useArchiveManagedUser from '@/hooks/use-archive-managed-user';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
-import useRestoreHouseholdStudent from '@/hooks/use-restore-household-student';
+import useRestoreManagedUser from '@/hooks/use-restore-managed-user';
 
 const ChildAccountsPage = () => {
   const [addSheetOpen, setAddSheetOpen] = useState(false);
@@ -14,10 +14,10 @@ const ChildAccountsPage = () => {
   const [actionError, setActionError] = useState<string | null>(null);
 
   const profileQuery = useLoggedInUser();
-  const archiveMutation = useArchiveHouseholdStudent();
-  const restoreMutation = useRestoreHouseholdStudent();
+  const archiveMutation = useArchiveManagedUser();
+  const restoreMutation = useRestoreManagedUser();
 
-  const allDrafts: HouseholdStudentDraftAll[] =
+  const allDrafts: ManagedUserDraftAll[] =
     profileQuery.data?.data?.managedAccountsViewAll ?? [];
   const activeDrafts = allDrafts.filter((d) => !d.archivedAt);
   const archivedDrafts = allDrafts.filter((d) => Boolean(d.archivedAt));

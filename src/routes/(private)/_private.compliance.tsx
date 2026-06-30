@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useStudent } from '@/contexts/student-context';
+import { useManagedUser } from '@/contexts/managed-user-context';
 
 export const Route = createFileRoute('/(private)/_private/compliance')({
   head: () => ({
@@ -9,18 +9,18 @@ export const Route = createFileRoute('/(private)/_private/compliance')({
 });
 
 function ComplianceRoute() {
-  const { activeStudent } = useStudent();
+  const { activeManagedUser } = useManagedUser();
 
   return (
     <div className="p-2">
       <h2 className="text-2xl font-bold">Compliance</h2>
-      {activeStudent && (
+      {activeManagedUser && (
         <p className="text-muted-foreground">
-          Viewing compliance for {activeStudent.displayName}
+          Viewing compliance for {activeManagedUser.displayName}
         </p>
       )}
       {/* Future: fetch compliance data using query key:
-          ['student', activeStudent.studentId, 'compliance'] */}
+          ['student', activeManagedUser.studentId, 'compliance'] */}
       <div className="mt-6 grid gap-4">
         <section>
           <h3 className="font-semibold">Hours Tracking</h3>

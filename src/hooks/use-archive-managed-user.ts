@@ -4,13 +4,13 @@ import {
   type UseMutationResult,
 } from '@tanstack/react-query';
 import ProfileServices, {
-  type HouseholdStudentDraftAll,
+  type ManagedUserDraftAll,
 } from '@/api/services/profile.services';
 
-const useArchiveHouseholdStudent = (): UseMutationResult<
+const useArchiveManagedUser = (): UseMutationResult<
   {
     message: string;
-    data: { managedAccountsView: HouseholdStudentDraftAll[] };
+    data: { managedAccountsView: ManagedUserDraftAll[] };
   },
   Error,
   string
@@ -18,11 +18,11 @@ const useArchiveHouseholdStudent = (): UseMutationResult<
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ProfileServices.archiveHouseholdStudent,
+    mutationFn: ProfileServices.archiveManagedUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },
   });
 };
 
-export default useArchiveHouseholdStudent;
+export default useArchiveManagedUser;

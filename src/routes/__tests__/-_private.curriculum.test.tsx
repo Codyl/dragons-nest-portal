@@ -12,26 +12,26 @@ import {
 } from 'vite-plus/test';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type {
-  HouseholdStudentProfile,
-  StudentEnrolledClass,
+  ManagedUserProfile,
+  ManagedUserEnrolledSubject,
 } from '@/api/services/profile.services';
 import type { Subject } from '@/api/services/subjects.services';
-import { StudentContext } from '@/contexts/student-context';
-import useStudentClasses from '@/hooks/use-student-classes';
+import { ManagedUserContext } from '@/contexts/managed-user-context';
+import useManagedUserSubjects from '@/hooks/use-managed-user-subjects';
 import useSubjects from '@/hooks/use-subjects';
 import {
   CurriculumRoute,
   resolveEnrolledSubjects,
 } from '../(private)/_private.curriculum';
 
-vi.mock('@/hooks/use-student-classes', () => ({
+vi.mock('@/hooks/use-managed-user-subjects', () => ({
   default: vi.fn(),
 }));
 vi.mock('@/hooks/use-subjects', () => ({
   default: vi.fn(),
 }));
 
-const useStudentClassesMock = vi.mocked(useStudentClasses);
+const useStudentClassesMock = vi.mocked(useManagedUserSubjects);
 const useSubjectsMock = vi.mocked(useSubjects);
 
 const subjectFixture: Subject = {
@@ -43,7 +43,7 @@ const subjectFixture: Subject = {
   isEnrichment: false,
 };
 
-const classesFixture: StudentEnrolledClass[] = [
+const classesFixture: ManagedUserEnrolledSubject[] = [
   {
     subjectId: 'subject-1',
     curriculumId: null,
@@ -52,7 +52,7 @@ const classesFixture: StudentEnrolledClass[] = [
   },
 ];
 
-const activeStudentFixture: HouseholdStudentProfile = {
+const activeStudentFixture: ManagedUserProfile = {
   studentId: 'student-1',
   displayName: 'Taylor',
   currentGrade: 5,
@@ -60,23 +60,23 @@ const activeStudentFixture: HouseholdStudentProfile = {
 };
 
 function renderRoute(
-  activeStudent: HouseholdStudentProfile | null = activeStudentFixture,
+  activeManagedUser: ManagedUserProfile | null = activeStudentFixture,
 ) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
   return render(
     <QueryClientProvider client={queryClient}>
-      <StudentContext.Provider
+      <ManagedUserContext.Provider
         value={{
-          activeStudent,
-          setActiveStudent: vi.fn(),
-          students: [],
+          activeManagedUser,
+          setActiveManagedUser: vi.fn(),
+          managedUsers: [],
           isLoading: false,
         }}
       >
         <CurriculumRoute />
-      </StudentContext.Provider>
+      </ManagedUserContext.Provider>
     </QueryClientProvider>,
   );
 }
@@ -196,14 +196,14 @@ describe('CurriculumRoute', () => {
     expect(screen.getAllByTestId('subject-card')).toHaveLength(2);
   });
 
-  it('shows active student label when activeStudent is set', () => {
+  it('shows active student label when activeManagedUser is set', () => {
     renderRoute(activeStudentFixture);
     expect(screen.getByTestId('active-student-label').textContent).toContain(
       'Viewing curriculum for Taylor',
     );
   });
 
-  it('omits student label when activeStudent is null', () => {
+  it('omits student label when activeManagedUser is null', () => {
     renderRoute(null);
     expect(screen.queryByTestId('active-student-label')).toBeNull();
   });
@@ -249,7 +249,7 @@ function arbitrarySubject(): fc.Arbitrary<Subject> {
   });
 }
 
-function arbitraryEnrolledClass(): fc.Arbitrary<StudentEnrolledClass> {
+function arbitraryEnrolledClass(): fc.Arbitrary<ManagedUserEnrolledSubject> {
   return fc.record({
     subjectId: fc.oneof(
       fc.string({ minLength: 1, maxLength: 20 }),

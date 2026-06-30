@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import useAddHouseholdStudent from '@/hooks/use-add-household-student';
+import useAddManagedUser from '@/hooks/use-add-managed-user';
 import SelectField from '@/components/fields/select-field';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
@@ -30,7 +30,7 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
   const [displayName, setDisplayName] = useState('');
   const [gradeValue, setGradeValue] = useState('');
 
-  const mutation = useAddHouseholdStudent();
+  const mutation = useAddManagedUser();
 
   useEffect(() => {
     if (!open) return;

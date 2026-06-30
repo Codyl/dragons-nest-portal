@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import SignupAddStudentsStep, {
-  newStudentRow,
-  type PendingStudentDraft,
+  newManagedUserRow,
+  type PendingManagedUserDraft,
 } from './signup-add-students.step';
 
 function SignupAddStudentsPlayground() {
-  const [students, setStudents] = useState<PendingStudentDraft[]>([
-    newStudentRow(),
+  const [managedUsers, setManagedUsers] = useState<PendingManagedUserDraft[]>([
+    newManagedUserRow(),
   ]);
   return (
     <div className="mx-auto max-w-lg p-4">
       <SignupAddStudentsStep
-        students={students}
-        onChange={setStudents}
+        managedUsers={managedUsers}
+        onChange={setManagedUsers}
         onFinish={() => undefined}
         onBack={() => undefined}
         isSubmitting={false}

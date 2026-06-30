@@ -1,4 +1,4 @@
-import type { HouseholdStudentDraftAll } from '@/api/services/profile.services';
+import type { ManagedUserDraftAll } from '@/api/services/profile.services';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,7 +10,7 @@ import {
 import { gradeLabel } from '@/lib/grade-label';
 
 export type StudentDraftCardProps = {
-  draft: HouseholdStudentDraftAll;
+  draft: ManagedUserDraftAll;
   onArchive?: (studentId: string) => void;
   onRestore?: (studentId: string) => void;
   isArchiving?: boolean;

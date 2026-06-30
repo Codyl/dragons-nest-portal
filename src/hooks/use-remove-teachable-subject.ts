@@ -4,25 +4,25 @@ import {
   type UseMutationResult,
 } from '@tanstack/react-query';
 import ProfileServices, {
-  type HouseholdStudentDraftAll,
+  type TeachableSubjectWithEnrollment,
 } from '@/api/services/profile.services';
 
-const useAddHouseholdStudent = (): UseMutationResult<
+const useRemoveTeachableSubject = (): UseMutationResult<
   {
     message: string;
-    data: { managedAccountsView: HouseholdStudentDraftAll[] };
+    data: { teachableCourses: TeachableSubjectWithEnrollment[] };
   },
   Error,
-  { displayName: string; currentGrade: number }
+  number
 > => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ProfileServices.addHouseholdStudent,
+    mutationFn: ProfileServices.removeTeachableSubject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },
   });
 };
 
-export default useAddHouseholdStudent;
+export default useRemoveTeachableSubject;

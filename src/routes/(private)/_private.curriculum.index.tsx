@@ -2,12 +2,12 @@ import { createFileRoute } from '@tanstack/react-router';
 import type { Subject } from '@/api/services/subjects.services';
 import type {
   ProfileUserData,
-  StudentEnrolledClass,
+  ManagedUserEnrolledSubject,
 } from '@/api/services/profile.services';
 import SubjectCard from '@/components/cards/subject-card';
 import AddSubjectSheet from '@/components/sheets/add-subject-sheet';
-import { useStudent } from '@/contexts/student-context';
-import useStudentClasses from '@/hooks/use-student-classes';
+import { useManagedUser } from '@/contexts/managed-user-context';
+import useManagedUserSubjects from '@/hooks/use-managed-user-subjects';
 import useSubjects from '@/hooks/use-subjects';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useComplianceLaws from '@/hooks/use-compliance-laws';
@@ -25,7 +25,7 @@ export const Route = createFileRoute('/(private)/_private/curriculum/')({
  */
 export function resolveEnrolledSubjects(
   catalog: Subject[],
-  enrolledClasses: StudentEnrolledClass[],
+  enrolledClasses: ManagedUserEnrolledSubject[],
 ): Subject[] {
   const enrolledSubjectIds = new Set(
     enrolledClasses
@@ -43,7 +43,7 @@ export function resolveEnrolledSubjects(
  */
 export function resolveTeacherName(
   subjectId: string,
-  enrolledClasses: StudentEnrolledClass[],
+  enrolledClasses: ManagedUserEnrolledSubject[],
   profile: ProfileUserData,
 ): string {
   const enrolledClass = enrolledClasses.find((c) => c.subjectId === subjectId);
@@ -60,7 +60,7 @@ export function resolveTeacherName(
 }
 
 export function CurriculumRoute() {
-  const { activeStudent } = useStudent();
+  const { activeManagedUser } = useManagedUser();
 
   const {
     data: userResult,
@@ -91,13 +91,13 @@ export function CurriculumRoute() {
     isLoading: isClassesLoading,
     error: classesError,
     refetch: refetchClasses,
-  } = useStudentClasses(activeStudent?.studentId);
+  } = useManagedUserSubjects(activeManagedUser?.studentId);
 
   const isLoading =
     isUserLoading ||
     (!!state && isComplianceLoading) ||
     isSubjectsLoading ||
-    (!!activeStudent?.studentId && isClassesLoading);
+    (!!activeManagedUser?.studentId && isClassesLoading);
 
   const error = userError ?? complianceError ?? subjectsError ?? classesError;
 
@@ -153,9 +153,9 @@ export function CurriculumRoute() {
     <div className="space-y-4 p-2">
       <h2 className="text-2xl font-bold">Curriculum</h2>
 
-      {activeStudent?.displayName && (
+      {activeManagedUser?.displayName && (
         <p className="text-muted-foreground" data-testid="active-student-label">
-          Viewing curriculum for {activeStudent.displayName}
+          Viewing curriculum for {activeManagedUser.displayName}
         </p>
       )}
 
@@ -235,10 +235,10 @@ export function CurriculumRoute() {
         </div>
       )}
 
-      {!isLoading && !error && activeStudent && (
+      {!isLoading && !error && activeManagedUser && (
         <AddSubjectSheet
-          studentId={activeStudent.studentId}
-          studentName={activeStudent.displayName ?? ''}
+          studentId={activeManagedUser.studentId}
+          studentName={activeManagedUser.displayName ?? ''}
           enrolledSubjectIds={enrolledSubjectIds}
         />
       )}

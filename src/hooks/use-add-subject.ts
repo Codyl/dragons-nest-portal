@@ -6,7 +6,7 @@ const useAddSubject = (studentId: string) => {
 
   return useMutation({
     mutationFn: (subjectId: string) =>
-      ProfileServices.addSubjectToStudent(studentId, subjectId),
+      ProfileServices.addSubjectToManagedUser(studentId, subjectId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['student', studentId, 'classes'],

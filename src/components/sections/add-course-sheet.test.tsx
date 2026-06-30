@@ -19,7 +19,7 @@ import AddCourseSheet from './add-course-sheet';
 // Mock the mutation hook
 // ---------------------------------------------------------------------------
 
-vi.mock('@/hooks/use-add-teachable-course', () => ({
+vi.mock('@/hooks/use-add-teachable-subject', () => ({
   default: () => ({
     mutate: vi.fn(),
     isPending: false,

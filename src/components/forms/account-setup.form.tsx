@@ -17,7 +17,7 @@ import { ACCOUNT_SETUP_SESSION_KEY } from '@/constants/account-setup-session';
 import useSubjects from '@/hooks/use-subjects';
 import type { ExpectedBirthBand } from '@/lib/account-setup-flow';
 import { AVATAR_OPTIONS } from '@/utils/constants/account-setup.constants';
-import { newStudentRow } from '@/lib/pending-student-draft';
+import { newManagedUserRow } from '@/lib/pending-managed-user-draft';
 import type { Subject } from '@/api/services/subjects.services';
 import {
   draftGradesToApiPayload,
@@ -50,7 +50,7 @@ export type AccountSetupFormValues = {
   teenPermissionConfirmed: boolean;
   under13ChildConfirmed: boolean;
   under13GuardianPermissionConfirmed: boolean;
-  pendingStudents: ReturnType<typeof newStudentRow>[];
+  pendingStudents: ReturnType<typeof newManagedUserRow>[];
   teachableCourses: TeachableCourseDraft[];
   availabilityPreset: AccountAvailabilityPreset;
   weeklyAvailability: ReturnType<typeof buildDefaultWeeklyAvailability>;
@@ -353,7 +353,7 @@ const AccountSetupForm = ({
       teenPermissionConfirmed: false,
       under13ChildConfirmed: false,
       under13GuardianPermissionConfirmed: false,
-      pendingStudents: [newStudentRow()],
+      pendingStudents: [newManagedUserRow()],
       teachableCourses: [newCourseRow()] as TeachableCourseDraft[],
       availabilityPreset: 'anytime',
       weeklyAvailability: buildDefaultWeeklyAvailability(),

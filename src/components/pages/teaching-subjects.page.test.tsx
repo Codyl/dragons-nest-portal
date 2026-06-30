@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
 import type { Subject } from '@/api/services/subjects.services';
-import type { TeachableCourseWithEnrollment } from '@/api/services/profile.services';
+import type { TeachableSubjectWithEnrollment } from '@/api/services/profile.services';
 import { HOMESCHOOL_CURRICULUM_OPTIONS } from '@/lib/homeschool-options';
 import TeachingSubjectsPage from './teaching-subjects.page';
 
@@ -14,10 +14,10 @@ import TeachingSubjectsPage from './teaching-subjects.page';
 
 vi.mock('@/hooks/use-logged-in-user');
 vi.mock('@/hooks/use-subjects');
-vi.mock('@/hooks/use-remove-teachable-course');
+vi.mock('@/hooks/use-remove-teachable-subject');
 
 // Also mock the add-course hook used inside AddCourseSheet
-vi.mock('@/hooks/use-add-teachable-course', () => ({
+vi.mock('@/hooks/use-add-teachable-subject', () => ({
   default: () => ({
     mutate: vi.fn(),
     isPending: false,
@@ -29,11 +29,11 @@ vi.mock('@/hooks/use-add-teachable-course', () => ({
 
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useSubjects from '@/hooks/use-subjects';
-import useRemoveTeachableCourse from '@/hooks/use-remove-teachable-course';
+import useRemoveTeachableSubject from '@/hooks/use-remove-teachable-subject';
 
 const mockUseLoggedInUser = vi.mocked(useLoggedInUser);
 const mockUseSubjects = vi.mocked(useSubjects);
-const mockUseRemoveTeachableCourse = vi.mocked(useRemoveTeachableCourse);
+const mockUseRemoveTeachableCourse = vi.mocked(useRemoveTeachableSubject);
 
 // ---------------------------------------------------------------------------
 // Arbitrary generators (shared with course-card.test.tsx pattern)
@@ -60,7 +60,7 @@ const CURRICULUM_VALUES = HOMESCHOOL_CURRICULUM_OPTIONS.map((o) => o.value);
 
 function arbitraryTeachableCourseWithEnrollment(
   opts: { minEnrollment?: number; maxEnrollment?: number } = {},
-): fc.Arbitrary<TeachableCourseWithEnrollment> {
+): fc.Arbitrary<TeachableSubjectWithEnrollment> {
   const { minEnrollment = 0, maxEnrollment = 50 } = opts;
   return fc
     .record({
@@ -95,7 +95,7 @@ function setupDefaultMocks(
     isLoading?: boolean;
     isError?: boolean;
     error?: Error | null;
-    courses?: TeachableCourseWithEnrollment[];
+    courses?: TeachableSubjectWithEnrollment[];
     subjects?: Subject[];
     removeMutate?: ReturnType<typeof vi.fn>;
     removeIsPending?: boolean;
@@ -155,7 +155,7 @@ function setupDefaultMocks(
     isPaused: false,
     status: removeIsPending ? 'pending' : 'idle',
     submittedAt: 0,
-  } as ReturnType<typeof useRemoveTeachableCourse>);
+  } as ReturnType<typeof useRemoveTeachableSubject>);
 }
 
 afterEach(() => {
@@ -201,7 +201,7 @@ describe('TeachingSubjectsPage', () => {
   });
 
   it('renders one CourseCard per course in the list', () => {
-    const courses: TeachableCourseWithEnrollment[] = [
+    const courses: TeachableSubjectWithEnrollment[] = [
       {
         className: 'Algebra I',
         subjectId: 'subj-1',
@@ -255,7 +255,7 @@ describe('TeachingSubjectsPage', () => {
   });
 
   it('opens RemoveConfirmDialog when Remove is clicked for a course with no active enrollments', async () => {
-    const courses: TeachableCourseWithEnrollment[] = [
+    const courses: TeachableSubjectWithEnrollment[] = [
       {
         className: 'Algebra I',
         subjectId: 'subj-1',
@@ -281,7 +281,7 @@ describe('TeachingSubjectsPage', () => {
   });
 
   it('opens RemoveWarningDialog when Remove is clicked for a course with active enrollments', async () => {
-    const courses: TeachableCourseWithEnrollment[] = [
+    const courses: TeachableSubjectWithEnrollment[] = [
       {
         className: 'Art Basics',
         subjectId: 'subj-2',

@@ -1,7 +1,7 @@
 import * as fc from 'fast-check';
 import { describe, expect, it } from 'vite-plus/test';
-import { findStudentById, resolveActiveStudent } from './student-storage';
-import type { HouseholdStudentProfile } from '@/api/services/profile.services';
+import { findStudentById, resolveActiveStudent } from './managed-user-storage';
+import type { ManagedUserProfile } from '@/api/services/profile.services';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -10,7 +10,7 @@ import type { HouseholdStudentProfile } from '@/api/services/profile.services';
 function makeStudent(
   studentId: string,
   displayName = 'Test Student',
-): HouseholdStudentProfile {
+): ManagedUserProfile {
   return {
     studentId,
     displayName,
@@ -108,7 +108,7 @@ describe('resolveActiveStudent', () => {
 
 const arbitrarystudentId = fc.string({ minLength: 1, maxLength: 36 });
 
-const arbitraryStudent: fc.Arbitrary<HouseholdStudentProfile> = fc.record({
+const arbitraryStudent: fc.Arbitrary<ManagedUserProfile> = fc.record({
   studentId: arbitrarystudentId,
   displayName: fc.string({ minLength: 1, maxLength: 50 }),
   currentGrade: fc.integer({ min: 0, max: 12 }),
@@ -116,7 +116,7 @@ const arbitraryStudent: fc.Arbitrary<HouseholdStudentProfile> = fc.record({
 });
 
 /** Generates a non-empty list of students with unique studentIds. */
-const arbitraryUniqueStudentList: fc.Arbitrary<HouseholdStudentProfile[]> =
+const arbitraryUniqueStudentList: fc.Arbitrary<ManagedUserProfile[]> =
   fc.uniqueArray(arbitraryStudent, {
     selector: (s) => s.studentId,
     minLength: 1,

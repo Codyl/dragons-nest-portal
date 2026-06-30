@@ -6,7 +6,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { StudentProvider } from '@/contexts/student-context';
+import { ManagedUserProvider } from '@/contexts/managed-user-context';
 import { isAuthenticated } from '@/lib/auth-session';
 import {
   createFileRoute,
@@ -44,7 +44,7 @@ function RouteComponent() {
   }
 
   return (
-    <StudentProvider>
+    <ManagedUserProvider>
       <SidebarProvider>
         {isSettingsShell ? <SettingsShellSidebar /> : <PrivateAppSidebar />}
         <SidebarInset>
@@ -57,6 +57,6 @@ function RouteComponent() {
           </div>
         </SidebarInset>
       </SidebarProvider>
-    </StudentProvider>
+    </ManagedUserProvider>
   );
 }

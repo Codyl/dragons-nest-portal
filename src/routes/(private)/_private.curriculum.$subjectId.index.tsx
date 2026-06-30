@@ -15,7 +15,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import CurriculumModal from '@/components/modals/curriculum.modal';
-import { useStudent } from '@/contexts/student-context';
+import { useManagedUser } from '@/contexts/managed-user-context';
 import useSubjects from '@/hooks/use-subjects';
 import useSubjectConcepts from '@/hooks/use-subject-concepts';
 import useSubjectStats from '@/hooks/use-subject-stats';
@@ -37,8 +37,8 @@ export const Route = createFileRoute(
 
 function CurriculumSubjectRoute() {
   const { subjectId } = Route.useParams();
-  const { activeStudent } = useStudent();
-  const studentId = activeStudent?.studentId ?? '';
+  const { activeManagedUser } = useManagedUser();
+  const studentId = activeManagedUser?.studentId ?? '';
   const { data: subjects, isLoading, isError } = useSubjects();
   const { data: conceptsRes } = useSubjectConcepts(subjectId, studentId);
   const { data: userRes } = useLoggedInUser();
@@ -120,9 +120,9 @@ function CurriculumSubjectRoute() {
               <AddTeacherSheet
                 subject={subject?.name ?? ''}
                 state={userRes?.data?.address?.state ?? ''}
-                grade={String(activeStudent?.currentGrade ?? 0)}
+                grade={String(activeManagedUser?.currentGrade ?? 0)}
                 subjectId={subjectId}
-                studentName={activeStudent?.displayName ?? ''}
+                studentName={activeManagedUser?.displayName ?? ''}
               />
               <div className="flex items-center gap-4 text-sm">
                 
@@ -327,8 +327,8 @@ function ActivitiesSection({
   subjectId: string;
   studentId: string;
 }) {
-  const { activeStudent } = useStudent();
-  const gradeOrdinal = activeStudent?.currentGrade;
+  const { activeManagedUser } = useManagedUser();
+  const gradeOrdinal = activeManagedUser?.currentGrade;
   const grade = gradeOrdinal != null ? GRADE_ORDINALS[gradeOrdinal] : undefined;
 
   const { data: activitiesRes } = useActivities(subjectId, studentId);

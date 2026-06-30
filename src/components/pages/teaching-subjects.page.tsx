@@ -6,8 +6,8 @@ import RemoveWarningDialog from '@/components/modals/remove-warning-dialog';
 import { Button } from '@/components/ui/button';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import useSubjects from '@/hooks/use-subjects';
-import useRemoveTeachableCourse from '@/hooks/use-remove-teachable-course';
-import type { TeachableCourseWithEnrollment } from '@/api/services/profile.services';
+import useRemoveTeachableSubject from '@/hooks/use-remove-teachable-subject';
+import type { TeachableSubjectWithEnrollment } from '@/api/services/profile.services';
 
 const TeachingSubjectsPage = () => {
   const [addSheetOpen, setAddSheetOpen] = useState(false);
@@ -16,9 +16,9 @@ const TeachingSubjectsPage = () => {
 
   const profileQuery = useLoggedInUser();
   const subjectsQuery = useSubjects();
-  const removeMutation = useRemoveTeachableCourse();
+  const removeMutation = useRemoveTeachableSubject();
 
-  const courses: TeachableCourseWithEnrollment[] =
+  const courses: TeachableSubjectWithEnrollment[] =
     profileQuery.data?.data?.teachableCourses ?? [];
   const subjects = subjectsQuery.data ?? [];
 

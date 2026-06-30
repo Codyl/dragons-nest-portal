@@ -4,25 +4,25 @@ import {
   type UseMutationResult,
 } from '@tanstack/react-query';
 import ProfileServices, {
-  type TeachableCourseWithEnrollment,
+  type ManagedUserDraftAll,
 } from '@/api/services/profile.services';
 
-const useRemoveTeachableCourse = (): UseMutationResult<
+const useAddManagedUser = (): UseMutationResult<
   {
     message: string;
-    data: { teachableCourses: TeachableCourseWithEnrollment[] };
+    data: { managedAccountsView: ManagedUserDraftAll[] };
   },
   Error,
-  number
+  { displayName: string; currentGrade: number }
 > => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ProfileServices.removeTeachableCourse,
+    mutationFn: ProfileServices.addManagedUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },
   });
 };
 
-export default useRemoveTeachableCourse;
+export default useAddManagedUser;

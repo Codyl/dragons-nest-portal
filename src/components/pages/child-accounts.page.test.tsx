@@ -9,13 +9,13 @@ import {
 import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
-import type { HouseholdStudentDraftAll } from '@/api/services/profile.services';
+import type { ManagedUserDraftAll } from '@/api/services/profile.services';
 import ChildAccountsPage from './child-accounts.page';
 
 vi.mock('@/hooks/use-logged-in-user');
-vi.mock('@/hooks/use-archive-household-student');
-vi.mock('@/hooks/use-restore-household-student');
-vi.mock('@/hooks/use-add-household-student', () => ({
+vi.mock('@/hooks/use-archive-managed-user');
+vi.mock('@/hooks/use-restore-managed-user');
+vi.mock('@/hooks/use-add-managed-user', () => ({
   default: () => ({
     mutate: vi.fn(),
     mutateAsync: vi.fn(),
@@ -27,19 +27,19 @@ vi.mock('@/hooks/use-add-household-student', () => ({
 }));
 
 import useLoggedInUser from '@/hooks/use-logged-in-user';
-import useArchiveHouseholdStudent from '@/hooks/use-archive-household-student';
-import useRestoreHouseholdStudent from '@/hooks/use-restore-household-student';
+import useArchiveManagedUser from '@/hooks/use-archive-managed-user';
+import useRestoreManagedUser from '@/hooks/use-restore-managed-user';
 
 const mockUseLoggedInUser = vi.mocked(useLoggedInUser);
-const mockArchive = vi.mocked(useArchiveHouseholdStudent);
-const mockRestore = vi.mocked(useRestoreHouseholdStudent);
+const mockArchive = vi.mocked(useArchiveManagedUser);
+const mockRestore = vi.mocked(useRestoreManagedUser);
 
 function setupMocks(
   overrides: {
     isLoading?: boolean;
     isError?: boolean;
     error?: Error | null;
-    drafts?: HouseholdStudentDraftAll[];
+    drafts?: ManagedUserDraftAll[];
     archiveMutate?: ReturnType<typeof vi.fn>;
     archivePending?: boolean;
     archiveVariables?: string;
@@ -86,7 +86,7 @@ function setupMocks(
     reset: vi.fn(),
     mutateAsync: vi.fn(),
     status: archivePending ? 'pending' : 'idle',
-  } as unknown as ReturnType<typeof useArchiveHouseholdStudent>);
+  } as unknown as ReturnType<typeof useArchiveManagedUser>);
 
   mockRestore.mockReturnValue({
     mutate: restoreMutate,
@@ -98,10 +98,10 @@ function setupMocks(
     reset: vi.fn(),
     mutateAsync: vi.fn(),
     status: restorePending ? 'pending' : 'idle',
-  } as unknown as ReturnType<typeof useRestoreHouseholdStudent>);
+  } as unknown as ReturnType<typeof useRestoreManagedUser>);
 }
 
-function arbitraryDraft(): fc.Arbitrary<HouseholdStudentDraftAll> {
+function arbitraryDraft(): fc.Arbitrary<ManagedUserDraftAll> {
   return fc.tuple(fc.uuid(), fc.boolean()).chain(([id, archived]) =>
     fc.record({
       studentId: fc.constant(id),

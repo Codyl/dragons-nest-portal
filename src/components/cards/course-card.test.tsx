@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import * as fc from 'fast-check';
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
 import type { Subject } from '@/api/services/subjects.services';
-import type { TeachableCourseWithEnrollment } from '@/api/services/profile.services';
+import type { TeachableSubjectWithEnrollment } from '@/api/services/profile.services';
 import { HOMESCHOOL_CURRICULUM_OPTIONS } from '@/lib/homeschool-options';
 import CourseCard from './course-card';
 
@@ -52,7 +52,7 @@ function arbitrarySubject(): fc.Arbitrary<Subject> {
 
 function arbitraryTeachableCourseWithEnrollment(
   subjectId?: string,
-): fc.Arbitrary<TeachableCourseWithEnrollment> {
+): fc.Arbitrary<TeachableSubjectWithEnrollment> {
   const subjectIdArb = subjectId ? fc.constant(subjectId) : fc.uuid();
   return fc
     .record({
@@ -89,7 +89,7 @@ const subjectFixture: Subject = {
   isEnrichment: false,
 };
 
-const courseFixture: TeachableCourseWithEnrollment = {
+const courseFixture: TeachableSubjectWithEnrollment = {
   className: 'Algebra I',
   subjectId: 'subject-001',
   matchesAllGrades: false,
@@ -99,7 +99,7 @@ const courseFixture: TeachableCourseWithEnrollment = {
   activeEnrollmentCount: 0,
 };
 
-const allGradesCourseFixture: TeachableCourseWithEnrollment = {
+const allGradesCourseFixture: TeachableSubjectWithEnrollment = {
   className: 'Music Appreciation',
   subjectId: 'subject-001',
   matchesAllGrades: true,
