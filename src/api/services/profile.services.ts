@@ -339,6 +339,19 @@ const ProfileServices = {
     );
     return response.json();
   },
+  addSubjectToStudent: async (
+    studentId: string,
+    subjectId: string,
+  ): Promise<{
+    message: string;
+    data: { subjectId: string; hoursCompleted: number; createdAt: string };
+  }> => {
+    const response = await api.post(
+      `profile/students/${encodeURIComponent(studentId)}/subjects`,
+      { json: { subjectId } },
+    );
+    return response.json();
+  },
 };
 
 export default ProfileServices;

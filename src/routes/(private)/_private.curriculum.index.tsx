@@ -5,6 +5,7 @@ import type {
   StudentEnrolledClass,
 } from '@/api/services/profile.services';
 import SubjectCard from '@/components/cards/subject-card';
+import AddSubjectSheet from '@/components/sheets/add-subject-sheet';
 import { useStudent } from '@/contexts/student-context';
 import useStudentClasses from '@/hooks/use-student-classes';
 import useSubjects from '@/hooks/use-subjects';
@@ -111,6 +112,25 @@ export function CurriculumRoute() {
       .filter((s): s is Subject => s !== undefined);
   })();
 
+  // ponytail: derive manually added subjects — set difference of enrolled vs required, filtered by catalog
+  const manualSubjects: Subject[] = (() => {
+    if (!subjects || enrolledClasses.length === 0) return [];
+    const subjectMap = new Map(subjects.map((s) => [s._id, s]));
+    const requiredIds = new Set(
+      complianceLaws?.subjectsRequiredTopicIds ?? [],
+    );
+    return enrolledClasses
+      .map((c) => c.subjectId)
+      .filter((id): id is string => id !== null)
+      .filter((id) => !requiredIds.has(id))
+      .map((id) => subjectMap.get(id))
+      .filter((s): s is Subject => s !== undefined);
+  })();
+
+  const enrolledSubjectIds = enrolledClasses
+    .map((c) => c.subjectId)
+    .filter((id): id is string => id !== null);
+
   const handleRetry = () => {
     void refetchUser();
     void refetchCompliance();
@@ -196,6 +216,32 @@ export function CurriculumRoute() {
             ))}
           </div>
         )}
+
+      {!isLoading && !error && manualSubjects.length > 0 && (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {manualSubjects.map((subject) => (
+            <SubjectCard
+              key={subject._id}
+              subjectId={subject._id}
+              subjectName={subject.name}
+              mascotUrl={subject.mascot}
+              teacherName={resolveTeacherName(
+                subject._id,
+                enrolledClasses,
+                profile!,
+              )}
+            />
+          ))}
+        </div>
+      )}
+
+      {!isLoading && !error && activeStudent && (
+        <AddSubjectSheet
+          studentId={activeStudent.studentId}
+          studentName={activeStudent.displayName ?? ''}
+          enrolledSubjectIds={enrolledSubjectIds}
+        />
+      )}
     </div>
   );
 }
