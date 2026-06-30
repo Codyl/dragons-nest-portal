@@ -40,7 +40,7 @@ const complete = (
   patch: Partial<TeachableCourseDraftLike> = {},
 ): TeachableCourseDraftLike => ({
   className: 'Algebra I',
-  subjectId: 'topic-math',
+  subjectId: 'subject-math',
   grades: ['9'],
   curriculum: 'saxon',
   maxStudents: 1,
@@ -142,7 +142,7 @@ describe('teachable-course-validation', () => {
 
   it('rowGradeSpanViolationMessage: exact copy with limit and name', () => {
     const getS = getSubjectFixture({
-      'topic-math': math,
+      'subject-math': math,
     });
     const row: TeachableCourseDraftLike = {
       ...complete(),
@@ -155,8 +155,8 @@ describe('teachable-course-validation', () => {
 
   it('rowGradeSpanViolationMessage: null when within limit or enrichment', () => {
     const getS = getSubjectFixture({
-      'topic-math': math,
-      'topic-music': music,
+      'subject-math': math,
+      'subject-music': music,
     });
     expect(
       rowGradeSpanViolationMessage(
@@ -166,30 +166,30 @@ describe('teachable-course-validation', () => {
     ).toBe(null);
     expect(
       rowGradeSpanViolationMessage(
-        { ...complete(), subjectId: 'topic-music', grades: ['k', '12'] },
+        { ...complete(), subjectId: 'subject-music', grades: ['k', '12'] },
         getS,
       ),
     ).toBe(null);
   });
 
   it('rowIsComplete: empty row not complete', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(rowIsComplete(empty(), getS)).toBe(false);
   });
 
   it('rowIsComplete: full row with grades', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(rowIsComplete(complete(), getS)).toBe(true);
   });
 
   it('rowIsComplete: ANY only for enrichment', () => {
     const getS = getSubjectFixture({
-      'topic-math': math,
-      'topic-music': music,
+      'subject-math': math,
+      'subject-music': music,
     });
     expect(
       rowIsComplete(
-        { ...complete(), subjectId: 'topic-music', grades: [ANY_GRADE_VALUE] },
+        { ...complete(), subjectId: 'subject-music', grades: [ANY_GRADE_VALUE] },
         getS,
       ),
     ).toBe(true);
@@ -199,32 +199,32 @@ describe('teachable-course-validation', () => {
   });
 
   it('rowIsComplete: rejects unknown subjectId', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(rowIsComplete({ ...complete(), subjectId: 'missing' }, getS)).toBe(
       false,
     );
   });
 
   it('rowIsComplete: rejects maxStudents outside 1–20', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(rowIsComplete({ ...complete(), maxStudents: 0 }, getS)).toBe(false);
     expect(rowIsComplete({ ...complete(), maxStudents: 21 }, getS)).toBe(false);
   });
 
   it('rowIsComplete: rejects grade span over limit for math', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(
       rowIsComplete({ ...complete(), grades: ['9', '10', '11'] }, getS),
     ).toBe(false);
   });
 
   it('rowIsComplete: accepts science span of 4', () => {
-    const getS = getSubjectFixture({ 'topic-science': science });
+    const getS = getSubjectFixture({ 'subject-science': science });
     expect(
       rowIsComplete(
         {
           ...complete(),
-          subjectId: 'topic-science',
+          subjectId: 'subject-science',
           grades: ['9', '10', '11', '12'],
         },
         getS,
@@ -233,12 +233,12 @@ describe('teachable-course-validation', () => {
   });
 
   it('rowIsComplete: rejects science span of 5', () => {
-    const getS = getSubjectFixture({ 'topic-science': science });
+    const getS = getSubjectFixture({ 'subject-science': science });
     expect(
       rowIsComplete(
         {
           ...complete(),
-          subjectId: 'topic-science',
+          subjectId: 'subject-science',
           grades: ['8', '9', '10', '11', '12'],
         },
         getS,
@@ -247,13 +247,13 @@ describe('teachable-course-validation', () => {
   });
 
   it('rowIsComplete: partial row false', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(rowIsComplete({ ...complete(), className: '' }, getS)).toBe(false);
     expect(rowIsComplete({ ...complete(), grades: [] }, getS)).toBe(false);
   });
 
   it('teachableCoursesFormIsSubmittable: all empty rows is submittable', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(teachableCoursesFormIsSubmittable([empty()], getS)).toBe(true);
     const a = newCourseRow();
     const b = newCourseRow();
@@ -261,7 +261,7 @@ describe('teachable-course-validation', () => {
   });
 
   it('teachableCoursesFormIsSubmittable: needs one complete row when any row started', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(teachableCoursesFormIsSubmittable([empty(), complete()], getS)).toBe(
       true,
     );
@@ -271,7 +271,7 @@ describe('teachable-course-validation', () => {
   });
 
   it('teachableCoursesFormIsSubmittable: rejects partial alongside complete', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     expect(
       teachableCoursesFormIsSubmittable(
         [complete(), { ...empty(), className: 'Half' }],
@@ -281,7 +281,7 @@ describe('teachable-course-validation', () => {
   });
 
   it('teachableCoursesFormIsSubmittable: multiple empty rows ok with one complete', () => {
-    const getS = getSubjectFixture({ 'topic-math': math });
+    const getS = getSubjectFixture({ 'subject-math': math });
     const row = newCourseRow();
     Object.assign(row, complete());
     const blank = newCourseRow();

@@ -12,7 +12,7 @@ describe('AccountSetupForm', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/subjects', [
       {
-        _id: 'topic-music',
+        _id: 'subject-music',
         name: 'Music',
         icon: '🎵',
         color: '#f8d9c4',
@@ -20,7 +20,7 @@ describe('AccountSetupForm', () => {
         isEnrichment: true,
       },
       {
-        _id: 'topic-science',
+        _id: 'subject-science',
         name: 'Science',
         icon: '🧪',
         color: '#d8e8ff',

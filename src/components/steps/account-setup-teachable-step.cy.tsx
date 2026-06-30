@@ -5,7 +5,7 @@ const { Default } = composeStories(stories);
 
 const subjectsPayload = [
   {
-    _id: 'topic-math',
+    _id: 'subject-math',
     name: 'Math',
     icon: '🧮',
     color: '#d8e8ff',
@@ -13,7 +13,7 @@ const subjectsPayload = [
     isEnrichment: false,
   },
   {
-    _id: 'topic-reading',
+    _id: 'subject-reading',
     name: 'Reading',
     icon: '📖',
     color: '#f8d9c4',
@@ -21,7 +21,7 @@ const subjectsPayload = [
     isEnrichment: false,
   },
   {
-    _id: 'topic-music',
+    _id: 'subject-music',
     name: 'Music',
     icon: '🎵',
     color: '#eee',

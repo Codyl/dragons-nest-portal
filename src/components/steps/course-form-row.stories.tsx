@@ -8,19 +8,19 @@ import {
 } from '@/lib/teachable-course-validation';
 
 const subjectOptions = [
-  { value: 'topic-math', label: 'Math' },
-  { value: 'topic-reading', label: 'Reading' },
-  { value: 'topic-music', label: 'Music' },
+  { value: 'subject-math', label: 'Math' },
+  { value: 'subject-reading', label: 'Reading' },
+  { value: 'subject-music', label: 'Music' },
 ];
 
 const getSubject: GetTeachableSubject = (id) => {
-  if (id === 'topic-math')
+  if (id === 'subject-math')
     return { slug: 'math', name: 'Math', isEnrichment: false };
 
-  if (id === 'topic-reading')
+  if (id === 'subject-reading')
     return { slug: 'reading', name: 'Reading', isEnrichment: false };
 
-  if (id === 'topic-music')
+  if (id === 'subject-music')
     return { slug: 'music', name: 'Music', isEnrichment: true };
 
   return undefined;

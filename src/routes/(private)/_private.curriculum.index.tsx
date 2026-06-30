@@ -107,7 +107,7 @@ export function CurriculumRoute() {
   const requiredSubjects: Subject[] = (() => {
     if (!complianceLaws || !subjects) return [];
     const subjectMap = new Map(subjects.map((s) => [s._id, s]));
-    return complianceLaws.subjectsRequiredTopicIds
+    return complianceLaws.requiredTopicIds
       .map((id) => subjectMap.get(id))
       .filter((s): s is Subject => s !== undefined);
   })();
@@ -117,7 +117,7 @@ export function CurriculumRoute() {
     if (!subjects || enrolledClasses.length === 0) return [];
     const subjectMap = new Map(subjects.map((s) => [s._id, s]));
     const requiredIds = new Set(
-      complianceLaws?.subjectsRequiredTopicIds ?? [],
+      complianceLaws?.requiredTopicIds ?? [],
     );
     return enrolledClasses
       .map((c) => c.subjectId)

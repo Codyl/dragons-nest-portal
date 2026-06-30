@@ -4,7 +4,7 @@ export type ComplianceLaws = {
   _id: string;
   state: string;
   abbreviation: string;
-  subjectsRequiredTopicIds: string[];
+  requiredTopicIds: string[];
 };
 
 const ComplianceServices = {
