@@ -104,7 +104,7 @@ function setupMocks(
 function arbitraryDraft(): fc.Arbitrary<ManagedUserDraftAll> {
   return fc.tuple(fc.uuid(), fc.boolean()).chain(([id, archived]) =>
     fc.record({
-      studentId: fc.constant(id),
+      managedUserId: fc.constant(id),
       displayName: fc.string({ minLength: 1, maxLength: 40 }),
       currentGrade: fc.integer({ min: 0, max: 13 }),
       lastPromotionYear: fc.integer({ min: 2020, max: 2030 }),
@@ -129,13 +129,13 @@ describe('ChildAccountsPage', () => {
   it('shows loading skeleton while data is loading', () => {
     setupMocks({ isLoading: true });
     render(<ChildAccountsPage />);
-    expect(screen.getByLabelText('Loading students')).toBeTruthy();
+    expect(screen.getByLabelText('Loading managedusers')).toBeTruthy();
   });
 
   it('shows empty state when no active drafts', () => {
     setupMocks({ drafts: [] });
     render(<ChildAccountsPage />);
-    expect(screen.getByText(/no students added yet/i)).toBeTruthy();
+    expect(screen.getByText(/no managedusers added yet/i)).toBeTruthy();
   });
 
   it('shows error banner with retry when profile fetch fails', () => {
@@ -145,17 +145,17 @@ describe('ChildAccountsPage', () => {
     expect(screen.getByRole('button', { name: /retry/i })).toBeTruthy();
   });
 
-  it('renders one student card per active draft', () => {
+  it('renders one manageduser card per active draft', () => {
     setupMocks({
       drafts: [
         {
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'One',
           currentGrade: 1,
           lastPromotionYear: 2025,
         },
         {
-          studentId: 'b',
+          managedUserId: 'b',
           displayName: 'Two',
           currentGrade: 2,
           lastPromotionYear: 2025,
@@ -163,14 +163,14 @@ describe('ChildAccountsPage', () => {
       ],
     });
     render(<ChildAccountsPage />);
-    expect(screen.getAllByTestId('student-draft-card')).toHaveLength(2);
+    expect(screen.getAllByTestId('manageduser-card')).toHaveLength(2);
   });
 
   it('hides archived section when no archived drafts', () => {
     setupMocks({
       drafts: [
         {
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'One',
           currentGrade: 1,
           lastPromotionYear: 2025,
@@ -178,20 +178,20 @@ describe('ChildAccountsPage', () => {
       ],
     });
     render(<ChildAccountsPage />);
-    expect(screen.queryByText(/archived students/i)).toBeNull();
+    expect(screen.queryByText(/archived managedusers/i)).toBeNull();
   });
 
   it('shows archived section when archived drafts exist', () => {
     setupMocks({
       drafts: [
         {
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'Active',
           currentGrade: 1,
           lastPromotionYear: 2025,
         },
         {
-          studentId: 'b',
+          managedUserId: 'b',
           displayName: 'Gone',
           currentGrade: 2,
           lastPromotionYear: 2024,
@@ -200,13 +200,13 @@ describe('ChildAccountsPage', () => {
       ],
     });
     render(<ChildAccountsPage />);
-    expect(screen.getByText(/archived students/i)).toBeTruthy();
-    expect(screen.getAllByTestId('student-draft-card')).toHaveLength(2);
+    expect(screen.getByText(/archived managedusers/i)).toBeTruthy();
+    expect(screen.getAllByTestId('manageduser-card')).toHaveLength(2);
   });
 });
 
-// Feature: child-accounts-settings, Property 1: Student list renders all drafts
-describe('Property 1: Student list renders all drafts', () => {
+// Feature: child-accounts-settings, Property 1: ManagedUser list renders all drafts
+describe('Property 1: ManagedUser list renders all drafts', () => {
   it('renders exactly one card per draft across active and archived sections', () => {
     fc.assert(
       fc.property(
@@ -217,7 +217,7 @@ describe('Property 1: Student list renders all drafts', () => {
           const { unmount, container } = render(<ChildAccountsPage />);
 
           const cards = container.querySelectorAll(
-            '[data-testid="student-draft-card"]',
+            '[data-testid="manageduser-card"]',
           );
           const ok = cards.length === drafts.length;
 
@@ -249,17 +249,17 @@ describe('Property 2: Active/archived split', () => {
           ).length;
 
           const activeSection = container
-            .querySelector('#active-students-heading')
+            .querySelector('#active-managedusers-heading')
             ?.closest('section');
           const archivedSection = container
-            .querySelector('#archived-students-heading')
+            .querySelector('#archived-managedusers-heading')
             ?.closest('section');
 
           const activeCards = activeSection?.querySelectorAll(
-            '[data-testid="student-draft-card"]',
+            '[data-testid="manageduser-card"]',
           );
           const archivedCards = archivedSection?.querySelectorAll(
-            '[data-testid="student-draft-card"]',
+            '[data-testid="manageduser-card"]',
           );
 
           const ok =
@@ -285,7 +285,7 @@ describe('ChildAccountsPage archive flow', () => {
     setupMocks({
       drafts: [
         {
-          studentId: 'x1',
+          managedUserId: 'x1',
           displayName: 'Kid',
           currentGrade: 3,
           lastPromotionYear: 2025,
@@ -296,9 +296,9 @@ describe('ChildAccountsPage archive flow', () => {
 
     render(<ChildAccountsPage />);
 
-    await userEvent.click(screen.getByTestId('student-draft-archive'));
+    await userEvent.click(screen.getByTestId('manageduser-draft-archive'));
 
-    expect(screen.getByText(/archive this student/i)).toBeTruthy();
+    expect(screen.getByText(/archive this manageduser/i)).toBeTruthy();
 
     const dialog = screen.getByRole('dialog');
     fireEvent.click(within(dialog).getByRole('button', { name: /^archive$/i }));

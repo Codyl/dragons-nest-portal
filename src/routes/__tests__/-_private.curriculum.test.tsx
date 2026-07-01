@@ -31,7 +31,7 @@ vi.mock('@/hooks/use-subjects', () => ({
   default: vi.fn(),
 }));
 
-const useStudentClassesMock = vi.mocked(useManagedUserSubjects);
+const useManagedUserClassesMock = vi.mocked(useManagedUserSubjects);
 const useSubjectsMock = vi.mocked(useSubjects);
 
 const subjectFixture: Subject = {
@@ -52,15 +52,15 @@ const classesFixture: ManagedUserEnrolledSubject[] = [
   },
 ];
 
-const activeStudentFixture: ManagedUserProfile = {
-  studentId: 'student-1',
+const activeManagedUserFixture: ManagedUserProfile = {
+  managedUserId: 'manageduser-1',
   displayName: 'Taylor',
   currentGrade: 5,
   lastPromotionYear: 2025,
 };
 
 function renderRoute(
-  activeManagedUser: ManagedUserProfile | null = activeStudentFixture,
+  activeManagedUser: ManagedUserProfile | null = activeManagedUserFixture,
 ) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -84,7 +84,7 @@ function renderRoute(
 beforeEach(() => {
   vi.clearAllMocks();
 
-  useStudentClassesMock.mockReturnValue({
+  useManagedUserClassesMock.mockReturnValue({
     data: { message: 'ok', data: classesFixture },
     isLoading: false,
     error: null,
@@ -104,13 +104,13 @@ afterEach(() => {
 });
 
 describe('CurriculumRoute', () => {
-  it('shows no-student message when no active student is selected', () => {
+  it('shows no-manageduser message when no active manageduser is selected', () => {
     renderRoute(null);
-    expect(screen.getByTestId('curriculum-no-student')).toBeTruthy();
+    expect(screen.getByTestId('curriculum-no-manageduser')).toBeTruthy();
   });
 
   it('shows loading indicator while classes query is loading', () => {
-    useStudentClassesMock.mockReturnValueOnce({
+    useManagedUserClassesMock.mockReturnValueOnce({
       isLoading: true,
       error: null,
     } as never);
@@ -128,7 +128,7 @@ describe('CurriculumRoute', () => {
   });
 
   it('shows error banner with retry when classes fetch fails', () => {
-    useStudentClassesMock.mockReturnValueOnce({
+    useManagedUserClassesMock.mockReturnValueOnce({
       isLoading: false,
       error: new Error('classes failed'),
       refetch: vi.fn(),
@@ -148,8 +148,8 @@ describe('CurriculumRoute', () => {
     expect(screen.getByTestId('curriculum-error')).toBeTruthy();
   });
 
-  it('shows empty-state message when student has no classes', () => {
-    useStudentClassesMock.mockReturnValueOnce({
+  it('shows empty-state message when manageduser has no classes', () => {
+    useManagedUserClassesMock.mockReturnValueOnce({
       data: { message: 'ok', data: [] },
       isLoading: false,
       error: null,
@@ -169,7 +169,7 @@ describe('CurriculumRoute', () => {
       error: null,
       refetch: vi.fn(),
     } as never);
-    useStudentClassesMock.mockReturnValueOnce({
+    useManagedUserClassesMock.mockReturnValueOnce({
       data: {
         message: 'ok',
         data: [
@@ -196,22 +196,22 @@ describe('CurriculumRoute', () => {
     expect(screen.getAllByTestId('subject-card')).toHaveLength(2);
   });
 
-  it('shows active student label when activeManagedUser is set', () => {
-    renderRoute(activeStudentFixture);
-    expect(screen.getByTestId('active-student-label').textContent).toContain(
+  it('shows active manageduser label when activeManagedUser is set', () => {
+    renderRoute(activeManagedUserFixture);
+    expect(screen.getByTestId('active-manageduser-label').textContent).toContain(
       'Viewing curriculum for Taylor',
     );
   });
 
-  it('omits student label when activeManagedUser is null', () => {
+  it('omits manageduser label when activeManagedUser is null', () => {
     renderRoute(null);
-    expect(screen.queryByTestId('active-student-label')).toBeNull();
+    expect(screen.queryByTestId('active-manageduser-label')).toBeNull();
   });
 
   it('retry action calls classes and subjects refetch', async () => {
     const classesRefetch = vi.fn();
     const subjectsRefetch = vi.fn();
-    useStudentClassesMock.mockReturnValueOnce({
+    useManagedUserClassesMock.mockReturnValueOnce({
       isLoading: false,
       error: new Error('failed'),
       refetch: classesRefetch,

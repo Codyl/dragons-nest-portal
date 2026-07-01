@@ -4,7 +4,7 @@ import type { ManagedUserProfile } from '@/api/services/profile.services';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import { resolveActiveManagedUser } from '@/lib/managed-user-storage';
 
-const STORAGE_KEY = 'activestudentId'; // ponytail: localStorage key kept for user continuity
+const STORAGE_KEY = 'activemanagedUserId'; // ponytail: localStorage key kept for user continuity
 
 export interface ManagedUserContextValue {
   /** The currently selected managed user, or null if none is selected. */
@@ -28,12 +28,6 @@ export function useManagedUser(): ManagedUserContextValue {
   return ctx;
 }
 
-// ponytail: keep old names as re-exports during transition
-/** @deprecated Use `useManagedUser` */
-export const useStudent = useManagedUser;
-/** @deprecated Use `ManagedUserContext` */
-export const StudentContext = ManagedUserContext;
-
 export function ManagedUserProvider({
   children,
 }: {
@@ -41,7 +35,7 @@ export function ManagedUserProvider({
 }) {
   const { data: userRes, isLoading } = useLoggedInUser();
   const managedUsers: ManagedUserProfile[] =
-    userRes?.data?.householdStudents ?? [];
+    userRes?.data?.managedUsers ?? [];
 
   const [activeManagedUser, setActiveManagedUserState] =
     React.useState<ManagedUserProfile | null>(null);
@@ -49,7 +43,7 @@ export function ManagedUserProvider({
   // Restore from localStorage once managed users are available
   React.useEffect(() => {
     if (isLoading) return;
-
+    
     let storedId: string | null = null;
     try {
       storedId = localStorage.getItem(STORAGE_KEY);
@@ -60,6 +54,7 @@ export function ManagedUserProvider({
     if (!storedId) return;
 
     const match = resolveActiveManagedUser(managedUsers, storedId);
+
     if (match) {
       setActiveManagedUserState(match);
     } else {
@@ -77,10 +72,10 @@ export function ManagedUserProvider({
   const setActiveManagedUser = React.useCallback(
     (user: ManagedUserProfile | null) => {
       // Invalidate scoped queries for the previous managed user
-      const previousId = activeManagedUser?.studentId;
-      if (previousId && user?.studentId !== previousId) {
+      const previousId = activeManagedUser?.managedUserId;
+      if (previousId && user?.managedUserId !== previousId) {
         void queryClient.invalidateQueries({
-          queryKey: ['student', previousId],
+          queryKey: ['manageduser', previousId],
         });
       }
 
@@ -88,7 +83,7 @@ export function ManagedUserProvider({
 
       try {
         if (user) {
-          localStorage.setItem(STORAGE_KEY, user.studentId);
+          localStorage.setItem(STORAGE_KEY, user.managedUserId);
         } else {
           localStorage.removeItem(STORAGE_KEY);
         }
@@ -115,6 +110,3 @@ export function ManagedUserProvider({
     </ManagedUserContext.Provider>
   );
 }
-
-/** @deprecated Use `ManagedUserProvider` */
-export const StudentProvider = ManagedUserProvider;

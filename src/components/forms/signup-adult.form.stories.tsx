@@ -7,12 +7,12 @@ import {
   RouterProvider,
   createMemoryHistory,
 } from '@tanstack/react-router';
-import SignupAdultStudentForm from './signup-adult-student.form';
+import SignupAdultManagedUserForm from './signup-adult.form';
 import { initiateSignupSuccessHandlers } from '../../../.storybook/msw-handlers';
 
 const meta = {
-  title: 'Forms/SignupAdultStudentForm',
-  component: SignupAdultStudentForm,
+  title: 'Forms/SignupAdultManagedUserForm',
+  component: SignupAdultManagedUserForm,
   parameters: {
     layout: 'centered',
     msw: { handlers: initiateSignupSuccessHandlers },
@@ -44,16 +44,16 @@ const meta = {
       );
     },
   ],
-} satisfies Meta<typeof SignupAdultStudentForm>;
+} satisfies Meta<typeof SignupAdultManagedUserForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Student: Story = {
-  args: { accountType: 'student', showGoogleSso: false },
+export const ManagedUser: Story = {
+  args: { accountType: 'manageduser', showGoogleSso: false },
   render: (args) => (
     <div className="bg-card w-full max-w-md rounded-xl border p-6 shadow-xs">
-      <SignupAdultStudentForm {...args} />
+      <SignupAdultManagedUserForm {...args} />
     </div>
   ),
 };
@@ -62,7 +62,7 @@ export const Adult: Story = {
   args: { accountType: 'adult', showGoogleSso: false },
   render: (args) => (
     <div className="bg-card w-full max-w-md rounded-xl border p-6 shadow-xs">
-      <SignupAdultStudentForm {...args} />
+      <SignupAdultManagedUserForm {...args} />
     </div>
   ),
 };

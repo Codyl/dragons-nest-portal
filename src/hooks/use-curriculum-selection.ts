@@ -3,16 +3,16 @@ import CurriculumServices from '@/api/services/curriculum.services';
 
 const useCurriculumSelection = (params: {
   subjectId: string;
-  studentId: string | null;
+  managedUserId: string | null;
 }) =>
   useQuery({
-    queryKey: ['curriculum-selection', params.subjectId, params.studentId],
+    queryKey: ['curriculum-selection', params.subjectId, params.managedUserId],
     queryFn: () =>
       CurriculumServices.getSelection({
         subjectId: params.subjectId,
-        studentId: params.studentId!,
+        managedUserId: params.managedUserId!,
       }),
-    enabled: !!params.subjectId && !!params.studentId,
+    enabled: !!params.subjectId && !!params.managedUserId,
   });
 
 export default useCurriculumSelection;

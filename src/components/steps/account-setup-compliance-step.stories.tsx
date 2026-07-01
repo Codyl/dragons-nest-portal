@@ -23,7 +23,7 @@ const meta = {
         stepIndex={0}
         totalSteps={3}
         signupRole={
-          context.parameters.signupRole === 'adult' ? 'adult' : 'student'
+          context.parameters.signupRole === 'adult' ? 'adult' : 'manageduser'
         }
       >
         <Story />

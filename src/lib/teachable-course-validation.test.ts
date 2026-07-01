@@ -33,7 +33,7 @@ const empty = (): TeachableCourseDraftLike => ({
   subjectId: '',
   grades: [],
   curriculum: '',
-  maxStudents: 1,
+  maxManagedUsers: 1,
 });
 
 const complete = (
@@ -43,7 +43,7 @@ const complete = (
   subjectId: 'subject-math',
   grades: ['9'],
   curriculum: 'saxon',
-  maxStudents: 1,
+  maxManagedUsers: 1,
   ...patch,
 });
 
@@ -205,10 +205,10 @@ describe('teachable-course-validation', () => {
     );
   });
 
-  it('rowIsComplete: rejects maxStudents outside 1–20', () => {
+  it('rowIsComplete: rejects maxManagedUsers outside 1–20', () => {
     const getS = getSubjectFixture({ 'subject-math': math });
-    expect(rowIsComplete({ ...complete(), maxStudents: 0 }, getS)).toBe(false);
-    expect(rowIsComplete({ ...complete(), maxStudents: 21 }, getS)).toBe(false);
+    expect(rowIsComplete({ ...complete(), maxManagedUsers: 0 }, getS)).toBe(false);
+    expect(rowIsComplete({ ...complete(), maxManagedUsers: 21 }, getS)).toBe(false);
   });
 
   it('rowIsComplete: rejects grade span over limit for math', () => {

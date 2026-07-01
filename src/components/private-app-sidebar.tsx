@@ -35,10 +35,10 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { StudentSelector } from '@/components/student-selector';
+import { ManagedUserSelector } from '@/components/manageduser-selector';
 import { useManagedUser } from '@/contexts/managed-user-context';
 
-const studentNavTabs = [
+const manageduserNavTabs = [
   { to: '/curriculum' as string, label: 'Curriculum', icon: BookOpen },
   { to: '/compliance' as string, label: 'Compliance', icon: ClipboardCheck },
 ];
@@ -128,7 +128,7 @@ export function PrivateAppSidebar() {
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {studentNavTabs.map(({ to, label, icon: Icon }) => (
+                {manageduserNavTabs.map(({ to, label, icon: Icon }) => (
                   <SidebarMenuItem key={to}>
                     <SidebarMenuButton
                       asChild
@@ -178,7 +178,7 @@ export function PrivateAppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <StudentSelector
+            <ManagedUserSelector
               managedUsers={managedUsers}
               isLoading={isLoading}
             />

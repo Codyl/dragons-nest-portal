@@ -34,7 +34,7 @@ import {
 } from '@/lib/weekly-availability';
 
 export type AccountSetupFormValues = {
-  accountType: 'adult' | 'student';
+  accountType: 'adult' | 'manageduser';
   name: string;
   state: string;
   zipCode: string;
@@ -50,7 +50,7 @@ export type AccountSetupFormValues = {
   teenPermissionConfirmed: boolean;
   under13ChildConfirmed: boolean;
   under13GuardianPermissionConfirmed: boolean;
-  pendingStudents: ReturnType<typeof newManagedUserRow>[];
+  pendingManagedUsers: ReturnType<typeof newManagedUserRow>[];
   teachableCourses: TeachableCourseDraft[];
   availabilityPreset: AccountAvailabilityPreset;
   weeklyAvailability: ReturnType<typeof buildDefaultWeeklyAvailability>;
@@ -95,7 +95,7 @@ export function useAccountSetupForm() {
   return ctx;
 }
 
-/** For optional UI (e.g. add-students) that only exists inside account setup when wrapped. */
+/** For optional UI (e.g. add-managedusers) that only exists inside account setup when wrapped. */
 // oxlint-disable-next-line react-refresh/only-export-components
 export function useOptionalAccountSetupForm() {
   return useContext(AccountSetupFormContext);
@@ -121,7 +121,7 @@ function buildAccountSetupSchema(
 ) {
   return z
     .object({
-      accountType: z.enum(['adult', 'student']),
+      accountType: z.enum(['adult', 'manageduser']),
       name: z.string().min(1, 'Name is required'),
       state: z.string().min(1, 'Select your state'),
       zipCode: z
@@ -143,10 +143,10 @@ function buildAccountSetupSchema(
       teenPermissionConfirmed: z.boolean(),
       under13ChildConfirmed: z.boolean(),
       under13GuardianPermissionConfirmed: z.boolean(),
-      pendingStudents: z.array(
+      pendingManagedUsers: z.array(
         z.object({
           id: z.string(),
-          studentId: z.string(),
+          managedUserId: z.string(),
           displayName: z.string(),
           currentGradeOrdinal: z.string(),
         }),
@@ -158,7 +158,7 @@ function buildAccountSetupSchema(
           subjectId: z.string(),
           grades: z.array(z.string()),
           curriculum: z.string(),
-          maxStudents: z.number().int().min(1).max(20),
+          maxManagedUsers: z.number().int().min(1).max(20),
         }),
       ),
       availabilityPreset: z.enum([
@@ -259,7 +259,7 @@ function buildAccountSetupSchema(
         });
       }
 
-      if (data.accountType === 'student') {
+      if (data.accountType === 'manageduser') {
         if (data.interests.length < 1) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -268,7 +268,7 @@ function buildAccountSetupSchema(
           });
         }
       } else {
-        const validStudents = data.pendingStudents.every((s) => {
+        const validManagedUsers = data.pendingManagedUsers.every((s) => {
           const g = Number.parseInt(s.currentGradeOrdinal, 10);
           return (
             s.displayName.trim().length > 0 &&
@@ -277,11 +277,11 @@ function buildAccountSetupSchema(
             g <= 13
           );
         });
-        if (!validStudents || data.pendingStudents.length < 1) {
+        if (!validManagedUsers || data.pendingManagedUsers.length < 1) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'Add at least one student with name and grade',
-            path: ['pendingStudents'],
+            message: 'Add at least one manageduser with name and grade',
+            path: ['pendingManagedUsers'],
           });
         }
 
@@ -322,7 +322,7 @@ const AccountSetupForm = ({
   stepIndex: number;
   totalSteps: number;
   expectedBirthBand: ExpectedBirthBand;
-  initialFormAccountType: 'adult' | 'student';
+  initialFormAccountType: 'adult' | 'manageduser';
 }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -353,7 +353,7 @@ const AccountSetupForm = ({
       teenPermissionConfirmed: false,
       under13ChildConfirmed: false,
       under13GuardianPermissionConfirmed: false,
-      pendingStudents: [newManagedUserRow()],
+      pendingManagedUsers: [newManagedUserRow()],
       teachableCourses: [newCourseRow()] as TeachableCourseDraft[],
       availabilityPreset: 'anytime',
       weeklyAvailability: buildDefaultWeeklyAvailability(),
@@ -391,10 +391,10 @@ const AccountSetupForm = ({
         weeklyAvailability: weeklyAvailabilityToApiPayload(
           value.weeklyAvailability,
         ),
-        pendingStudents:
+        pendingManagedUsers:
           value.accountType === 'adult'
-            ? value.pendingStudents.map((s) => ({
-                studentId: s.studentId,
+            ? value.pendingManagedUsers.map((s) => ({
+                managedUserId: s.managedUserId, // ponytail: API wire name
                 displayName: s.displayName.trim(),
                 currentGrade: Number.parseInt(s.currentGradeOrdinal, 10),
               }))
@@ -426,7 +426,7 @@ const AccountSetupForm = ({
                     matchesAllGrades,
                     grades,
                     curriculum: c.curriculum,
-                    maxStudents: c.maxStudents,
+                    maxManagedUsers: c.maxManagedUsers,
                   };
                 })
             : undefined,

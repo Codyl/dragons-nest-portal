@@ -36,7 +36,7 @@ export type TeachableCourseDraft = {
   grades: string[];
   curriculum: string;
   /** Cap 20 per product rules */
-  maxStudents: number;
+  maxManagedUsers: number;
 };
 
 export function newCourseRow(): TeachableCourseDraft {
@@ -46,7 +46,7 @@ export function newCourseRow(): TeachableCourseDraft {
     subjectId: '',
     grades: [],
     curriculum: '',
-    maxStudents: 1,
+    maxManagedUsers: 1,
   };
 }
 
@@ -171,9 +171,9 @@ export function rowIsComplete(
   }
 
   if (
-    !Number.isFinite(row.maxStudents) ||
-    row.maxStudents < 1 ||
-    row.maxStudents > 20
+    !Number.isFinite(row.maxManagedUsers) ||
+    row.maxManagedUsers < 1 ||
+    row.maxManagedUsers > 20
   ) {
     return false;
   }
@@ -196,7 +196,7 @@ export function rowIsComplete(
 export function teachableCoursesFormIsSubmittable(
   rows: Pick<
     TeachableCourseDraft,
-    'className' | 'subjectId' | 'grades' | 'curriculum' | 'maxStudents'
+    'className' | 'subjectId' | 'grades' | 'curriculum' | 'maxManagedUsers'
   >[],
   getSubject: GetTeachableSubject,
 ): boolean {

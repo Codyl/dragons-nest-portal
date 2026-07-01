@@ -32,11 +32,11 @@ export interface User {
   zipCode?: string | null;
   parentId?: string | null;
   canManageOthers?: boolean;
-  linkedStudents?: string[];
+  linkedManagedUsers?: string[];
   addedClasses?: unknown[];
   ageBandAtRegistration?: unknown | null;
   managedAccountsView?: {
-    studentId: string;
+    managedUserId: string;
     displayName: string;
     currentGrade: number;
     lastPromotionYear: number;
@@ -49,7 +49,7 @@ export interface User {
     matchesAllGrades?: boolean;
     grades?: string[];
     curriculum?: string;
-    maxStudents?: number;
+    maxManagedUsers?: number;
   }[];
   notificationEvents?: {
     type: 'COURSE_REMOVED';

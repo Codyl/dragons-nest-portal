@@ -38,22 +38,22 @@ export const Route = createFileRoute(
 function CurriculumSubjectRoute() {
   const { subjectId } = Route.useParams();
   const { activeManagedUser } = useManagedUser();
-  const studentId = activeManagedUser?.studentId ?? '';
+  const managedUserId = activeManagedUser?.managedUserId ?? '';
   const { data: subjects, isLoading, isError } = useSubjects();
-  const { data: conceptsRes } = useSubjectConcepts(subjectId, studentId);
+  const { data: conceptsRes } = useSubjectConcepts(subjectId, managedUserId);
   const { data: userRes } = useLoggedInUser();
   const [filesOpen, setFilesOpen] = useState(false);
 
   const {
     data: statsRes,
     isError: statsError,
-  } = useSubjectStats(subjectId, studentId);
+  } = useSubjectStats(subjectId, managedUserId);
   const stats = statsRes?.data ?? null;
 
   const {
     data: summaryRes,
     isError: summaryError,
-  } = useSubjectSummary(subjectId, studentId);
+  } = useSubjectSummary(subjectId, managedUserId);
   const summary = summaryRes?.data ?? null;
 
   const subject = subjects?.find((s) => s._id === subjectId) ?? null;
@@ -122,7 +122,7 @@ function CurriculumSubjectRoute() {
                 state={userRes?.data?.address?.state ?? ''}
                 grade={String(activeManagedUser?.currentGrade ?? 0)}
                 subjectId={subjectId}
-                studentName={activeManagedUser?.displayName ?? ''}
+                manageduserName={activeManagedUser?.displayName ?? ''}
               />
               <div className="flex items-center gap-4 text-sm">
                 
@@ -297,7 +297,7 @@ function CurriculumSubjectRoute() {
       </section>
 
       {/* Activities — task 7.4 */}
-      <ActivitiesSection subjectId={subjectId} studentId={studentId} />
+      <ActivitiesSection subjectId={subjectId} managedUserId={managedUserId} />
 
       {/* Add Resource */}
       <AddResourceSection subjectId={subjectId} subjectName={subject?.name ?? ''} />
@@ -322,19 +322,19 @@ const GRADE_ORDINALS = [
 
 function ActivitiesSection({
   subjectId,
-  studentId,
+  managedUserId,
 }: {
   subjectId: string;
-  studentId: string;
+  managedUserId: string;
 }) {
   const { activeManagedUser } = useManagedUser();
   const gradeOrdinal = activeManagedUser?.currentGrade;
   const grade = gradeOrdinal != null ? GRADE_ORDINALS[gradeOrdinal] : undefined;
 
-  const { data: activitiesRes } = useActivities(subjectId, studentId);
+  const { data: activitiesRes } = useActivities(subjectId, managedUserId);
   const { data: conceptsRes } = useConcepts(subjectId, grade);
   const createActivity = useCreateActivity();
-  const deleteActivity = useDeleteActivity(subjectId, studentId);
+  const deleteActivity = useDeleteActivity(subjectId, managedUserId);
 
   const concepts = conceptsRes?.data ?? [];
 
@@ -373,7 +373,7 @@ function ActivitiesSection({
     createActivity.mutate(
       {
         subjectId,
-        studentId,
+        managedUserId,
         date,
         conceptId,
         difficulty: difficulty as 'Easy' | 'Medium' | 'Hard',

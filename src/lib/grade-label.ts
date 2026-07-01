@@ -1,4 +1,4 @@
-/** Maps stored grade index (0–13) to display label for household students. */
+/** Maps stored grade index (0–13) to display label for household managedusers. */
 export function gradeLabel(grade: number): string {
   if (grade === 0) return 'Kindergarten';
 

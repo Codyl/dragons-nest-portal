@@ -1,6 +1,6 @@
 import ProfileServices from '@/api/services/profile.services';
 import AccountSetupForm from '@/components/forms/account-setup.form';
-import AccountSetupAddStudentsStep from '@/components/steps/account-setup-add-students-step';
+import AccountSetupAddManagedUsersStep from '@/components/steps/account-setup-add-manageduser-step';
 import AccountSetupComplianceStep from '@/components/steps/account-setup-compliance-step';
 import AccountSetupInterestsStep from '@/components/steps/account-setup-interests-step';
 import AccountSetupAvailabilityStep from '@/components/steps/account-setup-availability-step';
@@ -81,7 +81,7 @@ function AccountSetup() {
       )}
 
       {setupFlow === 'adult' && step === 1 && (
-        <AccountSetupAddStudentsStep
+        <AccountSetupAddManagedUsersStep
           onNext={() => setStep(2)}
           onBack={() => setStep(0)}
         />

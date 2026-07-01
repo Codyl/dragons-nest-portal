@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { isUnder18, isUnder13 } from '@/lib/signup-age';
 import SignupAgeGateStep from './signup-age-gate.step';
-import SignupAdultStudentForm from './signup-adult-student.form';
-import type { SignupAccountType } from './signup-adult-student.form';
+import SignupAdultManagedUserForm from './signup-adult.form';
+import type { SignupAccountType } from './signup-adult.form';
 import {
   SIGNUP_BIRTH_MONTH_KEY,
   SIGNUP_BIRTH_YEAR_KEY,
@@ -12,9 +12,9 @@ export function resolveSignupAccountType(
   month: number | '',
   year: number | '',
 ): SignupAccountType {
-  if (month === '' || year === '') return 'student';
+  if (month === '' || year === '') return 'manageduser';
   if (isUnder13(month, year)) return 'adult';
-  if (isUnder18(month, year)) return 'student';
+  if (isUnder18(month, year)) return 'manageduser';
   return 'adult';
 }
 
@@ -51,7 +51,7 @@ const SignupFlow = () => {
 
       {phase === 'credentials' && (
         <div className="bg-card rounded-xl border p-6 shadow-xs">
-          <SignupAdultStudentForm
+          <SignupAdultManagedUserForm
             accountType={accountType}
             onBack={() => setPhase('age-gate')}
           />

@@ -8,29 +8,29 @@ import { cn } from '@/lib/utils';
 
 type CurriculumListProps = {
   subjectId: string;
-  studentId: string | null;
+  managedUserId: string | null;
   householdId: string;
 };
 
 const CurriculumList = ({
   subjectId,
-  studentId,
+  managedUserId,
   householdId,
 }: CurriculumListProps) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const { data, isLoading, isError, refetch } = useCurriculumItems({
     subjectId,
-    studentId,
+    managedUserId,
     householdId,
   });
 
   const { data: selectionData } = useCurriculumSelection({
     subjectId,
-    studentId,
+    managedUserId,
   });
 
-  const selectMutation = useSetCurriculumSelection({ subjectId, studentId });
+  const selectMutation = useSetCurriculumSelection({ subjectId, managedUserId });
 
   // Initialize selectedItemId from persisted value on mount
   useEffect(() => {
@@ -42,7 +42,7 @@ const CurriculumList = ({
 
   const handleSelect = (itemId: string) => {
     setSelectedItemId(itemId);
-    if (studentId) {
+    if (managedUserId) {
       selectMutation.mutate({ curriculumItemId: itemId });
     }
   };

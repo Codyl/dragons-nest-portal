@@ -48,7 +48,7 @@ function mountSubjectCard() {
         email: 'test@example.com',
         given_name: 'Test',
         family_name: 'User',
-        householdStudents: [],
+        managedUsers: [],
       },
     },
   }).as('getProfile');

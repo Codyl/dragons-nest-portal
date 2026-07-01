@@ -66,7 +66,7 @@ const AccountSetupAvailabilityStep = ({
     variant === 'parent' ? 'Contact availability' : 'Class availability';
   const subtitle =
     variant === 'parent'
-      ? 'When teachers or students can reach you. You can change this later in settings.'
+      ? 'When teachers or managedusers can reach you. You can change this later in settings.'
       : 'When you are typically available for classes. You can change this later in settings.';
 
   const tryContinue = async () => {

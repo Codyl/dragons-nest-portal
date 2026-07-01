@@ -192,7 +192,7 @@ describe('Property 3: Add-course form rejects incomplete submissions', () => {
             fc.constant(''),
             fc.constantFrom(...CURRICULUM_VALUES),
           ),
-          maxStudents: fc.oneof(
+          maxManagedUsers: fc.oneof(
             fc.integer({ min: 1, max: 20 }),
             fc.constant(0),
             fc.constant(21),
@@ -213,7 +213,7 @@ describe('Property 3: Add-course form rejects incomplete submissions', () => {
             subjectId: formState.subjectId,
             grades: formState.grades as string[],
             curriculum: formState.curriculum,
-            maxStudents: formState.maxStudents,
+            maxManagedUsers: formState.maxManagedUsers,
           };
 
           const isComplete = rowIsComplete(draft, getSubject);
@@ -223,15 +223,15 @@ describe('Property 3: Add-course form rejects incomplete submissions', () => {
           const hasEmptySubject = draft.subjectId.trim().length === 0;
           const hasEmptyGrades = draft.grades.length === 0;
           const hasEmptyCurriculum = draft.curriculum.trim().length === 0;
-          const hasInvalidMaxStudents =
-            draft.maxStudents < 1 || draft.maxStudents > 20;
+          const hasInvalidMaxManagedUsers =
+            draft.maxManagedUsers < 1 || draft.maxManagedUsers > 20;
 
           const hasInvalidField =
             hasEmptyClassName ||
             hasEmptySubject ||
             hasEmptyGrades ||
             hasEmptyCurriculum ||
-            hasInvalidMaxStudents;
+            hasInvalidMaxManagedUsers;
 
           if (hasInvalidField) {
             // rowIsComplete must return false when any required field is invalid
@@ -373,7 +373,7 @@ describe('Property 5: Grade-span limit is enforced for non-enrichment subjects',
             subjectId: 'test-subject-id',
             grades,
             curriculum: 'saxon',
-            maxStudents: 5,
+            maxManagedUsers: 5,
           };
 
           const getSubject = (id: string) => {

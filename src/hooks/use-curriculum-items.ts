@@ -3,14 +3,14 @@ import CurriculumServices from '@/api/services/curriculum.services';
 
 const useCurriculumItems = (params: {
   subjectId: string;
-  studentId: string | null;
+  managedUserId: string | null;
   householdId: string;
 }) =>
   useQuery({
     queryKey: [
       'curriculum',
       params.subjectId,
-      params.studentId ?? params.householdId,
+      params.managedUserId ?? params.householdId,
     ],
     queryFn: () => CurriculumServices.getCurriculumItems(params),
     enabled: !!params.householdId && !!params.subjectId,

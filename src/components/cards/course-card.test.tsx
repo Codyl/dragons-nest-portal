@@ -66,7 +66,7 @@ function arbitraryTeachableCourseWithEnrollment(
         maxLength: 5,
       }),
       curriculum: fc.constantFrom(...CURRICULUM_VALUES),
-      maxStudents: fc.integer({ min: 1, max: 20 }),
+      maxManagedUsers: fc.integer({ min: 1, max: 20 }),
       activeEnrollmentCount: fc.integer({ min: 0, max: 50 }),
     })
     .map((c) => ({
@@ -95,7 +95,7 @@ const courseFixture: TeachableSubjectWithEnrollment = {
   matchesAllGrades: false,
   grades: ['9', '10'],
   curriculum: 'saxon',
-  maxStudents: 8,
+  maxManagedUsers: 8,
   activeEnrollmentCount: 0,
 };
 
@@ -105,7 +105,7 @@ const allGradesCourseFixture: TeachableSubjectWithEnrollment = {
   matchesAllGrades: true,
   grades: [],
   curriculum: 'other',
-  maxStudents: 15,
+  maxManagedUsers: 15,
   activeEnrollmentCount: 2,
 };
 
@@ -180,7 +180,7 @@ describe('CourseCard', () => {
     expect(screen.getByText('Saxon')).toBeDefined();
   });
 
-  it('renders maxStudents', () => {
+  it('renders maxManagedUsers', () => {
     render(
       <CourseCard
         course={courseFixture}
@@ -287,7 +287,7 @@ describe('CourseCard', () => {
 // ---------------------------------------------------------------------------
 
 describe('Property 2: Course card displays all required fields', () => {
-  it('rendered card contains subject name, className, grade display, curriculum label, and maxStudents', () => {
+  it('rendered card contains subject name, className, grade display, curriculum label, and maxManagedUsers', () => {
     // Feature: manage-teachable-subjects, Property 2: Course card displays all required fields
     // Validates: Requirements 2.3
     fc.assert(
@@ -331,8 +331,8 @@ describe('Property 2: Course card displays all required fields', () => {
             )?.label ?? course.curriculum;
           const curriculumFound = text.includes(curriculumLabel);
 
-          // maxStudents
-          const maxStudentsFound = text.includes(String(course.maxStudents));
+          // maxManagedUsers
+          const maxManagedUsersFound = text.includes(String(course.maxManagedUsers));
 
           unmount();
 
@@ -341,7 +341,7 @@ describe('Property 2: Course card displays all required fields', () => {
             classNameFound &&
             gradeFound &&
             curriculumFound &&
-            maxStudentsFound
+            maxManagedUsersFound
           );
         },
       ),

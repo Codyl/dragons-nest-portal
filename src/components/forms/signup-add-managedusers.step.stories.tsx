@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import SignupAddStudentsStep, {
+import SignupAddManagedUsersStep, {
   newManagedUserRow,
   type PendingManagedUserDraft,
-} from './signup-add-students.step';
+} from './signup-add-managedusers.step';
 
-function SignupAddStudentsPlayground() {
+function SignupAddManagedUsersPlayground() {
   const [managedUsers, setManagedUsers] = useState<PendingManagedUserDraft[]>([
     newManagedUserRow(),
   ]);
   return (
     <div className="mx-auto max-w-lg p-4">
-      <SignupAddStudentsStep
+      <SignupAddManagedUsersStep
         managedUsers={managedUsers}
         onChange={setManagedUsers}
         onFinish={() => undefined}
@@ -23,9 +23,9 @@ function SignupAddStudentsPlayground() {
 }
 
 const meta = {
-  title: 'Forms/SignupAddStudentsStep',
-  component: SignupAddStudentsPlayground,
-} satisfies Meta<typeof SignupAddStudentsPlayground>;
+  title: 'Forms/SignupAddManagedUsersStep',
+  component: SignupAddManagedUsersPlayground,
+} satisfies Meta<typeof SignupAddManagedUsersPlayground>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

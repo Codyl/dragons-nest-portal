@@ -141,7 +141,7 @@ function RouteComponent() {
                 <h3 className="text-lg font-semibold mb-2">Community</h3>
                 <p className="text-sm leading-relaxed opacity-90">
                   Break the isolation stigma. Find friends to learn with and parents you love with knowledge they want to share. Share resources, host joint
-                  labs, and build supportive villages for your students.
+                  labs, and build environments.
                 </p>
               </div>
               <div className="mt-6">
@@ -199,9 +199,9 @@ function RouteComponent() {
                   Portfolio & Time Tracking
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  Effortlessly track hours for goals and upload student portfolio
+                  Effortlessly track hours for goals and upload manageduser portfolio
                   projects. Create beautiful, shareable galleries of your
-                  student's best work—from science experiments to art
+                  manageduser's best work—from science experiments to art
                   projects—all in one secure digital vault.
                 </p>
               </div>
@@ -238,7 +238,7 @@ function RouteComponent() {
           <p className="text-muted-foreground text-sm md:text-base mb-14 max-w-2xl mx-auto leading-relaxed">
             We believe true education encompasses more than textbooks. Dragon's
             Nest provides specialized resources for teaching essential life
-            skills that prepare students for the real world.
+            skills that prepare managedusers for the real world.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

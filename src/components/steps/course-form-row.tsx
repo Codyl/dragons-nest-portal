@@ -203,7 +203,7 @@ export default function CourseFormRow({
           )}
           {showAnyHint && (
             <p className="text-muted-foreground text-xs leading-snug">
-              Selecting &apos;Any&apos; will show your class to all students
+              Selecting &apos;Any&apos; will show your class to everyone
               regardless of age.
             </p>
           )}
@@ -221,20 +221,20 @@ export default function CourseFormRow({
             Max students
           </FieldLabel>
           <Input
-            id={`max-students-${row.id}`}
+            id={`max-managedusers-${row.id}`}
             type="number"
             min={1}
             max={20}
             inputMode="numeric"
-            data-testid={`max-students-${row.id}`}
+            data-testid={`max-managedusers-${row.id}`}
             value={String(
-              Number.isFinite(row.maxStudents) ? row.maxStudents : 1,
+              Number.isFinite(row.maxManagedUsers) ? row.maxManagedUsers : 1,
             )}
             className={cn(beigeInputClassName)}
             onChange={(e) => {
               const raw = e.target.value;
               if (raw === '') {
-                onChangePatch({ maxStudents: 1 });
+                onChangePatch({ maxManagedUsers: 1 });
                 return;
               }
 
@@ -242,7 +242,7 @@ export default function CourseFormRow({
               if (!Number.isFinite(n)) return;
 
               onChangePatch({
-                maxStudents: Math.min(20, Math.max(1, n)),
+                maxManagedUsers: Math.min(20, Math.max(1, n)),
               });
             }}
             disabled={subjectsLoading}

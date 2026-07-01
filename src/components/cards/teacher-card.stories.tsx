@@ -18,7 +18,7 @@ const baseUser = (): User => ({
       subjectId: '69cd8d3af25d5f9fc7d339da',
       matchesAllGrades: false,
       curriculum: 'secular',
-      maxStudents: 6,
+      maxManagedUsers: 6,
     },
   ],
 });
@@ -86,5 +86,5 @@ export const NoAvailability: Story = {
 
 /**
  * Cypress: `src/components/cards/teacher-card.cy.tsx`.
- * Reference: `student-draft-card.cy.tsx` (composeStories, mounting patterns).
+ * Reference: `manageduser-card.cy.tsx` (composeStories, mounting patterns).
  */

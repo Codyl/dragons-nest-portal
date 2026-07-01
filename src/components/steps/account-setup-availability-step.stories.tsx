@@ -17,7 +17,7 @@ const meta = {
         <AccountSetupFormStoryWrapper
           stepIndex={isTeen ? 2 : 2}
           totalSteps={isTeen ? 3 : 4}
-          signupRole={isTeen ? 'student' : 'adult'}
+          signupRole={isTeen ? 'manageduser' : 'adult'}
         >
           <Story />
         </AccountSetupFormStoryWrapper>

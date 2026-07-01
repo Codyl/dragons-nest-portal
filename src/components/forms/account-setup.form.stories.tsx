@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-function AccountSetupStudentFlow({
+function AccountSetupManagedUserFlow({
   initialStep = 0,
 }: {
   initialStep?: number;
@@ -26,7 +26,7 @@ function AccountSetupStudentFlow({
       stepIndex={step}
       totalSteps={totalSteps}
       expectedBirthBand="teen13to17"
-      initialFormAccountType="student"
+      initialFormAccountType="manageduser"
     >
       {step === 0 && <AccountSetupComplianceStep onNext={() => setStep(1)} />}
       {step === 1 && (
@@ -62,7 +62,7 @@ function AccountSetupAdultComplianceFlow() {
 
 const formFlowMeta = {
   title: 'Forms/AccountSetupForm',
-  component: AccountSetupStudentFlow,
+  component: AccountSetupManagedUserFlow,
   parameters: {
     layout: 'fullscreen',
   },
@@ -74,7 +74,7 @@ const formFlowMeta = {
     (Story, context) => {
       if (typeof window !== 'undefined') {
         const role =
-          context.parameters.signupRole === 'adult' ? 'adult' : 'student';
+          context.parameters.signupRole === 'adult' ? 'adult' : 'manageduser';
         sessionStorage.setItem('signupRole', role);
       }
 
@@ -109,17 +109,17 @@ const formFlowMeta = {
       );
     },
   ],
-} satisfies Meta<typeof AccountSetupStudentFlow>;
+} satisfies Meta<typeof AccountSetupManagedUserFlow>;
 
 export default formFlowMeta;
 type Story = StoryObj<typeof formFlowMeta>;
 
-/** Wired to `AccountSetupStudentFlow` step state; use for Cypress / multi-step flows. */
+/** Wired to `AccountSetupManagedUserFlow` step state; use for Cypress / multi-step flows. */
 export const ComplianceStep: Story = {
   args: { initialStep: 0 },
 };
 
-/** Student onboarding interests step only (same flow as step 2 after compliance). */
+/** ManagedUser onboarding interests step only (same flow as step 2 after compliance). */
 export const InterestsStep: Story = {
   args: { initialStep: 1 },
 };

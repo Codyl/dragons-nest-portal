@@ -4,6 +4,7 @@ export type ComplianceLaws = {
   _id: string;
   state: string;
   abbreviation: string;
+  /** Wire name is `subjectsRequiredTopicIds` (legacy DB field); these are subject IDs. */
   requiredTopicIds: string[];
 };
 

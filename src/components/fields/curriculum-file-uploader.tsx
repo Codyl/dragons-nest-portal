@@ -14,7 +14,7 @@ const ACCEPTED_MIME_TYPES = [
 
 type CurriculumFileUploaderProps = {
   subjectId: string;
-  studentId: string | null;
+  managedUserId: string | null;
   householdId: string;
 };
 
@@ -25,22 +25,22 @@ type CurriculumFileUploaderProps = {
 export function buildUploadFormData(params: {
   file: File;
   subjectId: string;
-  studentId: string | null;
+  managedUserId: string | null;
   householdId: string;
 }): FormData {
   const formData = new FormData();
   formData.append('file', params.file);
   formData.append('subjectId', params.subjectId);
   formData.append('householdId', params.householdId);
-  if (params.studentId) {
-    formData.append('studentId', params.studentId);
+  if (params.managedUserId) {
+    formData.append('managedUserId', params.managedUserId);
   }
   return formData;
 }
 
 function CurriculumFileUploader({
   subjectId,
-  studentId,
+  managedUserId,
   householdId,
 }: CurriculumFileUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,7 +54,7 @@ function CurriculumFileUploader({
     error: mutationError,
   } = useUploadCurriculumItem({
     subjectId,
-    studentId,
+    managedUserId,
     householdId,
   });
 

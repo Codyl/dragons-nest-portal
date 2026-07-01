@@ -120,7 +120,7 @@ describe('AccountSetupTeachableStep', () => {
       .click();
     cy.get('.teachable-grade__menu').contains('Any').click();
     cy.contains(
-      "Selecting 'Any' will show your class to all students regardless of age.",
+      "Selecting 'Any' will show your class to all managedusers regardless of age.",
     ).should('be.visible');
   });
 
@@ -188,10 +188,10 @@ describe('AccountSetupTeachableStep', () => {
       .should('not.exist');
   });
 
-  it('caps max students at 20 (props, user interaction)', () => {
+  it('caps max managedusers at 20 (props, user interaction)', () => {
     cy.mountStory(Default);
-    cy.get('[data-testid^="max-students-"]').first().clear().type('25');
-    cy.get('[data-testid^="max-students-"]').first().should('have.value', '20');
+    cy.get('[data-testid^="max-managedusers-"]').first().clear().type('25');
+    cy.get('[data-testid^="max-managedusers-"]').first().should('have.value', '20');
   });
 
   it('shows loading message while subjects are pending (loading state)', () => {

@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import SubjectsServices from '@/api/services/subjects.services';
 
-const useSubjectStats = (subjectId: string, studentId: string) =>
+const useSubjectStats = (subjectId: string, managedUserId: string) =>
   useQuery({
-    queryKey: ['subject-stats', subjectId, studentId],
-    queryFn: () => SubjectsServices.getSubjectStats({ subjectId, studentId }),
-    enabled: !!subjectId && !!studentId,
+    queryKey: ['subject-stats', subjectId, managedUserId],
+    queryFn: () => SubjectsServices.getSubjectStats({ subjectId, managedUserId }),
+    enabled: !!subjectId && !!managedUserId,
     staleTime: 5 * 60 * 1000,
   });
 

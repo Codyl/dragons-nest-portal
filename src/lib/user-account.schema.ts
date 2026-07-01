@@ -5,7 +5,7 @@ import { signupPasswordFieldSchema } from './signup-password-schema';
  * Mirrors `AccountType` in `nest-app/src/users/enums/account-type.enum.ts`
  * and discriminator `User.accountType` in `user.entity.ts`.
  */
-export const accountTypeSchema = z.enum(['adult', 'student']);
+export const accountTypeSchema = z.enum(['adult', 'manageduser']);
 export type AccountType = z.infer<typeof accountTypeSchema>;
 
 const emailField = z.email('Please enter a valid email address');
@@ -21,7 +21,7 @@ const emailPasswordShape = {
   confirmPassword: z.string().min(1, 'Please confirm your password'),
 };
 
-/** Shared adult / student credential fields (email + passwords). */
+/** Shared adult / manageduser credential fields (email + passwords). */
 export const signupEmailPasswordSchema = z
   .object(emailPasswordShape)
   .refine((data) => data.password === data.confirmPassword, passwordMismatch);
@@ -49,9 +49,9 @@ export const adultEmailSignupSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, passwordMismatch);
 
-export const studentAccountSignupSchema = z
+export const manageduserAccountSignupSchema = z
   .object({
-    accountType: z.literal('student'),
+    accountType: z.literal('manageduser'),
     ...emailPasswordShape,
   })
   .refine((data) => data.password === data.confirmPassword, passwordMismatch);
@@ -63,7 +63,7 @@ export const studentAccountSignupSchema = z
 export const userAccountSignupSchema = z.union([
   householdAdultAccountSignupSchema,
   adultEmailSignupSchema,
-  studentAccountSignupSchema,
+  manageduserAccountSignupSchema,
 ]);
 
 export type UserAccountSignup = z.infer<typeof userAccountSignupSchema>;

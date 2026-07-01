@@ -9,7 +9,7 @@ import CurriculumServices, {
 
 const useUploadCurriculumItem = (params: {
   subjectId: string;
-  studentId: string | null;
+  managedUserId: string | null;
   householdId: string;
 }): UseMutationResult<
   { message: string; data: CurriculumItem },
@@ -26,7 +26,7 @@ const useUploadCurriculumItem = (params: {
         queryKey: [
           'curriculum',
           params.subjectId,
-          params.studentId ?? params.householdId,
+          params.managedUserId ?? params.householdId,
         ],
       });
     },

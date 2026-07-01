@@ -22,9 +22,9 @@ const meta = {
         message: 'ok',
         data: {
           accountType: 'adult',
-          householdStudents: [
+          managedUsers: [
             {
-              studentId: '00000000-0000-4000-8000-000000000001',
+              managedUserId: '00000000-0000-4000-8000-000000000001',
               displayName: 'Jamie',
               currentGrade: 5,
               lastPromotionYear: 2024,

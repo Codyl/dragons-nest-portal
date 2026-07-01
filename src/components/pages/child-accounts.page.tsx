@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ManagedUserDraftAll } from '@/api/services/profile.services';
-import StudentDraftCard from '@/components/cards/student-draft-card';
-import AddStudentSheet from '@/components/sections/add-student-sheet';
+import ManagedUserDraftCard from '@/components/cards/manageduser-card';
+import AddManagedUserSheet from '@/components/sections/add-manageduser-sheet';
 import RemoveConfirmDialog from '@/components/modals/remove-confirm-dialog';
 import { Button } from '@/components/ui/button';
 import useArchiveManagedUser from '@/hooks/use-archive-managed-user';
@@ -33,7 +33,7 @@ const ChildAccountsPage = () => {
       },
       onError: (err) => {
         setActionError(
-          err.message ?? 'Failed to archive student. Please try again.',
+          err.message ?? 'Failed to archive manageduser. Please try again.',
         );
         setArchivingId(null);
       },
@@ -45,12 +45,12 @@ const ChildAccountsPage = () => {
     setArchivingId(null);
   };
 
-  const handleRestore = (studentId: string) => {
+  const handleRestore = (managedUserId: string) => {
     setActionError(null);
-    restoreMutation.mutate(studentId, {
+    restoreMutation.mutate(managedUserId, {
       onError: (err) => {
         setActionError(
-          err.message ?? 'Failed to restore student. Please try again.',
+          err.message ?? 'Failed to restore manageduser. Please try again.',
         );
       },
     });
@@ -62,10 +62,10 @@ const ChildAccountsPage = () => {
         <div>
           <h1 className="text-2xl font-semibold">Child Accounts</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Manage household students for your sidebar and curriculum.
+            Manage household managedusers for your sidebar and curriculum.
           </p>
         </div>
-        <Button onClick={() => setAddSheetOpen(true)}>Add Student</Button>
+        <Button onClick={() => setAddSheetOpen(true)}>Add ManagedUser</Button>
       </div>
 
       {actionError && (
@@ -78,7 +78,7 @@ const ChildAccountsPage = () => {
       )}
 
       {profileQuery.isLoading && (
-        <div aria-label="Loading students" className="flex flex-col gap-4">
+        <div aria-label="Loading managedusers" className="flex flex-col gap-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-40 rounded-lg bg-muted animate-pulse" />
           ))}
@@ -92,7 +92,7 @@ const ChildAccountsPage = () => {
         >
           <span>
             {profileQuery.error?.message ??
-              'Failed to load student profiles. Please try again.'}
+              'Failed to load manageduser profiles. Please try again.'}
           </span>
           <Button
             variant="outline"
@@ -106,25 +106,25 @@ const ChildAccountsPage = () => {
 
       {!profileQuery.isLoading && !profileQuery.isError && (
         <>
-          <section aria-labelledby="active-students-heading">
+          <section aria-labelledby="active-managedusers-heading">
             <h2
-              id="active-students-heading"
+              id="active-managedusers-heading"
               className="text-lg font-medium mb-3"
             >
-              Active students
+              Active managedusers
             </h2>
             {activeDrafts.length === 0 ? (
               <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
-                <p>No students added yet.</p>
+                <p>No managedusers added yet.</p>
                 <p className="text-sm mt-1">
-                  Click &quot;Add Student&quot; to create a household profile.
+                  Click &quot;Add ManagedUser&quot; to create a household profile.
                 </p>
               </div>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {activeDrafts.map((draft) => (
-                  <StudentDraftCard
-                    key={draft.studentId}
+                  <ManagedUserDraftCard
+                    key={draft.managedUserId}
                     draft={draft}
                     onArchive={(id) => {
                       setActionError(null);
@@ -132,7 +132,7 @@ const ChildAccountsPage = () => {
                     }}
                     isArchiving={
                       archiveMutation.isPending &&
-                      archiveMutation.variables === draft.studentId
+                      archiveMutation.variables === draft.managedUserId
                     }
                   />
                 ))}
@@ -142,24 +142,24 @@ const ChildAccountsPage = () => {
 
           {archivedDrafts.length > 0 && (
             <section
-              aria-labelledby="archived-students-heading"
+              aria-labelledby="archived-managedusers-heading"
               className="mt-8"
             >
               <h2
-                id="archived-students-heading"
+                id="archived-managedusers-heading"
                 className="text-lg font-medium mb-3"
               >
-                Archived students
+                Archived managedusers
               </h2>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 opacity-90">
                 {archivedDrafts.map((draft) => (
-                  <StudentDraftCard
-                    key={draft.studentId}
+                  <ManagedUserDraftCard
+                    key={draft.managedUserId}
                     draft={draft}
                     onRestore={handleRestore}
                     isRestoring={
                       restoreMutation.isPending &&
-                      restoreMutation.variables === draft.studentId
+                      restoreMutation.variables === draft.managedUserId
                     }
                   />
                 ))}
@@ -169,15 +169,15 @@ const ChildAccountsPage = () => {
         </>
       )}
 
-      <AddStudentSheet open={addSheetOpen} onOpenChange={setAddSheetOpen} />
+      <AddManagedUserSheet open={addSheetOpen} onOpenChange={setAddSheetOpen} />
 
       <RemoveConfirmDialog
         open={confirmArchiveOpen}
         onConfirm={handleConfirmArchive}
         onCancel={handleCancelArchive}
         isPending={archiveMutation.isPending}
-        title="Archive student"
-        description="Archive this student? They will be hidden from the sidebar selector but you can restore them here anytime."
+        title="Archive manageduser"
+        description="Archive this manageduser? They will be hidden from the sidebar selector but you can restore them here anytime."
         confirmLabel="Archive"
       />
     </div>

@@ -148,7 +148,7 @@ export const handlers = [
       matchesAllGrades: boolean;
       grades: string[];
       curriculum: string;
-      maxStudents: number;
+      maxManagedUsers: number;
     };
     return HttpResponse.json(
       {
@@ -161,7 +161,7 @@ export const handlers = [
               matchesAllGrades: body.matchesAllGrades,
               grades: body.grades,
               curriculum: body.curriculum,
-              maxStudents: body.maxStudents,
+              maxManagedUsers: body.maxManagedUsers,
               activeEnrollmentCount: 0,
             },
           ],

@@ -65,28 +65,28 @@ const SubjectsServices = {
 
   getSubjectStats: async (params: {
     subjectId: string;
-    studentId: string;
+    managedUserId: string;
   }): Promise<{ message: string; data: SubjectStats }> => {
-    const searchParams = new URLSearchParams({ studentId: params.studentId });
+    const searchParams = new URLSearchParams({ managedUserId: params.managedUserId });
     const response = await api.get(`subjects/${params.subjectId}/stats`, { searchParams });
     return response.json();
   },
 
   getSubjectSummary: async (params: {
     subjectId: string;
-    studentId: string;
+    managedUserId: string;
   }): Promise<{ message: string; data: SubjectSummary }> => {
-    const searchParams = new URLSearchParams({ studentId: params.studentId });
+    const searchParams = new URLSearchParams({ managedUserId: params.managedUserId });
     const response = await api.get(`subjects/${params.subjectId}/summary`, { searchParams });
     return response.json();
   },
 
   getSubjectConcepts: async (params: {
     subjectId: string;
-    studentId: string;
+    managedUserId: string;
     limit?: number;
   }): Promise<{ message: string; data: ConceptCard[] }> => {
-    const searchParams = new URLSearchParams({ studentId: params.studentId });
+    const searchParams = new URLSearchParams({ managedUserId: params.managedUserId });
     if (params.limit) searchParams.set('limit', String(params.limit));
     const response = await api.get(`subjects/${params.subjectId}/concepts`, { searchParams });
     return response.json();

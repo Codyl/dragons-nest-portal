@@ -32,7 +32,7 @@ describe('_private.settings.child-accounts route beforeLoad', () => {
     mockGetUser.mockResolvedValueOnce({
       message: 'ok',
       data: {
-        accountType: 'student',
+        accountType: 'manageduser',
         ageBandAtRegistration: 'ADULT_18_PLUS',
       },
     });

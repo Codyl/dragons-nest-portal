@@ -53,7 +53,7 @@ const emptyForm = (): FormState => ({
   subjectId: '',
   grades: [],
   curriculum: '',
-  maxStudents: 1,
+  maxManagedUsers: 1,
 });
 
 const beigeSelectClassName =
@@ -194,7 +194,7 @@ const AddCourseSheet = ({
         matchesAllGrades,
         grades,
         curriculum: form.curriculum,
-        maxStudents: form.maxStudents,
+        maxManagedUsers: form.maxManagedUsers,
       },
       {
         onSuccess: () => {
@@ -285,7 +285,7 @@ const AddCourseSheet = ({
               )}
               {showAnyHint && (
                 <p className="text-muted-foreground text-xs leading-snug">
-                  Selecting &apos;Any&apos; will show your class to all students
+                  Selecting &apos;Any&apos; will show your class to everyone
                   regardless of age.
                 </p>
               )}
@@ -298,31 +298,31 @@ const AddCourseSheet = ({
             </Field>
 
             <Field className="gap-1.5">
-              <FieldLabel htmlFor="add-course-maxstudents">
+              <FieldLabel htmlFor="add-course-maxmanagedusers">
                 Max students
               </FieldLabel>
               <Input
-                id="add-course-maxstudents"
+                id="add-course-maxmanagedusers"
                 type="number"
-                name="add-course-maxstudents"
+                name="add-course-maxmanagedusers"
                 inputMode="numeric"
                 min={1}
                 max={20}
-                data-testid="input-add-course-maxstudents"
+                data-testid="input-add-course-maxmanagedusers"
                 value={String(
-                  Number.isFinite(form.maxStudents) ? form.maxStudents : 1,
+                  Number.isFinite(form.maxManagedUsers) ? form.maxManagedUsers : 1,
                 )}
                 onChange={(e) => {
                   const raw = e.target.value;
                   if (raw === '') {
-                    setForm((prev) => ({ ...prev, maxStudents: 1 }));
+                    setForm((prev) => ({ ...prev, maxManagedUsers: 1 }));
                     return;
                   }
                   const n = Number.parseInt(raw, 10);
                   if (!Number.isFinite(n)) return;
                   setForm((prev) => ({
                     ...prev,
-                    maxStudents: Math.min(20, Math.max(1, n)),
+                    maxManagedUsers: Math.min(20, Math.max(1, n)),
                   }));
                 }}
                 className={cn(beigeInputClassName)}

@@ -1,12 +1,12 @@
 import { useAccountSetupForm } from '@/components/forms/account-setup.form';
-import SignupAddStudentsStep, {
+import SignupAddManagedUsersStep, {
   newManagedUserRow,
-} from '@/components/forms/signup-add-students.step';
-import type { PendingManagedUserDraft } from '@/components/forms/signup-add-students.step';
+} from '@/components/forms/signup-add-managedusers.step';
+import type { PendingManagedUserDraft } from '@/components/forms/signup-add-managedusers.step';
 import { Users } from 'lucide-react';
 import AccountSetupCard from '@/components/cards/account-setup-card';
 
-const AccountSetupAddStudentsStep = ({
+const AccountSetupAddManagedUsersStep = ({
   onNext,
   onBack,
 }: {
@@ -18,11 +18,11 @@ const AccountSetupAddStudentsStep = ({
   return (
     <AccountSetupCard
       stepIcon={<Users className="mx-auto h-9 w-9" strokeWidth={1.5} />}
-      title="Add your students"
+      title="Add your managedusers"
       subtitle="Create a profile for each learner on your account. You can refine details later."
       footer={null}
     >
-      <form.Field name="pendingStudents">
+      <form.Field name="pendingManagedUsers">
         {(field) => {
           const managedUsers = (field.state.value as
             | PendingManagedUserDraft[]
@@ -44,7 +44,7 @@ const AccountSetupAddStudentsStep = ({
 
           const tryContinue = async () => {
             if (!allValid) return;
-            await form.validateField('pendingStudents', 'change');
+            await form.validateField('pendingManagedUsers', 'change');
             await form.validateField('adultGuardianDutyConfirmed', 'change');
             form.setFieldMeta('adultGuardianDutyConfirmed', (prev) => ({
               ...prev,
@@ -58,7 +58,7 @@ const AccountSetupAddStudentsStep = ({
           };
 
           return (
-            <SignupAddStudentsStep
+            <SignupAddManagedUsersStep
               managedUsers={managedUsers}
               onChange={setManagedUsers}
               onFinish={tryContinue}
@@ -75,4 +75,4 @@ const AccountSetupAddStudentsStep = ({
   );
 };
 
-export default AccountSetupAddStudentsStep;
+export default AccountSetupAddManagedUsersStep;

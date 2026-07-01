@@ -35,8 +35,8 @@ const RemoveWarningDialog = ({
           <DialogTitle>Remove Course</DialogTitle>
           <DialogDescription>
             This course currently has {enrollmentCount}{' '}
-            {enrollmentCount === 1 ? 'student' : 'students'} enrolled. Removing
-            it will notify the parents of all affected enrolled students that
+            {enrollmentCount === 1 ? 'manageduser' : 'managedusers'} enrolled. Removing
+            it will notify the parents of all affected enrolled managedusers that
             this class is no longer available.
           </DialogDescription>
         </DialogHeader>

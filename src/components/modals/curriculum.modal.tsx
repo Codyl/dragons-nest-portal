@@ -54,24 +54,24 @@ const CurriculumModal = ({
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const studentId = activeManagedUser?.studentId ?? null;
+  const managedUserId = activeManagedUser?.managedUserId ?? null;
   const householdId = profileData?.data?._id ?? '';
 
   const [dragOver, setDragOver] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
 
-  const queryKey = ['curriculum', subject._id, studentId ?? householdId];
+  const queryKey = ['curriculum', subject._id, managedUserId ?? householdId];
 
   const { data, isLoading } = useCurriculumItems({
     subjectId: subject._id,
-    studentId,
+    managedUserId,
     householdId,
   });
 
   const uploadMutation = useUploadCurriculumItem({
     subjectId: subject._id,
-    studentId,
+    managedUserId,
     householdId,
   });
 

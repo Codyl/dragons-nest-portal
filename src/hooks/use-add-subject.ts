@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ProfileServices from '@/api/services/profile.services';
 
-const useAddSubject = (studentId: string) => {
+const useAddSubject = (managedUserId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (subjectId: string) =>
-      ProfileServices.addSubjectToManagedUser(studentId, subjectId),
+      ProfileServices.addSubjectToManagedUser(managedUserId, subjectId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['student', studentId, 'classes'],
+        queryKey: ['manageduser', managedUserId, 'classes'],
       });
     },
   });

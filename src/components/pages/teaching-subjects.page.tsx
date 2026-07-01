@@ -63,7 +63,7 @@ const TeachingSubjectsPage = () => {
         <div>
           <h1 className="text-2xl font-semibold">Teaching Subjects</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Manage the courses you offer to students.
+            Manage the courses you offer to managedusers.
           </p>
         </div>
         <Button onClick={() => setAddSheetOpen(true)}>Add Subject</Button>

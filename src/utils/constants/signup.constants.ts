@@ -14,7 +14,7 @@ export const SIGNUP_MONTHS: { value: number; label: string }[] = [
 ];
 
 /** Fifteen interest options; UI shows them in a scrollable pill area (~10 visible). */
-export const SIGNUP_STUDENT_INTEREST_TAGS: string[] = [
+export const SIGNUP_MANAGEDUSER_INTEREST_TAGS: string[] = [
   'STEM',
   'Arts',
   'Music',
@@ -37,10 +37,10 @@ export const COPPA_CONSENT_TEXT =
   'that I consent to the collection, use, and disclosure of personal information from my child ' +
   "as described in the Children's Online Privacy Protection Act (COPPA) and this service's " +
   'privacy policy, and that I may review or delete my child’s information and refuse further ' +
-  'collection by contacting support. I understand that student profiles I add are managed ' +
+  'collection by contacting support. I understand that manageduser profiles I add are managed ' +
   'under my household account and that I am responsible for their accuracy.';
 
-export const SIGNUP_PENDING_STUDENTS_KEY = 'signupPendingStudents';
+export const SIGNUP_PENDING_MANAGEDUSERS_KEY = 'signupPendingManagedUsers';
 /** Birth month (1–12) and year from the signup age gate; used to prefill onboarding. */
 export const SIGNUP_BIRTH_MONTH_KEY = 'signupBirthMonth';
 export const SIGNUP_BIRTH_YEAR_KEY = 'signupBirthYear';
@@ -69,9 +69,9 @@ export function readSignupBirthFromSession(): {
 }
 
 /** Reads `signupRole`; coerces older stored values to `adult` where applicable. */
-export function readSignupAccountTypeFromSession(): 'adult' | 'student' {
+export function readSignupAccountTypeFromSession(): 'adult' | 'manageduser' {
   const raw = sessionStorage.getItem(SIGNUP_ROLE_KEY);
-  if (raw === 'adult' || raw === 'student') return raw;
+  if (raw === 'adult' || raw === 'manageduser') return raw;
   if (raw === 'parent' || raw === 'mentor') return 'adult';
-  return 'student';
+  return 'manageduser';
 }

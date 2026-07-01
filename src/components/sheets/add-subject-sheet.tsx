@@ -15,14 +15,14 @@ import useAddSubject from '@/hooks/use-add-subject';
 import { Loader2 } from 'lucide-react';
 
 type AddSubjectSheetProps = {
-  studentId: string;
-  studentName: string;
+  managedUserId: string;
+  manageduserName: string;
   enrolledSubjectIds: string[];
 };
 
 const AddSubjectSheet = ({
-  studentId,
-  studentName,
+  managedUserId,
+  manageduserName,
   enrolledSubjectIds,
 }: AddSubjectSheetProps) => {
   const [open, setOpen] = useState(false);
@@ -32,9 +32,9 @@ const AddSubjectSheet = ({
   const [error, setError] = useState<string | null>(null);
 
   const { data: subjects, isLoading, isError } = useSubjects();
-  const addSubject = useAddSubject(studentId);
+  const addSubject = useAddSubject(managedUserId);
 
-  const displayName = studentName || 'this student';
+  const displayName = manageduserName || 'this manageduser';
   const isEnrolled = (id: string) => enrolledSubjectIds.includes(id);
 
   const handleSelect = (id: string) => {

@@ -15,13 +15,13 @@ const AddTeacherSheet = ({
   state,
   grade,
   subjectId,
-  studentName,
+  manageduserName,
 }: {
   subject: string;
   state: string;
   grade: string;
   subjectId: string;
-  studentName: string;
+  manageduserName: string;
 }) => {
   return (
     <Sheet>
@@ -33,7 +33,7 @@ const AddTeacherSheet = ({
           <SheetTitle>Find A Teacher</SheetTitle>
           <SheetDescription>
             Locate a {gradeLabel(parseInt(grade))} {subject} teacher to help
-            teach {studentName}
+            teach {manageduserName}
           </SheetDescription>
         </SheetHeader>
         <div className="max-h-full overflow-y-auto mx-4">

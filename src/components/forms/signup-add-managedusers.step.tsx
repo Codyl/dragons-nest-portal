@@ -21,7 +21,7 @@ function nameInitial(displayName: string): string {
   return t.charAt(0).toUpperCase();
 }
 
-const SignupAddStudentsStep = ({
+const SignupAddManagedUsersStep = ({
   managedUsers,
   onChange,
   onFinish,
@@ -68,10 +68,10 @@ const SignupAddStudentsStep = ({
       {!hideHeader && (
         <>
           <h2 className="text-lg font-semibold tracking-tight">
-            Add a Student
+            Add a ManagedUser
           </h2>
           <p className="text-muted-foreground text-sm">
-            Add one or more student profiles for your household. You can update
+            Add one or more manageduser profiles for your household. You can update
             details later.
           </p>
         </>
@@ -82,7 +82,7 @@ const SignupAddStudentsStep = ({
           <div
             key={s.id}
             className="bg-card text-card-foreground relative rounded-xl border p-4 shadow-xs"
-            data-testid={`student-card-${s.id}`}
+            data-testid={`manageduser-card-${s.id}`}
           >
             {managedUsers.length > 1 && (
               <Button
@@ -90,8 +90,8 @@ const SignupAddStudentsStep = ({
                 variant="ghost"
                 size="icon-sm"
                 className="absolute top-2 right-2"
-                aria-label="Remove student"
-                data-testid={`remove-student-${s.id}`}
+                aria-label="Remove manageduser"
+                data-testid={`remove-manageduser-${s.id}`}
                 onClick={() => removeRow(s.id)}
               >
                 <X className="size-4" />
@@ -101,7 +101,7 @@ const SignupAddStudentsStep = ({
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
               <div
                 className="bg-primary/15 text-primary border-border flex size-20 shrink-0 items-center justify-center rounded-full border text-lg font-semibold"
-                data-testid={`student-initial-${s.id}`}
+                data-testid={`manageduser-initial-${s.id}`}
                 aria-hidden
               >
                 {nameInitial(s.displayName)}
@@ -110,11 +110,11 @@ const SignupAddStudentsStep = ({
               <div className="min-w-0 flex-1 space-y-3">
                 <Field>
                   <FieldLabel htmlFor={`name-${s.id}`}>
-                    Student first name or nickname
+                    ManagedUser first name or nickname
                   </FieldLabel>
                   <Input
                     id={`name-${s.id}`}
-                    data-testid={`student-name-${s.id}`}
+                    data-testid={`manageduser-name-${s.id}`}
                     value={s.displayName}
                     placeholder="Name"
                     onChange={(e) =>
@@ -125,7 +125,7 @@ const SignupAddStudentsStep = ({
                 <SelectField
                   label="Current grade"
                   id={`grade-${s.id}`}
-                  data-testid={`student-grade-${s.id}`}
+                  data-testid={`manageduser-grade-${s.id}`}
                   className="gap-1.5"
                   placeholder="Select grade"
                   options={HOMESCHOOL_GRADE_ORDINAL_OPTIONS}
@@ -149,12 +149,12 @@ const SignupAddStudentsStep = ({
 
         <button
           type="button"
-          data-testid="add-another-student"
+          data-testid="add-another-manageduser"
           className="border-muted-foreground/40 hover:border-primary hover:bg-muted/50 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-8 text-sm font-medium transition-colors"
           onClick={addRow}
         >
           <Plus className="size-5" />
-          Add another student
+          Add another manageduser
         </button>
       </div>
 
@@ -202,4 +202,4 @@ const SignupAddStudentsStep = ({
   );
 };
 
-export default SignupAddStudentsStep;
+export default SignupAddManagedUsersStep;

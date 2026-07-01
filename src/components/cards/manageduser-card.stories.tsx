@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import StudentDraftCard from './student-draft-card';
+import ManagedUserDraftCard from './manageduser-card';
 
 const meta = {
-  title: 'Cards/StudentDraftCard',
-  component: StudentDraftCard,
+  title: 'Cards/ManagedUserDraftCard',
+  component: ManagedUserDraftCard,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-} satisfies Meta<typeof StudentDraftCard>;
+} satisfies Meta<typeof ManagedUserDraftCard>;
 
 export default meta;
 
@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 export const Active: Story = {
   args: {
     draft: {
-      studentId: 'draft-1',
+      managedUserId: 'draft-1',
       displayName: 'Jordan',
       currentGrade: 7,
       lastPromotionYear: 2025,
@@ -30,7 +30,7 @@ export const Active: Story = {
 export const Archived: Story = {
   args: {
     draft: {
-      studentId: 'draft-2',
+      managedUserId: 'draft-2',
       displayName: 'River',
       currentGrade: 10,
       lastPromotionYear: 2024,

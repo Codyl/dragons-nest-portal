@@ -2,18 +2,18 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
-import StudentDraftCard from './student-draft-card';
+import ManagedUserDraftCard from './manageduser-card';
 
 afterEach(() => {
   cleanup();
 });
 
-describe('StudentDraftCard', () => {
+describe('ManagedUserDraftCard', () => {
   it('renders display name, grade label, and promotion year', () => {
     render(
-      <StudentDraftCard
+      <ManagedUserDraftCard
         draft={{
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -28,9 +28,9 @@ describe('StudentDraftCard', () => {
 
   it('active draft shows Archive, not Restore', () => {
     render(
-      <StudentDraftCard
+      <ManagedUserDraftCard
         draft={{
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -38,15 +38,15 @@ describe('StudentDraftCard', () => {
         onArchive={vi.fn()}
       />,
     );
-    expect(screen.getByTestId('student-draft-archive')).toBeTruthy();
-    expect(screen.queryByTestId('student-draft-restore')).toBeNull();
+    expect(screen.getByTestId('manageduser-draft-archive')).toBeTruthy();
+    expect(screen.queryByTestId('manageduser-draft-restore')).toBeNull();
   });
 
   it('archived draft shows Restore, not Archive', () => {
     render(
-      <StudentDraftCard
+      <ManagedUserDraftCard
         draft={{
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -55,15 +55,15 @@ describe('StudentDraftCard', () => {
         onRestore={vi.fn()}
       />,
     );
-    expect(screen.getByTestId('student-draft-restore')).toBeTruthy();
-    expect(screen.queryByTestId('student-draft-archive')).toBeNull();
+    expect(screen.getByTestId('manageduser-draft-restore')).toBeTruthy();
+    expect(screen.queryByTestId('manageduser-draft-archive')).toBeNull();
   });
 
   it('disables Archive when isArchiving', () => {
     render(
-      <StudentDraftCard
+      <ManagedUserDraftCard
         draft={{
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -73,16 +73,16 @@ describe('StudentDraftCard', () => {
       />,
     );
     const archiveBtn = screen.getByTestId(
-      'student-draft-archive',
+      'manageduser-draft-archive',
     ) as HTMLButtonElement;
     expect(archiveBtn.disabled).toBe(true);
   });
 
   it('disables Restore when isRestoring', () => {
     render(
-      <StudentDraftCard
+      <ManagedUserDraftCard
         draft={{
-          studentId: 'a',
+          managedUserId: 'a',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -93,17 +93,17 @@ describe('StudentDraftCard', () => {
       />,
     );
     const restoreBtn = screen.getByTestId(
-      'student-draft-restore',
+      'manageduser-draft-restore',
     ) as HTMLButtonElement;
     expect(restoreBtn.disabled).toBe(true);
   });
 
-  it('calls onArchive with student id', async () => {
+  it('calls onArchive with manageduser id', async () => {
     const onArchive = vi.fn();
     render(
-      <StudentDraftCard
+      <ManagedUserDraftCard
         draft={{
-          studentId: 'sid-1',
+          managedUserId: 'sid-1',
           displayName: 'Taylor',
           currentGrade: 5,
           lastPromotionYear: 2025,
@@ -111,7 +111,7 @@ describe('StudentDraftCard', () => {
         onArchive={onArchive}
       />,
     );
-    await userEvent.click(screen.getByTestId('student-draft-archive'));
+    await userEvent.click(screen.getByTestId('manageduser-draft-archive'));
     expect(onArchive).toHaveBeenCalledWith('sid-1');
   });
 });

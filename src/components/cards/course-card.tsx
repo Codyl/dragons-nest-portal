@@ -51,8 +51,8 @@ const CourseCard = ({
           <dd>{gradeDisplay}</dd>
           <dt className="font-medium text-muted-foreground">Curriculum</dt>
           <dd>{curriculumLabel}</dd>
-          <dt className="font-medium text-muted-foreground">Max students</dt>
-          <dd>{course.maxStudents}</dd>
+          <dt className="font-medium text-muted-foreground">Max managedusers</dt>
+          <dd>{course.maxManagedUsers}</dd>
         </dl>
         <p className="mt-4 text-xs text-muted-foreground italic">
           To change this course, remove it and add a new one.

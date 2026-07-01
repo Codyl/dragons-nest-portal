@@ -8,7 +8,7 @@ import { FieldGroup } from '../ui/field';
 import GoogleSSOSignupButton from '../buttons/google-sso-signup.button';
 import {
   adultEmailSignupSchema,
-  studentAccountSignupSchema,
+  manageduserAccountSignupSchema,
 } from '@/lib/user-account.schema';
 import {
   SIGNUP_COPPA_CONSENT_KEY,
@@ -17,15 +17,15 @@ import {
   SIGNUP_ROLE_KEY,
 } from '@/utils/constants/signup.constants';
 
-/** Matches backend `AccountType`: adult vs student for this email/password signup form. */
-export type SignupAccountType = 'adult' | 'student';
+/** Matches backend `AccountType`: adult vs manageduser for this email/password signup form. */
+export type SignupAccountType = 'adult' | 'manageduser';
 
 const HEADERS: Record<SignupAccountType, string> = {
   adult: 'Create Your Adult Account',
-  student: 'Create Your Student Account',
+  manageduser: 'Create Your ManagedUser Account',
 };
 
-const SignupAdultStudentForm = ({
+const SignupAdultManagedUserForm = ({
   accountType,
   submitButtonText = 'Create Account',
   showGoogleSso = true,
@@ -63,7 +63,7 @@ const SignupAdultStudentForm = ({
   const schema =
     accountType === 'adult'
       ? adultEmailSignupSchema
-      : studentAccountSignupSchema;
+      : manageduserAccountSignupSchema;
 
   const form = useForm({
     defaultValues: {
@@ -140,7 +140,7 @@ const SignupAdultStudentForm = ({
         <button
           type="button"
           className="text-muted-foreground hover:text-foreground w-full text-center text-sm underline-offset-4 hover:underline"
-          data-testid="adult-student-signup-back"
+          data-testid="adult-manageduser-signup-back"
           onClick={onBack}
         >
           Back
@@ -160,4 +160,4 @@ const SignupAdultStudentForm = ({
   );
 };
 
-export default SignupAdultStudentForm;
+export default SignupAdultManagedUserForm;

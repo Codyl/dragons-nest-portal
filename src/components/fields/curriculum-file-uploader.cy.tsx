@@ -11,7 +11,7 @@ import CurriculumFileUploader from './curriculum-file-uploader';
 
 const defaultProps = {
   subjectId: 'subject-1',
-  studentId: null,
+  managedUserId: null,
   householdId: 'household-1',
 };
 

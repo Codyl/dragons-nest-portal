@@ -74,7 +74,7 @@ function arbitraryTeachableCourseWithEnrollment(
         maxLength: 5,
       }),
       curriculum: fc.constantFrom(...CURRICULUM_VALUES),
-      maxStudents: fc.integer({ min: 1, max: 20 }),
+      maxManagedUsers: fc.integer({ min: 1, max: 20 }),
       activeEnrollmentCount: fc.integer({
         min: minEnrollment,
         max: maxEnrollment,
@@ -208,7 +208,7 @@ describe('TeachingSubjectsPage', () => {
         matchesAllGrades: false,
         grades: ['9', '10'],
         curriculum: 'saxon',
-        maxStudents: 8,
+        maxManagedUsers: 8,
         activeEnrollmentCount: 0,
       },
       {
@@ -217,7 +217,7 @@ describe('TeachingSubjectsPage', () => {
         matchesAllGrades: true,
         grades: [],
         curriculum: 'other',
-        maxStudents: 12,
+        maxManagedUsers: 12,
         activeEnrollmentCount: 2,
       },
       {
@@ -226,7 +226,7 @@ describe('TeachingSubjectsPage', () => {
         matchesAllGrades: false,
         grades: ['10', '11'],
         curriculum: 'abeka',
-        maxStudents: 6,
+        maxManagedUsers: 6,
         activeEnrollmentCount: 0,
       },
     ];
@@ -262,7 +262,7 @@ describe('TeachingSubjectsPage', () => {
         matchesAllGrades: false,
         grades: ['9'],
         curriculum: 'saxon',
-        maxStudents: 5,
+        maxManagedUsers: 5,
         activeEnrollmentCount: 0,
       },
     ];
@@ -288,7 +288,7 @@ describe('TeachingSubjectsPage', () => {
         matchesAllGrades: true,
         grades: [],
         curriculum: 'other',
-        maxStudents: 10,
+        maxManagedUsers: 10,
         activeEnrollmentCount: 3,
       },
     ];
@@ -302,7 +302,7 @@ describe('TeachingSubjectsPage', () => {
 
     // RemoveWarningDialog should be open — it mentions notifying parents
     expect(
-      screen.getByText(/notify the parents of all affected enrolled students/i),
+      screen.getByText(/notify the parents of all affected enrolled managedusers/i),
     ).toBeDefined();
   });
 

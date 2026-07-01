@@ -14,19 +14,19 @@ import {
 } from '@/components/ui/sheet';
 import { GRADE_OPTIONS } from '@/lib/grade-label';
 
-export type AddStudentSheetProps = {
+export type AddManagedUserSheetProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-const FORM_ID = 'add-student-sheet-form';
+const FORM_ID = 'add-manageduser-sheet-form';
 
 const gradeSelectOptions = GRADE_OPTIONS.map((o) => ({
   value: String(o.value),
   label: o.label,
 }));
 
-function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
+function AddManagedUserSheet({ open, onOpenChange }: AddManagedUserSheetProps) {
   const [displayName, setDisplayName] = useState('');
   const [gradeValue, setGradeValue] = useState('');
 
@@ -76,9 +76,9 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="flex flex-col gap-4 sm:max-w-md">
         <SheetHeader>
-          <SheetTitle>Add Student</SheetTitle>
+          <SheetTitle>Add ManagedUser</SheetTitle>
           <SheetDescription>
-            Create a household student profile. You can archive it later without
+            Create a household manageduser profile. You can archive it later without
             losing data.
           </SheetDescription>
         </SheetHeader>
@@ -89,12 +89,12 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
           onSubmit={handleSubmit}
         >
           <Field>
-            <FieldLabel htmlFor="add-student-display-name">
+            <FieldLabel htmlFor="add-manageduser-display-name">
               Display name
             </FieldLabel>
             <Input
-              id="add-student-display-name"
-              data-testid="add-student-display-name"
+              id="add-manageduser-display-name"
+              data-testid="add-manageduser-display-name"
               value={displayName}
               maxLength={100}
               onChange={(e) => setDisplayName(e.target.value)}
@@ -119,12 +119,12 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
           </Field>
 
           <SelectField
-            id="add-student-grade"
+            id="add-manageduser-grade"
             name="currentGrade"
             label="Grade"
             required
             placeholder="Select grade"
-            data-testid="add-student-grade"
+            data-testid="add-manageduser-grade"
             value={gradeValue}
             onValueChange={setGradeValue}
             options={gradeSelectOptions}
@@ -133,7 +133,7 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
           {mutation.isError && (
             <p role="alert" className="text-sm text-destructive">
               {mutation.error.message ||
-                'Could not add student. Please try again.'}
+                'Could not add manageduser. Please try again.'}
             </p>
           )}
         </form>
@@ -151,9 +151,9 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
             type="submit"
             form={FORM_ID}
             disabled={submitDisabled}
-            data-testid="add-student-submit"
+            data-testid="add-manageduser-submit"
           >
-            {mutation.isPending ? 'Adding…' : 'Add Student'}
+            {mutation.isPending ? 'Adding…' : 'Add ManagedUser'}
           </Button>
         </SheetFooter>
       </SheetContent>
@@ -161,4 +161,4 @@ function AddStudentSheet({ open, onOpenChange }: AddStudentSheetProps) {
   );
 }
 
-export default AddStudentSheet;
+export default AddManagedUserSheet;

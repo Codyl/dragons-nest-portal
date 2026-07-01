@@ -19,7 +19,7 @@ const useAddTeachableSubject = (): UseMutationResult<
     matchesAllGrades: boolean;
     grades: string[];
     curriculum: string;
-    maxStudents: number;
+    maxManagedUsers: number;
   }
 > => {
   const queryClient = useQueryClient();

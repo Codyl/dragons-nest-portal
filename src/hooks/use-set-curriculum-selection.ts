@@ -7,7 +7,7 @@ import CurriculumServices from '@/api/services/curriculum.services';
 
 const useSetCurriculumSelection = (params: {
   subjectId: string;
-  studentId: string | null;
+  managedUserId: string | null;
 }): UseMutationResult<
   { message: string; data: unknown },
   Error,
@@ -19,12 +19,12 @@ const useSetCurriculumSelection = (params: {
     mutationFn: (variables: { curriculumItemId: string }) =>
       CurriculumServices.setSelection({
         subjectId: params.subjectId,
-        studentId: params.studentId!,
+        managedUserId: params.managedUserId!,
         curriculumItemId: variables.curriculumItemId,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['curriculum-selection', params.subjectId, params.studentId],
+        queryKey: ['curriculum-selection', params.subjectId, params.managedUserId],
       });
     },
   });

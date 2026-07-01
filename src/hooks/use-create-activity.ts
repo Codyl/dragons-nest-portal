@@ -11,10 +11,10 @@ const useCreateActivity = () => {
       ActivitiesServices.createActivity(body),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['activities', variables.subjectId, variables.studentId],
+        queryKey: ['activities', variables.subjectId, variables.managedUserId],
       });
       queryClient.invalidateQueries({
-        queryKey: ['subject-summary', variables.subjectId, variables.studentId],
+        queryKey: ['subject-summary', variables.subjectId, variables.managedUserId],
       });
     },
   });

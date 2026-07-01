@@ -1,6 +1,6 @@
 /**
  * Component tests for TeacherCard.
- * Reference: `student-draft-card.cy.tsx` (composeStories, mounting patterns).
+ * Reference: `manageduser-card.cy.tsx` (composeStories, mounting patterns).
  */
 import { composeStories } from '@storybook/react-vite';
 

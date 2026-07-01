@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import AccountSetupAddStudentsStep from './account-setup-add-students-step';
+import AccountSetupAddManagedUsersStep from './account-setup-add-managedusers-step';
 import { AccountSetupFormStoryWrapper } from './account-setup-form-story-wrapper';
 
 const meta = {
-  title: 'Steps/AccountSetupAddStudentsStep',
-  component: AccountSetupAddStudentsStep,
+  title: 'Steps/AccountSetupAddManagedUsersStep',
+  component: AccountSetupAddManagedUsersStep,
   parameters: {
     layout: 'fullscreen',
   },
@@ -25,7 +25,7 @@ const meta = {
     onNext: fn(),
     onBack: fn(),
   },
-} satisfies Meta<typeof AccountSetupAddStudentsStep>;
+} satisfies Meta<typeof AccountSetupAddManagedUsersStep>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

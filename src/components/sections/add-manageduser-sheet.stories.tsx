@@ -9,22 +9,22 @@ import {
 } from '@tanstack/react-router';
 import { useState, type ComponentProps } from 'react';
 
-import AddStudentSheet from './add-student-sheet';
+import AddManagedUserSheet from './add-manageduser-sheet';
 
 /** Open-state wrapper for Storybook interaction tests and Cypress `composeStories`. */
-export function AddStudentSheetHarness({
+export function AddManagedUserSheetHarness({
   defaultOpen = true,
   ...rest
-}: Omit<ComponentProps<typeof AddStudentSheet>, 'open' | 'onOpenChange'> & {
+}: Omit<ComponentProps<typeof AddManagedUserSheet>, 'open' | 'onOpenChange'> & {
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
-  return <AddStudentSheet {...rest} open={open} onOpenChange={setOpen} />;
+  return <AddManagedUserSheet {...rest} open={open} onOpenChange={setOpen} />;
 }
 
 const meta = {
-  title: 'Sections/AddStudentSheet',
-  component: AddStudentSheetHarness,
+  title: 'Sections/AddManagedUserSheet',
+  component: AddManagedUserSheetHarness,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -59,7 +59,7 @@ const meta = {
       );
     },
   ],
-} satisfies Meta<typeof AddStudentSheetHarness>;
+} satisfies Meta<typeof AddManagedUserSheetHarness>;
 
 export default meta;
 

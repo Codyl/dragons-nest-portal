@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import { cleanup, render, screen, fireEvent } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
-import AddStudentSheet from './add-student-sheet';
+import AddManagedUserSheet from './add-manageduser-sheet';
 
 afterEach(() => {
   cleanup();
@@ -19,22 +19,22 @@ function renderWithQuery(ui: ReactElement) {
   );
 }
 
-describe('AddStudentSheet', () => {
+describe('AddManagedUserSheet', () => {
   it('submit is disabled when fields empty', () => {
-    renderWithQuery(<AddStudentSheet open={true} onOpenChange={vi.fn()} />);
+    renderWithQuery(<AddManagedUserSheet open={true} onOpenChange={vi.fn()} />);
     const submit = screen.getByTestId(
-      'add-student-submit',
+      'add-manageduser-submit',
     ) as HTMLButtonElement;
     expect(submit.disabled).toBe(true);
   });
 
   it('submit stays disabled when display name exceeds 100 characters', () => {
-    renderWithQuery(<AddStudentSheet open={true} onOpenChange={vi.fn()} />);
-    fireEvent.change(screen.getByTestId('add-student-display-name'), {
+    renderWithQuery(<AddManagedUserSheet open={true} onOpenChange={vi.fn()} />);
+    fireEvent.change(screen.getByTestId('add-manageduser-display-name'), {
       target: { value: 'x'.repeat(101) },
     });
     const submit = screen.getByTestId(
-      'add-student-submit',
+      'add-manageduser-submit',
     ) as HTMLButtonElement;
     expect(submit.disabled).toBe(true);
   });

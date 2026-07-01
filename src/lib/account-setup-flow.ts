@@ -4,12 +4,12 @@ import { isUnder13, isUnder18 } from '@/lib/signup-age';
 function resolveSignupAccountTypeFromSession(
   month: number | '',
   year: number | '',
-): 'adult' | 'student' {
-  if (month === '' || year === '') return 'student';
+): 'adult' | 'manageduser' {
+  if (month === '' || year === '') return 'manageduser';
 
   if (isUnder13(month, year)) return 'adult';
 
-  if (isUnder18(month, year)) return 'student';
+  if (isUnder18(month, year)) return 'manageduser';
 
   return 'adult';
 }
@@ -23,7 +23,7 @@ export type ResolvedAccountSetup = {
   setupFlow: AccountSetupSetupFlow;
   expectedBirthBand: ExpectedBirthBand;
   /** Value sent as `accountType` on account-setup submit. */
-  formAccountType: 'adult' | 'student';
+  formAccountType: 'adult' | 'manageduser';
 };
 
 /**
@@ -41,7 +41,7 @@ export function resolveAccountSetupFlow(params: {
     return {
       setupFlow: 'teen',
       expectedBirthBand: 'teen13to17',
-      formAccountType: 'student',
+      formAccountType: 'manageduser',
     };
   }
 
@@ -49,7 +49,7 @@ export function resolveAccountSetupFlow(params: {
     return {
       setupFlow: 'teen',
       expectedBirthBand: 'under13',
-      formAccountType: 'student',
+      formAccountType: 'manageduser',
     };
   }
 
@@ -67,11 +67,11 @@ export function resolveAccountSetupFlow(params: {
     m === null ? '' : m,
     y === null ? '' : y,
   );
-  if (role === 'student') {
+  if (role === 'manageduser') {
     return {
       setupFlow: 'teen',
       expectedBirthBand: 'teen13to17',
-      formAccountType: 'student',
+      formAccountType: 'manageduser',
     };
   }
 

@@ -22,14 +22,14 @@ describe('SignupFlow', () => {
     cy.get('[data-testid="age-gate-continue"]').should('not.be.disabled');
   });
 
-  it('routes ages 13–17 to student signup', () => {
+  it('routes ages 13–17 to manageduser signup', () => {
     cy.mountStory(Default);
     cy.get('[data-testid="signup-birth-month"]').select('1');
     cy.get('[data-testid="signup-birth-year"]').select(
       String(new Date().getFullYear() - 15),
     );
     cy.get('[data-testid="age-gate-continue"]').click();
-    cy.contains('h2', 'Create Your Student Account').should('be.visible');
+    cy.contains('h2', 'Create Your ManagedUser Account').should('be.visible');
     cy.get('input[name="email"]').should('be.visible');
   });
 
@@ -40,7 +40,7 @@ describe('SignupFlow', () => {
       String(new Date().getFullYear() - 16),
     );
     cy.get('[data-testid="age-gate-continue"]').click();
-    cy.get('[data-testid="adult-student-signup-back"]').click();
+    cy.get('[data-testid="adult-manageduser-signup-back"]').click();
     cy.get('[data-testid="age-gate-continue"]').should('exist');
   });
 

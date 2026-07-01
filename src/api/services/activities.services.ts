@@ -3,7 +3,7 @@ import { api } from '@/api/api.config';
 export type Activity = {
   _id: string;
   subjectId: string;
-  studentId: string;
+  managedUserId: string;
   date: string;
   conceptId: {
     _id: string;
@@ -19,7 +19,7 @@ export type Activity = {
 
 export type CreateActivityDto = {
   subjectId: string;
-  studentId: string;
+  managedUserId: string;
   date: string;
   conceptId: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
@@ -30,11 +30,11 @@ export type CreateActivityDto = {
 const ActivitiesServices = {
   getActivities: async (params: {
     subjectId: string;
-    studentId: string;
+    managedUserId: string;
   }): Promise<{ message: string; data: Activity[] }> => {
     const searchParams = new URLSearchParams({
       subjectId: params.subjectId,
-      studentId: params.studentId,
+      managedUserId: params.managedUserId,
     });
     const response = await api.get('activities', { searchParams });
     return response.json();

@@ -21,7 +21,7 @@ export const Route = createFileRoute('/(private)/_private/curriculum/')({
 });
 
 /**
- * Resolves catalog subjects that appear in the student's enrolled classes.
+ * Resolves catalog subjects that appear in the manageduser's enrolled classes.
  */
 export function resolveEnrolledSubjects(
   catalog: Subject[],
@@ -37,7 +37,7 @@ export function resolveEnrolledSubjects(
 
 /**
  * Resolves the teacher name for a given subject.
- * If the active student's enrolled classes include a class for this subject
+ * If the active manageduser's enrolled classes include a class for this subject
  * with an assigned teacher, returns that teacher's name.
  * Otherwise, returns the Adult_User's full name (given_name + family_name).
  */
@@ -91,18 +91,17 @@ export function CurriculumRoute() {
     isLoading: isClassesLoading,
     error: classesError,
     refetch: refetchClasses,
-  } = useManagedUserSubjects(activeManagedUser?.studentId);
+  } = useManagedUserSubjects(activeManagedUser?.managedUserId);
 
   const isLoading =
     isUserLoading ||
     (!!state && isComplianceLoading) ||
     isSubjectsLoading ||
-    (!!activeManagedUser?.studentId && isClassesLoading);
+    (!!activeManagedUser?.managedUserId && isClassesLoading);
 
   const error = userError ?? complianceError ?? subjectsError ?? classesError;
 
   const enrolledClasses = classesResult?.data ?? [];
-
   // Derive required subjects by mapping compliance IDs to catalog entries
   const requiredSubjects: Subject[] = (() => {
     if (!complianceLaws || !subjects) return [];
@@ -154,7 +153,7 @@ export function CurriculumRoute() {
       <h2 className="text-2xl font-bold">Curriculum</h2>
 
       {activeManagedUser?.displayName && (
-        <p className="text-muted-foreground" data-testid="active-student-label">
+        <p className="text-muted-foreground" data-testid="active-manageduser-label">
           Viewing curriculum for {activeManagedUser.displayName}
         </p>
       )}
@@ -237,8 +236,8 @@ export function CurriculumRoute() {
 
       {!isLoading && !error && activeManagedUser && (
         <AddSubjectSheet
-          studentId={activeManagedUser.studentId}
-          studentName={activeManagedUser.displayName ?? ''}
+          managedUserId={activeManagedUser.managedUserId}
+          manageduserName={activeManagedUser.displayName ?? ''}
           enrolledSubjectIds={enrolledSubjectIds}
         />
       )}

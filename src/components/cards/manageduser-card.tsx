@@ -9,25 +9,25 @@ import {
 } from '@/components/ui/card';
 import { gradeLabel } from '@/lib/grade-label';
 
-export type StudentDraftCardProps = {
+export type ManagedUserDraftCardProps = {
   draft: ManagedUserDraftAll;
-  onArchive?: (studentId: string) => void;
-  onRestore?: (studentId: string) => void;
+  onArchive?: (managedUserId: string) => void;
+  onRestore?: (managedUserId: string) => void;
   isArchiving?: boolean;
   isRestoring?: boolean;
 };
 
-export function StudentDraftCard({
+export function ManagedUserDraftCard({
   draft,
   onArchive,
   onRestore,
   isArchiving = false,
   isRestoring = false,
-}: StudentDraftCardProps) {
+}: ManagedUserDraftCardProps) {
   const archived = Boolean(draft.archivedAt);
 
   return (
-    <Card data-testid="student-draft-card">
+    <Card data-testid="manageduser-card">
       <CardHeader>
         <CardTitle>{draft.displayName}</CardTitle>
         <p className="text-sm text-muted-foreground">
@@ -55,8 +55,8 @@ export function StudentDraftCard({
             variant="outline"
             size="sm"
             disabled={isArchiving}
-            data-testid="student-draft-archive"
-            onClick={() => onArchive(draft.studentId)}
+            data-testid="manageduser-draft-archive"
+            onClick={() => onArchive(draft.managedUserId)}
           >
             Archive
           </Button>
@@ -67,8 +67,8 @@ export function StudentDraftCard({
             variant="secondary"
             size="sm"
             disabled={isRestoring}
-            data-testid="student-draft-restore"
-            onClick={() => onRestore(draft.studentId)}
+            data-testid="manageduser-draft-restore"
+            onClick={() => onRestore(draft.managedUserId)}
           >
             Restore
           </Button>
@@ -78,4 +78,4 @@ export function StudentDraftCard({
   );
 }
 
-export default StudentDraftCard;
+export default ManagedUserDraftCard;

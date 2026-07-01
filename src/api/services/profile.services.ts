@@ -11,7 +11,7 @@ export type PasskeyListItem = {
 };
 
 export type ManagedUserProfile = {
-  studentId: string; // ponytail: wire name kept for API compat; represents managedUserId
+  managedUserId: string;
   displayName: string;
   currentGrade: number;
   lastPromotionYear: number;
@@ -27,7 +27,7 @@ export type TeachableSubjectWithEnrollment = {
   matchesAllGrades: boolean;
   grades: string[];
   curriculum: string;
-  maxStudents: number; // ponytail: wire name kept; represents maxManagedUsers
+  maxManagedUsers: number; // ponytail: wire name kept; represents maxManagedUsers
   activeEnrollmentCount: number;
 };
 
@@ -52,7 +52,7 @@ export type ProfileUserData = {
   accountStatus?: 'MANAGED' | 'INDEPENDENT' | 'ADULT' | null;
   accountType?: string | null;
   ageBandAtRegistration?: string | null;
-  householdStudents?: ManagedUserProfile[];
+  managedUsers?: ManagedUserProfile[];
   managedAccountsViewAll?: ManagedUserDraftAll[];
   teachableCourses?: TeachableSubjectWithEnrollment[];
 };
@@ -83,7 +83,19 @@ const ProfileServices = {
     data: ProfileUserData;
   }> => {
     const response = await api.get('profile');
-    return response.json();
+    const raw = await response.json() as { message: string; data: any };
+    // ponytail: normalize API wire names to glossary terms
+    if (raw.data?.managedUsers) {
+      raw.data.managedUsers = raw.data.managedUsers.map(
+        (s: any) => ({ ...s, managedUserId: s.managedUserId ?? s.managedUserId }),
+      );
+    }
+    if (raw.data?.managedAccountsViewAll) {
+      raw.data.managedAccountsViewAll = raw.data.managedAccountsViewAll.map(
+        (s: any) => ({ ...s, managedUserId: s.managedUserId ?? s.managedUserId }),
+      );
+    }
+    return raw;
   },
   recordFirstLogin: async (): Promise<{
     message: string;
@@ -106,7 +118,7 @@ const ProfileServices = {
     shortTermGoal: string;
     longTermGoal: string;
     learningStyles: string[];
-    accountType: 'adult' | 'student';
+    accountType: 'adult' | 'manageduser';
     state: string;
     zipCode: string;
     phoneNumber: string;
@@ -114,8 +126,8 @@ const ProfileServices = {
       day: string;
       slots: { start: string; end: string }[];
     }[];
-    pendingStudents?: {
-      studentId: string;
+    pendingManagedUsers?: {
+      managedUserId: string;
       displayName: string;
       currentGrade: number;
     }[];
@@ -125,7 +137,7 @@ const ProfileServices = {
       matchesAllGrades: boolean;
       grades: string[];
       curriculum: string;
-      maxStudents: number;
+      maxManagedUsers: number;
     }[];
   }): Promise<{
     message: string;
@@ -137,13 +149,13 @@ const ProfileServices = {
     return response.json();
   },
   promoteManagedUser: async (
-    studentId: string,
+    managedUserId: string,
   ): Promise<{
     message: string;
     data: ManagedUserProfile;
   }> => {
     const response = await api.patch(
-      `profile/household-students/${encodeURIComponent(studentId)}/promote`,
+      `profile/managed-users/${encodeURIComponent(managedUserId)}/promote`,
       { json: {} },
     );
     return response.json();
@@ -277,12 +289,12 @@ const ProfileServices = {
     matchesAllGrades: boolean;
     grades: string[];
     curriculum: string;
-    maxStudents: number;
+    maxManagedUsers: number;
   }): Promise<{
     message: string;
     data: { teachableCourses: TeachableSubjectWithEnrollment[] };
   }> => {
-    const response = await api.patch('profile/teachable-courses', { json });
+    const response = await api.patch('profile/teachable-subjects', { json });
     return response.json();
   },
   removeTeachableSubject: async (
@@ -291,7 +303,7 @@ const ProfileServices = {
     message: string;
     data: { teachableCourses: TeachableSubjectWithEnrollment[] };
   }> => {
-    const response = await api.delete(`profile/teachable-courses/${index}`);
+    const response = await api.delete(`profile/teachable-subjects/${index}`);
     return response.json();
   },
   addManagedUser: async (json: {
@@ -301,53 +313,53 @@ const ProfileServices = {
     message: string;
     data: { managedAccountsView: ManagedUserDraftAll[] };
   }> => {
-    const response = await api.post('profile/household-students', { json });
+    const response = await api.post('profile/managed-users', { json });
     return response.json();
   },
   archiveManagedUser: async (
-    studentId: string,
+    managedUserId: string,
   ): Promise<{
     message: string;
     data: { managedAccountsView: ManagedUserDraftAll[] };
   }> => {
     const response = await api.patch(
-      `profile/household-students/${encodeURIComponent(studentId)}/archive`,
+      `profile/managed-users/${encodeURIComponent(managedUserId)}/archive`,
       { json: {} },
     );
     return response.json();
   },
   restoreManagedUser: async (
-    studentId: string,
+    managedUserId: string,
   ): Promise<{
     message: string;
     data: { managedAccountsView: ManagedUserDraftAll[] };
   }> => {
     const response = await api.patch(
-      `profile/household-students/${encodeURIComponent(studentId)}/restore`,
+      `profile/managed-users/${encodeURIComponent(managedUserId)}/restore`,
       { json: {} },
     );
     return response.json();
   },
   getManagedUserSubjects: async (
-    studentId: string,
+    managedUserId: string,
   ): Promise<{
     message: string;
     data: ManagedUserEnrolledSubject[];
   }> => {
     const response = await api.get(
-      `profile/household-students/${encodeURIComponent(studentId)}/classes`,
+      `profile/managed-users/${encodeURIComponent(managedUserId)}/subjects`,
     );
     return response.json();
   },
   addSubjectToManagedUser: async (
-    studentId: string,
+    managedUserId: string,
     subjectId: string,
   ): Promise<{
     message: string;
     data: { subjectId: string; hoursCompleted: number; createdAt: string };
   }> => {
     const response = await api.post(
-      `profile/students/${encodeURIComponent(studentId)}/subjects`,
+      `profile/managed-users/${encodeURIComponent(managedUserId)}/subjects`,
       { json: { subjectId } },
     );
     return response.json();

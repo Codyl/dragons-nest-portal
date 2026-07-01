@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vite-plus/test';
 import { resolveAccountSetupFlow } from './account-setup-flow';
 
 describe('resolveAccountSetupFlow', () => {
-  it('maps INDEPENDENT to teen / teen13to17 / student', () => {
+  it('maps INDEPENDENT to teen / teen13to17 / manageduser', () => {
     expect(
       resolveAccountSetupFlow({
         accountStatus: 'INDEPENDENT',
@@ -12,11 +12,11 @@ describe('resolveAccountSetupFlow', () => {
     ).toEqual({
       setupFlow: 'teen',
       expectedBirthBand: 'teen13to17',
-      formAccountType: 'student',
+      formAccountType: 'manageduser',
     });
   });
 
-  it('maps MANAGED to teen / under13 / student', () => {
+  it('maps MANAGED to teen / under13 / manageduser', () => {
     expect(
       resolveAccountSetupFlow({
         accountStatus: 'MANAGED',
@@ -26,7 +26,7 @@ describe('resolveAccountSetupFlow', () => {
     ).toEqual({
       setupFlow: 'teen',
       expectedBirthBand: 'under13',
-      formAccountType: 'student',
+      formAccountType: 'manageduser',
     });
   });
 
@@ -44,7 +44,7 @@ describe('resolveAccountSetupFlow', () => {
     });
   });
 
-  it('uses session student path when accountStatus is null and session is teen', () => {
+  it('uses session manageduser path when accountStatus is null and session is teen', () => {
     expect(
       resolveAccountSetupFlow({
         accountStatus: null,
@@ -54,7 +54,7 @@ describe('resolveAccountSetupFlow', () => {
     ).toEqual({
       setupFlow: 'teen',
       expectedBirthBand: 'teen13to17',
-      formAccountType: 'student',
+      formAccountType: 'manageduser',
     });
   });
 

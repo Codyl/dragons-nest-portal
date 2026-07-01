@@ -18,7 +18,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Signup wizard: age gate then email/password (student vs adult by age; under 13 uses guardian adult account). Onboarding continues after sign-in.',
+          'Signup wizard: age gate then email/password (manageduser vs adult by age; under 13 uses guardian adult account). Onboarding continues after sign-in.',
       },
     },
   },

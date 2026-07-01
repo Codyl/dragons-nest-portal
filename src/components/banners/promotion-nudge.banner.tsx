@@ -21,13 +21,13 @@ const PromotionNudgeBanner = () => {
 
   const candidate = useMemo(() => {
     if (!isAugust || user?.accountType !== 'adult') return null;
-    const students = user.householdStudents ?? [];
+    const managedusers = user.managedUsers ?? [];
     return (
-      students.find(
+      managedusers.find(
         (s) =>
           s.lastPromotionYear < calendarYear &&
           s.currentGrade < 13 &&
-          !dismissedIds[s.studentId],
+          !dismissedIds[s.managedUserId],
       ) ?? null
     );
   }, [isAugust, user, dismissedIds, calendarYear]);
@@ -60,7 +60,7 @@ const PromotionNudgeBanner = () => {
           size="sm"
           disabled={promote.isPending}
           data-testid="promotion-nudge-confirm"
-          onClick={() => promote.mutate(candidate.studentId)}
+          onClick={() => promote.mutate(candidate.managedUserId)}
         >
           Yes, promote
         </Button>
@@ -73,7 +73,7 @@ const PromotionNudgeBanner = () => {
           onClick={() =>
             setDismissedIds((d) => ({
               ...d,
-              [candidate.studentId]: true,
+              [candidate.managedUserId]: true,
             }))
           }
         >

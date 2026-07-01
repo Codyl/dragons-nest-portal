@@ -34,7 +34,7 @@ describe('RemoveWarningDialog', () => {
       />,
     );
     expect(
-      screen.getByText(/notify the parents of all affected enrolled students/i),
+      screen.getByText(/notify the parents of all affected enrolled managedusers/i),
     ).toBeDefined();
     expect(screen.getByText(/no longer available/i)).toBeDefined();
   });

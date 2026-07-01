@@ -26,7 +26,7 @@ describe('AddCourseSheet', () => {
               matchesAllGrades: true,
               grades: [],
               curriculum: 'saxon',
-              maxStudents: 1,
+              maxManagedUsers: 1,
               activeEnrollmentCount: 0,
             },
           ],
@@ -43,7 +43,7 @@ describe('AddCourseSheet', () => {
     cy.get('[data-testid=input-add-course-classname]').should('exist');
     cy.get('[data-testid=add-course-subject]').should('exist');
     cy.get('[data-testid=add-course-grade-select]').should('exist');
-    cy.get('[data-testid=input-add-course-maxstudents]').should('exist');
+    cy.get('[data-testid=input-add-course-maxmanagedusers]').should('exist');
     cy.get('[data-testid=add-course-curriculum]').should('exist');
   });
 

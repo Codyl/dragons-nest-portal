@@ -4,13 +4,13 @@ import {
   userAccountSignupSchema,
   householdAdultAccountSignupSchema,
   adultEmailSignupSchema,
-  studentAccountSignupSchema,
+  manageduserAccountSignupSchema,
 } from './user-account.schema';
 
 describe('accountTypeSchema', () => {
   it('accepts valid literals', () => {
     expect(accountTypeSchema.safeParse('adult').success).toBe(true);
-    expect(accountTypeSchema.safeParse('student').success).toBe(true);
+    expect(accountTypeSchema.safeParse('manageduser').success).toBe(true);
     expect(accountTypeSchema.safeParse('parent').success).toBe(false);
     expect(accountTypeSchema.safeParse('admin').success).toBe(false);
   });
@@ -54,14 +54,14 @@ describe('userAccountSignupSchema', () => {
     expect(adultEmailSignupSchema.safeParse(payload).success).toBe(true);
   });
 
-  it('parses student branch', () => {
+  it('parses manageduser branch', () => {
     const payload = {
-      accountType: 'student' as const,
+      accountType: 'manageduser' as const,
       email: 's@b.co',
       password: 'Password123!',
       confirmPassword: 'Password123!',
     };
     expect(userAccountSignupSchema.safeParse(payload).success).toBe(true);
-    expect(studentAccountSignupSchema.safeParse(payload).success).toBe(true);
+    expect(manageduserAccountSignupSchema.safeParse(payload).success).toBe(true);
   });
 });

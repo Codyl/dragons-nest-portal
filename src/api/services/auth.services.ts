@@ -234,7 +234,7 @@ const AuthServices = {
     code: string;
     session?: string;
     password?: string;
-    accountType?: 'adult' | 'student';
+    accountType?: 'adult' | 'manageduser';
     givenName?: string;
     familyName?: string;
     coppaConsent?: boolean;

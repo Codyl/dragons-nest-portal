@@ -18,7 +18,7 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { useManagedUser } from '@/contexts/managed-user-context';
 import { useNavigate } from '@tanstack/react-router';
 
-interface StudentSelectorProps {
+interface ManagedUserSelectorProps {
   managedUsers: ManagedUserProfile[];
   isLoading?: boolean;
 }
@@ -36,14 +36,15 @@ function getInitials(displayName: string): string {
   return displayName.slice(0, 2).toUpperCase() || '?';
 }
 
-export function StudentSelector({
+export function ManagedUserSelector({
   managedUsers,
   isLoading = false,
-}: StudentSelectorProps) {
+}: ManagedUserSelectorProps) {
   const { state } = useSidebar();
   const {activeManagedUser, setActiveManagedUser} = useManagedUser();
   const navigate = useNavigate()
   const isCollapsed = state === 'collapsed';
+  console.log(managedUsers)
 
   // Requirements 7.2 — show skeleton while loading
   if (isLoading) {
@@ -119,7 +120,7 @@ export function StudentSelector({
   // Requirements 2.3, 2.4, 2.5 — normal select with managedUsers
   return (
     <Select
-      value={activeManagedUser?.studentId ?? ''}
+      value={activeManagedUser?.managedUserId ?? ''}
       onValueChange={(value) => {
         if (value === '__my_view__') {
           setActiveManagedUser(null);
@@ -127,7 +128,7 @@ export function StudentSelector({
           return;
         }
 
-        const managedUser = managedUsers.find((s) => s.studentId === value);
+        const managedUser = managedUsers.find((s) => s.managedUserId === value);
         if (managedUser) {
           setActiveManagedUser(managedUser);
           navigate({to: '/curriculum'})
@@ -150,7 +151,7 @@ export function StudentSelector({
         )}
         {/* Requirements 2.2 — render an option for each managedUser */}
         {managedUsers.map((managedUser) => (
-          <SelectItem key={managedUser.studentId} value={managedUser.studentId}>
+          <SelectItem key={managedUser.managedUserId} value={managedUser.managedUserId}>
             {managedUser.displayName}
           </SelectItem>
         ))}

@@ -31,7 +31,7 @@ export function isUnder13(month1to12: number, year: number): boolean {
   return Number.isFinite(age) && age < 13;
 }
 
-/** True when computed age is under 18 (signup may skip role selection for student path). */
+/** True when computed age is under 18 (signup may skip role selection for manageduser path). */
 export function isUnder18(month1to12: number, year: number): boolean {
   const age = ageFromBirthMonthYear(month1to12, year);
   return Number.isFinite(age) && age < 18;

@@ -18,7 +18,7 @@ const useLogout = (): UseMutationResult<
       clearAuthenticated();
       sessionStorage.clear();
       localStorage.removeItem('NewDeviceModalDismissed');
-      localStorage.removeItem('activestudentId');
+      localStorage.removeItem('activemanagedUserId');
       router.navigate({ to: '/verify-username' });
     },
   });

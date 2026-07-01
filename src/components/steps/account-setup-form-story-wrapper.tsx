@@ -14,7 +14,7 @@ export type AccountSetupFormStoryWrapperProps = {
   children: ReactNode;
   stepIndex: number;
   totalSteps: number;
-  signupRole?: 'adult' | 'student';
+  signupRole?: 'adult' | 'manageduser';
 };
 
 /**
@@ -24,7 +24,7 @@ export function AccountSetupFormStoryWrapper({
   children,
   stepIndex,
   totalSteps,
-  signupRole = 'student',
+  signupRole = 'manageduser',
 }: AccountSetupFormStoryWrapperProps) {
   if (typeof window !== 'undefined') {
     sessionStorage.setItem('signupRole', signupRole);
@@ -32,7 +32,7 @@ export function AccountSetupFormStoryWrapper({
 
   const expectedBirthBand: ExpectedBirthBand =
     signupRole === 'adult' ? 'adult' : 'teen13to17';
-  const initialFormAccountType = signupRole === 'adult' ? 'adult' : 'student';
+  const initialFormAccountType = signupRole === 'adult' ? 'adult' : 'manageduser';
 
   const queryClient = new QueryClient({
     defaultOptions: {
