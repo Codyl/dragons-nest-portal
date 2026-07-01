@@ -28,6 +28,7 @@ import useCreateResource from '@/hooks/use-create-resource';
 import useLoggedInUser from '@/hooks/use-logged-in-user';
 import AddTeacherSheet from '@/components/sheets/add-teacher-sheet';
 import useGetMyResources from '@/hooks/use-get-my-resources';
+import useCreateConcept from '@/hooks/use-create-concept';
 
 export const Route = createFileRoute(
   '/(private)/_private/curriculum/$subjectId/',
@@ -335,6 +336,7 @@ function ActivitiesSection({
   const { data: conceptsRes } = useConcepts(subjectId, grade);
   const createActivity = useCreateActivity();
   const deleteActivity = useDeleteActivity(subjectId, managedUserId);
+  const createConcept = useCreateConcept();
 
   const concepts = conceptsRes?.data ?? [];
 
@@ -345,6 +347,8 @@ function ActivitiesSection({
   const [timeSpentMinutes, setTimeSpentMinutes] = useState(30);
   const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [newConceptName, setNewConceptName] = useState('');
+  const [showNewConcept, setShowNewConcept] = useState(false);
 
   const activities = activitiesRes?.data ?? [];
   // ponytail: API returns sorted; if it didn't, we'd sort client-side
@@ -455,19 +459,76 @@ function ActivitiesSection({
                 <Brain className="size-3.5" />
                 Concept
               </label>
-              <select
-                id="activity-concept"
-                className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
-                value={conceptId}
-                onChange={(e) => setConceptId(e.target.value)}
-              >
-                <option value="">Select concept</option>
-                {concepts.map((c) => (
-                  <option key={c._id} value={c._id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+              {!showNewConcept ? (
+                <div className="flex gap-2">
+                  <select
+                    id="activity-concept"
+                    className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
+                    value={conceptId}
+                    onChange={(e) => setConceptId(e.target.value)}
+                  >
+                    <option value="">Select concept</option>
+                    {concepts.map((c) => (
+                      <option key={c._id} value={c._id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => setShowNewConcept(true)}
+                    className="shrink-0 rounded-md border px-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    title="Add custom concept"
+                  >
+                    <Plus className="size-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    id="activity-concept"
+                    type="text"
+                    className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
+                    placeholder="New concept name…"
+                    value={newConceptName}
+                    onChange={(e) => setNewConceptName(e.target.value)}
+                    maxLength={200}
+                  />
+                  <button
+                    type="button"
+                    disabled={!newConceptName.trim() || createConcept.isPending}
+                    onClick={() => {
+                      if (!newConceptName.trim() || !grade) return;
+                      createConcept.mutate(
+                        { subjectId, grade, name: newConceptName.trim() },
+                        {
+                          onSuccess: (res) => {
+                            setConceptId(res.data._id);
+                            setNewConceptName('');
+                            setShowNewConcept(false);
+                            toast.success('Custom concept added');
+                          },
+                          onError: (err) => {
+                            toast.error(
+                              (err as Error).message || 'Failed to create concept',
+                            );
+                          },
+                        },
+                      );
+                    }}
+                    className="shrink-0 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground disabled:opacity-50"
+                  >
+                    {createConcept.isPending ? '…' : 'Add'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setShowNewConcept(false); setNewConceptName(''); }}
+                    className="shrink-0 rounded-md border px-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    ✕
+                  </button>
+                </div>
+              )}
               {errors.conceptId && (
                 <p className="mt-1 text-xs text-destructive">{errors.conceptId}</p>
               )}

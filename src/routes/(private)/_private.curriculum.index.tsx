@@ -6,6 +6,7 @@ import type {
 } from '@/api/services/profile.services';
 import SubjectCard from '@/components/cards/subject-card';
 import AddSubjectSheet from '@/components/sheets/add-subject-sheet';
+import RecordActivitySheet from '@/components/sheets/record-activity-sheet';
 import { useManagedUser } from '@/contexts/managed-user-context';
 import useManagedUserSubjects from '@/hooks/use-managed-user-subjects';
 import useSubjects from '@/hooks/use-subjects';
@@ -150,6 +151,8 @@ export function CurriculumRoute() {
 
   return (
     <div className="space-y-4 p-2">
+      <div className="flex justify-between">
+        <div>
       <h2 className="text-2xl font-bold">Curriculum</h2>
 
       {activeManagedUser?.displayName && (
@@ -157,6 +160,22 @@ export function CurriculumRoute() {
           Viewing curriculum for {activeManagedUser.displayName}
         </p>
       )}
+        </div>
+        <div>
+          {!isLoading && !error && activeManagedUser && (
+        <AddSubjectSheet
+          managedUserId={activeManagedUser.managedUserId}
+          manageduserName={activeManagedUser.displayName ?? ''}
+          enrolledSubjectIds={enrolledSubjectIds}
+        />
+      )}
+          {!isLoading && !error && activeManagedUser && (
+            <div className="mt-2 flex justify-end">
+              <RecordActivitySheet enrolledSubjectIds={enrolledSubjectIds} />
+            </div>
+          )}
+        </div>
+      </div>
 
       {isLoading && (
         <p data-testid="curriculum-loading">Loading curriculum...</p>
@@ -234,13 +253,7 @@ export function CurriculumRoute() {
         </div>
       )}
 
-      {!isLoading && !error && activeManagedUser && (
-        <AddSubjectSheet
-          managedUserId={activeManagedUser.managedUserId}
-          manageduserName={activeManagedUser.displayName ?? ''}
-          enrolledSubjectIds={enrolledSubjectIds}
-        />
-      )}
+      
     </div>
   );
 }

@@ -6,6 +6,13 @@ export type Concept = {
   grade: string;
   state?: string;
   name: string;
+  createdBy?: string;
+};
+
+export type CreateConceptDto = {
+  subjectId: string;
+  grade: string;
+  name: string;
 };
 
 const ConceptsServices = {
@@ -16,6 +23,13 @@ const ConceptsServices = {
     const searchParams = new URLSearchParams({ subjectId: params.subjectId });
     if (params.grade) searchParams.set('grade', params.grade);
     const response = await api.get('concepts', { searchParams });
+    return response.json();
+  },
+
+  create: async (
+    body: CreateConceptDto,
+  ): Promise<{ message: string; data: Concept }> => {
+    const response = await api.post('concepts', { json: body });
     return response.json();
   },
 };

@@ -61,7 +61,7 @@ const AddSubjectSheet = ({
   return (
     <Sheet open={open} onOpenChange={(v) => { setOpen(v); if (!v) { setSelectedSubjectId(null); setError(null); } }}>
       <SheetTrigger asChild>
-        <Button>New Subject</Button>
+        <Button>+ Subject</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
