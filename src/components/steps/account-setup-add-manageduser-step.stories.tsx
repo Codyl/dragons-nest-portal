@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import AccountSetupAddManagedUsersStep from './account-setup-add-managedusers-step';
+import AccountSetupAddManagedUsersStep from './account-setup-add-manageduser-step';
 import { AccountSetupFormStoryWrapper } from './account-setup-form-story-wrapper';
 
 const meta = {
