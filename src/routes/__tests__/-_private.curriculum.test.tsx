@@ -22,7 +22,7 @@ import useSubjects from '@/hooks/use-subjects';
 import {
   CurriculumRoute,
   resolveEnrolledSubjects,
-} from '../(private)/_private.curriculum';
+} from '../(private)/_private.curriculum.index';
 
 vi.mock('@/hooks/use-managed-user-subjects', () => ({
   default: vi.fn(),

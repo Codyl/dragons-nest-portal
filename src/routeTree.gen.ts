@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
+import { Route as PrivRouteImport } from './routes/priv'
 import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as privatePrivateRouteImport } from './routes/(private)/_private'
 import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
@@ -46,6 +47,11 @@ import { Route as privatePrivateCurriculumSubjectIdResourcesRouteImport } from '
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivRoute = PrivRouteImport.update({
+  id: '/priv',
+  path: '/priv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MaintenanceRoute = MaintenanceRouteImport.update({
@@ -225,6 +231,7 @@ const privatePrivateCurriculumSubjectIdResourcesRoute =
 
 export interface FileRoutesByFullPath {
   '/maintenance': typeof MaintenanceRoute
+  '/priv': typeof PrivRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/about': typeof authAuthAboutRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
@@ -258,6 +265,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/maintenance': typeof MaintenanceRoute
+  '/priv': typeof PrivRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/about': typeof authAuthAboutRoute
   '/account-recovery': typeof authAuthAccountRecoveryRouteWithChildren
@@ -292,6 +300,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/maintenance': typeof MaintenanceRoute
+  '/priv': typeof PrivRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/(auth)/_auth': typeof authAuthRouteWithChildren
   '/(private)/_private': typeof privatePrivateRouteWithChildren
@@ -329,6 +338,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/maintenance'
+    | '/priv'
     | '/terms-of-service'
     | '/about'
     | '/account-recovery'
@@ -362,6 +372,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/maintenance'
+    | '/priv'
     | '/terms-of-service'
     | '/about'
     | '/account-recovery'
@@ -395,6 +406,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/maintenance'
+    | '/priv'
     | '/terms-of-service'
     | '/(auth)/_auth'
     | '/(private)/_private'
@@ -431,6 +443,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   MaintenanceRoute: typeof MaintenanceRoute
+  PrivRoute: typeof PrivRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   authAuthRoute: typeof authAuthRouteWithChildren
   privatePrivateRoute: typeof privatePrivateRouteWithChildren
@@ -444,6 +457,13 @@ declare module '@tanstack/react-router' {
       path: '/terms-of-service'
       fullPath: '/terms-of-service'
       preLoaderRoute: typeof TermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/priv': {
+      id: '/priv'
+      path: '/priv'
+      fullPath: '/priv'
+      preLoaderRoute: typeof PrivRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/maintenance': {
@@ -781,6 +801,7 @@ const privatePrivateRouteWithChildren = privatePrivateRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   MaintenanceRoute: MaintenanceRoute,
+  PrivRoute: PrivRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   authAuthRoute: authAuthRouteWithChildren,
   privatePrivateRoute: privatePrivateRouteWithChildren,

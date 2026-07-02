@@ -108,7 +108,7 @@ const UserSettingsForm = () => {
         <p>
           See our{' '}
           <Button
-            onClick={() => window.open('/privacy-policy', '_blank')}
+            onClick={() => window.open('/priv', '_blank')}
             type="button"
             variant="link"
           >
